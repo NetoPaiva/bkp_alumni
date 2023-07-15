@@ -1,0 +1,1004 @@
+https://cursos.alura.com.br/course/mysql-consultas-sql
+
+Data Science > Cursos de SQL e Banco de Dados
+
+Curso de
+Consultas SQL: avançando no SQL com MySQL
+
+
+Formação com esse curso
+SQL com MySQL Server da Oracle
+
+
+Instrutor(a)
+
+    instructor Victorino Vila
+
+    Linkedin
+    https://www.linkedin.com/in/victorino-vila-1a160/
+
+    Victorino é desenvolvedor com foco em .NET e Web Services. Durante mais de 20 anos gerenciou uma empresa de consultoria na área de tecnologia. Criou e desenvolveu projetos de planejamento, Business Intelligence e integração de dados, além de databases de relacionamento com foco em BI, usando SQL Server, MYSQL ou DB2. Suas soluções são usadas em Brasil, nos EUA e na Europa. É consultor sênior certificado em SAP BW.
+
+
+Faça esse curso de SQL e Banco de Dados e:
+
+    Pagine seus dados com LIMIT
+    Filtre consultas com HAVING
+    Entenda a diferença entre o LEFT e RIGHT JOIN
+    Saiba usar Sub-Queries
+    Use funções do MySQL
+    Ordene os seus dados usando o ORDER BY
+    Agrupe dados com GROUP BY
+
+
+
+Aulas
+
+3- Apresentação dos dados de uma consulta | 0 / 14 | 51min
+
+https://cursos.alura.com.br/course/mysql-consultas-sql/section/8143/tasks
+
+  3-1  Usando DISTINCT para visualizar a tabela
+  3-2  Bairros da cidade do Rio de Janeiro
+  3-3  Limitando a saída da consulta
+  3-4  Observando uma amostra de dados
+  3-5  Ordenando a saída da consulta
+  3-6  Maior venda
+  3-7  Agrupando os resultados
+  3-8  Número de vendas
+  3-9  Usando a condição HAVING
+  3-10  Clientes de compras em 2016
+  3-11  Classificar resultados
+  3-12  Classificando o número de vendas
+  3-13  Consolidando o seu conhecimento
+  3-14  O que aprendemos?
+
+
+3-1  Usando DISTINCT para visualizar a tabela
+
+Transcrição
+
+Você pode fazer o download completo do projeto realizado neste vídeo e continuar seus estudos.
+
+https://caelum-online-public.s3.amazonaws.com/1221-mysqlconsultasavancadas/03/Consultas%20DISTINCT.sql
+
+
+Nas aulas anteriores, falamos de condições que são aplicadas sobre o filtro da seleção, mais especificamente operadores que usamos depois do WHERE. Agora vamos ver alguns comandos empregados sobre o que queremos visualizar. Em outras palavras, o filtro será aplicado e sobre o resultado do filtro ainda vamos impor outras condições.
+
+O primeiro comando que vamos aprender é o DISTINCT, que pode ser traduzido como "distinto, diferente". Ele retornará somente linhas com valores diferentes e vamos usá-lo depois do SELECT e antes da exibição dos campos.
+
+Por exemplo, se a consulta empregar o asterisco, o DISTINCT virá antes dele: SELECT DISTINCT *. Se, em vez disso, a consulta utilizar campos, o DISTINCT aparecerá antes deles:SELECT DISTINCT CODIGO, NOME).
+
+Vamos a um exemplo. Considere a seguinte tabela que mostra sete pares de valores:
+Valor 1	Valor 2
+A	X
+A	Y
+A	Z
+B	X
+A	X
+B	X
+A	Z
+
+Observando essas informações, constatamos que a linha 1 é igual à linha 5 (formando o par A,X). Além disso, outros registros que se repetem estão nas linhas 3 e 7 (A,Z); e nas linhas 4 e 6 (B,X).
+
+Se executarmos o script SELECT * FROM tabela, nosso retorno terá todas as sete linhas. Entretanto, se adicionarmos o DISTINCT a essa consulta, o MySQL trará uma seleção somente com as linhas que são diferentes em si:
+
+SELECT DISTINCT * FROM tabela;
+
+Valor 1	Valor 2
+A	X
+A	Y
+A	Z
+B	X
+
+Observe que, dessa forma, nenhuma combinação igual é exibida. Dos sete registros da tabela, veremos apenas quatro.
+
+Vamos ao MySQL Workbench para testar esse comando na nossa tabela "sucos_vendas". Criaremos um novo script SQL e começaremos com uma seleção sem o DISTINCT:
+
+SELECT EMBALAGEM, TAMANHO FROM tabela_de_produtos;
+
+Essa consulta trata uma série de linhas e num instante é possível perceber que há registros que se repetem. Por exemplo, a combinação Garrafa com 700ml (linhas 1 e 3) ou a combinação PET com 2 Litros (linhas 6, 7 e 8).
+
+No entanto, temos a opção de incluir o DISTINCT para mudar essa situação:
+
+SELECT DISTINCT EMBALAGEM, TAMANHO FROM tabela_de_produtos;
+
+Desse modo, o retorno será bem mais reduzido, porque mostrará apenas as combinações que não se repetem.
+
+Vale lembrar que podemos aplicar junto com DISTINCTtodas aquelas condições de filtro que aprendemos anteriormente, por exemplo:
+
+SELECT DISTINCT EMBALAGEM, TAMANHO FROM tabela_de_produtos WHERE SABOR = 'Laranja';
+
+Nesse caso, o MySQL mostrará apenas os distincts com sabor laranja:
+EMBALAGEM	TAMANHO
+PET	2 Litros
+Garrafa	470 ml
+PET	1 Litro
+Lata	200 ml
+PET	1.5 Litros
+
+Essa consulta seria útil se, por exemplo, um cliente dessa empresa de sucos perguntasse: "Quais são as embalagens e os tamanhos disponíveis para o suco de frutas do sabor laranja?"
+
+Examinando o resultado, poderíamos responder: "O suco de laranja é oferecido em PET de 2 litros, garrafa de 470 ml, PET de 1 litro, lata de 350 ml e PET de 1,5 litro."
+
+Vamos ver um último exemplo, incluindo mais um campo à seleção:
+
+SELECT DISTINCT EMBALAGEM, TAMANHO, SABOR FROM tabela_de_produtos;
+
+Nesse caso, obteremos mais registros do que na consulta anterior, pois com uma coluna a mais ("SABOR") o número de combinações aumenta. Observe que as cinco linhas que apareceram na penúltima seleção também estão presentes nessa última consulta, já que continuam a atender as condições.
+
+Então, nesse vídeo, conseguimos explorar um pouquinho mais sobre o uso do DISTINCT.
+
+
+
+
+3-2  Bairros da cidade do Rio de Janeiro
+
+Quais são os bairros da cidade do Rio de Janeiro que possuem clientes?
+
+Opinião do instrutor
+
+Executando o comando SQL:
+
+SELECT DISTINCT BAIRRO FROM tabela_de_clientes WHERE CIDADE = 'Rio de Janeiro'
+
+Obteremos 7 bairros listados.
+
+
+
+3-3  Limitando a saída da consulta
+
+Transcrição
+
+Você pode fazer o download completo do projeto realizado neste vídeo e continuar seus estudos.
+
+https://caelum-online-public.s3.amazonaws.com/1221-mysqlconsultasavancadas/03/Consultas%20LIMIT.sql
+
+
+Vamos aprender agora a limitar a saída de uma consulta.
+
+Às vezes, criamos seleções que retornam 1 milhão de registros, mas estamos na fase de desenvolvimento de um projeto e não queremos, de fato, ver 1 milhão de linhas, o objetivo era saber se a consulta funcionaria e se ela traria os dados esperados. Nesses casos, podemos limitar a saída de dados usando o comando LIMIT, que no caso do MySQL estará sempre no final da query, por exemplo:
+
+SELECT campos FROM tabela WHERE condicao LIMIT 5;
+
+O número que colocamos depois de LIMITdirá quantas linhas serão exibidas. Para ver em um exemplo, considere a seguinte tabela:
+Nomes
+João da Silva Filho
+Pedro Almeida Soares
+Margarida Silva Soares
+José da Silva Almeida
+Carlos Soares da Silva
+Pedro Filho de Almeida
+Jorge da Silva Filho
+Antônio Almeida Soares
+Jonas Soares Filho
+Vitor Filho Soares
+
+E vamos imaginar que rodamos o código a seguir:
+
+SELECT * FROM tabela LIMIT 4;
+
+O resultado dessa consulta traria os quatro primeiros registros da tabela original:
+Nomes
+João da Silva Filho
+Pedro Almeida Soares
+Margarida Silva Soares
+José da Silva Almeida
+
+Mas. além de limitar os primeiros registros, o LIMIT também pode conter itens do meio da tabela original, da seguinte forma:
+
+SELECT * FROM tabela LIMIT 2,3;
+
+Essa seleção retornará os seguintes registros:
+Nomes
+Pedro Almeida Soares
+Margarida Silva Soares
+José da Silva Almeida
+
+Ou seja, o primeiro número depois do termo LIMIT determina a partir de qual registro queremos ver, e o segundo número define a quantidade de itens a serem mostrados. Nesse caso, a partir do segundo item da tabela original, vemos três registros.
+
+    É necessário lembrar que as tabelas do MySQL se iniciam no índice 0. Sendo assim, o retorno correto de SELECT * FROM tabela LIMIT 2,3 seria o seguinte:
+
+Nomes
+Margarida Silva Soares
+José da Silva Almeida
+Carlos Soares da Siva
+
+Vamos, então, ver como o LIMIT funciona no nosso banco de dados "sucos_vendas", no MySQL Workbench. Criaremos um novo script e digitaremos a consulta a seguir:
+
+SELECT * FROM tabela_de_produtos;
+
+Note que os primeiros cinco itens do retorno são os de código: 1000889, 1002334, 1002767, 1004327 e 1013793, nessa ordem. Vamos ver se conseguimos criar uma seleção com LIMIT que mostre apenas esses cinco registros:
+
+SELECT * FROM tabela_de_produtos LIMIT 5;
+
+Rodando esse script e verificando os códigos dos produtos, saberemos que nossa consulta fez exatamente o que queríamos.
+
+Já se nosso objetivo for selecionar três linhas a partir do código 1002767, que é o terceiro registro da tabela, faremos:
+
+SELECT * FROM tabela_de_produtos LIMIT 2,3;
+
+Vale lembrar que o MySQL considera a primeira linha como linha 0, portanto se vamos começar a seleção na linha 3, por isso, o primeiro número após o LIMIT será 2. Da mesma forma, se queremos que a seleção se inicie na primeira linha, podemos escrever o seguinte:
+
+SELECT * FROM tabela_de_produtos LIMIT 0, 2;
+
+Essa consulta retornará a linha 0 e a linha 1 (registros 1 e 2).
+
+
+
+3-4  Observando uma amostra de dados
+
+Queremos obter as 10 primeiras vendas do dia 01/01/2017. Qual seria o comando SQL para obter este resultado?
+
+Opinião do instrutor
+
+SELECT * FROM notas_fiscais  WHERE DATA_VENDA = '2017-01-01' limit 10
+
+
+
+
+3-5  Ordenando a saída da consulta
+
+Transcrição
+
+Você pode fazer o download completo do projeto realizado neste vídeo e continuar seus estudos.
+
+https://caelum-online-public.s3.amazonaws.com/1221-mysqlconsultasavancadas/03/Consultas%20ORDER.sql
+
+
+Quando fazemos uma seleção de dados num banco, eles são exibidos na ordem natural que a informação está armazenada na tabela. Mas nós podemos, através do comando ORDER BY, fazer com que o resultado da consulta venha ordenado por determinados critérios. Basta especificar o campo pelo qual se deseja organizar os dados, por exemplo:
+
+SELECT * FROM tab ORDER BY campo
+
+Para ver uma demonstração de como esse comando funciona, considere a seguinte tabela de nomes:
+Nome
+João da Silva Filho
+Pedro Almeida Soares
+Margarida Silva Soares
+José da Silva Almeida
+Carlos Soares da Silva
+Pedro Filho de Almeida
+Jorge da Silva Filho
+Antônio Almeida Soares
+Jonas Soares Filho
+Vitor Filho Soares
+
+No momento, não há nenhum critério na ordem desses dados. Poderíamos, então, rodar uma consulta com o ORDER BY especificando a coluna em questão e, dessa forma, os nomes apareceriam do menor para o maior:
+Nome
+Antônio Almeida Soares
+Carlos Soares da Silva
+João da Silva Filho
+Jonas Soares Filho
+Jorge da Silva Filho
+José da Silva Almeida
+Margarida Silva Soares
+Pedro Almeida Soares
+Pedro Filho de Almeida
+Vitor Filho Soares
+
+Nesse caso, como não estamos lidando com dados numéricos, "do menor para o maior" é o mesmo que "alfabeticamente". Se fosse do maior para o menor, seria de Z a A.
+
+Com o ORDER BY também é possível especificar a direção da ordenação. Podemos escolher que os dados sejam exibidos de forma ascendente (ou seja, crescente, do menor para o maior), com o comando ASC. A outra opção é exibi-los de forma descendente (decrescente), usando DESC.
+
+    Caso não seja especificado ASC ou DESC, o MySQL automaticamente optará pela ordem ascendente.
+
+Além disso, também podemos escolher dois campos, ao mesmo tempo, como critério de seleção. Com esse intuito, faríamos uma consulta com ORDER BY CAMPO1, CAMPO2 e o resultado seria algo parecido com o seguinte:
+CAMPO1	CAMPO2
+A	1
+A	2
+A	3
+B	1
+B	2
+B	3
+C	1
+C	2
+C	3
+
+Nesse caso,temos o "CAMPO1" ordenado alfabeticamente, onde naturalmente todas as letras "A" estão no começo. Esses registros de letra "A", por sua vez, estão organizados de acordo com a ordem crescente do "CAMPO2", que é numérico. Só a partir da quarta linha teremos o "CAMPO1" com as letras "B", ordenadas conforme a ordem crescente do "CAMPO2", e assim por diante.
+
+Agora que entendemos o conceito do ORDER BY, vamos ao MySQL Workbench para criar algumas consultas na base "sucos_vendas". Criaremos um novo script e começaremos com a seleção de todos os itens da tabela de produtos:
+
+SELECT * FROM tabela_de_produtos;
+
+Vamos, então, rodar uma seleção com ORDER BY em uma coluna com dados numéricos:
+
+SELECT * FROM tabela_de_produtos ORDER BY PRECO_DE_LISTA;
+
+Verificando o resultado, notaremos que os registros estão ordenados conforme a ordem crescente da coluna "PRECO_DE_LISTA", começando no valor R$2,808 e indo até R$38,012.
+
+Para mudar a direção da ordenação, vamos inserir o comando DESC na nossa consulta, depois do nome do campo:
+
+SELECT * FROM tabela_de_produtos ORDER BY PRECO_DE_LISTA DESC;
+
+Dessa vez, os registros aparecerão de acordo com a ordem descendente da coluna "PRECO_DE_LISTA", do R$38,012 ao R$2,808.
+
+A seguir, faremos uma seleção nessa mesma tabela, porém ordenando pelo campo "NOME_DO_PRODUTO", que tem dados em formato de texto:
+
+SELECT * FROM tabela_de_produtos ORDER BY NOME_DO_PRODUTO;
+
+O resultado estará ordenado pela ordem alfabética dos nomes dos produtos. Caso nosso objetivo seja ver na ordem contrária, precisaremos acrescentar o comando DESC:
+
+SELECT * FROM tabela_de_produtos ORDER BY NOME_DO_PRODUTO DESC;
+
+Por fim, vamos fazer um teste usando um critério composto:
+
+SELECT * FROM tabela_de_produtos ORDER BY EMBALAGEM, NOME_DO_PRODUTO;
+
+Sabemos que existem três tipos de embalagem no nosso banco: garrafa, lata e PET. Executando a consulta, obteremos um resultado que primeiramente respeitará à ordem crescente (alfabética) do campo "EMBALAGEM", começando portanto por "GARRAFA". Dentre os registros cuja embalagem é garrafa, teremos a ordem crescente pelo campo "NOME_DO_PRODUTO" (nosso segundo critério). Só depois poderemos ver registros com embalagem "LATA" (também em ordem alfabética dos nomes dos produtos) e, em seguida, "PET".
+
+É possível deixar essa consulta ainda mais específica, acrescentando a direção da ordenação que queremos para cada um dos campos:
+
+SELECT * FROM tabela_de_produtos ORDER BY EMBALAGEM DESC, NOME_DO_PRODUTO ASC;
+
+Dessa vez, porque usamos DESC para o primeiro critério, a ordem das embalagens começará do maior para o menor (no caso, de "PET" a "GARRAFA") e, dentre os itens de cada tipo de embalagem, os nomes dos produtos estarão organizados em ordem alfabética, pois usamos o ASC para o segundo critério, "NOME_DO_PRODUTO".
+
+
+
+3-6  Maior venda
+
+Qual (ou quais) foi (foram) a(s) maior(es) venda(s) do produto “Linha Refrescante - 1 Litro - Morango/Limão”, em quantidade? (Obtenha este resultado usando 2 SQLs).
+
+Opinião do instrutor
+
+Primeiro vamos buscar o código do produto “Linha Refrescante - 1 Litro - Morango/Limão”.
+
+SELECT * FROM tabela_de_produtos WHERE nome_do_produto = 'Linha Refrescante - 1 Litro - Morango/Limão'
+
+Com esta consulta obtemos o resultado do código deste produto: ‘1101035’
+
+Com esta informação fazemos a consulta para achar a maior quantidade vendida deste produto.
+
+SELECT * FROM itens_notas_fiscais WHERE codigo_do_produto = '1101035' ORDER BY QUANTIDADE DESC
+
+Veremos que a maior quantidade foi 99.
+
+
+
+3-7  Agrupando os resultados
+
+Transcrição
+
+Aqui você pode fazer o download completo do projeto realizado neste vídeo e continuar seus estudos.
+
+https://caelum-online-public.s3.amazonaws.com/1221-mysqlconsultasavancadas/03/Consultas%20GROUPBY.sql
+
+
+No vídeo anterior, aprendemos como ordenar resultados. Agora, vamos estudar como agrupá-los. Agrupar é juntar campos que são repetidos e, nos casos de campos numéricos, em meio a essa junção temos a opção de aplicar fórmulas matemáticas, que podem ser de soma, de média, de máximo ou mínimo valor, entre outros.
+
+Para ficar mais fácil de entender, vamos ver em um exemplo. Observe a tabela a seguir, em que a coluna "X" apresenta letras e a coluna "Y" mostra valores numéricos:
+X	Y
+A	2
+A	1
+B	2
+B	3
+B	1
+C	1
+C	5
+C	2
+D	3
+
+O comando que vamos aprender é o GROUP BY, que apresentará o resultado agrupando valores numéricos por uma chave de critério:
+
+SELECT X, SUM(Y) FROM tab GROUP BY X;
+
+O GROUP BYserá responsável por agrupar as linhas em que "X" tem o mesmo valor. Por exemplo: as linhas 1 e 2 serão unidas em uma só, e o campo "Y" terá o valor "3", por causa da fórmula de soma SUM(Y) aplicada na consulta. O retorno dessa seleção será o seguinte:
+X	Y
+A	3
+B	6
+C	8
+D	3
+
+Acabamos de conhecer a fórmula SUM (soma), vamos ver mais quatro opções. A fórmula MAX (máximo) exibirá o maior valor:
+
+SELECT X, MAX(Y) FROM tab GROUP BY X;
+
+X	Y
+A	2
+B	3
+C	5
+D	3
+
+Na tabela original, a letra "A" aparece duas vezes. Os valores de "Y" nessas ocorrências são 2 e 1. Como estamos usando a fórmula MAX(Y), o valor exibido será o maior, no caso, o número 2. O mesmo vale para a letra "B", que tem três ocorrências cujos valores de "Y" são 2, 3 e 1, nessa ordem. Com o uso de MAX(Y), o valor exibido será 3, e assim em diante.
+
+Já a fórmula MIN(mínimo) fará o contrário - exibirá o menor valor:
+
+SELECT X, MIN(Y) FROM tab GROUP BY X;
+
+X	Y
+A	1
+B	1
+C	1
+D	3
+
+A fórmula AVG (do inglês, average) fará uma média dos valores:
+
+SELECT X, AVG(Y) FROM tab GROUP BY X;
+
+X	Y
+A	1.5
+B	2
+C	2.666
+D	3
+
+Ou seja, no caso da letra "A", o MySQL verá quais são os valores de "Y" (2 e 1) e fará a média deles, chegando a 1,5. No caso de "B", serão computados os valores 2, 3 e 1 e, feita a média, o resultado exibido será 2 e assim por diante.
+
+E a fórmula COUNT mostrará o número de ocorrência:
+X	Y
+A	2
+B	3
+C	3
+D	1
+
+No caso de "A", temos duas linhas, então o valor exibido é 2. No caso de "B", temos três linhas, então o resultado é 3, e assim em diante. Então, essas são as cinco fórmulas que podemos usar com o GROUP BY.
+
+Um detalhe importante: quando omitimos os campos de agregação e utilizamos apenas a fórmula, não é necessário colocar a cláusula GROUP BY. Por exemplo:
+
+SELECT SUM(Y) FROM tab;
+
+20
+
+O MySQL irá somar todos os campos de "Y" e simplesmente mostrar o resultado. Se, em vez disso, usássemos MIN, o retorno seria 1, pois o menor valor de "Y" na tabela é 1. Com MAX, teríamos 5. Com AVG, a média daria 2.22. Com COUNT obteríamos 9.
+
+Então, vamos ao MySQL Workbench criar alguns exemplos na base "sucos_vendas". Criaremos um novo script e começaremos consultando toda a tabela de clientes:
+
+SELECT * FROM tabela_de_clientes;
+
+Em seguida, vamos restringir um pouco essa consulta, selecionando apenas o estado e o limite de crédito na tabela:
+
+SELECT ESTADO, LIMITE_DE_CREDITO FROM tabela_de_clientes;
+
+Ao fazer essa consulta, veremos uma lista em que cada linha mostra o estado e o limite de crédito de um cliente. Se nosso objetivo for saber o total de limite de crédito de cada estado, usaremos o GROUP BY:
+
+SELECT ESTADO, SUM(LIMITE_DE_CREDITO) as LIMITE_TOTAL FROM tabela_de_clientes GROUP BY ESTADO;
+
+    Sempre que uma fórmula for usada, é necessário usar um alias ("apelido") para o campo. No nosso caso, definimos "LIMITE_TOTAL" como alias da soma dos limites de crédito.
+
+O retorno mostrará os limites de crédito somados agrupados por estado: em São Paulo, o limite total é R$810.000,00 e, no Rio de Janeiro, é R$995.000,00.
+
+Faremos, agora, uma consulta relativa às embalagens e aos preços de lista presentes na tabela de produtos:
+
+SELECT EMBALAGEM, PRECO_DE_LISTA FROM tabela_de_produtos;
+
+Vamos supor que precisamos descobrir qual é o preço mais caro de cada tipo de embalagem (PET, garrafa e lata):
+
+SELECT EMBALAGEM, MAX(PRECO_DE_LISTA) as MAIOR_PRECO FROM tabela_de_produtos GROUP BY EMBALAGEM;
+
+Com essa consulta, constatamos que o produto mais caro que vem em garrafas tem o valor de R$13,312. O mais caro com embalagem PET é R$38,012. E o de lata custa R$4,56.
+
+Além disso, é possível criar seleções com o comando COUNT:
+
+SELECT EMBALAGEM, COUNT(*) as CONTADOR FROM tabela_de_produtos GROUP BY EMBALAGEM;
+
+O retorno nos mostrará a quantidade de produtos que existem com cada tipo de embalagem: 11 tem embalagem garrafa, 15 vem em PET e 5 em lata.
+
+Vale lembrar que podemos aplicar critérios de filtro juntamente do ORDER BYe do GROUP BY. Como exemplo, primeiramente vamos selecionar os limites de crédito agrupados por bairro:
+
+SELECT BAIRRO, SUM(LIMITE_DE_CREDITO) as LIMITE FROM tabela_de_clientes GROUP BY BAIRRO;
+
+E, para filtrar a consulta, usaremos uma cláusula WHERE para ver apenas os limites de crédito dos bairros da cidade do Rio de Janeiro:
+
+SELECT BAIRRO, SUM(LIMITE_DE_CREDITO) as LIMITE FROM tabela_de_clientes WHERE CIDADE = 'Rio de Janeiro' GROUP BY BAIRRO;
+
+Ademais, é possível usar mais de um campo no GROUP BY:
+
+SELECT ESTADO, BAIRRO, SUM(LIMITE_DE_CREDITO) as LIMITE FROM tabela_de_clientes GROUP BY ESTADO, BAIRRO;
+
+Note que adicionamos o campo "ESTADO" no início da seleção (SELECT ESTADO) e também no fim, depois de GROUP BY. Na primeira ocorrência, estamos determinando como exibiremos os dados, já na segunda indicamos como queremos que sejam agrupados.
+
+Em seguida, aplicaremos um filtro que irá restringir a consulta somente à cidade do Rio de Janeiro:
+
+SELECT ESTADO, BAIRRO, SUM(LIMITE_DE_CREDITO) as LIMITE FROM tabela_de_clientes WHERE CIDADE = 'Rio de Janeiro' GROUP BY ESTADO, BAIRRO;
+
+Ou seja, estamos selecionando estado, bairro e a soma dos limites de crédito somente da cidade do Rio de Janeiro, agrupando esses dados por estado e bairro.
+
+E, por fim, se nossa meta for visualizar esse resultado de forma ordenada, podemos ainda incluir o ORDER BY:
+
+SELECT ESTADO, BAIRRO, SUM(LIMITE_DE_CREDITO) as LIMITE FROM tabela_de_clientes 
+WHERE CIDADE = 'Rio de Janeiro' 
+GROUP BY ESTADO, BAIRRO 
+ORDER BY BAIRRO;
+
+Dessa forma, veremos que o retorno respeitará a ordem alfabética dos bairros, começando por Água Santa, Barra da Tijuca, Cidade Nova e assim por diante. Essa última consulta é mais complexa, pois estamos agrupando, filtrando e ordenando dados em uma única seleção.
+
+
+
+3-8  Número de vendas
+
+Aproveitando o exercício do vídeo anterior (maior quantidade vendida) quantos itens de venda existem para o produto '1101035' ?
+
+Uma Dica é que neste caso vc precisará rodar duas queries. Sendo a 1a associada a maior quantidade de produtos e a 2a com o resultado da 1a na forma de parâmetro desta 2a query.
+
+
+Opinião do instrutor
+
+Primeiro execute o comando para descobrir a maior quantidade de produtos em um pedido:
+
+SELECT MAX(`QUANTIDADE`) as 'MAIOR QUANTIDADE' FROM itens_notas_fiscais WHERE `CODIGO_DO_PRODUTO` = '1101035' ;
+
+Depois o comando passando no parâmetro quantidade o valor encontrado no código anterior :
+
+SELECT COUNT(*) FROM itens_notas_fiscais WHERE codigo_do_produto = '1101035' AND QUANTIDADE = 99;
+
+Teremos como resposta 79.
+
+
+
+
+3-9  Usando a condição HAVING
+
+Transcrição
+
+Aqui você pode fazer o download completo do projeto realizado neste vídeo e continuar seus estudos.
+
+https://caelum-online-public.s3.amazonaws.com/1221-mysqlconsultasavancadas/03/Consultas%20HAVING.sql
+
+
+Nesse vídeo, conheceremos o HAVING, que é um filtro que se aplica ao resultado de um agregação. Ou seja, não o usamos no SELECT em si, mas sobre o resultado de um SELECTque é agrupado.
+
+Para exemplificar, vamos rever a tabela que usamos no vídeo anterior, na qual temos a coluna "X" apresentando letras e a coluna "Y" mostrando valores numéricos:
+X	Y
+A	2
+A	1
+B	2
+B	3
+B	1
+C	1
+C	5
+C	2
+D	3
+
+Nessa tabela, executaremos uma seleção com o comando GROUP BY que aprendemos anteriormente, agrupando os valores iguais de "X" e somando os de "Y:
+
+SELECT X, SUM(Y) FROM tab GROUP BY X;
+
+X	Y
+A	3
+B	6
+C	8
+D	3
+
+Desse resultado, vamos supor que queremos apenas as linhas em que a soma de "Y" seja maior ou igual a 6. No caso, seriam as letras B e C. Então, aplicaremos o HAVING depois do GROUP BY:
+
+SELECT X, SUM(Y) FROM tab GROUP BY X HAVING SUM(Y) >= 6;
+
+X	Y
+B	6
+C	8
+
+Agora que entendemos o conceito, vamos criar alguns exemplos na nossa base "sucos_vendas". Abriremos o MySQL Workbench, criaremos um novo script e começaremos com uma seleção da tabela de clientes, consultando a soma dos limites de crédito agrupados por estado:
+
+SELECT ESTADO, SUM(LIMITE_DE_CREDITO) as SOMA_LIMITE FROM tabela_de_clientes 
+GROUP BY ESTADO;
+
+O retorno mostrará que, no estado de São Paulo, temos o total de limite de crédito de R$810.000,00 e, no estado do Rio de Janeiro, R$995.000,00. Agora, se nosso objetivo for listar apenas os estados cuja soma do limite de crédito for maior que R$900.000,00, parece natural que usemos a cláusula WHERE:
+
+SELECT ESTADO, SUM(LIMITE_DE_CREDITO) as SOMA_LIMITE FROM tabela_de_clientes
+WHERE SOMA_LIMITE > 900000
+GROUP BY ESTADO;
+
+No entanto, ao tentar rodar essa consulta, obteremos um erro! O problema é que, quando o WHERE é aplicado, o agrupamento ainda não ocorreu. A solução será usar o HAVING, que virá depois do GROUP BY:
+
+SELECT ESTADO, SUM(LIMITE_DE_CREDITO) as SOMA_LIMITE FROM tabela_de_clientes
+GROUP BY ESTADO
+HAVING SUM(LIMITE_DE_CREDITO) > 900000;
+
+Ou seja, primeiro agrupamos e depois aplicamos a condição. Dessa vez, nossa consulta retornará com sucesso.
+
+Nesse último caso, usamos SUM(LIMITE_DE_CREDITO) tanto no SELECT quanto no HAVING, entretanto não há necessidade de sempre usar o mesmo critério. Para exemplificar, primeiro vamos selecionar as embalagens, o maior preço e o menor preço, agrupando-os pelo tipo de embalagem:
+
+SELECT EMBALAGEM, MAX(PRECO_DE_LISTA) as MAIOR_PRECO, 
+MIN(PRECO_DE_LISTA) as MENOR_PRECO FROM tabela_de_produtos 
+GROUP BY EMBALAGEM;
+
+EMBALAGEM	MAIOR_PRECO	MENOR_PRECO
+Garrafa	13.312	3.768
+PET	38.012	7.004
+Lata	4.56	2.808
+
+E, com o intuito de usar o HAVING, filtraremos esse resultado, buscando apenas os produtos cuja soma dos preços de lista seja menor ou igual a R$80,00:
+
+SELECT EMBALAGEM, MAX(PRECO_DE_LISTA) as MAIOR_PRECO, 
+MIN(PRECO_DE_LISTA) as MENOR_PRECO FROM tabela_de_produtos 
+GROUP BY EMBALAGEM
+HAVING SUM(PRECO_DE_LISTA) <= 80;
+
+No SELECT utilizamos MAXe MIN, enquanto no HAVING usamos o SUM - essa consulta ilustra que não há necessidade de escolher os mesmos critérios. No retorno, veremos que a embalagem PET não aparece mais, pois não satisfaz a nova condição que impomos (SUM(PRECO_DE_LISTA) <=80).
+
+Para finalizar, vale lembrar que temos a opção de acrescentar mais condições ao HAVING, criando um filtro composto com os operadores OR e AND, por exemplo:
+
+SELECT EMBALAGEM, MAX(PRECO_DE_LISTA) as MAIOR_PRECO, 
+MIN(PRECO_DE_LISTA) as MENOR_PRECO FROM tabela_de_produtos 
+GROUP BY EMBALAGEM
+HAVING SUM(PRECO_DE_LISTA) <= 80 AND MAX(PRECO_DE_LISTA) >= 5;
+
+Com essa nova condição (MAX(PRECO_DE_LISTA) >= 5), vamos notar que a embalagem "lata" também não aparecerá mais, já que seu valor máximo do preço de lista é R$4,56.
+
+
+
+
+3-10  Clientes de compras em 2016
+
+Quais foram os clientes que fizeram mais de 2000 compras em 2016?
+
+
+Opinião do instrutor
+
+Execute a consulta:
+
+  SELECT CPF, COUNT(*) FROM notas_fiscais
+  WHERE YEAR(DATA_VENDA) = 2016
+  GROUP BY CPF
+  HAVING COUNT(*) > 2000
+
+Teremos 3 clientes listados.
+
+
+
+3-11  Classificar resultados
+
+Transcrição
+
+Aqui você pode fazer o download completo do projeto realizado neste vídeo e continuar seus estudos.
+
+https://caelum-online-public.s3.amazonaws.com/1221-mysqlconsultasavancadas/03/Consultas%20CASE.sql
+
+
+A seguir, aprenderemos sobre a expressão CASE (em português, "caso"). Esse comando serve para se fazer testes em um ou mais campos e, quando determinada condição for atendida, então seguiremos por um caminho, senão continuamos por outro.
+
+O CASE vem acompanhado dos termos WHEN (quando), THEN (então), ELSE (senão) e END (fim). Veja a seguir um exemplo da estrutura desse comando:
+
+CASE
+    WHEN <condição1> THEN <Valor1>
+    WHEN <condição2> THEN <Valor2>
+    (...)
+    WHEN <condiçãoN> THEN <ValorN>
+    ELSE ValorELSE
+END
+
+Ou seja, analisamos uma condição e, caso seja satisfeita, o MySQL registra um valor determinado. Podemos ter várias dessas condições em um CASE e, ao final, se nenhuma delas for atendida, o ELSE é executado, funcionando como desvio para um outro valor já estabelecido.
+
+Esse comando é bastante usado para classificar registros. Como exemplo, observe a seguinte tabela que tem o campo "X" que representa clientes e o campo "Y" que mostra a nota de cada um deles:
+X	Y
+Cliente 1	8
+Cliente 2	6
+Cliente 3	9
+Cliente 4	10
+Cliente 5	4
+Cliente 6	5
+Cliente 7	7
+
+Queremos classificar as pessoas dessa tabela da seguinte forma: clientes com nota entre 8 e 10 são "ÓTIMO"; os com nota entre 7 e 8 são "BOM"; entre 5 e 7 são "MÉDIO"; e clientes cuja nota não se encaixa em nenhum desses critérios (ou seja, que não têm nota entre 5 e 10) são "RUIM". Para substituir a saída por essa classificação, executamos um script com CASE:
+
+SELECT X,
+CASE
+    WHEN Y>=8 AND Y<=10 THEN 'OTIMO'
+    WHEN Y>=7 AND Y<8 THEN 'BOM'
+    WHEN Y>5 AND Y<7 THEN 'MEDIO'
+    ELSE 'RUIM'
+END
+FROM tabela;
+
+X	
+Cliente 1	OTIMO
+Cliente 2	MEDIO
+Cliente 3	OTIMO
+Cliente 4	OTIMO
+Cliente 5	RUIM
+Cliente 6	MEDIO
+Cliente 7	BOM
+
+Esse é apenas um exemplo de como usar o CASE. Existe uma série de opções do que pode ser colocado depois do THEN, não precisa ser necessariamente um valor, como fizemos. Seria válido aplicar uma constante ou uma conta matemática, por exemplo: quando uma condição X for satisfeita, então faça uma conta Y, senão faça uma conta Z.
+
+Então, vamos colocar esse conhecimento em prática. Abriremos o MySQL Workbench, criaremos um novo script e começaremos consultando a tabela de produtos do banco "sucos_vendas":
+
+SELECT * FROM tabela_de_produtos;
+
+Digamos que nossa intenção é classificar os produtos entre "baratos", "em conta" ou "caros". Faremos uma consulta usando o comando CASE e o campo "PRECO_DE_LISTA":
+
+SELECT NOME_DO_PRODUTO, PRECO_DE_LISTA,
+CASE 
+    WHEN PRECO_DE_LISTA >= 12 THEN 'PRODUTO CARO'
+    WHEN PRECO_DE_LISTA >= 7 AND PRECO_DE_LISTA < 12 THEN 'PRODUTO EM CONTA'
+    ELSE 'PRODUTO BARATO' 
+END AS STATUS_PRECO 
+FROM tabela_de_produtos;
+
+Ao final da seleção, coloca-se o END para encerrar o CASE e cria-se um alias. Ao rodar a consulta, teremos um retorno com as colunas "NOME_DO_PRODUTO", "PRECO_DE_LISTA" e "STATUS_PRECO", com uma relação de quais produtos estão baratos, quais estão em conta e quais estão caros.
+
+Aplicando uma das fórmulas que aprendemos na aula anterior, podemos fazer, por exemplo, uma seleção que apresenta a média (average) de preços de produtos baratos, em conta ou caros, agrupados por tipo de embalagem:
+
+SELECT EMBALAGEM,
+CASE 
+    WHEN PRECO_DE_LISTA >= 12 THEN 'PRODUTO CARO'
+    WHEN PRECO_DE_LISTA >= 7 AND PRECO_DE_LISTA < 12 THEN 'PRODUTO EM CONTA'
+    ELSE 'PRODUTO BARATO' 
+END AS STATUS_PRECO, AVG(PRECO_DE_LISTA) AS PRECO_MEDIO
+FROM tabela_de_produtos
+GROUP BY EMBALAGEM, 
+CASE 
+    WHEN PRECO_DE_LISTA >= 12 THEN 'PRODUTO CARO'
+    WHEN PRECO_DE_LISTA >= 7 AND PRECO_DE_LISTA < 12 THEN 'PRODUTO EM CONTA'
+    ELSE 'PRODUTO BARATO' 
+END
+
+Note que o CASE completo precisa ser inserido no GROUP BY.
+
+Ao analisar o retorno, podemos ver no primeiro registro que os sucos em garrafa que custam menos de R$7 (barato) tem uma média de preço de R$5,23. No segundo registro, notamos que os PETs em conta tem uma média de preço de R$9,10, e assim por diante.
+
+Assim, notamos que é possível misturar vários tipos de comandos em um única seleção. Cabe ainda nessa consulta inserirmos um ORDER BY EMBALAGEM ao final do script e o resultado será a mesma lista, porém respeitando a ordem alfabética dos tipos de embalagem. Com essa nova organização, ficará mais fácil de verificar, por exemplo, que não existem embalagens PET baratas e que todos os sucos em lata custam menos de R$7 (baratos).
+
+É possível até incluir uma cláusula WHERE para filtrar somente os produtos com sabor de manga. Veja como fica a consulta completa:
+
+SELECT EMBALAGEM,
+CASE 
+    WHEN PRECO_DE_LISTA >= 12 THEN 'PRODUTO CARO'
+    WHEN PRECO_DE_LISTA >= 7 AND PRECO_DE_LISTA < 12 THEN 'PRODUTO EM CONTA'
+    ELSE 'PRODUTO BARATO' 
+END AS STATUS_PRECO, AVG(PRECO_DE_LISTA) AS PRECO_MEDIO
+FROM tabela_de_produtos
+WHERE sabor = 'Manga'
+GROUP BY EMBALAGEM, 
+CASE 
+    WHEN PRECO_DE_LISTA >= 12 THEN 'PRODUTO CARO'
+    WHEN PRECO_DE_LISTA >= 7 AND PRECO_DE_LISTA < 12 THEN 'PRODUTO EM CONTA'
+    ELSE 'PRODUTO BARATO' 
+END 
+ORDER BY EMBALAGEM;
+
+Nesse caso, podemos observar na primeira linha do resultado, por exemplo, que a média de preços de sucos de manga baratos vendidos em garrafas é de R$5,17. Mesclando tudo que já estudamos nesse curso, já somos capazes de criar consultas bastante específicas e complexas.
+
+
+
+3-12  Classificando o número de vendas
+
+Veja o ano de nascimento dos clientes e classifique-os como: Nascidos antes de 1990 são velhos, nascidos entre 1990 e 1995 são jovens e nascidos depois de 1995 são crianças. Liste o nome do cliente e esta classificação.
+
+
+Opinião do instrutor
+
+
+SELECT NOME,
+CASE WHEN YEAR(data_de_nascimento) < 1990 THEN 'Velho'
+WHEN YEAR(data_de_nascimento) >= 1990 AND
+YEAR(data_de_nascimento) <= 1995 THEN 'Jovens' 
+ELSE 'Crianças' 
+END  AS "CLASSIFICAÇÃO POR IDADE"
+FROM tabela_de_clientes;
+
+
+
+3-13  Consolidando o seu conhecimento
+
+
+Chegou a hora de você seguir todos os passos realizados por mim durante esta aula. Caso já tenha feito, excelente. Se ainda não, é importante que você execute o que foi visto nos vídeos para poder continuar com a próxima aula.
+
+1) Voltando ao Workbench, vamos ver formas diferentes de exibir os resultados. Digite:
+
+SELECT EMBALAGEM, TAMANHO FROM tabela_de_produtos;
+
+1.png
+
+Veja que temos linhas onde o conjunto EMBALAGEM / TAMANHO se repete.
+
+2) Agora digite o comando:
+
+SELECT DISTINCT EMBALAGEM, TAMANHO FROM tabela_de_produtos;
+
+2.png
+
+O simples fato de incluirmos a cláusula DISTINCT faz com que os registros não se repitam.
+
+3) Podemos aplicar filtros a seleção com DISTINCT.
+
+SELECT DISTINCT EMBALAGEM, TAMANHO FROM tabela_de_produtos
+WHERE SABOR = 'Laranja';
+
+3.png
+
+4) E podemos acrescentar mais campos à seleção DISTINCT.
+
+SELECT DISTINCT EMBALAGEM, TAMANHO, SABOR FROM tabela_de_produtos;
+
+4.png
+
+5) Podemos limitar o número de linhas exibidas na saída. Digite:
+
+SELECT * FROM tabela_de_produtos LIMIT 5;
+
+5.png
+
+Temos acima nossa saída limitada aos primeiros 5 registros.
+
+6) Podemos exibir os registros dentro de um intervalo de linhas. Digite:
+
+SELECT * FROM tabela_de_produtos LIMIT 2,3;
+
+6.png
+
+7) As saídas de uma comando SELECT podem ser apresentadas de forma ordenada. Veja abaixo:
+
+SELECT * FROM tabela_de_produtos ORDER BY PRECO_DE_LISTA;
+
+7.png
+
+Temos os valores ordenados por preço de lista, do menor para o maior.
+
+8) Podemos mudar esta ordem. Digite:
+
+SELECT * FROM tabela_de_produtos ORDER BY PRECO_DE_LISTA DESC;
+
+8.png
+
+9) Os valores podem vir ordenados alfabeticamente quando incluímos um campo texto no critério de ordenação. Digite:
+
+SELECT * FROM tabela_de_produtos ORDER BY NOME_DO_PRODUTO;
+
+9.png
+
+10) Também, no critério de ordenação do tipo texto, podemos mudar a ordem para do maior para o menor. Digite:
+
+SELECT * FROM tabela_de_produtos ORDER BY NOME_DO_PRODUTO DESC;
+
+10.png
+
+11) O critério de ordenação pode ser diferente para cada tipo. Veja o exemplo abaixo onde usamos dois campos como critério de ordenação e a ordem diferente para cada um deles:
+
+SELECT * FROM tabela_de_produtos ORDER BY EMBALAGEM DESC, NOME_DO_PRODUTO ASC;
+
+11.png
+
+12) Os dados podem ser agrupados. Quando isso acontece, temos que aplicar um critério de agrupamento para os campos numéricos. Podemos usar SUM, AVG, MAX, MIN, e outros mais. Digite o comando abaixo:
+
+SELECT ESTADO, LIMITE_DE_CREDITO FROM tabela_de_clientes;
+
+12.png
+
+Note que temos várias linhas para RJ e SP. Como fazemos para somar todos os limites de crédito para RJ e SP?
+
+13) A solução está no comando abaixo:
+
+SELECT ESTADO, SUM(LIMITE_DE_CREDITO) AS LIMITE_TOTAL FROM tabela_de_clientes GROUP BY ESTADO;
+
+13.png
+
+14) Podemos usar outros critérios como o valor máximo.
+
+SELECT EMBALAGEM, MAX(PRECO_DE_LISTA) AS MAIOR_PRECO FROM tabela_de_Produtos GROUP BY EMBALAGEM;
+
+14.png
+
+Aqui vemos o maior preço de lista para cada tipo de embalagem.
+
+15) O comando COUNT conta o número de ocorrências na tabela. Digite:
+
+SELECT EMBALAGEM, COUNT(*) AS CONTADOR FROM tabela_de_produtos GROUP BY EMBALAGEM;
+
+15.png
+
+Temos acima o número de produtos PET, Garrafa e Lata.
+
+16) O filtro pode ser aplicado sobre o agrupamento, como uma consulta qualquer. Digite:
+
+SELECT BAIRRO, SUM(LIMITE_DE_CREDITO) AS LIMITE FROM tabela_de_clientes
+WHERE CIDADE = 'Rio de Janeiro' GROUP BY BAIRRO;
+
+16.png
+
+17) Além disso, o agrupamento também pode ser feito por mais de um campo. Digite:
+
+SELECT ESTADO, BAIRRO, SUM(LIMITE_DE_CREDITO) AS LIMITE FROM tabela_de_clientes
+GROUP BY ESTADO, BAIRRO;
+
+17.png
+
+18) Podemos mesclar agrupamento com ordenação. Digite:
+
+SELECT ESTADO, BAIRRO, SUM(LIMITE_DE_CREDITO) AS LIMITE FROM tabela_de_clientes
+WHERE CIDADE = 'Rio de Janeiro'
+GROUP BY ESTADO, BAIRRO
+ORDER BY BAIRRO;
+
+18.png
+
+19) Veja a consulta abaixo:
+
+SELECT ESTADO, SUM(LIMITE_DE_CREDITO) AS SOMA_LIMITE FROM tabela_de_clientes
+GROUP BY ESTADO;
+
+19.png
+
+20) Queremos aplicar um filtro sobre o resultado desta consulta. Logo digite:
+
+SELECT ESTADO, SUM(LIMITE_DE_CREDITO) AS SOMA_LIMITE FROM tabela_de_clientes
+WHERE SOMA_LIMITE > 900000
+GROUP BY ESTADO;
+
+Veja que a consulta acima vai ocasionar um erro.
+
+21) Usamos o HAVING para filtrar a saída de uma consulta usando como critério o valor agrupado. Digite:
+
+SELECT ESTADO, SUM(LIMITE_DE_CREDITO) AS SOMA_LIMITE FROM tabela_de_clientes
+GROUP BY ESTADO HAVING SUM(LIMITE_DE_CREDITO) > 900000;
+
+20.png
+
+22) O critério usado no HAVING não precisa ser o mesmo usado no filtro. Veja o comando abaixo:
+
+SELECT EMBALAGEM, MAX(PRECO_DE_LISTA) AS MAIOR_PRECO,
+MIN(PRECO_DE_LISTA) AS MENOR_PRECO FROM tabela_de_produtos
+GROUP BY EMBALAGEM;
+
+21.png
+
+Ele usa o MIN para agrupamento.
+
+23) Porém, na consulta abaixo, o critério do HAVING pede a soma. Digite:
+
+SELECT EMBALAGEM, MAX(PRECO_DE_LISTA) AS MAIOR_PRECO,
+MIN(PRECO_DE_LISTA) AS MENOR_PRECO FROM tabela_de_produtos
+GROUP BY EMBALAGEM HAVING SUM(PRECO_DE_LISTA) <= 80;
+
+22.png
+
+24) No HAVING podemos usar mais de um critério usando AND ou OR.
+
+SELECT EMBALAGEM, MAX(PRECO_DE_LISTA) AS MAIOR_PRECO,
+MIN(PRECO_DE_LISTA) AS MENOR_PRECO FROM tabela_de_produtos
+GROUP BY EMBALAGEM HAVING SUM(PRECO_DE_LISTA) <= 80 AND MAX(PRECO_DE_LISTA) >= 5;
+
+23.png
+
+25) O comando CASE permite que possa ser classificado cada registro da tabela. Digite o comando abaixo:
+
+SELECT NOME_DO_PRODUTO, PRECO_DE_LISTA,
+CASE
+   WHEN PRECO_DE_LISTA >= 12 THEN 'PRODUTO CARO'
+   WHEN PRECO_DE_LISTA >= 7 AND PRECO_DE_LISTA < 12 THEN 'PRODUTO EM CONTA'
+   ELSE 'PRODUTO BARATO'
+END AS STATUS_PRECO
+FROM tabela_de_produtos;
+
+24.png
+
+Com o CASE foi possível classificar os produtos como CARO, BARATO ou EM CONTA conforme o valor do seu preço de lista.
+
+26) Podemos usar o CASE como critério de agrupamento, Digite o comando abaixo:
+
+SELECT EMBALAGEM,
+CASE
+   WHEN PRECO_DE_LISTA >= 12 THEN 'PRODUTO CARO'
+   WHEN PRECO_DE_LISTA >= 7 AND PRECO_DE_LISTA < 12 THEN 'PRODUTO EM CONTA'
+   ELSE 'PRODUTO BARATO'
+END AS STATUS_PRECO, AVG(PRECO_DE_LISTA) AS PRECO_MEDIO
+FROM tabela_de_produtos
+WHERE sabor = 'Manga'
+GROUP BY EMBALAGEM,
+CASE
+   WHEN PRECO_DE_LISTA >= 12 THEN 'PRODUTO CARO'
+   WHEN PRECO_DE_LISTA >= 7 AND PRECO_DE_LISTA < 12 THEN 'PRODUTO EM CONTA'
+   ELSE 'PRODUTO BARATO'
+END
+ORDER BY EMBALAGEM;
+
+25.png
+
+
+Opinião do instrutor
+
+Continue com os seus estudos, e se houver dúvidas, não hesite em recorrer ao nosso fórum!
+
+
+
+3-14  O que aprendemos?
+
+  Como apresentar somente linhas distintas numa seleção;
+  
+  Como ordenar a saída da seleção;
+  
+  Como agrupar linhas por um conjunto de campos e aplicando um critério de agrupamento sobre os campos numéricos (SOMA, MIN, MAX, MÉDIA, etc ..).
+  
+  Como utilizar o comando HAVING para aplicar um filtro usando os campos numéricos agrupados como condição.
+  
+  Como limitar a saída das consultas;
+  
+  Como usar o CASE para classificar um determinado campo por um critério.

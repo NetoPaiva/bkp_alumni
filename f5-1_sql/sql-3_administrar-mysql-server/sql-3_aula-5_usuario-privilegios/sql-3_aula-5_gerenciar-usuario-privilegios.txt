@@ -1,0 +1,654 @@
+https://cursos.alura.com.br/course/mysql-dba-administracao/section/8469/tasks
+
+Curso de
+  Administração do MySQL: segurança e otimização do banco
+
+Instrutor
+
+  Victorino Vila
+
+    Linkedin
+    https://www.linkedin.com/in/victorino-vila-1a160/
+
+
+Aula 5- Gerenciando usuários e privilégios | 0 / 18 | 60min
+
+  5-1  Arquivos necessários para a aula
+  5-2  Criando um usuário administrador*
+  5-3  Excluir o usuário root?
+  5-4  Criando um usuário normal*
+  5-5  Propriedades do usuário normal
+  5-6  Criando um usuário para somente leitura*
+  5-7  Privilégios READ e EXECUTE
+  5-8  Criando um usuário para backup*
+  5-9  Privilégios para o backup
+  5-10  Acessando de qualquer servidor*
+  5-11  Intervalo de IPs
+  5-12  Limitando o acesso aos esquemas*
+  5-13  Acesso a uma base
+  5-14  Revogando privilégios*
+  5-15  Mudando o acesso
+  5-16  Consolidando o seu conhecimento
+  5-17  O que aprendemos?
+  5-18  Conclusão*
+
+
+5-1  Arquivos necessários para a aula
+
+Ao longo dos vídeos, o instrutor irá utilizar alguns arquivos específicos, que são necessários para o decorrer desta aula e do treinamento. Você pode baixar um ZIP com esse conteúdo aqui.
+
+https://caelum-online-public.s3.amazonaws.com/1224-mysql-adminstracao/05/arquivos-aula-5.zip
+
+
+5-2  Criando um usuário administrador*
+
+
+Transcrição
+
+[00:00] Vamos continuar estudando, se vocês se lembram quando a gente instalou o MySQL, apareceu essa caixa de diálogo aqui em cima, é a definição da senha do usuário Root, o usuário root é um usuário que é criado durante a instalação e esse usuário tem super privilégios, consegue fazer tudo na máquina.
+
+[00:23] Todos os nossos treinamentos, desde o início, até agora, a gente sempre usou o usuário root para fazer tudo, só que, duas coisas. Primeiro, quem cria esse usuário root e define essa senha, não é normalmente o DBA, pode ser um analista de suporte, um analista junior que esteja somente fazendo a instalação do produto e esse cara fica sabendo dessa senha.
+
+[00:51] Claro que depois o DBA recebe desse analista a senha do usuário root e o DBA pode modificar, mas o que normalmente se faz é criar um outro usuário com privilégios de DBA e eventualmente, apagar o usuário root, já que ele somente é usado durante a instalação, ele é criado durante a instalação, para que eu possa acessar pela primeira vez o meu ambiente MySQL.
+
+[01:21] E aí, sim, começar a fazer todo o gerenciamento. Então, o que nós vamos fazer agora nesse vídeo é simplesmente ir no MySQL, criar um usuário administrador e remover o usuário root. Então, eu vou minimizar aqui, eu estou aqui no meu Workbench, normalmente você vai ver aqui os esquemas, estou conectado com o usuário root.
+
+[01:50] Eu vou até repetir essa conexão, eu vou fechar aqui. Na tela principal do Workbench, eu tenho lá essa instância de conexão que foi criada, inclusive automaticamente, quando a gente fez a instalação do produto e aí, eu entro aqui e aí, eu estou aqui conectado com o usuário root.
+
+[02:13] Na aba administração, a gente tem a parte onde a gente administra os usuários do ambiente, então eu clico em administração e eu vou nessa opção aqui, Users and Privileges. Note que eu tenho aqui uma série de usuários já criados, esses usuários foram criados automaticamente pelo instalador.
+
+[02:44] E nós temos aqui a máquina no qual esses usuários podem acessar o MySQL, ou seja, eu só consigo me conectar com o usuário root, se eu tiver na máquina localhost. Se eu tiver com uma outra máquina cliente e quiser entrar como root, eu não consigo.
+
+[03:08] Então, nós vamos fazer o seguinte, nós vamos pegar esse usuário root e nós vamos apaga-lo, mas antes, claro, criar um outro usuário, que a gente vai chamar de administrador. Eu vou vir aqui e clicar aqui nessa caixinha, “A” de account.
+
+[03:34] Eu tenho do lado uma caixa de diálogo pronta e eu vou colocar aqui admin01, aqui eu vou dizer qual é o host que esse cara pode usar, então eu vou colocar o localhost, a senha, eu vou até repetir, vou colocar também admin01 e ele confirma, pede para confirmar a senha.
+
+[04:05] Na segunda aba: Account Limits, eu tenho limites que esse usuário pode fazer, quantas queries ele pode fazer em uma hora, quantos updates ele pode fazer em uma hora, é isso que está... Vou até diminuir um pouquinho para a gente ver o texto, quantas conexões concorrentes e assim por diante.
+
+[04:27] Por enquanto, eu vou deixar 0, se eu deixar 0, significa que eu não tenho limite. Aqui nesse canto, eu tenho as administrações, do lado direito, eu vejo todos os privilégios que um usuário pode fazer no MySQL, alter, alter routine, create, create routine e assim por diante.
+
+[04:55] E do lado esquerdo são algumas regras, algumas funções já previamente definidas. Então, se a gente clicar aqui em user, ele já marca alguns privilégios. Se eu disser: “Esse cara é monitor”, ele já tem aqui automaticamente outros privilégios.
+
+[05:19] No caso do usuário que pode fazer tudo, eu vou marcar aqui como DBA, ao fazer isso, note que do lado direito, todos os privilégios globais foram selecionados, significa que ele pode fazer tudo. Eu vou clicar aqui em Apply e aí, o usuário 01, ele está definido aqui.
+
+[05:50] Vamos testar, será que a gente consegue se conectar no MySQL usando esse usuário admin01? Vamos fazer o seguinte, eu vou fechar e aqui na página principal do Workbench, eu vou selecionar aqui para adicionar uma nova conexão. O nome dessa conexão vai ser Local com Admin01.
+
+[06:21] O host é localhost, ou seja, o servidor onde está o MySQL, o usuário vai ser o admin01 e aí, a gente vai fazer o teste da conexão. Ele vai me pedir a senha, admin01, vou clicar nessa opção para já deixar a senha salva, para que quando eu clicar na conexão, não precise colocar essa senha novamente.
+
+[06:48] Claro que isso não é uma coisa desejável em termos de segurança, mas para facilitar a vida da gente aqui, vamos fazer assim. Eu clico em ok, ele vai me dizer que a conexão foi feita com sucesso e aí, eu vou ter aqui uma segunda aba pronta. Eu vou vir aqui e aí, eu já consigo me conectar.
+
+[07:12] E agora, eu estou conectado com o usuário administrador, admin01. Eu também poderia ter criado o usuário através de linha de comando, não necessariamente preciso usar a aba administrador essa parte aqui, para criar um usuário, eu posso fazer por linha de comando.
+
+[07:46] Claro que pela caixa de diálogo fica até mais fácil de a gente fazer, mas vamos aprender a fazer por linha de comando, porque as vezes é importante que a gente já tenha um script sql pronto para a gente ter que recriar todos os usuários.
+
+[08:02] Então, a gente não precisa, por exemplo, eu perco todas as configurações, eu não preciso ter que ir na caixa de diálogo e ficar clicando em cada um e criando manualmente, eu posso fazer um script para fazer isso de forma rápida. Então, eu vou criar um usuário admin02, com a mesma senha e mostrar a vocês como se faz.
+
+[08:26] Então, eu digito “Create User”, aí, abrindo aspas simples, eu vou colocar o admin02@localhost. Ao fazer isso daqui, eu já estou definindo quem é o login do usuário e qual é o servidor que ele pode acessar, “identifided”, tem até aqui o comando, “BY” e aqui eu vou colocar a senha: admin02, ponto e vírgula.
+
+[09:07] Nesse momento, eu vou criar um usuário, mas esse usuário não vai ter privilégio nenhum, então eu preciso agora adicionar privilégios a esse usuário. Então, eu coloco: Grant All Privileges On *.* TO admin02@localhost With Grant Option e acabou o comando.
+
+[09:48] Esse comando aqui específico, ao dar privilégios *.*e with grant option, eu estou definindo que esse usuário 02, vai poder fazer tudo no MySQL, estou dando todos os privilégios para ele. Então, eu vou rodar o primeiro comando. Executou. Aqui em baixo eu consigo ver o resultado e agora eu vou rodar o segundo comando.
+
+[10:22] Pronto, para a gente ver se o usuário foi criado realmente, se eu venho aqui em User and Privileges, claro que ele não está aparecendo aqui, mas se eu der um Refresh, vamos fechar a caixa de diálogo e abrir de novo, o Refresh não funcionou.
+
+[10:41] Agora, sim, ele agora apareceu, tenho aqui o usuário admin02 criado, se eu clico nele, note, ele tem o privilégio de acesso pelo localhost e se eu for em Administrative Roles, eu tenho tudo selecionado para ele.
+
+[11:03] Então, eu criei nessa aula um usuário administrador de duas formas, através do Workbench e através de linha de comando e preciso agora apagar, tirar fora o usuário root, se eu quiser. Atenção, para eu apagar o usuário root, eu não devo estar conectado como root, apesar do root poder fazer isso.
+
+[11:28] Então, como eu estou já conectado como admin01, eu vou dar aqui DROP USER 'root'@'localhost', tem que fechar aqui aspas simples, fechei. Vou executar o drop. Pronto, o usuário root não existe mais na máquina, quer ver? Eu vou fechar aqui, vou tentar me conectar aqui, naquela conexão original, que usa o usuário root como conexão.
+
+[12:08] Note que ele me pede a senha do usuário root, eu vou colocar, note que eu não consigo, ele fica me perguntando porque, na verdade o usuário root não existe, por isso essa caixa de diálogo fica aparecendo e por mais que eu coloque a senha correta, ela volta e ela não deixa eu me conectar com o usuário root.
+
+[12:29] O único usuário agora que eu posso conectar é o usuário admin, então essa conexão aqui, se eu clicar aqui nesse símbolo de administração das conexões, eu tenho as conexões aqui, então posso pegar essa primeira conexão, que foi aquela que foi criada automaticamente pelo processo de instalação do MySQL e clicar no delete.
+
+[12:55] Vou dar um close. Pronto. Eu tenho agora o meu ambiente, somente com usuário admin01 e admin02, configurados para acesso, com total privilégio sobre o MySQL. Valeu gente. Obrigado.
+
+
+
+
+5-3  Excluir o usuário root?
+
+Por que é aconselhado excluirmos o usuário root?
+
+
+Porque o usuário root não tem privilégios e é criado apenas durante a instalação, para o primeiro acesso
+  Alternativa errada! O usuário root tem sim privilégios de administrador do ambiente.
+
+Porque este usuário é criado durante a instalação e sua senha é definida naquele momento, por um operador que fez a instalação
+  Alternativa correta! O usuário root é criado na instalação e sua senha definida por um operador que fez a instalação. Mas, nem sempre, está pessoa será o DBA. Claro que mudar a senha do root também resolve o problema de segurança, mas o que é aconselhado é criar um novo usuário administrador e excluir o root.
+
+Porque o usuário root é temporário e será excluído do ambiente
+  Alternativa errada! Nenhum usuário será excluído do sistema de forma automática.
+
+
+
+
+5-4  Criando um usuário normal*
+
+
+Transcrição
+
+[00:00] Grande parte dos usuários do ambiente de MySQL, claro, não terão privilégios de administrador, eles não poderão fazer tudo, normalmente nós temos o usuário, que seria o usuário comum, o usuário que vai acessar as bases de dados e vai poder fazer inserção, alteração, exclusão, consulta, uma série de coisas na base de dados.
+
+[00:24] Mas ele não vai poder, claro, criar usuário, criar sub-rotina e assim por diante, então vamos agora criar um outro grupo de usuários, nós vamos criar esses usuários pelo Workbench e por linha de comando, agora com privilégio apenas de manutenção normal da base de dados, ou seja, será um usuário comum.
+
+[00:49] Então, eu vou primeiro pelo administrador do Workbench, indo então aqui na aba administração, eu clico aqui Users and Privileges e vou adicionar uma conta. Esse usuário, eu vou chamar de user01, também vai estar limitado ao acesso pelo localhost, a senha, eu vou repetir, user01 e vou confirmar essa senha, user01.
+
+[01:20] Nas regras de administração, claro, eu vou desmarcar aqui DBA, porque eles não vão poder ter todos os privilégios e eu vou marcar aqui alguns privilégios importantes. O primeiro privilégio que eu vou marcar é o select, ou seja, o usuário pode fazer seleções, fazer consultas na base de dados.
+
+[01:44] Um outro privilégio que eu vou estar colocando é o insert, esse usuário pode inserir dados nas bases de dados. Vamos lá, update, ele pode modificar dados e delete, ele pode eventualmente também apagar dados.
+
+[02:06] Existem três outros privilégios interessantes que sempre é bom o usuário normal ter, é create temporary tables, o lock tables e finalmente o execute. Aqui, o execute. Vou dar um Apply e aí, o usuário, digamos assim, ele está criado. Claro, então esse usuário que nós acabamos de criar é um usuário que não tem todos os privilégios.
+
+[02:51] Novamente, a gente atribuiu o privilégio de seleção de tabela, para ele poder ver, de manutenção de tabela, inserir, alterar ou excluir, seria o insert update e delete, em qualquer tabela e qualquer esquema. Normalmente, esses seriam os privilégios básicos para um usuário realmente básico.
+
+[03:17] Mas, por exemplo, o create temporary tables, foi importante eu ter criado também este privilégio, porque normalmente para fazer declaração de variáveis complexas ou eventualmente o usuário está trabalhando com consultas um pouco mais rebuscadas, ele pode querer estar criando tabelas temporárias.
+
+[03:47] E ele poder criar tabelas temporárias, não é uma coisa que configure problema de segurança para o ambiente, porque as tabelas temporárias normalmente, elas são criadas localmente, apenas aquele usuário consegue ver essas tabelas e depois de algum tempo, quando o usuário sai da conexão, desliga, faz o logoff, normalmente essas tabelas temporárias são apagadas.
+
+[04:24] Mas aí, é importante quando a gente atribuir privilégios a um usuário normal, de a gente ter cuidado de não associar a ele privilégios, por exemplo, desnecessários, privilégios que ele realmente não precise ter e aí, impedir que haja, por exemplo, problemas de segurança.
+
+[04:50] Um outro privilégio que a gente colocou aqui, diferente, foi o lock table. O lock table, ele permite que o usuário bloqueie as tabelas, as vezes isso é útil quando eu tenho uma aplicação que tem acessos simultâneos.
+
+[05:12] E aí, fatalmente o MySQL vai ter que locar uma tabela, enquanto esse usuário está fazendo alguma coisa, principalmente porque, não necessariamente o usuário, mas aplicações que utilizam o MySQL, utilizam lock tables para poder fazer o controle de acessos.
+
+[05:36] E aí, o usuário que estiver usando essa aplicação, ele vai se conectar na aplicação, mas vai estar indo banco de dados através de um usuário. Logo o lock tables tem que estar selecionado.
+
+[05:49] Mas, claro que o lock tables é um pouco perigoso, isso pode fazer com que o usuário, por algum motivo, consiga trancar uma tabela e essa tabela fique presa durante muito tempo, torando os dados inúteis e exigindo uma manutenção do DBA, para que essas tabelas fiquem, digamos assim, liberadas.
+
+[06:15] Então o lock table, para um usuário normal, é interessante que você saiba muito bem se realmente vai ser necessário ou não e o que vai tomar a sua decisão, vai ser basicamente o que o aplicativo que acessa o MySQL vai precisar fazer no banco, para que esse lock table ou não, esteja habilitado.
+
+[06:39] Uma outra permissão que a gente colocou aqui para um usuário comum, digamos assim, fora do normal é o execute. O execute da direito ao usuário chamar stored procedure ou funções e executá-las.
+
+[06:54] Isso não permite que o usuário as crie, então isso não é um problema de segurança, ele pode executá-las, mas ao executa-las, ele pode fazer coisas dentro do stored procedure que o privilégio dele não permita.
+
+[07:14] Então, novamente, o uso do execute para o usuário, seria mais focado quando ele está utilizando alguma aplicação que tenha stored procedure armazenadas e aí, sim, essa aplicação vai precisar executar as stored procedure para o seu bom funcionamento.
+
+[07:38] Claro que todas essas... a criação desse usuário e a configuração desses privilégios podem ser também configurados através de linha de comando. Então, eu vou aqui... vou até copiar esses três comandos que eu utilizei, quando a gente configurou por linha de comando usuário/administrador.
+
+[08:02] Eu vou criar um novo script aqui e aí, aqui eu vou editar e eu vou colocar o usuário user02, a senha vai ser user02, vou tirar esse drop, eu não vou mais precisar apagar o usuário root e aí, na (garantia) dos privilégios, eu vou tirar esse all privileges e vou escrever aqui todos os privilégios que ele pode ver.
+
+[08:31] Então, por exemplo, ele vai poder ver select, insert, update, limites, create temporary tables, lock tables, execute e aqui eu vou coloca user02 e eu tiro esse “with grant option”. Então, ficou assim, criei o usuário, o comando de criar o usuário é o mesmo, independente do que esse usuário vai fazer.
+
+[09:18] E aí, eu dou privilégios, grant a fazer esses processos todos, que são os mesmos privilégios daqueles (cheques) que eu coloquei, quando eu usei a caixa de diálogo do Workbench, para criar esse usuário. Específico o usuário e tiro aquela parte final que era usada somente quando a gente cria um usuário que pode fazer tudo.
+
+[09:50] Então, eu vou executar o primeiro comando. Executei. Vou executar o segundo comando. Executei. Então, se eu for aqui de novo no... desaprendemos, tem que fechar e abrir de novo.
+
+[10:09] Clicando em Users and Privileges, pronto, eu tenho o usuário02 aqui criado e se eu selecionar ele e for aqui em privilégios, eu tenho só aqueles privilégios que foram mencionados na linha de comando. Então é isso aí. Valeu.
+
+
+
+5-5  Propriedades do usuário normal
+
+Quais são os privilégios do usuário normal?
+
+Alternativa A:
+    SELECT, INSERT, UPDATE, DELETE, CREATE TEMPORARY TABLES, EXECUTE
+  Alternativa errada! Está faltando uma propriedade nesta lista.
+
+Alternativa B:
+    SELECT, INSERT, UPDATE, DELETE, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE
+  Alternativa correta! São estas as propriedades necessárias para um usuário normal, que possa dar manutenção nas bases de dados.
+
+Alternativa C:
+    SELECT, INSERT, UPDATE, DELETE, CREATE TEMPORARY TABLES, EXECUTE, RELOAD
+  Alternativa errada! Uma propriedade desta lista não é aconselhada a ser usada para o usuário normal.
+
+
+
+
+
+5-6  Criando um usuário para somente leitura*
+
+
+Transcrição
+
+[00:00] Um outro tipo de usuário que é muito comum ser criado em ambientes MySQL, é aquele usuário que só tem privilégios de leitura, ele só consegue ler dados e não pode inserir, alterar, nem excluir. É claro que a criação é muito parecida com o usuário normal, só que a gente vai cortar alguns privilégios.
+
+[00:23] Vou vir aqui e Users and Privileges, vou dar um Add Account e eu vou criar um usuário read01, localhost e read01, vou confirmar a senha. Vamos aqui em... as regras de administração, para a gente apagar o que está selecionado, a gente faz assim, a gente clica em DBA e desclica de novo, aí tudo fica limpo.
+
+[00:58] E aí, eu vou colocar select e vou colocar execute, já, já vou explicar porque que eu coloquei o execute. Vou dar o Apply, usuário read foi criado. Claro que linha de comando, muito semelhante.
+
+[01:18] Então, eu vou pegar aqui o comando que a gente usou para criar o usuário leitura, vou criar um novo script aqui, vou colar e vou colocar aqui read02, vou manter o select e vou manter o execute. Crio o usuário, dou a ele os privilégios de acesso. Agora, por que que eu coloquei o execute?
+
+[02:02] Novamente vai depender do que você realmente quer que esse usuário faça, normalmente, alguns relatórios possuem consultas muito complexas, que os desenvolvedores acabam criando stored procedures para fazer esse relatório.
+
+[02:21] Então é necessário que esse usuário que só tem privilégio de leitura, possa executar stored procedure, que na verdade, ele vai estar executando consultas complexas, que estão dentro das stored procedure. Mas há perigo, como ele pode executar stored procedure, se dentro da stored procedure tiver um insert, update, delete.
+
+[02:46] Ou seja, tiver algum tipo de comando que não está dentro do privilégio original criado, o MySQL vai ignorar e vai fazer a inserção, a alteração ou a exclusão, ou seja, o usuário leitura, se ele acaba tendo privilégio de execute, ele consegue fazer atualização no banco, se tiver esses comandos dentro do stored procedure.
+
+[03:14] Então tem que se tomar muito cuidado, claro que ele não pode criar uma stored procedure, então ele não pode modificar aquela inclusão, alteração ou exclusão, que o desenvolvedor fez.
+
+[03:25] Então, se ele rodou aquilo, se lá dentro há uma inclusão que não deveria ser feita, uma exclusão ou alteração, claro que a culpa não vai ser do usuário, a culpa vai ser do desenvolvedor que fez uma stored procedure errada e o administrador que permitiu que esse usuário pudesse executá-la.
+
+[03:48] Seria culpa do usuário se ele tivesse colocado o comando insert, ele mesmo, mas como ele não pode, através desses privilégios que estão aqui, isso nunca vai acontecer. Temos aí, então, mais um exemplo de um usuário diferente, que é um usuário somente de tipo leitura. Valeu.
+
+
+
+5-7  Privilégios READ e EXECUTE
+
+Ao dar os privilégios de READ e EXECUTE ao usuário de leitura, o que acontece quando ele executa uma Stored Procedure que faz manutenção nas tabelas?
+
+A Stored Procedure vai retornar um erro, já que não é possível fazer manutenções na base de dados, pois o usuário não tem os privilégios de INSERT, UPDATE e DELETE
+  Alternativa errada! Não vai haver erros quando o usuário executar uma Stored Procedure.
+
+A Stored Procedure vai ser executada normalmente, mesmo que o usuário tenha somente a propriedade READ para as tabelas
+  Alternativa correta! Esta é uma característica perigosa, já que apesar do usuário não ter os privilégios de INSERT, UPDATE e DELETE, os comandos que fazem essas execuções na tabela, que estão dentro da Stored Procedure, serão executados, porque a característica EXECUTE se sobrepõe a elas.
+
+Não é permitida a execução de Stored Procedures com READ e EXECUTE
+  Alternativa errada! Uma destas propriedades permite a execução de Stored Procedures.
+
+
+
+5-8  Criando um usuário para backup*
+
+
+Transcrição
+
+[00:00] Desastres podem ocorrer no nosso banco de dados, a gente pode por algum motivo perder informação ou alguma coisa pode acontecer durante a manutenção da base de dados e lixo pode ser incluída dentro dela. Então, nós vimos já, inclusive nesse curso, que o backup é uma política muito importante.
+
+[00:25] E claro, é função do usuário administrador fazer backups, mas vezes não é ele que vai fazê-los, talvez tenha dentro da área da empresa, uma pessoa preocupada em fazer isso e esse usuário, ele não é o administrador, ele é o DBA, mas ele só vai fazer backups.
+
+[00:47] E esses backups, nós vimos também, por de ser feito de duas maneiras ou a gente copia todo o dado o a gente usa os comandos dentro o MySQL, para fazer o nosso backup. Aqueles comandos que eu preciso entrar no MySQL, para fazer o backup, eu preciso me conectar e esse usuário que faz essa conexão, ele precisa de alguns privilégios especiais.
+
+[01:12] O que nós vamos fazer agora, é criar um usuário que somente possa fazer backup. Usando a nossa forma de estar mostrando esses usuários, eu primeiro vou criar pelo Workbench e depois por linha de comando. Então, eu vou na aba administração, administration, clico em User and Privileges e adiciono uma conta.
+
+[01:37] Vou colocar aqui back01, localohost, back01, back01. Vou aqui em Administrative Roles, marco e desmarco o DBA, para poder limpar tudo e aí, os privilégios que eu preciso são: privilégio de select, de reload, lock tables, ele precisa trancar as tabelas e replication cliente.
+
+[02:27] São esses quatro privilégios aqui, necessários para que possa ser feito backups. Vou dar um Apply, ok. Usuário back01 foi criado. Da mesma maneira a gente pode fazer por linha de comando, vou pegar esses dois comandos do último script que nós criamos, vou criar um script novo, vou colar aqui e eu vou substituir, back02, agora, a senha back02, vou repetir aqui o usuário.
+
+[03:10] E os priviléfios? Select, eu vou manter, ele também tem o reload, ele tem o privilégio lock tables e tem o privilégio replication client. O texto que eu coloco aqui é o mesmo texto que aparece lá nas opções, então é uma forma até de você saber como é que é a sintaxe certa do comendo.
+
+[04:02] Vou criar o usuário back02 e vou dar privilégios a ele. Pronto, eu agora tenho o meu usuário que só pode fazer backup, criado no meu ambiente.
+
+
+
+5-9  Privilégios para o backup
+
+Quais os privilégios para o usuário poder executar backups?
+
+Alternativa A:
+    SELECT, RELOAD, EXECUTE, REPLICATION CLIENT
+  Alternativa errada! Uma propriedade desta lista não é aconselhada a ser usada para o usuário de backup.
+
+Alternativa B:
+    SELECT, RELOAD, LOCK TABLES, EXECUTE
+  Alternativa errada! Uma propriedade desta lista não é aconselhada a ser usada para o usuário de backup.
+
+Alternativa C:
+    SELECT, RELOAD, LOCK TABLES, REPLICATION CLIENT
+  Alternativa correta! São estas as propriedades necessárias para um usuário normal, que possa dar manutenção das bases de dados.
+
+
+
+5-10  Acessando de qualquer servidor*
+
+
+Transcrição
+
+[00:00] Todos os usuários que criamos até agora, tem uma característica específica, eles só podem acessar o MySQL, através do localhost. Quando a gente coloca isso daqui, o @localhost, quando cria um usuário, estou dizendo que este usuário, ele somente pode fazer login, se ele estiver usando como cliente uma máquina localhost.
+
+[00:26] Mas, isso normalmente não é assim, ninguém vai entrar no console do servidor para fazer uma conexão, normalmente a pessoa usa (range de IP) ou usa... pode usar qualquer outra máquina para acessar a base.
+
+[00:43] Então, vamos aprender agora a como dar privilégios a usuários e dizer para ele, por exemplo, qual é o (range) de máquinas que ele pode usar para se conectar com a base. Vamos começar criando um usuário genérico, que ele pode, digamos assim, acessar de qualquer lugar.
+
+[01:06] Então, eu vou vir aqui em Users and Privileges, eu vou dar um Add Account e vou criar um admingeneric01. E aí, basta eu usar o default que é apresentado quando a gente abre essa caixa de diálogo.
+
+[01:27] Se eu manter esse percent na caixa de diálogo, significa que o admingeneric01 vai poder acessar de qualquer lugar, então nem vou mexer nisso, vou deixar o percent. Vou botar aqui a senha, repetir a senha e como esse cara vai ser DBA também, eu vou dar todos os privilégios para ele.
+
+[02:02] Dou um Apply e está aqui, a gente consegue ver que o admingeneric, ele vai conseguir acessar de qualquer máquina. Também podemos, claro, dar privilégio... criar isso através do seguinte comando, eu vou pegar aquele script que a gente usou no primeiro vídeo dessa aula, onde a gente criou um usuário administrador, já que o admingeneric, também é administrador.
+
+[02:33] E eu vou colocar aqui, então ele vai ser admingeneric02, vou colocar a senha aqui, só que aí, onde está localhost, eu coloco o percent, desta maneira aqui, coloco o percent. Então, eu estou dizendo que esse cara, ele vai poder acessar a base do MySQL de qualquer cliente, de qualquer lugar.
+
+[03:07] Vamos criar o usuário, criado com sucesso e vamos dar aqui os privilégios de acesso. Se a gente vier aqui, já aprendemos que a gente tem que fechar, clicar aqui na caixa de diálogo de novo para abrir, temos aqui o admingeneric02 criado de qualquer servidor.
+
+[03:35] Eu tenho várias formas de usar esse caractere coringa, esse caractere percent, eu tenho aqui uma apresentação, onde eu posso dar aqui alguns exemplos.
+
+[03:47] Se no lugar de percent, eu colocar 192.168.1.%, tudo daqui para trás é genérico, então qualquer IP deste... se o cara tiver no IP 192.168.1.0, até 192.168.1.255, que é o máximo que ele pode ir, ele vai conseguir acessar na base. Se eu substituir o percent por underscore, o underscore vai substituir qualquer número que esteja aqui ou letra.
+
+[04:20] No caso, se eu usar 192.168.1.1.__, dois underscore, eu posso ir do 00 ao 255, é o range de IP que eu posso estar usando e por exemplo, se eu colocar não um IP, mas um endereço URL, por exemplo: client__.mycompany.com, eu posso usar client dentro do lugar do underscore, pode ser qualquer letra ou número “.mycompany.com”, porque as vezes eu posso ter sites diferentes, mas usando sempre o mesmo sufixo.
+
+[05:02] Aí, eu posso, se eu tiver o domínio, por exemplo, mycompany.com, eu posso acessar o MySQL de qualquer máquina, domínio, por exemplo. Então, no lugar onde eu botei o percent, eu posso botar esses endereços dessa forma, que aí, eu vou estar dando privilégios de conexão através de outras máquinas, sem ser o localhost.
+
+[05:28] É isso aí. Valeu.
+
+
+
+
+5-11  Intervalo de IPs
+
+Qual será o intervalo de IPs se representarmos, no comando de privilégio do usuário, o valor 192.168.%?
+
+Alternativa A:
+    192.168.0.0 a 192.168.0.255
+  Alternativa errada! O intervalo não corresponde à opção apresentada no enunciado.
+
+Alternativa B:
+    192.168.0.0 a 192.168.255.255
+  Alternativa correta! O percentual no terceiro grupo de números de IPs habilita todas as combinações nos terceiros e quartos grupos.
+
+Alternativa C:
+    192.168.100.0 a 192.168.255.255
+  Alternativa errada! O intervalo não corresponde à opção apresentada no enunciado.
+
+
+
+5-12  Limitando o acesso aos esquemas*
+
+
+Transcrição
+
+[00:00] A gente, até agora aqui, criou todos os usuários, acessando todos os esquemas, mas nem sempre é assim que temos que fazer, nós temos vários esquemas e pode ser o usuário só possa ver um esquema específico do que está aqui, então vamos fazer agora o seguinte.
+
+[00:18] Vamos criar um usuário do tipo normal, que pode incluir, alterar, excluir, consultar dados com um esquema e vamos fazer a criação desse usuário, tanto através do Workbench, como também através de linha de comando.
+
+[00:37] Então, vou aqui primeiro em Administration, vou clicar aqui em User and Privileges e vou adicionar um usuário novo e esse usuário vai ser o user03. Vou manter aqui o qualquer host, ou seja, ele vai conseguir acessar de qualquer máquina, user03, a senha, user03.
+
+[01:05] Em Administrative Roles, eu marco e desmarco o DBA, para garantir que está tudo limpo e ele vai ter select, update, delete, insert, create temporary tables, lock tables e execute, só que eu não vou parar por aí. Eu preciso agora especificar qual é o esquema que esse usuário pode acessar.
+
+[01:42] E aí, eu venho aqui em Schema Privileges, essa aba aqui do lado e eu tenho um botão meio escondido aqui no canto, que é o Add Entry, eu vou clicar aqui e aí, eu vou escolher aqui um schema, por exemplo, sucos_vendas, vou dar um ok, tenho um schema aqui e poderia, inclusive, fazer um critério de acesso dentro do schema, coisas que ele poderia fazer somente naquele schema.
+
+[02:22] Vou dar um Apply e aí, o usuário foi criado aqui o user03, foi criado com sucesso. Agora, como é que eu faço por linha de comando? Vou repetir o comando de criação de usuário: “Create user ‘user04’ @ ‘%’”, ou seja, todos os sites, “Identified by ‘user04’” e vamos dar o acesso, “Grant, select, insert, update delete, create temporary tables, lock tables, execute on”.
+
+[03:49] Normalmente, a gente colocaria o asterisco, ponto, asterisco, mas no nosso caso, eu quero que ele somente acesso suco_vendas, então eu vou colocar aqui: “suco_vendas.*”, vou até botar em letra minúscula, “To” e eu repito aqui a identificação do usuário.
+
+[04:24] Então, note, invés de usar asterisco, ponto, asterisco, eu coloquei lá o nome do schema, ponto, asterisco. Criei o usuário, adicionei os privilégios. Vamos ver somo é que esse usuário vê o ambiente, se eu me conectar como ele? Então, vou voltar aqui para a área principal, vou criar um acesso novo.
+
+[04:53] Vou botar assim: Local como User04, por exemplo, e eu vou estar colocando aqui localhost, usuário, user04, testar a conexão, senha, user04, salvo a senha, conectei com sucesso. Vamos entrar como user04, deixa eu só modificar aqui, então vamos lá, vou entrar como user04.
+
+[05:33] Entrei, vamos olhar schemas, olha lá, eu cliquei em schema, ele só olha sucos_vendas e mais, eu poderia também limitar o acesso a uma tabela, porque ele está vendo suco_vendas, mas ele consegue ver todas as tabelas.
+
+[05:53] Então, vou voltar aqui para a conexão admin01 e vou criar aqui um usuário05 e vou dar aqui também Grand para eles, só que aqui, no caso, eu vou tirar esses Grands, só vou dar select, insert, update, delete, porque como agora eu vou limitar uma tabela, somente esses grand são válidos.
+
+[06:23] E aí, o que eu coloco é o seguinte, no lugar aqui do asterisco, o nome da tabela, vamos olhar qual é a tabela que a gente vai usar, por exemplo, tabela_de_clientes e não para por aí, se eu quiser dar Grand diferente para outra tabela, eu posso vir aqui, copiar, colar, por exemplo, tabela_de_produtos.
+
+[06:54] Só que para a tabela_de_produtos, ele só pode selecionar, então olha só o que eu estou fazendo aqui, eu estou criando o usuário05, dando Grand de select, insert, update, delete para a tabela de clientes e dando Grand de select, para a tabela de produtos.
+
+[07:14] Então, criei o usuário, dou um tipo de Grand, dou um segundo tipo de Grand, se eu vier de novo aqui na User and Privileges, tem lá o meu usuário05 criado. Vamos olhar aqui, clicando nele, ele não tem nenhum privilégio global, mas ele tem privilégios específicos.
+
+[07:49] Vamos fazer um teste, vamos ver o usuário05, realmente, só vai ver aquelas duas tabelas. Cliquei em home, voltei para a tela principal do Workbench e vou adicionar uma nova conexão, Local como User05, localhost, é a localização do servidor, user05, testa a conexão, está ok, vou dar o ok.
+
+[08:24] Vamos entrar com o user05. Entrei, só vejo sucos_vendas e quando eu abro aqui, só vejo as duas tabelas, ou seja, eu estou limitado a olhar apenas a tabela de clientes e produtos. Sendo que, vamos olhar aqui de novo, no nosso script. A tabela de produtos, eu posso só dar select.
+
+[08:53] Então, se eu quiser dar aqui um... Vamos ver as colunas aqui. A gente pode fazer assim, botão direito do mouse sobre tabela_de_produtos, Send to Editor, Insert Statement.
+
+[09:10] Então já tenho aqui o insert completo, eu só vou alterar aqui o código do produto, eu vou colocar 999999, nome do produto, vou colocar um qualquer coisa, embalagem também qualquer coisa, tamanho, caractere qualquer, sabor também e preço de lista, eu vou colocar um valor aqui 10.
+
+[09:47] Eu estou como usuário05 e vou dar um insert. Olha lá, tive um erro, o insert, o comando insert para o usuário05 não é permitido, porque o usuário05 só pode consultar tabela, ele não pode inserir coisas na tabela. Então tá, era isso aí que eu queria mostrar para vocês. Valeu.
+
+
+
+
+5-13  Acesso a uma base
+
+
+
+Tenho um banco chamado BANCODB, com as seguintes tabelas:
+
+    TABELA1
+    TABELA2
+    TABELA3
+
+Queremos dar acesso apenas à leitura das tabelas TABELA1 e TABELA2, e acesso completo à TABELA3. Sabendo que já temos um usuário user@% criado, como devem ser os comandos SQL para configurar este acesso?
+
+
+Opinião do instrutor
+
+Os comandos SQL devem ser os seguintes:
+
+GRANT ALL PRIVILEGES
+ON BANCODB.TABELA3 TO 'user'@'%';
+
+GRANT SELECT
+ON BANCODB.TABELA1 TO 'user'@'%';
+
+GRANT SELECT
+ON BANCODB.TABELA2 TO 'user'@'%';
+
+
+
+
+5-14  Revogando privilégios*
+
+
+Transcrição
+
+[00:00] Como é que eu faço para limpar os privilégios de um usuário? A gente já viu aqui no último vídeo, que eu posso, depois que eu criei um usuário ir dando o comando Grants seguidamente, que é como se eu fosse adicionando aos pouquinhos novos privilégios, mas eu quero limpar esses privilégios, para começar de novo do zero, digamos.
+
+[00:24] Pois bem, vamos fazer isso de duas maneiras, usando o administrador e usando o comando, para usar o administrador é muito simples, basta eu ir aqui na aba administração, eu tenho que estar com o administrador, claro, clico em Users and Privileges.
+
+[00:43] A gente vai pegar o usuário user01, que está aqui, que ele tem aqui uma série grants globais e aí, aqui em esquemas, eu vou adicionar, por exemplo, que ele só pode ver o esquema sucos_vendas e eu vou dizer que ele só pode fazer select, insert, update, delete e execute na base sucos_vendas.
+
+[01:18] Então, eu mudei o grant dele, vou dar um Apply, pronto, o grant foi alterado. Agora, como é que eu faço por linha de comando? Eu vou criar um script novo e aqui e aí, a gente vai ver uns comandos também legais. Se eu der um “Select * from mysql.user”, eu consigo ver os usuários que estão no meu ambiente.
+
+[01:49] E aí, eu tenho aqui todas as informações que o usuário possui. Eu posso, por exemplo, verificar as permissões de um usuário de forma específica através de comando, “Show grants for user02@localhost”, deixa eu rodar esse comando, tenho lá todo o grant, todos os privilégios que esse usuário possui.
+
+[02:33] Vamos apagar esses privilégios, deixar ele sem privilégio nenhum “Revoke all privileges grant option from” e aí, eu coloco o meu usuário. Esse comando vai limpar todos os privilégios que o usuário user02 possui. Executei. Se eu der um show grants novamente, note que eu não tenho nada.
+
+[03:13] Aí, eu posso agora, claro, dar o grant, por exemplo, select, insert, update, delete, create temporary tables, lock tables, execute, on .* to” o usuário. Voltei a criar o grant dele, mas eu posso adicionar, “Grant, select, insert, update, delete, to sucos_vendas.”, ou seja, ele vai poder selecionar, inserir, alterar, excluir todas as tabelas. “To user localhost”.
+
+[04:31] Vamos lá, eu coloquei certo aqui? Sucos_vendas to... é on aqui. Pronto. Grant, os privilégios, on, somente o schema sucos_vendas, to user02@localhost. Pronto. Se eu agora for aqui no... vou fechar o administrador de novo.
+
+[05:09] Vou clicar aqui em administração, abri ele novamente, user02 está aqui, tenho os grants generics e schema, privileges está lá, ele pode ver sucos_vendas, delete, insert, select e update. Então é assim que eu posso revogar e incluir novamente privilégios de um usuário. Valeu.
+
+
+
+
+5-15  Mudando o acesso
+
+
+Com o mesmo usuário do exercício anterior, agora queremos que ele passe a ter apenas privilégio de exclusão na TABELA1.
+
+Sabendo que os outros privilégios permanecem iguais, quais serão os comandos necessários para isso?
+
+
+Opinião do instrutor
+
+Os comandos podem ser os seguintes:
+
+REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'user'@'%';
+
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE 
+ON BANCODB .TABELA3 TO 'user'@'%';
+
+GRANT SELECT, DELETE, EXECUTE 
+ON BANCODB .TABELA1 TO 'user'@'%';
+
+GRANT SELECT, EXECUTE 
+ON BANCODB .TABELA2 TO 'user'@'%';
+
+
+
+5-16  Consolidando o seu conhecimento
+
+Chegou a hora de você pôr em prática o que foi visto na aula. Para isso, execute os passos listados abaixo.
+
+1) Quando você instalou MySQL, foi criado um usuário root, com privilégios de administrador. Mas, normalmente, este usuário é apagado e substituído por um administrador real.
+
+2) No Workbench, clique na aba Administration.
+
+3) Clique em Users and Privileges.
+
+4) Você terá, do lado esquerdo, a lista de usuários do ambiente, na qual você pode ver o usuário root:
+
+5) Clique no botão Add Account.
+
+6) Na caixa de diálogo, aba Login, preencha os campos Login Name, Limit to Hosts Matching, Password e confirme a senha:
+
+7) Na aba Administrative Roles, escolha o que este usuário pode fazer no MySQL. Selecione DBA, assim tudo será marcado:
+
+8) Clique em Apply, assim o usuário será criado.
+
+9) Feche a aba da conexão do Workbench:
+
+10) Você pode, na tela de conexões, criar uma nova, com o usuário criado nos passos anteriores:
+
+11) Clique em Test e salve a conexão.
+
+12) Entre no Workbench com o usuário criado nos passos anteriores.
+
+13) O usuário poderia ter sido criado via SQL. Crie um outro usuário administrador (admin02). Digite:
+
+CREATE USER 'admin02'@'localhost' identified BY 'admin02';
+GRANT ALL PRIVILEGES ON *.* TO 'admin02'@'localhost' WITH GRANT OPTION;
+
+14) Se você voltar à tela de Users and Privileges e executar um Refresh, você irá ver este novo usuário, com seus privilégios:
+
+15) Para apagar o usuário root original, digite:
+
+DROP USER 'root'@'localhost';
+
+16) Se você tentar se conectar com usuário root, não irá mais conseguir, porque este usuário não existe mais.
+
+17) O que vai determinar o que um usuário poderá fazer ou não, são seus parâmetros, tanto na caixa de diálogo do Workbench quanto via SQL.
+
+18) Crie um usuário user01, usando a aba Administration e a opção Users and Privileges. Este usuário terá os privilégios: CREATE TEMPORARY TABLES, DELETE, EXECUTE, INSERT, LOCK TABLES, SELECT e UPDATE:
+
+19) Clique em Apply.
+
+20) Crie um outro usuário normal, mas agora via SQL. Digite:
+
+CREATE USER 'user02'@'localhost' identified BY 'user02';
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE TEMPORARY TABLES,
+LOCK TABLES, EXECUTE ON *.* TO 'user02'@'localhost';
+
+21) Crie um usuário somente leitura, com login read01, através da caixa de diálogo e o read02, via SQL. Para estes usuários, os privilégios serão SELECT e EXECUTE:
+
+:
+
+CREATE USER 'read02'@'localhost' identified BY 'read02';
+GRANT SELECT, EXECUTE ON *.* TO 'read02'@'localhost';
+
+22) Vá para mais dois usuários, com os logins back01 e back02. Aqui, estes usuários somente podem criar backups:
+
+CREATE USER 'back02'@'localhost' identified BY 'back02';
+GRANT SELECT, RELOAD, LOCK TABLES, REPLICATION CLIENT ON *.* TO 'back02'@'localhost';
+
+23) Todos os usuários criados até aqui só podem acessar o banco de dados através da máquina localhost. Quando você cria um usuário,se você manter % ou _** no campo **Limit to Hosts Matching, você irá determinar que outros IPs possam ser utilizados para acessar o banco. Estes caracteres funcionam como curinga:
+
+CREATE USER 'admingeneric02'@'%' identified BY 'admingeneric02';
+GRANT ALL PRIVILEGES ON *.* TO 'admingeneric02'@'%' WITH GRANT OPTION;
+
+24) Você também pode limitar o acesso às bases e tabelas. Crie o usuário user03, mas, em vez de adicionar privilégios globais na aba Administrative Roles, acesse a aba Schema Privileges e adicione o esquema a ser acessado:
+
+25) O mesmo comando pode ser digitado por SQL. Inclusive, abaixo, você pode criar o usuário simplesmente e depois adicionar, em outro comando, os privilégios:
+
+CREATE USER 'user04'@'%' IDENTIFIED BY 'user04';
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE
+ON sucos_vendas.* TO 'user04'@'%';
+
+O usuário criado acima somente pode ver a base sucos_vendas.
+
+26) Crie uma conexão para o usuário user04:
+
+27) Se conecte e note que somente a base sucos_vendas é disponibilizada para acesso:
+
+28) Você pode limitar o acesso às tabelas, dando permissões do que pode ser feito nelas:
+
+CREATE USER 'user05'@'%' IDENTIFIED BY 'user05';
+GRANT SELECT, INSERT, UPDATE, DELETE
+ON sucos_vendas.tabela_de_clientes TO 'user05'@'%';
+GRANT SELECT
+ON sucos_vendas.tabela_de_produtos TO 'user05'@'%';
+
+Estes comandos estão dando privilégios para inclusão, alteração, exclusão e consulta para o user05 na tabela_de_clientes, mas somente leitura na tabela_de_produtos.
+
+29) Crie uma conexão para o usuário user05 e entre no Workbench.
+
+30) Execute o comando:
+
+INSERT INTO `sucos_vendas`.`tabela_de_produtos` (
+    `CODIGO_DO_PRODUTO`,
+    `NOME_DO_PRODUTO`,
+    `EMBALAGEM`,
+    `TAMANHO`,
+    `SABOR`,
+    `PRECO_DE_LISTA`
+) VALUES (
+    '999999',
+    'BNBNBNBNB',
+    'HJHJHJHJ',
+    'FGFGFGF',
+    'GHGHGH',
+    10
+);
+
+Você verá erros ao tentar incluir um registro na tabela:
+
+31) Existe um comando para verificar os usuários existentes:
+
+SELECT * FROM mysql.user;
+
+32) Há também um comando que mostra os acessos de um usuário, por exemplo:
+
+SHOW GRANTS FOR 'user02'@'localhost';
+
+33) O comando REVOKE ALL retira os privilégios de acesso dos usuários:
+
+REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'user02'@'localhost';
+
+
+
+Opinião do instrutor
+
+Continue com os seus estudos, e se houver dúvidas, não hesite em recorrer ao nosso fórum!
+
+
+
+
+5-17  O que aprendemos?
+
+  A criar usuários administradores e a remover o usuário root;
+  
+  Como criar um usuário com privilégios para acesso normal (sem ser administrador);
+  
+  Como criar um usuário que só pode ler os dados;
+  
+  Como criar um usuário que somente executa backups;
+  
+  A fazer a criação dos usuários pela caixa de diálogo do Workbench e via SQL;
+  
+  Como limitar o acesso do usuário pelo IP;
+  
+  A limitar o acesso por banco e por tabela;
+  
+  Como revogar os privilégios.
+
+
+
+5-18  Conclusão*
+
+
+Transcrição
+
+[00:00] Bem gente, se você chegou até aqui, é porque você conseguiu finalizar esse treinamento e ele conclui uma carreira de MySQL, que começou no início, desde o Curso de Introdução ao SQL com MySQL e foi vindo até esse curso de administração.
+
+[00:21] E aí, nesse curso de administração, a gente, claro, começou falando sobre a instalar o MySQL. A primeira função que um administrador de ambiente tem que fazer é justamente instalar a ferramenta e a gente falou um pouquinho também sobre o que é um profissional de DBA, o que esse profissional de DBA faz.
+
+[00:41] E falamos um pouquinho também sobre conectividade, conexões, como o MySQL se conecta com as bases. Aí, pulamos, depois para falar um pouquinho sobre tuning de hardware, quais são os pontos específicos que um DBA tem que saber antes de decidir que hardware será melhor para as necessidades do MySQL.
+
+[01:09] E aí, depois falamos também sobre variáveis de ambiente, que é um instrumento muito forte, que é usado pelo DBA, para parametrizar o ambiente de banco de dados e isso vai ter uma importância muito grande me relação a que o banco de dados possa satisfazer as necessidades dos usuários.
+
+[01:33] Pulamos então para um assunto importante que foi o mecanismo de armazenamento de dados, vimos que esse mecanismo é por tabela, é como se a gente quisesse criar tipos de tabela e falamos de três mecanismos importantes, MyISAM, InnoDB e Memory, vimos as diferenças de cada um e as suas principais características.
+
+[01:59] Depois que a gente falou sobre essas formas de armazenamento dos dados e tabelas, pulamos para um dos assuntos mais importantes que é o backup. O backup é uma coisa super importante para um banco de dados, todos nós sabemos que problemas podem acontecer.
+
+[02:20] Eu posso ter dados que podem ser perdidos ou porque deu problema no meu disco ou então, algum processo interno acabou gravando lixo dentro da base de dados e eu preciso recupera-los. A gente viu nesse treinamento sobre como recuperar os dados e demos ênfase a duas formas.
+
+[02:41] Uma que foi copiar todo o ambiente para outro diretório e outro, tirar um backup, que nós chamamos de um backup lógico, que é um script de comandos sql, que depois podem ser executados. E a gente viu nesse treinamento também, como recuperar a base de dados, através desses dois métodos.
+
+[03:03] Depois, nós passamos a falar um pouquinho sobre performance e entendemos o que é um plano de execução de uma consulta sql e a gente começou a falar também de índices, que tipo de índices que o MySQL possui e como é que eles se relacionam com as formas de armazenamento do dado.
+
+[03:23] Ou seja, quando eu tenho o MyISAM e InnoDB, eu posso ter índices diferentes e a gente viu que existem dois principais tipos de índices dentro do MySQL. O BTREE e o HASH e a gente, inclusive mostrou e falou como é que internamente esses índices funcionam.
+
+[03:43] E aí, com o plano de execução e índice, a gente juntou tudo e viu como é que o índice melhora a performance das nossas consultas. Lembrando que fazer performance de consultas é uma função do administrador no ambiente de dados, do DBA.
+
+[04:00] Finalmente, falamos um pouquinho sobre usuários, vimos como é que o DBA consegue criar usuários, seja ele administradores, usuários normais, usuários de leitura e até mesmo usuários que só podem fazer backup.
+
+[04:16] Vimos também como é que administrador, através do gerenciamento dos usuários consegue, inclusive, limitar o acesso a alguns bancos de dados e inclusive a tabelas e também vimos, finalmente, como é que o administrador, o DBA, ele consegue revogar, limpar privilégios que foram previamente configurados.
+
+[04:41] Bem gente, o assunto administração de ambiente é muito mais amplo que isso que a gente viu, a gente pegou as principais vertentes e deu algumas pinceladas. Espero que vocês tenham entendido.
+
+[04:54] E aí, espero que vocês fiquem... digamos assim, satisfeitos, não só com esse treinamento, mas com todos os treinamentos sobre MySQL, que começaram desde o curso de Introdução ao SQL com MySQL e fechou nesse treinamento de administração.
+
+[05:13] Muito obrigado, espero velos nos próximos treinamentos aqui da Alura. Grande abraço. Tchau, tchau.

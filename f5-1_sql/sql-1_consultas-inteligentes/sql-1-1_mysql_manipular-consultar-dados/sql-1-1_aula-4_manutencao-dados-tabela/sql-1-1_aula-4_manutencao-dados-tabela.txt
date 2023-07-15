@@ -1,0 +1,734 @@
+https://cursos.alura.com.br/course/mysql-manipule-dados-com-sql
+
+Data Science > Cursos de SQL e Banco de Dados
+
+Curso de
+SQL com MySQL: manipule e consulte dados
+
+
+Aula 4 | 55min
+
+Manutenção dos dados nas tabelas
+
+
+https://cursos.alura.com.br/course/mysql-manipule-dados-com-sql/section/8035/tasks
+
+  4-1 Inserindo registros na tabela
+  4-2 Incluindo o primeiro vendedor
+  4-3 Inserindo vários registros na tabela
+  4-4 Incluindo mais dois vendedores
+  4-5 Alterando registros
+  4-6 Alterando informações sobre os vendedores
+  4-7 Excluindo registros
+  4-8 Excluindo vendedor
+  4-9 Incluindo a chave primária
+  4-10 Comando para criação da chave primária
+  4-11 Manipulando datas e campos lógicos
+  4-12 Modificando a tabela de Vendedores
+  4-13 Consolidando o seu conhecimento
+  4-14 O que aprendemos?
+
+
+4-1 Inserindo registros na tabela
+
+Transcrição
+
+  ERRATA
+
+  A partir do momento [00:25] o instrutor passa a apresentar a planilha de PRODUTOS. Nesta planilha uma das palavras é apresentada com um erro ortográfico, a palavra está escrita como Melância, mas na verdade a escrita correta é Melancia.
+
+
+Você pode fazer o download completo dos códigos realizados neste vídeo e continuar seus estudos.
+https://caelum-online-public.s3.amazonaws.com/1220-mysqlintroducaoaosql/04/Aula4.1SQL.zip
+
+
+Já temos a tabela de cliente e produto criadas, agora precisamos inserir informações nelas. Neste momento, faremos da seguinte forma: baixe o link disponibilizado para este vídeo, terá uma planilha de Excel chamada "PRODUTOS.xlsx", selecione ela e observe que temos os campos "SKU" que é o código do produto, "DESCRITOR" é o nome do produto que dentro também temos as informações de tamanho e sabor, "EMBALAGEM" e "PREÇO", são as informações específicas do produto.
+
+Vamos usar essa planilha PRODUTOS como base para inserir dados dentro da tabela. Voltando para o Workbench, selecione o ícone para criar um script, vamos pegar a primeira linha que é o "SKU 1040107".
+
+    Certifique-se que está no banco de dados sucos, utilizando o comando USE sucos;
+
+O comando utilizado para inserir as informações em uma tabela é o INSERT INTO tbproduto(, abrindo parêntese para incluir os campos da tabela. Observe que em "tbproduto" em "columns" há o nome das colunas ("PRODUTO", "NOME", "EMBALAGEM", "TAMANHO", "SABOR" e "PRECO_LISTA") sendo a que vamos incluir no comando INSERT.
+
+Código completo até o momento:
+
+USE sucos;
+
+INSERT INTO tbproduto (
+PRODUTO,
+NOME, 
+EMBALAGEM, 
+TAMANHO,
+SABOR,
+PRECO_LISTA)
+
+Após a inclusão dos campos, digite a cláusula VALUES que significa que vamos especificar os valores da instrução INSERT INTO. No caso, a primeira coluna é "PRODUTO", que olhando na planilha do Excel é o "SKU", sabemos que o código do produto foi criado como VARCHAR. Então, voltando para o comando abra um parêntese após VALUES e insira '1040107' e uma vígula, que indica que vamos acrescentar a informação sobre o próximo campo "Nome". Repita o procedimento para os demais campos, com exceção do "PRECO_LISTA" que por ser FLOAT não é necessário utilizar aspas simples.
+
+    Para inserir uma informação que é considerada STRING, é preciso utilizar aspas simples ('') para que o programa identifique.
+
+Código:
+
+INSERT INTO tbproduto (
+PRODUTO, 
+NOME, 
+EMBALAGEM, 
+TAMANHO, 
+SABOR, 
+PRECO_LISTA) VALUES (
+'1040107', 'Light - 350 ml - Melancia', 'Lata', '350 ml', 'Melancia', 4.56);
+
+Executando o comando, será exibido uma mensagem informando que o programa rodou com sucesso. Mas, para visualizar as informações nessa tabela, para verificar se foram incluídas, usaremos o comando SELECT * FROM tbproduto;, selecione somente essa linha para rodar. Será exibida a tabela produto com as informações inseridas.
+PRODUTO	NOME	EMBALAGEM	TAMANHO	SABOR	PRECO_LISTA
+1040107	Light - 350 ml - Melancia	Lata	350 ml	Melancia	4.56
+
+Aprendemos, então, a incluir o primeiro registo na tabela. Até a próxima aula!
+
+
+
+
+4-2 Incluindo o primeiro vendedor
+
+Vamos criar um vendedor na tabela de vendedores. A informação é a seguinte:
+
+Matrícula: 00233
+Nome: João Geraldo da Fonseca
+Comissão: 10%
+
+Digite o comando de inclusão.
+Opinião do instrutor
+
+INSERT INTO TABELA_DE_VENDEDORES
+(MATRICULA, NOME, PERCENTUAL_COMISSAO)
+VALUES
+('00233', 'João Geraldo da Fonseca', 0.10);
+
+
+
+
+4-3 Inserindo vários registros na tabela
+
+
+Transcrição
+
+Você pode fazer o download completo do código realizado neste vídeo e continuar seus estudos.
+https://caelum-online-public.s3.amazonaws.com/1220-mysqlintroducaoaosql/04/SQL_04.sql
+
+
+
+Continuando com as inclusões das informações na tabela, é possível inserir mais dados em um mesmo script. Olhando agora para a segunda linha da planilha do Excel, vamos inserir esses elementos.
+
+INSERT INTO tbproduto (
+PRODUTO, 
+NOME, 
+EMBALAGEM, 
+TAMANHO, 
+SABOR, 
+PRECO_LISTA) VALUES (
+'1037797', 'Clean - 2 Litros - Laranja', 'PET', '2 Litros', 'Laranja', 16.01);
+
+Repita o código para os outros registros da tabela produto.
+
+INSERT INTO tbproduto (
+PRODUTO, 
+NOME, 
+EMBALAGEM, 
+TAMANHO, 
+SABOR, 
+PRECO_LISTA) VALUES (
+'1000889', 'Sabor da Montanha - 700 ml - Uva', 'Garrafa', '700 ml', 'Uva', 6.31);
+
+INSERT INTO tbproduto (
+PRODUTO, 
+NOME, 
+EMBALAGEM, 
+TAMANHO, 
+SABOR, 
+PRECO_LISTA) VALUES (
+'1004327', 'Videira do Campo - 1,5 Litros - Melancia', 'PET', '1,5 Litros', 'Melancia', 19.51);
+
+SELECT * FROM tbproduto;
+
+Vamos inserir apenas esses registros no momento, temos três comandos INSERT INTO e um SELECT, este para visualizar os elementos incluídos na tabela. Rodando o script, uma mensagem comunicando que os comandos foram executados com sucesso será exibida em "Action Output" e a tabela com as informações será mostrada em "Result grid".
+PRODUTO	NOME	EMBALAGEM	TAMANHO	SABOR	PRECO_LISTA
+1040107	Light - 350 ml - Melancia	Lata	350 ml	Melancia	4.56
+1037797	Clean - 2 Litros - Laranja	PET	2 Litros	Laranja	16.01
+1000889	Sabor da Montanha - 700 ml - Uva	Garrafa	700 ml	Uva	6.31
+1004327	Videira do Campo - 1,5 Litros - Melancia	PET	1,5 Litros	Melancia	19.51
+
+Essa é a tabela de produtos com os elementos incluídos nos comandos INSERT INTO. Nessa aula, então, aprendemos como inserir mais de um registro no mesmo script.
+
+
+
+
+4-4 Incluindo mais dois vendedores
+
+Vamos criar mais dois vendedores, no mesmo comando SQL.
+
+Matrícula: 00235
+Nome: Márcio Almeida Silva
+Comissão: 8%
+
+E
+
+Matrícula: 00236
+Nome: Cláudia Morais 
+Comissão: 8%
+
+Digite o comando de inclusão.
+Opinião do instrutor
+
+INSERT INTO TABELA_DE_VENDEDORES
+(MATRICULA, NOME, PERCENTUAL_COMISSAO)
+VALUES
+ ('00235','Márcio Almeida Silva',0.08);
+
+INSERT INTO TABELA_DE_VENDEDORES
+(MATRICULA, NOME, PERCENTUAL_COMISSAO)
+VALUES
+('00236','Cláudia Morais',0.08);
+
+
+
+4-5 Alterando registros
+
+Transcrição
+
+Você pode fazer o download completo do código realizado neste vídeo e continuar seus estudos.
+https://caelum-online-public.s3.amazonaws.com/1220-mysqlintroducaoaosql/04/4.3.zip
+
+
+
+Nessa aula vamos aprender a como alterar uma informação que já está incluída na tabela. No link associado a este vídeo, baixe o arquivo SQL_05.sql e clique com o botão direito do mouse para abrir como editor de texto.
+
+Será exibido os seguintes comandos:
+
+USE sucos;
+
+INSERT INTO tbproduto (
+PRODUTO,  NOME, EMBALAGEM, TAMANHO, SABOR,
+PRECO_LISTA) VALUES
+('544931', 'Frescor do Verão - 350 ml - Limão', 'PET', '350 ml','Limão',3.20);
+
+INSERT INTO tbproduto (
+PRODUTO,  NOME, EMBALAGEM, TAMANHO, SABOR,
+PRECO_LISTA) VALUES
+('1078680', 'Frescor do Verão - 470 ml - Manga', 'Lata', '470 ml','Manga',5.18);
+
+Copiando o script do arquivo, crie no ambiente do Workbench um novo espaço para os comandos, cole e rode o programa para ser incluído mais dois produtos na tabela.
+
+Vamos verificar na planilha o produto com o seguinte código 544931, se encontra na linha 7 da planilha, perceba que o campo "EMBALAGEM" consta como lata e no comando está PET, o preço também está diferente sendo na planilha 2,46 e no script 3.20. Analisando o próximo código 1078680, a embalagem também está divergente, era para ser garrafa e incluímos lata, os outros campos estão com as informações corretas.
+
+Gerando novamente um ambiente para um novo script, digite o comando USE sucos;, para entrar na base de sucos e, em seguida, o comando para realizar a alteração das informações que estão diferentes com UPDATE tbproduto SET, em set especificamos um conjunto de alterações que queremos realizar, utilizando a sintaxe SET column1 = value1, column2 = value2,....
+
+Mas, precisamos especificar em qual produto queremos fazer essa mudança. Para isso, incluímos uma condição WHERE com o código do produto e realizamos o mesmo comando para alterar as informações o produto seguinte.
+
+Código:
+
+USE sucos;
+
+UPDATE tbproduto SET EMBALAGEM = 'Lata', PRECO_LISTA = 2.46
+WHERE PRODUTO = '544931';
+
+UPDATE tbproduto SET EMBALAGEM = 'Garrafa'
+WHERE PRODUTO = '1078680';
+
+Rodando o programa é retornado um erro na parte de "Output" informando que está sendo usado um UPDATE sem uma condição que utilize o campo com chave primária. Esse erro aparece porque o MySQL está me obrigando a usar na condição um campo que seja chave primária, isto é, que não se repete nos registros.
+
+Mas não incluímos uma chave primária nessa tabela, não aprendemos isso ainda. Colocando o mouse por cima do erro, ele me dá uma dica de ir em preferences -< SQL editor. Vamos, então, na parte superior em "Edit > Preferences > SQL Editor" para desmarcar o campo Safe Updates (rejects UPDATES and DELETEs with no restrictions) e selecione "OK".
+
+Para funcionar, será necessário reconectar o Workbench, para sair vá em "File > Exit" e para abrir novamente clique no Windows, digite "MySQL" e selecione essa opção. Perceba que os comandos estão salvos no ambiente para escrevermos o código, vamos rodar novamente o script, será exibida uma mensagem comunicando que foi efetuado com sucesso.
+
+Para verificar se a alteração foi executada, vamos incluir SELECT * FROM tbproduto; e selecionar apenas essa linha para rodar.
+PRODUTO	NOME	EMBALAGEM	TAMANHO	SABOR	PRECO_LISTA
+1040107	Light - 350 ml - Melancia	Lata	350 ml	Melancia	4.56
+1037797	Clean - 2 Litros - Laranja	PET	2 Litros	Laranja	16.01
+1000889	Sabor da Montanha - 700 ml - Uva	Garrafa	700 ml	Uva	6.31
+1004327	Videira do Campo - 1,5 Litros - Melancia	PET	1,5 Litros	Melancia	19.51
+544931	Frescor do Verão - 350 ml - Limão	Lata	350 ml	Limão	2.46
+1078680	Frescor do Verão - 470 ml - Manga	Garrafa	470 ml	Manga	5.18
+
+Note que os campos solicitados foram alterados para os produtos com os códigos 544931 e 1078680. Nessa aula alteramos os registros na tabela utilizando o comando UPDATE, filtrando com WHERE quais linhas gostaríamos de modificar e, nesse caso, tiramos a condição de chave primária para executar esse filtro.
+
+
+
+
+4-6 Alterando informações sobre os vendedores
+
+Recebemos a seguinte informação:
+
+Cláudia Morais (00236) recebeu aumento e sua comissão passou a ser de 11%. José Geraldo da Fonseca (00233) reclamou que seu nome real é José Geraldo da Fonseca Junior.
+
+Efetue estas correções na base de dados.
+Opinião do instrutor
+
+UPDATE TABELA_DE_VENDEDORES SET PERCENTUAL_COMISSAO = 0.11
+WHERE MATRICULA = '00236';
+
+UPDATE TABELA_DE_VENDEDORES SET NOME = 'José Geraldo da Fonseca Junior'
+WHERE MATRICULA = '00233';
+
+
+
+4-7 Excluindo registros
+
+Transcrição
+
+Você pode fazer o download completo do código realizado neste vídeo e continuar seus estudos.
+https://caelum-online-public.s3.amazonaws.com/1220-mysqlintroducaoaosql/04/SQL_07.sql
+
+
+Já sabemos incluir e alterar registros na tabela, agora vamos aprender como apagar. Para analisar os elementos da tabela, vamos selecionar somente o comando SELECT * FROM tbproduto;, será exibida a seguinte tabela:
+PRODUTO	NOME	EMBALAGEM	TAMANHO	SABOR	PRECO_LISTA
+1040107	Light - 350 ml - Melancia	Lata	350 ml	Melancia	4.56
+1037797	Clean - 2 Litros - Laranja	PET	2 Litros	Laranja	16.01
+1000889	Sabor da Montanha - 700 ml - Uva	Garrafa	700 ml	Uva	6.31
+1004327	Videira do Campo - 1,5 Litros - Melancia	PET	1,5 Litros	Melancia	19.51
+544931	Frescor do Verão - 350 ml - Limão	Lata	350 ml	Limão	2.46
+1078680	Frescor do Verão - 470 ml - Manga	Garrafa	470 ml	Manga	5.18
+
+Vamos escolher o produto 1078680 para excluir. Abrindo um novo arquivo de edição para escrever o comando, insira USE sucos; e na próxima linha DELETE FROM tbproduto, mas, note que não há uma condição do que apagar, se rodarmos assim o comando vai excluir todos os registros da tabela. Por isso, é necessário incluir uma condição, igual fizemos no UPDATE utilizando a cláusula WHERE.
+
+    Cuidado para não confundir DROP e DELETE. O DROP é utilizado para apagar objetos do MySQL, como, banco de dados, tabelas, índices e chave primária. Já o DELETE é para excluir registros armazenados em uma tabela do banco de dados.
+
+DELETE FROM tbproduto WHERE PRODUTO = '1078680';
+
+Rodando esse comando, será exibida uma mensagem avisando que foi efetuado com sucesso em "Action Out". Para visualizarmos a exclusão do registro, vamos utilizar o SELECT * FROM tbprodutos;, selecionando somente esse comando e rodando.
+
+Resultado da tabela após o comando DELETE:
+PRODUTO	NOME	EMBALAGEM	TAMANHO	SABOR	PRECO_LISTA
+1040107	Light - 350 ml - Melancia	Lata	350 ml	Melancia	4.56
+1037797	Clean - 2 Litros - Laranja	PET	2 Litros	Laranja	16.01
+1000889	Sabor da Montanha - 700 ml - Uva	Garrafa	700 ml	Uva	6.31
+1004327	Videira do Campo - 1,5 Litros - Melancia	PET	1,5 Litros	Melancia	19.51
+544931	Frescor do Verão - 350 ml - Limão	Lata	350 ml	Limão	2.46
+
+Código completo:
+
+USE sucos;
+
+DELETE FROM tbproduto WHERE PRODUTO = '1078680';
+
+SELECT * FROM tbproduto;
+
+O comando DELETE é considerado perigoso sem uma cláusula WHERE, visto que sem essa condição apaga todos os registros da tabela. Por esse motivo, é importante sempre inserir uma condição para apagar os elementos desejados da tabela.
+
+No que se refere a garantia de apagar algum elemento que não quisesse fazer existem mecanismos dentro do banco de dados. Mas veremos esse tipo de situação em outros treinamentos.
+
+Vamos analisar o que ocorre se rodarmos novamente o comando DELETE com o código 1078680, selecionando somente esse comando. Em "Action Output" note que não será retornado um erro, mas a mensagem exibida informa que zero linhas foram afetadas, isso significa que o programa procurou o registro para realizar a exclusão, mas não o encontrou.
+
+
+
+4-8 Excluindo vendedor
+
+O vendedor José Geraldo da Fonseca Junior matrícula (00233) foi demitido.
+
+Retire-o da tabela de vendedores.
+Opinião do instrutor
+
+DELETE FROM TABELA_DE_VENDEDORES WHERE MATRICULA = '00233';
+
+
+
+
+4-9 Incluindo a chave primária
+
+Transcrição
+
+Você pode fazer o download completo do código realizado neste vídeo e continuar seus estudos.
+https://caelum-online-public.s3.amazonaws.com/1220-mysqlintroducaoaosql/04/SQL_08.sql
+
+
+    ERRATA
+
+    O instrutor usa USE tbproduto; para especificar o banco de dados. Porém, o correto é USE sucos;.
+
+Quando tentamos executar o comando UPDATE, o MySQL retornou um erro informando ser preciso incluir na condição de filtro um campo que fosse chave primária. Tivemos que ir em "Preferences > SQL Editor" e desmarcar a opção "Safe Updates".
+
+Porém, é importante que tenha chave primária na tabela, se não, arriscamos inserir registros iguais na mesma tabela. No caso da "tbproduto" é o código interno do produto, visto que esse não se repete. É possível que os produtos possuam as mesmas descrições, mas o código interno não.
+
+Vamos, então, alterar a tabela e incluir a chave primária associada a tabela de produtos ("tbproduto"). Criando mais uma área de código, insira USE sucos; e, na próxima linha, o comando que indica que podemos alterar uma propriedade de uma tabela existente, o ALTER TABLE tbproduto ADD PRIMARY KEY (PRODUTO);.
+
+    Quando criamos a tabela de produtos já poderíamos ter especificado a chave primária, porém, vamos aprender como incluir em tabelas já existentes no banco de dados.
+
+Código:
+
+USE sucos;
+
+ALTER TABLE tbproduto ADD PRIMARY KEY (PRODUTO);
+
+Será exibida a mensagem que o comando foi executado com sucesso. Para compreender a consequencia dessa ação, vamos inserir um novo produto. Lembrando que em aulas anteriores, excluímos o produto 1078680, então, vamos copiar o INSERT INTO dele e incluir novamente o produto no nosso script atual e também, o comando UPDATE, visto que a embalagem estava incorreta.
+
+Comandos para inserir no código para incluir novamente o produto 1078680 com as alterações:
+
+INSERT INTO tbproduto (
+PRODUTO,  NOME, EMBALAGEM, TAMANHO, SABOR,
+PRECO_LISTA) VALUES
+('1078680', 'Frescor do Verão - 470 ml - Manga', 'Lata', '470 ml','Manga',5.18);
+
+UPDATE tbproduto SET EMBALAGEM = 'Garrafa'
+WHERE PRODUTO = '1078680';
+
+Rodando ambos os comandos e, em seguida, o SELECT FROM tbproduto; note que na tabela em "Result Grid" estará inserido o produto '1078680'.
+
+Tabela:
+PRODUTO	NOME	EMBALAGEM	TAMANHO	SABOR	PRECO_LISTA
+1040107	Light - 350 ml - Melancia	Lata	350 ml	Melancia	4.56
+1037797	Clean - 2 Litros - Laranja	PET	2 Litros	Laranja	16.01
+1000889	Sabor da Montanha - 700 ml - Uva	Garrafa	700 ml	Uva	6.31
+1004327	Videira do Campo - 1,5 Litros - Melancia	PET	1,5 Litros	Melancia	19.51
+544931	Frescor do Verão - 350 ml - Limão	Lata	350 ml	Limão	2.46
+1078680	Frescor do Verão - 470 ml - Manga	Garrafa	470 ml	Manga	5.18
+
+Código completo:
+
+USE sucos;
+
+ALTER TABLE tbproduto ADD PRIMARY KEY (PRODUTO);
+
+SELECT * FROM tbproduto;
+
+INSERT INTO tbproduto (
+PRODUTO,  NOME, EMBALAGEM, TAMANHO, SABOR,
+PRECO_LISTA) VALUES
+('1078680', 'Frescor do Verão - 470 ml - Manga', 'Lata', '470 ml','Manga',5.18);
+
+UPDATE tbproduto SET EMBALAGEM = 'Garrafa'
+WHERE PRODUTO = '1078680';
+
+Agora que temos o produto incluído e o campo produto sendo a chave primária, vamos rodar o INSERT INTO novamente para verificar o que acontece se tentarmos incluir um produto com o mesmo código na tabela. O MySQL retorna a mensagem de erro "Error Code: 1062. Duplicate entry '1078680' for key 'PRIMARY'", isto é, já existe um código com esse número na tabela e não é possível inserir esse registro duplicado.
+
+A chave primária nos permite um maior controle sobre a tabela, não permitindo que seja incluído dois produtos com o mesmo código. Nas boas práticas de MySQL, o ideal é sempre especificar a chave primária de uma tabela, podendo usar o comando CREATE TABLE e, depois, o ALTER TABLE para criar a chave primária.
+
+
+
+
+4-10 Comando para criação da chave primária
+
+Qual o tipo de CONSTRAINT que devemos utilizar para a criação de uma chave primária?
+
+
+PRIMARY CLUSTERED
+  Alternativa Errada! Esse tipo não existente!
+
+PRIMARY KEY CLUSTER
+  Alternativa Errada! Esse tipo não existe!
+
+PRIMARY KEY
+  Alternativa Correta! Esse é o tipo de CONSTRAINT que devemos utilizar para a criação de chaves primárias.
+
+
+
+
+4-11 Manipulando datas e campos lógicos
+
+Transcrição
+
+Você pode fazer o download completo do código realizado neste vídeo e continuar seus estudos.
+https://caelum-online-public.s3.amazonaws.com/1220-mysqlintroducaoaosql/04/SQL_09.sql
+
+
+Vamos manipular duas categorias de campos que não estudamos até o momento, o LÓGICO e a DATA, utilizando a tabela de cliente.
+
+Do lado esquerdo do Workbench, em "sucos > tables > tbcliente > columns", temos todas as colunas da tabela, perceba que o campo "PRIMEIRA_COMPRA" é do tipo BIT (lógico), mas que não há campo do tipo DATA nessa tabela, apenas "IDADE" que é INT.
+
+Conversando com o gerente da empresa "Suco de Frutas", ele menciona que gostaria de incluir a data de nascimento dos clientes. Para tanto, iremos primeiro inserir uma chave primária em "tbcliente", que será o número do "CPF" e em seguida, adicionar a coluna "DATA_NASCIMENTO". Depois, vamos inserir um registro para analisar como incluir data e informação lógica , representada por 1 ou 0, na tabela.
+
+Criando um ambiente para o script, insira o comando USE sucos; e na linha seguinte ALTER TABLE tbcliente ADD PRIMARY KEY (CPF);, para gerar a chave primária. Já para incluir a nova coluna "DATA_NASCIMENTO" utilizaremos também o ALTER TABLE com algumas modificações ALTER TABLE tbcliente ADD COLUMN (DATA_NASCIMENTO DATE);.
+
+USE sucos;
+
+ALTER TABLE tbcliente ADD PRIMARY KEY (CPF);
+
+ALTER TABLE tbcliente ADD COLUMN (DATA_NASCIMENTO DATE);
+
+Então, ALTER TABLE (nome da tabela), ADD COLUMN (adicionando um campo novo), e DATA_NASCIMENTO DATE, específico o novo campo que quero adicionar e o seu tipo. Vamos rodar esse script com os três comandos. Em "Columns", selecionando o botão direito do mouse e escolhendo a opção "Refresh All", aparece o campo que incluímos "DATA_NASCIMENTO".
+
+Vamos inserir os campos usando o INSERT INTO, como fizemos em algumas aulas passadas.
+
+INSERT INTO tbcliente (
+CPF, 
+NOME, 
+ENDERECO1, 
+ENDERECO2, 
+BAIRRO, 
+CIDADE, 
+ESTADO, 
+CEP, 
+IDADE, 
+SEXO, 
+LIMITE_CREDITO, 
+VOLUME_COMPRA, 
+PRIMEIRA_COMPRA, 
+DATA_NASCIMENTO) VALUES (
+'00388934505', 
+'João da Silva', 
+'Rua projetada A número 10', 
+'', 
+'Vila Roman', 
+'CARATINGA', 
+'AM', 
+'2222222', 
+30, 
+'M', 
+10000.00, 
+2000, 
+0, 
+'1989-10-05');
+
+Perceba que da coluna "CPF" até "CEP" será do tipo VARCHAR por isso, utilizamos aspas simples ('') entre os valores. Já referente ao campo "ENDERECO2" inserimos apenas (‘’), que significa que essa coluna está vazia - indicar o campo é obrigatório mesmo que seja vazio - visto que o apenas a coluna "ENDERECO1" já foi suficiente para guardar o endereço completo do cliente.
+
+Na coluna "PRIMEIRA_COMPRA" é do tipo BIT (0 ou1), sendo 1 caso o cliente já tenha realizado uma compra e 0 se ainda não. Vamos inserir o zero, sem as aspas já que é representado como um número, para informar que esse cliente ainda não realizou a primeira compra ainda.
+
+Finalmente, o campo "DATA_NASCIMENTO", possível ser reproduzido de diversas maneiras e ordens conforme o país. Mas, há uma forma universal de representar DATA no MySQL e com ela não é preciso se preocupar se é no formato americano, brasileiro, se utiliza barra, aspas ou traços.
+
+Primeiro, essa data será tratada como STRING por isso, ficará entre aspas simples (''). Vamos digitar o ano com quatro dígitos, traço, o mês com dois dígitos, traço e o dia com dois dígitos.
+
+Selecionando somente a instrução INSERT INTO e rodando, será exibida a mensagem informando que o comando foi executado. Para verificar, vamos incluir o SELECT * FROM tbcliente; na área do código, selecionar somente ele e executar.
+
+Tabela exibida após o select:
+CPF	NOME	ENDERECO1	ENDERECO2	BAIRRO	CIDADE	ESTADO	CEP	IDADE	SEXO	LIMITE_CREDITO	VOLUME_COMPRA	PRIMEIRA_COMPRA	DATA_NASCIMENTO
+00388934505	João da Silva	Rua projetada A número 10		Vila Roman	CARATINGA	Amazonas	2222222	30	M	10000.00	2000	0	1989-10-05
+
+Note que o campo "ENDERECO2" está vazio, como indicado no comando VALUES por (''), a coluna "PRIMEIRA_COMPRA" está com o número 0 e a "DATA_NASCIMENTO" representada com ano, mês e dia. Nessa aula aprendemos sobre manipulação e inclusão dos campos dos tipos lógico e data.
+
+
+
+
+4-12 Modificando a tabela de Vendedores
+
+Vamos incluir novos campos na tabela de vendedores. Eles serão a data de admissão
+
+(Nome do campo DATA_ADMISSÃO)
+
+e se o vendedor está ou não de férias
+
+(Nome do campo DE_FERIAS). 
+
+Não esqueça de recriar a chave primária e depois inclua as informações abaixo:
+
+Matrícula - 00235
+Nome: Márcio Almeida Silva
+Comissão: 8%
+Data de admissão: 15/08/2014
+Está de férias? Não
+
+Matrícula - 00236
+Nome: Cláudia Morais 
+Comissão: 8%
+Data de admissão: 17/09/2013
+Está de férias? Sim
+
+Matrícula - 00237
+Nome: Roberta Martins
+Comissão: 11%
+Data de admissão: 18/03/2017
+Está de férias? Sim
+
+Matrícula - 00238
+Nome: Péricles Alves
+Comissão: 11%
+Data de admissão: 21/08/2016
+Está de férias? Não
+
+    Dicas:
+
+        Apague a tabela
+        Crie-a novamente com os novos campos
+        Crie a chave primária
+        Inclua os comandos de INSERT
+
+Opinião do instrutor
+
+DROP TABLE TABELA_DE_VENDEDORES;
+
+CREATE TABLE TABELA_DE_VENDEDORES
+( MATRICULA varchar(5),
+NOME varchar(100),
+PERCENTUAL_COMISSAO float,
+DATA_ADMISSAO date,
+DE_FERIAS bit);
+
+ALTER TABLE TABELA_DE_VENDEDORES ADD PRIMARY KEY (MATRICULA);
+
+INSERT INTO TABELA_DE_VENDEDORES
+(MATRICULA, NOME, DATA_ADMISSAO, PERCENTUAL_COMISSAO, DE_FERIAS)
+VALUES
+('00235','Márcio Almeida Silva','2014-08-15',0.08,0);
+
+INSERT INTO TABELA_DE_VENDEDORES
+(MATRICULA, NOME, DATA_ADMISSAO, PERCENTUAL_COMISSAO, DE_FERIAS)
+VALUES
+('00236','Cláudia Morais','2013-09-17',0.08,1);
+
+INSERT INTO TABELA_DE_VENDEDORES
+(MATRICULA, NOME, DATA_ADMISSAO, PERCENTUAL_COMISSAO, DE_FERIAS)
+VALUES
+('00237','Roberta Martins','2017-03-18',0.11,1);
+
+INSERT INTO TABELA_DE_VENDEDORES
+(MATRICULA, NOME, DATA_ADMISSAO, PERCENTUAL_COMISSAO, DE_FERIAS)
+VALUES
+('00238','Pericles Alves','2016-08-21',0.11,0);
+
+
+
+
+4-13 Consolidando o seu conhecimento
+
+
+Chegou a hora de você seguir todos os passos realizados por mim durante esta aula. Caso já tenha feito, excelente. Se ainda não, é importante que você execute o que foi visto nos vídeos para poder continuar com a próxima aula.
+
+1) Acesse o Workbench.
+
+2) Crie uma nova consulta e digite o comando abaixo:
+
+USE sucos;
+
+INSERT INTO tbproduto (
+PRODUTO,  NOME, EMBALAGEM, TAMANHO, SABOR,
+PRECO_LISTA) VALUES (
+'1040107', 'Light - 350 ml - Melância',
+'Lata', '350 ml', 'Melância', 4.56);
+
+O comando acima irá inserir um registro na tabela.
+
+3) Execute o comando:
+
+SELECT * FROM tbproduto;
+
+Você verá que o registro foi inserido na tabela.
+
+4) Crie um novo Script no Workbench.
+
+5) Digite:
+
+USE sucos;
+
+INSERT INTO tbproduto (
+PRODUTO,  NOME, EMBALAGEM, TAMANHO, SABOR,
+PRECO_LISTA) VALUES (
+'1037797', 'Clean - 2 Litros - Laranja',
+'PET', '2 Litros', 'Laranja', 16.01);
+
+INSERT INTO tbproduto (
+PRODUTO,  NOME, EMBALAGEM, TAMANHO, SABOR,
+PRECO_LISTA) VALUES (
+'1000889', 'Sabor da Montanha - 700 ml - Uva',
+'Garrafa', '700 ml', 'Uva', 6.31);
+
+INSERT INTO tbproduto (
+PRODUTO,  NOME, EMBALAGEM, TAMANHO, SABOR,
+PRECO_LISTA) VALUES (
+'1004327', 'Videira do Campo - 1,5 Litros - Melância',
+'PET', '1,5 Litros', 'Melância', 19.51);
+
+Agora o comando acima irá inserir diversos produtos na tabela.
+
+6) Execute o comando:
+
+SELECT * FROM tbproduto;
+
+Você verá que vários registros foi inseridos na tabela.
+
+7) Crie um novo Script no Workbench.
+
+8) Digite o comando abaixo para inserir outros registros na tabela:
+
+USE sucos;
+
+INSERT INTO tbproduto (
+PRODUTO,  NOME, EMBALAGEM, TAMANHO, SABOR,
+PRECO_LISTA) VALUES
+('544931', 'Frescor do Verão - 350 ml - Limão', 'PET', '350 ml','Limão',3.20);
+
+INSERT INTO tbproduto (
+PRODUTO,  NOME, EMBALAGEM, TAMANHO, SABOR,
+PRECO_LISTA) VALUES
+('1078680', 'Frescor do Verão - 470 ml - Manga', 'Lata', '470 ml','Manga',5.18);
+
+9) Agora vamos alterar algumas informações dos registros acima incluídos. Digite:
+
+USE sucos;
+
+UPDATE tbproduto SET EMBALAGEM = 'Lata', PRECO_LISTA = 2.46
+WHERE PRODUTO = '544931';
+
+UPDATE tbproduto SET EMBALAGEM = 'Garrafa'
+WHERE PRODUTO = '1078680';
+
+10) Você verá que os registros foram alterados executando:
+
+SELECT * FROM tbproduto;
+
+11) Podemos excluir registros já existentes na tabela. Para isso digite, em um outro script do Workbench, os comandos abaixo:
+
+USE sucos;
+
+DELETE FROM tbproduto WHERE PRODUTO = '1078680';
+
+12) Você verá que o registro foi apagado executando:
+
+SELECT * FROM tbproduto;
+
+13) Vimos, nas definições de banco de dados, que uma tabela pode ter uma chave primária. Vamos, abaixo, criar uma chave primária para a tabela de produtos. Faça em um novo script do Workbench:
+
+USE sucos;
+
+ALTER TABLE tbproduto ADD PRIMARY KEY (PRODUTO);
+
+14) Execute o comando abaixo duas vezes:
+
+INSERT INTO tbproduto (
+PRODUTO,  NOME, EMBALAGEM, TAMANHO, SABOR,
+PRECO_LISTA) VALUES
+('1078680', 'Frescor do Verão - 470 ml - Manga', 'Lata', '470 ml','Manga',5.18);
+
+INSERT INTO tbproduto (
+PRODUTO,  NOME, EMBALAGEM, TAMANHO, SABOR,
+PRECO_LISTA) VALUES
+('1078680', 'Frescor do Verão - 470 ml - Manga', 'Lata', '470 ml','Manga',5.18);
+
+Note que, da segunda vez, o comando não pode ser executado apresentando erro porque viola a chave primária.
+
+15) Caso você deseje mudar algo neste registro deve altera-lo:
+
+UPDATE tbproduto SET EMBALAGEM = 'Garrafa'
+WHERE PRODUTO = '1078680';
+
+16) Crie um novo script e inclua uma chave primária na tabela de clientes:
+
+USE sucos;
+
+ALTER TABLE tbcliente ADD PRIMARY KEY (CPF);
+
+17) mesmo com a tabela já criada podemos incluir novas colunas com o comando:
+
+ALTER TABLE tbcliente ADD COLUMN (DATA_NASCIMENTO DATE);
+
+18) Abaixo temos o comando para incluir um novo cliente. Note como tratamos a inclusão de um campo do tipo data (DATA_NASCIMENTO) e do tipo lógico (PRIMEIRA_COMPRA).
+
+INSERT INTO tbcliente (
+CPF, NOME, ENDERECO1, ENDERECO2, BAIRRO, CIDADE, ESTADO, CEP, IDADE, SEXO, 
+LIMITE_CREDITO, VOLUME_COMPRA, PRIMEIRA_COMPRA, DATA_NASCIMENTO)
+VALUES ('00388934505','João da Silva','Rua projetada A número 10','',
+'VILA ROMAN', 'CARATINGA', 'AMAZONAS','2222222',30,'M', 10000.00, 2000,
+0, '1989-10-05');
+
+Opinião do instrutor
+
+Continue com os seus estudos, e se houver dúvidas, não hesite em recorrer ao nosso fórum!
+
+
+
+
+4-14 O que aprendemos?
+
+  Aprendemos a incluir dados em uma tabela, de diversas formas;
+  
+  Vimos como alterar um dado já existente na tabela;
+  
+  Vimos como apagar uma linha da tabela;
+  
+  Conhecemos a importância das chaves primárias e o cuidado que devemos ter ao criá-las;
+  
+  Aprendemos a manipular campos do tipo lógicos e do tipo date.

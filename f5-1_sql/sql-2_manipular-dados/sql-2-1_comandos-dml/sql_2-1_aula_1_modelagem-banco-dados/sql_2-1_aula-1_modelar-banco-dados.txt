@@ -1,0 +1,747 @@
+https://cursos.alura.com.br/course/mysql-dml-manipulacao-de-dados/section/8169/tasks
+
+Evernote: dev
+
+Data Science | Cursos de SQL e Banco de Dados
+
+Curso de
+Comandos DML: manipulação de dados com MySQL
+
+Aula 1- Modelagem do banco de dados | 0 / 11 | 57min
+
+  1-1  Introdução
+  1-2  Instalando o MySQL
+  1-3  Revisão - Entidades
+  1-4  Entidade básica
+  1-5  Revisão - Tipos de dados
+  1-6  Chave primária
+  1-7  Modelagem
+  1-8  Requisitos de um banco de dados
+  1-9  Passos importantes para construção do modelo conceitual.
+  1-10  Consolidando o seu conhecimento
+  1-11  O que aprendemos?
+
+
+1-1  Introdução
+
+
+Transcrição
+
+[0:00] Oi, gente.
+
+[0:01] Meu nome é Victorino Vila e a gente vai dar continuidade ao nosso treinamento de SQL com MySQL.
+
+[0:09] A gente começou essa sequência de treinamentos dando uma introdução ao SQL e ao banco MySQL justamente para quem nunca viu SQL na vida, e depois a gente partiu para um treinamento onde a gente ensina como é que a gente consulta dados de um banco de dados.
+
+[0:27] Nesse treinamento agora a gente vai dar ênfase em manipular os dados, ou seja, a gente vai aprender a gerenciar os dados que estão dentro do nosso banco.
+
+[0:36] Inicialmente, para fazer isso, a gente vai começar a falar um pouquinho sobre as entidades que existem dentro de um banco de dados, e depois que a gente conhece todas essas entidades a gente passa para a modelagem.
+
+[0:50] Como é que de um problema real eu desenho o banco de dados que eu vou trabalhar? A gente vai dedicar um vídeo especial sobre isso.
+
+[1:00] Finalmente, com o meu banco de dados já projetado, eu tenho que botar a mão na massa, então, a gente vai aprender a criar um banco de dados e criar as tabelas desse banco de dados.
+
+[1:13] Não somente as tabelas, mas todas as entidades que estão associadas a uma tabela.
+
+[1:18] E com o nosso banco pronto a gente vai ver como é que pelo MySQL Workbench a gente consegue visualizar esse banco de maneira gráfica.
+
+[1:27] Essa visualização é muito importante, não somente caso eu queira consultar dados do banco, mas também se eu quiser manipular os dados do banco.
+
+[1:37] Bem, então nesse ponto do treinamento, quando o banco de dados já tiver sido criado, a gente vai aprender a incluir informação lá dentro.
+
+[1:45] Como eu incluo dados dentro do meu banco? Através de linha de comando.
+
+[1:50] Como eu faço isso em lote, ou seja, uma linha de comando incluindo vários dados ao mesmo tempo? Incluir dados vindo de tabelas de outros bancos de dados ou até mesmo de tabelas externas ou arquivos externos, que é o caso do exemplo que eu vou estar mostrando nesse treinamento.
+
+[2:11] Ok, nesse ponto a gente já vai ter aprendido a incluir dados.
+
+[2:15] O que já está em um banco de dados eu posso querer modificar.
+
+[2:19] Então, a gente vai aprender a alterar os dados de um banco, seja por comando, seja também alterar esses dados através de lotes, ou seja, de uma grande quantidade de dados ao mesmo tempo.
+
+[2:33] Depois, claro, se a gente já aprendeu a incluir e alterar, a gente tem que aprender, também, a excluir dados, e é o que nós vamos aprender, também, nesse treinamento: a excluir informações que já existem dentro do meu banco de dados.
+
+[2:48] Ok, depois que a gente aprendeu a incluir, alterar e excluir, a gente vai falar sobre um ponto importante chamado transação.
+
+[2:55] O que é uma transação no MySQL e como é que eu consigo, através da transação, recuperar dados que foram manipulados ou confirmar o gerenciamento de dados do banco? Depois nós vamos falar, também, sobre um tipo de campo muito especial, chamado auto incremento, e, finalmente, nós vamos falar sobre um mecanismo chamado Trigger, que é um mecanismo que permite disparar alguns comandos em SQL caso a minha tabela sofra algum tipo de modificação.
+
+[3:28] Está legal? Bem, isso aí é, por alto, o que nós vamos ver nesse treinamento.
+
+[3:34] Então, espero que vocês gostem.
+
+[3:36] Então, vamos seguir em frente.
+
+[3:37] Um grande abraço, até já.
+
+
+
+
+
+1-2  Instalando o MySQL
+
+
+Transcrição
+
+[0:00] Vamos começar? A primeira coisa que a gente precisa fazer é ter nosso ambiente para pode fazer os exercícios práticos desse treinamento, e a primeira coisa que a gente precisa ter é o MySQL instalada na nossa máquina.
+
+[0:13] Se você está fazendo todos os treinamentos na ordem e a máquina que você está usando agora é a mesma que você usou no curso passado, ou seja, você tem o MySQL, o MySQL, o WorkBench também instalado, então você não precisa nem seguir mais esse vídeo.
+
+[0:34] Esse vídeo é mais para que se você tem seguido a carreira de MySQL, mas, por algum motivo, está usando um computador vazio, em branco, onde você não tenha mais o ambiente instalado.
+
+[0:48] Então, você tem que reinstalar o seu MySQL, ou então, caso você tenha começado esse treinamento direto, sem ter passado pelos outros, está legal? Então, se você já tem um MySQL na sua máquina, pode dar pause aí; se você não tem, então eu vou fazer o seguinte: vou colocar, agora, um outro vídeo onde eu mostro a instalação do MySQL, está legal? Então, vamos lá começar.
+
+[1:15] Vamos, então, fazer a instalação do MySQL.
+
+[1:19] Eu posso fazer essa instalação tanto no ambiente Windows quanto Linux.
+
+[1:23] O caso, aqui, devido ao equipamento que eu tenho à disposição para fazer esse treinamento, eu vou fazer a instalação, nesse vídeo, usando o sistema operacional Windows, e, também, nós vamos instalar um IDE chamado WorkBench.
+
+[1:39] Bem, o que é um IDE? É um programa que permite que a gente possa visualizar os objetos do banco de uma maneira mais gráfica.
+
+[1:49] Quando a gente vai trabalhar com MySQL, por exemplo, tudo pode ser feito por linha de comando, mas um IDE fica interessante a gente estar utilizando, porque aí a gente pode ter várias consultas na mesma tela, olhar as tabelas de maneira gráfica, e o WorkBench é um IDE próprio do MySQL, ou seja, é a MySQL que fornece o WorkBench.
+
+[2:16] Isso e vários outros IDEs para MySQL no mercado, mas a gente vai usar o da própria MySQL, e também o WorkBench pode ser instalado tanto em ambiente Windows quanto ambiente Linux.
+
+[2:30] No caso, aqui, eu vou fazer a instalação no Windows, e, inclusive, o pacote de instalação já instala não somente o servidor MySQL, mas, também, o IDE WorkBench.
+
+[2:42] Então, vamos começar.
+
+[2:44] Eu vou abrir aqui o browser e vou procurar por MySQL Downloads.
+
+[2:52] Então, tem aqui o link MySQL Downloads e aqui nesse link eu vou procurar por essa opção aqui: MySQL Community Edition (GLP).
+
+[3:06] Lembra? Eu tenho a versão gratuita e a paga, nós vamos usar a gratuita.
+
+[3:13] Então, eu vou clicar aqui no link Community (GLP) Downloads e eu vou procurar aqui essa opção.
+
+[3:25] No meu caso, eu vou estar usando a MySQL on Windows (Installer & Tools).
+
+[3:40] Eu tenho aqui vários links, por exemplo, se eu quisesse só instalar o WorkBench eu escolheria esse link aqui, mas eu vou selecionar aqui a opção MySQL Installer.
+
+[3:57] E aqui embaixo eu tenho as opções da instalação que eu quero fazer, então, eu vou estar escolhendo essa aqui: (mysql-installer-web-community-8.0.15.0).
+
+[4:13] Não necessariamente a versão que você vai estar instalando é a mesma que está aqui no vídeo, depende da época em que você esteja assistindo esse treinamento, porque as versões de MySQL ficam mudando com uma certa frequência.
+
+[4:27] No caso, se você encontrar uma versão mais atual, não tem problema, instale a que ele estiver sugerindo como sendo a última versão.
+
+[4:35] Vou clicar aqui em download e aí ele vai me pedir pra fazer um login no site da Oracle.
+
+[4:43] Lembra que eu falei? A Oracle comprou a Sun Microsystems e a Sun era dona do MySQL, então a Oracle passou a ser dona do MySQL.
+
+[4:58] Para a gente pode instalar, baixar qualquer produto Oracle a gente precisa se logar usando uma conta da Oracle.
+
+[5:05] Se você não tem conta da Oracle, nenhum problema, você vem aqui, clica em Sign Up, aqui do lado, no botão verde, e faça um cadastro.
+
+[5:14] Você vai colocar lá o nome, um e-mail, uma senha, e só isso, não precisa botar cartão de crédito, não precisa pagar nada.
+
+[5:22] No caso, eu já tenho um login, então eu vou clicar no botão login.
+
+[5:29] Vou colocar aqui meu usuário e vou colocar aqui a minha senha.
+
+[5:40] Vou clicar em Iniciar Sessão.
+
+[5:46] E aí vou clicar agora no botão Download Now.
+
+[5:53] Bem, ele vai fazer o download de um arquivo pequeno, porque, depois, tudo que eu for instalar ele vai fazer o download da internet no momento da instalação.
+
+[6:04] Vou clicar, então, no programa aqui MySQL Installer, aí ele vai dizer uma opção opcional se eu quero já checar se existem updates para serem feitos, para que a gente possa fazer a instalação agora não somente da versão que eu escolhi, mas, também, dos updates mais atuais.
+
+[6:30] Eu vou clicar Yes, nenhum problema de fazer essas instalações desses upgrades.
+
+[6:40] Ele está fazendo aqui o download do instalador com os upgrades.
+
+[6:54] Pronto, comecei a instalação, vou aceitar os termos da licença.
+
+[7:00] Aqui, eu vou escolher a opção Developer Default, que aí eu vou instalar o servidor e uma série de conectores, tudo que é preciso para o MySQL estar funcionando.
+
+[7:17] Vou clicar em Next.
+
+[7:19] Aqui se eu quero fazer um conector com o Python, mas, no caso, não é o meu objetivo, eu vou dar Next. Clico aqui, Yes, e aí eu tenho aqui tudo que ele vai baixar.
+
+[7:32] Note que aqui no meio eu já tenho a instalação do Workbench, ou seja, eu não vou precisar, depois, ter que instalar o WorkBench de forma separada.
+
+[7:46] Vou clicar aqui, Execute, e ele vai começar a fazer o download dos módulos que vão ser usados para a instalação.
+
+[7:57] Então, eu vou fazer o seguinte: vou parar o vídeo um instantinho aqui, quando esse download terminar eu volto para a gente continuar a instalação, tá bom? Bem, acabou o download aqui dos componentes, vou continuar, então, a instalação.
+
+[8:10] Clico aqui em Next, Next novamente, aí eu tenho aqui dois tipos de estrutura de bancos de dados que eu vou estar trabalhando.
+
+[8:21] Eu vou estar usando essa primeira aqui: Standalone MySQL Server / Classic MySQL Replication, ok?
+
+[8:33] Tem aqui as configurações de porta, forma de comunicação entre cliente e servidor, a gente vai manter o que está aqui.
+
+[8:41] Aqui é a forma com que eu vou usar a minha autenticação.
+
+[8:45] Tem dois tipos: uma que é a senha criptografada, que vale pro MySQL 8.0, que é a versão atual, e uma que usa a segurança dos MySQL mais antigos.
+
+[9:00] Eu vou manter a primeira opção selecionada.
+
+[9:04] Aqui eu vou colocar a minha senha.
+
+[9:23] Ele não gostou muito da minha senha, disse que ela está fraca, mas não tem problema.
+
+[9:28] Vou clicar aqui em Next.
+
+[9:32] Deixa eu voltar aqui um instante, eu não vou criar outros usuários por enquanto que eu vou estar usando esse mesmo usuário que a gente chama de root.
+
+[9:41] O que é o usuário root? É o usuário padrão do banco MySQL, e a gente vai usar esse usuário para acessar o banco e tal, utilizando os nossos exercícios práticos.
+
+[9:53] O que eu fiz aqui foi definir a senha desse usuário root.
+
+[9:58] Não esqueçam dessa senha, hein.
+
+[10:02] Next.
+
+[10:04] Aqui é o nome do serviço, porque o MySQL vai ser um serviço do Windows que vai ser sempre inicializado quando a máquina, por exemplo, for dar um boot, alguma coisa.
+
+[10:15] Sempre quando a máquina voltar, o banco vai estar no ar também.
+
+[10:19] E ali embaixo a gente seleciona qual é o usuário que vai gerenciar esse serviço.
+
+[10:25] Aqui nós não vamos mudar nada.
+
+[10:29] Tem aqui tudo que ele vai executar durante a instalação, eu clico Execute, e aí ele vai começar a fazer a instalação, inicializar o banco de dados, o servidor, e assim por diante, tá bom? Então, eu vou parar o vídeo um instantinho e volto assim que todos os passos estiverem... opa, olha, achei que ia demorar, acabou rápido, então eu vou manter, não vou nem parar o vídeo, não.
+
+[11:01] Vamos lá, vou clicar Finish, vou dar um Next.
+
+[11:08] Ele agora vai fazer algumas outras configurações.
+
+[11:13] Por enquanto, eu não vou estar fazendo nada, clico em Finish, Next novamente.
+
+[11:20] Temos aqui a conexão com o servidor, eu vou colocar aqui a minha senha.
+
+[11:29] Posso até usar aqui um Check para saber se a conexão é feita.
+
+[11:31] Ó, conexão entre cliente e servidor foi feita com sucesso, e vou executar essa segunda parte da instalação.
+
+[11:45] Agora sim eu vou parar o vídeo, eu não sei quanto tempo vai demorar... ah, não, olha só, me pegou de novo, eu achei que ia demorar, foi rápido.
+
+[11:54] Vou clicar aqui em Finish, ele vai fazer novas configurações, e aqui, ao dar esse último Finish, ele já vai me inicializar o WorkBench, que é aquela interface de IDE para a gente manipular o banco de dados MySQL.
+
+[12:18] Vou clicar aqui em Finish.
+
+[12:22] Essa tela que ele abriu aqui a gente pode ignorar, e, note: automaticamente ele já me criou uma conexão local da minha máquina, ou seja, a minha máquina tem um servidor, mas tem um cliente também, e o WorkBench já vem com essa conexão previamente configurada.
+
+[12:43] Se eu clicar aqui nesse quadradinho ele vai perguntar a senha do meu usuário root.
+
+[12:51] Vou colocar aqui, vou salvar a senha para não precisar ter que colocar a senha toda hora.
+
+[13:03] E aí pronto, eu entrei aqui e eu tenho aqui já o meu WorBench já configurado.
+
+[13:14] Demonstrar aqui alguns códigos que talvez você não vão ver, mas é porque a minha máquina já tinha, antes de gravar esse treinamento, o MySQL instalado e tinha aí na memória alguns scripts de SQL já salvos.
+
+[13:30] O que você vai ter, caso você tenha feito todos os passos de maneira correta, é essa tela aqui do MySQL WorkBench.
+
+[13:39] Então, pronto, já estamos preparados para começar o nosso treinamento de SQL, está legal? Então tá, gente. É isso aí, um abraço para vocês, até o próximo vídeo.
+
+
+
+
+
+1-3  Revisão - Entidades
+
+
+Transcrição
+
+[0:00] Como esse treinamento envolve a manipulação de dados, a primeira coisa que a gente vai aprender é a criar o banco de dados e as entidades dele.
+
+[0:13] Logo, a gente precisa conhecer que entidades são essas, por isso eu vou fazer uma breve revisão, não somente sobre a parte de entidades, que compõe um banco MySQL, mas também os seus tipos de dados, porque essa informação ela é muito importante quando a gente for criar o nosso esquema, ok?
+
+[0:34] Bem, então, basicamente, um banco MySQL possui dentro da sua estrutura do seu servidor um conjunto de uma entidade que nós chamamos de banco de dados.
+
+[0:48] Ou, também, dentro do MySQL chama banco de dados de schema.
+
+[0:54] O banco de dados tem, lá dentro, aí sim, diversas entidades, que auxiliam no armazenamento da informação, ou seja, a informação será armazenada dentro do banco de dados, dentro de diversas entidades que são mencionadas dentro dele.
+
+[1:13] A entidade básica onde a informação fica armazenada, onde o dado está armazenado, a gente chama de Tabela.
+
+[1:21] Então, um banco de dados pode ter uma ou mais tabelas, e cada tabela tem dados armazenados dentro dela.
+
+[1:31] A tabela é como se fosse - fazendo uma analogia - uma planilha de Excel, onde eu tenho linhas e colunas.
+
+[1:38] A única diferença é que lá no Excel, quando a gente cria uma planilha, a gente cria uma área vazia de infinitas colunas e infinitas linhas.
+
+[1:49] No banco de dados, quando a gente cria uma tabela, na hora de criar a gente já tem que dar algumas informações específicas daquela tabela.
+
+[2:02] A informação mais importante são os campos.
+
+[2:05] É como se eu já criasse a planilha de Excel dizendo: "olha, essa planilha vai ter só 20 colunas", eu dou nome para cada coluna e digo que cada coluna só pode ter um tipo de dado.
+
+[2:20] Se eu digo que a terceira coluna só pode ter data, eu só posso colocar data naquela coluna.
+
+[2:26] É aí que há a diferença da tabela para uma planilha de Excel.
+
+[2:32] Então, a tabela é uma planilha de Excel com colunas pré-definidas, cada coluna nomeada e com um tipo específico, e o número de linhas, aí sim, por enquanto ela começa vazia e aí eu posso acrescentar linhas no decorrer da manipulação do dado, e sempre, em cada coluna, o dado que está lá nunca muda.
+
+[2:57] Então, como eu falei, nós temos campos, que são as colunas, e registros, que são as linhas.
+
+[3:07] Tanto faz eu chamar coluna ou campo, registro ou linha, eu às vezes uso uma coisa, às vezes uso outra, mas os dois termos estão corretos.
+
+[3:19] A tabela tem também uma informação chamada Chave Primária.
+
+[3:24] O que é uma chave primária? Eu especifico uma ou mais colunas da tabela, e se eu disser que essas colunas são chaves primárias da tabela, eu não vou poder ter nenhuma linha dentro da minha tabela cuja chave primária se repita.
+
+[3:44] Se isso acontecer, o banco não vai deixar eu colocar essa informação.
+
+[3:49] Por exemplo, se eu tiver uma tabela de clientes e a chave primária é o CPF, eu não vou poder ter nenhum cliente na minha tabela cujo CPF seja repetido.
+
+[4:09] Então, a chave primária é uma entidade muito importante dentro da tabela.
+
+[4:13] Agora, sim, a tabela também tem uma coisa chamada Chave Estrangeira.
+
+[4:19] É uma ligação que a tabela faz com outra tabela.
+
+[4:24] Lembrando, nós estamos trabalhando com banco de dados relacionais, e eles possuem relações, as tabelas se relacionam entre si, e o que liga uma tabela à outra? É a chave estrangeira.
+
+[4:40] Normalmente, a chave estrangeira liga campos de duas tabelas diferentes do mesmo tipo, não precisam ter o mesmo nome, mas o tipo, sim.
+
+[4:52] A partir do momento que a gente cria a chave estrangeira há uma hierarquização do conteúdo das colunas que são chaves estrangeiras.
+
+[5:03] Normalmente, quando a gente cria a chave estrangeira a gente tem uma tabela pai e uma tabela filho.
+
+[5:10] Há uma direção da chave estrangeira, de tal maneira que, na tabela filho, eu só vou poder ter elementos que estão previamente cadastrados na tabela pai.
+
+[5:22] Fazendo a analogia do exemplo do cliente, se eu tenho uma tabela de clientes cuja chave primária é o CPF e tenho uma tabela de vendas onde eu tenho a informação de cada venda que é efetuada na minha empresa, na linha da tabela de vendas eu tenho também o cliente.
+
+[5:41] Se eu crio uma chave estrangeira entre o cliente da tabela de clientes e o cliente da tabela de vendas, o que acontece? Eu só vou poder vender com clientes que existam na tabela cadastral.
+
+[6:00] Também há uma estrutura muito importante na tabela, chamada Índice.
+
+[6:07] O índice é como se fosse um cadastro de posições dos elementos dentro da tabela, de tal maneira que quando eu vou buscar um elemento na tabela, se eu tiver um índice eu acho esse elemento mais fácil, porque, ao invés de eu percorrer a tabela toda, linha a linha, eu vou no índice, procuro o elemento, e vai dizer: "olha, esse cara está na posição 25".
+
+[6:36] Aí eu volto para a minha tabela e acho o elemento que eu quero buscar.
+
+[6:41] Quando a gente cria uma chave primária e uma chave estrangeira, automaticamente o MySQL já cria um índice para esses dois campos.
+
+[6:53] E por que? Porque, claro, chave estrangeira, chave primária, vão fazer com que o banco busque toda hora esses elementos nessas tabelas, justamente pra saber se há um relacionamento íntegro.
+
+[7:07] Por exemplo, na chave primária, toda vez que eu inserir um registro, ele tem que buscar na tabela para saber se aquele registro já existe ou não, para saber se ele deixe incluir ou não.
+
+[7:17] Se aquele campo que eu estou incluindo tem uma chave estrangeira, eu tenho que ir na tabela pai buscar o cara e saber se ele realmente existe, então, há um trabalho muito de buscas quando o cara está envolvido em uma chave primária ou estrangeira, por isso o MySQL já cria o índice, porque vai facilitar esse trabalho.
+
+[7:40] Ok, então meu banco tem várias tabelas, dentro da tabela eu tenho chaves primárias, tenho campos, tenho os registros, e aí as tabelas podem se organizar em esquemas.
+
+[7:52] No MySQL o esquema e o banco de dados é a mesma coisa, mas essa transparência está mostrando grupos de tabelas diferentes porque em outros bancos de dados relacionais há uma diferenciação entre o esquema e o banco de dados.
+
+[8:12] O banco de dados também pode ter o que a gente chama de uma View.
+
+[8:15] A view é uma tabela lógica que é feita através da construção de uma consulta.
+
+[8:24] Então, eu tenho uma consulta complexa, que já faz vários cálculos, e aí eu transformo essa consulta em uma view e eu consigo acessar essa view como se ela fosse uma tabela, mas, na verdade, ela é uma tabela lógica.
+
+[8:40] Toda vez que eu consultar a view, a consulta que está lá vai ser resolvida.
+
+[8:46] Claro que uma view tem uma performance muito menor do que eu fazer a consulta direto em uma tabela, mas as views são muito importantes quando eu quero disponibilizar parte do meu banco para alguém externo, por exemplo, eu construo uma view, nessa view eu limito aquilo que aquela pessoa externa pode ver, e aí lá no usuário do meu banco de dados eu digo: "olha, esse usuário só consegue enxergar tal view".
+
+[9:16] Ok, então eu tenho a minha consulta e aí a minha consulta retorna uma série de valores diferenciados dentro dela, e aí ela pode ter, também relacionamento entre si.
+
+[9:35] E aí, claro, a consulta, depois, se eu transformar ela em uma view, ela será vista como se fosse uma tabela cujo o conteúdo é o mesmo que é o resultado da consulta.
+
+[9:49] Dentro do banco de dados a gente também tem stored procedure.
+
+[9:55] O que são? No caso do MySQL tem, inclusive, esse mesmo nome.
+
+[10:02] São programas estruturados, usando a linguagem SQL, que eu posso fazer para operações mais complexas.
+
+[10:10] O SQL é uma linguagem não muito estruturada, ele não tem IFs, ELSEs, eu não consigo fazer programas fazendo desvios.
+
+[10:21] O padrão ANSI é assim, mas cada banco de dados disponibiliza para o seu usuário uma outra linguagem estruturada que utiliza comandos de SQL diretamente, que faz com que eu possa construir coisas rebuscadas.
+
+[10:38] As stored procedures não respeitam o padrão ANSI, então, cada tipo de banco de dados tem a sua linguagem própria.
+
+[10:47] Então a MySQL tem a sua, o SQL Server tem a sua, o Oracle também tem.
+
+[10:55] Aí reza uma das diferenças entre os diversos bancos de dados relacionais, que é a forma como eu construo as minhas stored procedures.
+
+[11:07] Também tem funções, que podem ser funções já básicas, cadastradas dentro do banco, por exemplo, função para converter uma String em uma Data, para buscar o ano de uma Data, que calcula o cosseno de um número.
+
+[11:29] Enfim, são funções já existentes, mas eu posso também, usando a mesma linguagem de programação das stored procedures, construir a minha própria função, e eu posso usar ela depois, dentro das minhas consultas, de maneira simples e objetiva, da mesma maneira como eu uso as consultas originais que já existem no MySQL.
+
+[11:55] Também temos uma estrutura chamadas Trigger. Trigger são regras que eu vou executar quando algo acontece no banco.
+
+[12:05] Então eu digo: "olha, quando eu incluir um dado no banco, faça isso; quando eu alterar o dado numa tabela, faça aquilo".
+
+[12:14] Essas ordens são triggers.
+
+[12:16] As triggers são muito importantes, porque, às vezes, ao incluir dados de uma tabela eu tenho que fazer algum tipo de pré cálculo em outra tabela, então o trigger pode fazer isso.
+
+[12:30] Então, tá, o meu banco de dados tem, então, todos os conjuntos dessas entidades.
+
+[12:36] É importante eu, que estou projetando e construindo o banco de dados, saber que tipo de entidades são essas, porque, claro, na medida em que meu banco vai crescendo e as necessidades operacionais vão sendo passadas para mim, eu vou criando mais entidades relacionadas ao banco de dados.
+
+[12:57] Tá legal? Então, é isso aí, gente, que eu queria falar um pouquinho sobre a parte de estrutura do banco de dados.
+
+
+
+
+
+1-4  Entidade básica
+
+Qual seria a entidade básica do MySQL?
+
+Esquema
+  Alternativa Errada! O esquema é um agrupamento de tabelas.
+
+Tabela
+  Alternativa Correta! Esta sim é a entidade básica
+
+Banco de Dados
+Alternativa Errada! O banco de dados é considerado uma unidade básica, não uma entidade básica
+
+
+
+
+1-5  Revisão - Tipos de dados
+
+
+Transcrição
+
+[0:00] Além de conhecer as entidades que fazem parte de um banco MySQL, uma informação muito importante que você também deve saber são os tipos de dados que o MySQL trabalha.
+
+[0:12] Todos os bancos de dados relacionais - seja ele MySQL, Oracle ou SQL Server, da Microsoft - eles possuem tipos de campos muito parecidos, mas os nomes e as referências desses campos podem mudar de um campo para outro, e aí antes da modelagem, antes de você projetar o seu banco, é legal que você saiba que tipos de dados você tem à disposição para saber como você vai usar na sua modelagem.
+
+[0:42] Vamos começar falando um pouquinho sobre os campos de tipos inteiros.
+
+[0:46] Número inteiros são número que não têm casas decimais, e aí nós temos, em uma SQL, cinco tipos de número inteiros.
+
+[0:54] Eles vão desde o Tinyint, Smallint, Mediumint, Int e Bigint.
+
+[1:08] A diferença desses campos é o número de bytes que cada um armazena dentro do banco.
+
+[1:16] Essa informação inclusive é importante, porque se você tem um número muito pequeno e você cria um campo do tipo bigint, embora você saiba que aquele número inteiro, quando você for gravar na tua tabela, ele não vai passar de um valor específico, vai ser sempre um valor muito baixo, você vai estar gastando oito bytes para armazenar um número que não vai chegar a um byte.
+
+[1:39] Então, é legal você saber os tipos de campos e o tamanho que eles vão armazenar para você projetar bancos de dados mais otimizados, ok?
+
+[1:53] Claro, então, que esses campos possuem o menor e o maior valor possíveis.
+
+[2:01] O Tinynt vai de -128 a +127; o Smallint vai de -32.768 a 32.767, só que quando a gente cria um campo numérico a gente tem uma propriedade no MySQL chamado Unsigned.
+
+[2:24] O unsigned significa o seguinte: se eu digo que um campo é unsigned, ele não vai ter negativo, ele só vai ter número positivo, e aí o menos do número negativo é uma coisa que ocupa espaço no armazenamento do campo, então, quando eu digo que o número não tem número negativo, o range, ou seja, o espaço que eu tenho armazenado para gravar números positivos aumenta.
+
+[2:55] Então, quando o número é unsigned, o tinyint, que o limite máximo seria 127 passa a ser 255.
+
+[3:05] O smallint, que o valor mínimo era 32.767, passa a ser 65.535.
+
+[3:15] Então há um aumento desse valor do espaço reservado para armazenagem do número inteiro, e isso se aplica ao mediumint, ao int e ao bigint, ok?
+
+[3:33] Agora vamos falar dos números decimais.
+
+[3:37] Nós temos o Float e o Double.
+
+[3:40] A diferença deles é a precisão: uma usa a precisão simples e a outra usa a precisão dupla.
+
+[3:48] Uma ocupa 4 bytes do meu banco e o outro ocupa 8 bytes.
+
+[3:55] O precisão tem muito a ver com a forma com que o número é armazenado, então, às vezes o número, internamente, ele é armazenado com muitas casas decimais, mas a gente, depois, quando visualiza ele, ele faz uma aproximação através desse ponto flutuante no valor decimal que ele realmente tem.
+
+[4:14] Então, se eu digo que um campo, por exemplo, é float de 7 dígitos com 4 casas decimais, ou seja, o primeiro parâmetro do float é o número de dígitos totais do número incluindo os decimais, e o que eu tenho depois da vírgula é só o que eu vou ter na parte decimal.
+
+[4:34] Então, se eu digo que o float é 7 de 4, um número, por exemplo, 999,00009, quando eu armazenar, ele será armazenado como 999,0001, ou seja, ele vai arredondar esse número e armazenar dentro do espaço que foi determinado.
+
+[5:02] Outros números decimais mas que não são de pontos flutuantes é o Decimal ou Numeric, pode ser um ou outro, eles são iguais.
+
+[5:10] Eles armazenam número de até 65 dígitos, incluindo as casas decimais, e esses números são fixos, esse tamanho é fixo, ou seja, quando eu coloco o número lá ele vai ocupar o número de casas decimais até o finalzinho do que o número ocupa, ok?
+
+[5:30] O seu tamanho não é variável, ele já é um tamanho fixo reservado para aquele número, tem uma precisão numérica melhor.
+
+[5:40] O tipo Bit, como o próprio nome diz, é um bit apenas, ok?
+
+[5:46] Mas eu posso ter um campo de bit de 2, de 3, de 4, mas o conteúdo lá dentro vai ser caracteres binários: ou 1 ou 0. Então, se eu digo que é bit de 1, eu posso armazenar ou 1 ou 0, mas se eu digo que o campo é bit de 2 eu posso armazenar 01, 10, 00 ou 11, ou seja, eu tenho 4 tipos de números binários que eu posso armazenar no bit de 2.
+
+[6:20] Normalmente o bit 1 a gente utiliza para armazenar campos lógicos onde eu tenho alguma coisa que é verdadeira ou falsa, e normalmente a gente aplica o 1 para o verdadeiro e o 0 para o falso.
+
+[6:38] Como eu falei, os campos numéricos possuem atributos, signed ou unsigned, se o número vai ter ou não número negativo.
+
+[6:50] Zerofil, alguns números, geralmente os que não são de ponto flutuante, eu preencho com zeros os espaços antes do número inteiro até chegar ao tamanho do número.
+
+[7:03] Então, um número inteiro que eu armazeno, o número 5, eu vou armazenar o número 0005, ou seja, eu vou colocar 3 zeros na frente de tal maneira que o número de dígitos bata com esse número que eu acrescentei aqui.
+
+[7:21] A gente tem também campos numéricos que são do tipo auto incremento.
+
+[7:26] O auto incremento é um número sequencial que vai ser crescido automaticamente na medida em que eu vou inserindo dados da tabela, e aí além de crescimento desse número sequencial eu posso determinar, pode ser um número que cresça de 1 em 1, de 5 em 5, e assim por diante.
+
+[7:46] O auto incremento ele é muito usado quando eu quero criar chaves primárias randômicas, que não vão se repetir nunca.
+
+[7:54] Randômicas, não, sequenciais.
+
+[7:57] Randômicas a gente estaria falando de coisas aleatórias, mas não, o auto incremento respeita um critério, e aí eu sei que todo insert que eu fizer dentro dessa tabela, ou seja, toda inclusão de dados, nunca esse campo vai se repetir, porque ele é do tipo auto incremento.
+
+[8:16] Quando a gente tenta armazenar um número maior do que ele suporta, eu digo que o número é um tinyint ou smallint e eu quero gravar um número grande, eu sempre vou ter erro no momento da gravação, que são os erros chamados de out of range.
+
+[8:33] Então, quando você estiver trabalhando com SQL e ver um erro do tipo out of range, já sabe que é alguma coisa que você que gravar que é maior do que é suportado.
+
+[8:46] A gente tem os campos de data, que são superimportantes no banco de dados, e aí eu posso ter tipos de bancos diferentes.
+
+[8:55] Date é um campo de data que somente vai armazenar ano, mês e dia, e varia do dia 1 de janeiro do ano 1000 até o último dia de dezembro de 9.999.
+
+[9:16] O date time é igual ao date, só que além da data, eu armazeno a hora, então eu posso, também, ter uma precisão maior do dado armazenado, e aqui em cima vocês podem ver o limite inferior e superior.
+
+[9:33] O timestamp é parecidíssimo com o date time, só que ele tem um limite menor e ele utiliza o fuso horário para estar armazenando a informação.
+
+[9:45] Normalmente, a informação vem com o fuso horário de Greenwich, que é o fuso horário padrão do mundo, o fuso zero, e depois eu posso também trabalhar com fusos horários para poder gravar, por exemplo, dados com fuso horário do Brasil, outro com fuso horário dos Estados Unidos, e assim por diante.
+
+[10:07] Aplicações do tipo timestamp normalmente são aplicações em que você envolve, por exemplo, um workflow ou alguma comunicação entre pessoas que estão, por exemplo, em países diferentes.
+
+[10:19] O time ele só armazena a hora, mas não é a hora do relógio, é um valor crescente de hora, que tem os limites ali especificados.
+
+[10:31] E o campo do tipo year ele armazena só ano, e ele varia de 1.901 a 2.155.
+
+[10:40] E o campo year pode ser expresso com 2 dígitos ou com 4 dígitos.
+
+[10:47] Os campos string nós chamamos de dois: varchar e char.
+
+[10:55] O char tem valor fixo, ou seja, quando a gente diz que o char tem 255 caracteres, se eu gravar um caracter com 1 dígito apenas, por exemplo a letra A, ele vai ocupar os 255 dígitos.
+
+[11:13] Ele vai gravar o A e 254 espaços em branco.
+
+[11:18] Já o varchar, não.
+
+[11:19] O varchar, apesar de eu dizer que há um limite máximo de tamanho, se eu gravo a letra A nesse exemplo e o campo tem 255 dígitos, eu só gravo 1 dígito na base.
+
+[11:36] Ou seja, o varchar ele é mais inteligente para controlar tamanhos.
+
+[11:44] Eu tenho também os valores binários, que também podem variar de 0 a 255 caracteres, porém os dados que são gravados são bits, 1, 0, 0, 1 e assim por diante.
+
+[11:59] Não consigo ver, ali, letras nem números, só o número 1 e o número 0.
+
+[12:08] Nós temos alguns strings que nós chamamos de strings longos.
+
+[12:11] O blob é um string desse tipo, e tem alguns tipos: tinyblob, blob, mediumblob, longblob.
+
+[12:20] E o texto, que é o texto longo.
+
+[12:24] O blob tem a ver com binários e o blob com strings.
+
+[12:29] Com texto propriamente dito, claro, como o próprio nome diz.
+
+[12:35] O blob eu uso para gravar coisas binárias, então, por exemplo, eu posso gravar o conteúdo de uma foto, de um arquivo, que é binário, no campo blob.
+
+[12:47] Já no campo texto é só caracteres que respeitam as tabelas ASCIIS dependendo de cada tabela que o computador suporta, que são tabelas que convertem números em letras.
+
+[13:02] O enum são campos que me dão opções, então, por exemplo, eu digo que o campo é do tipo enum e tenho aqui: x-small, small, medium, large, x-large.
+
+[13:16] Ou seja, quando eu dou insert nesse campo, se eu der um string diferente desse conjunto que está aqui, o banco de dados vai me dar um erro, vai dizer que eu não posso.
+
+[13:27] Esses são os campos do tipo enum.
+
+[13:31] Todos os campos string têm um campo chamado set e collate, que têm a ver com o conjunto de caracteres suportados, com aquelas tabelas ASCIIs que eu falei há alguns minutos atrás.
+
+[13:45] Quando a informática começou a ser difundida, a conversão de caracteres em números binários para serem armazenados no computador respeitavam somente uma tabela muito simples onde o acento, por exemplo, não era suportado.
+
+[14:03] Eu não tinha o caracter A com acento ou Ç.
+
+[14:07] Aí começaram a surgir outras tabelas de armazenamento de dados que englobava, por exemplo, os caracteres latinos, russos, ou, por exemplo, os símbolos islâmicos.
+
+[14:19] Enfim, há um conjunto de tabelas que suporta outros símbolos além dos que você vê no seu teclado.
+
+[14:27] Você pode, ao criar um campo com o MySQL, especificar que conjunto de caracteres você vai estar utilizando para aquele campo.
+
+[14:39] Também, agora, somente nas versões mais recentes do MYSQL, surgiram campos do tipo espacial.
+
+[14:47] Com o advento do uso de mapas, você poder desenhar campos nos mapas, poder traçar áreas para poder dizer: "essa é a minha área de venda", ou eu traço uma área de um Estado para pintar, dizer qual foi o valor da venda daquele Estado, esses desenhos em mapas a gente pode armazenar em banco de dados através dos campos espaciais.
+
+[15:13] Então, o geometric ele armazena uma figura geométrica, ou seja, tem todas as coordenadas dentro desse campo que fazem com que eu consiga desenhar essa figura dentro de um mapa.
+
+[15:26] O point é um ponto, o line string é uma linha onde eu coloco o ponto origem e um ponto destino e ele traça uma linha até lá.
+
+[15:35] E o polígono ele é um detalhamento mais específico da área, que geralmente é fechada.
+
+[15:44] É o tipo do campo polígono.
+
+[15:48] Ok. Então, eram esses os campos que eu queria estar mostrando para vocês antes de realmente a gente começar a entrar no MySQL e começar a criar tabelas, está legal? Valeu, gente, obrigado.
+
+
+
+
+
+1-6  Chave primária
+
+O que é uma chave primária?
+
+É uma restrição a base que determina que campos cujos valores não podem se repetir dentro das linhas das tabelas
+  Alternativa Correta! Esta é a definição de chave primária.
+
+É uma restrição que determina os intervalos de valores de um campo
+  Alternativa Errada! Este tipo de restrição até existe. Mas não é chave primária.
+
+É uma restrição que determina que o valor dos campos devem existir em uma outra tabela
+  Alternativa Errada! Esta é uma definição de chave estrangeira.
+
+
+
+
+1-7  Modelagem
+
+
+Transcrição
+
+    Atenção: O objetivo desta aula é mostrar que o banco de dados deve ser montado conforme a modelagem. Se é 1:1 ou 1:N vai depender do tipo de negócio. Apresento aqui um exemplo hipotético que contenha todas as possíveis relações.
+
+    O analista de sistemas deve olhar o resultado do diagrama e montar o banco baseado nele. Se alguém escreveu que a regra é 1:1 ele vai criar assim. Se a regra é 1:N ele vai criar diferente. Não cabe o analista questionar o negócio. Ser 1:N não é sempre verdade.
+
+    Um outro exemplo: Se o banco de dados de um Airbus? Apesar do avião ter um modelo, cada avião tem um número de série único e seu cadastro está associado a um único item de uma venda e não se repete.
+
+    O importante é que independente do resultado do modelo, iremos construir um banco de dados baseado no que o diagrama apresentado nos mostra.
+
+[0:01] Quando a gente vai projetar um banco de dados a gente tem que conhecer bem o negócio no qual o banco de dados está modelando.
+
+[0:11] E aí existe toda uma regra - existe livros, inclusive, sobre isso - que nos ajuda a fazer o projeto de um bom banco de dados.
+
+[0:21] Eu não vou entrar a fundo neste curso nem neste vídeo, falando sobre esses processos de modelagem, mas a gente tem que levar em consideração que a gente precisa, claro, ter um grande entendimento das regras de negócio, conversar, fazer entrevistas, entender com o usuário como é que o seu negócio funciona, e tentar desenhar um banco de dados que modelo o processo da empresa na sua maneira mais fiel e próximo à realidade.
+
+[0:57] Bem, a partir do momento que você tem essas informações, você constrói o que nós chamamos de um diagrama de entidade e relacionamento.
+
+[1:08] É como se fosse um diagrama que diz como é que cada entidade da sua empresa se relaciona entre si, e nós vamos estabelecer uma cardinalidade entre essas entidades.
+
+[1:25] Dar um exemplo hipotético: isso aqui é um diagrama de relacionamento.
+
+[1:31] A gente costuma construir as relações usando verbos do tipo "um vendedor realiza venda", "o cliente está contido em uma venda", "a venda, por exemplo, possui itens vendidos" e "o produto está contido em itens vendidos".
+
+[2:00] Eu estou aqui modelando uma modelagem clássica de um sistema vendas, então, eu tenho a entidade vendedor, eu sei que o vendedor vai lá e ele que faz a venda, ele liga para o cliente, ele convence o cliente, estabelece proposta, preço, e aí quando a venda é executada, eu tenho que estar registrado na venda o vendedor que fez isso, então, por isso que o vendedor realiza a venda.
+
+[2:26] Só que ao vender precisa ter um cliente que está fazendo aquela compra.
+
+[2:31] Que foi graças à atuação do vendedor que ela aconteceu.
+
+[2:36] Então, dentro da venda, o cliente contém uma venda com ele.
+
+[2:44] Pois bem, as relações de um pra N aqui, o que significam? Significa o seguinte: um vendedor pode estar relacionado com muitas vendas.
+
+[2:57] Então, a relação vendedor e venda é de 1 para N.
+
+[3:02] Da mesma maneira, o cliente pode ter várias vendas, pode compras várias vezes.
+
+[3:12] Dependendo da situação, pode comprar no mesmo dia, na mesma semana ou no mesmo mês, mas ele vai estar presente em diversas vendas.
+
+[3:21] Então, a relação aqui é de 1 para N.
+
+[3:26] Só que a venda, normalmente, você tem uma informação que é igual para aquela venda, e às vezes você compra alguns itens.
+
+[3:40] Quer dizer, na verdade você está vendendo itens, num documento de venda geralmente você tem um cabeçalho onde são dados específicos, comuns dentro daquela venda, e os itens que estão sendo vendidos.
+
+[3:56] Na minha empresa de suco de frutas, que é a empresa que eu estou modelando aqui, eu tenho vários produtos, então, o cliente, em uma venda, pode comprar 10 produtos do tipo A, 8 produtos do tipo B, e assim por diante.
+
+[4:12] Então, nesse caso, há uma relação entre venda e item vendido.
+
+[4:18] De 1 para ele, uma venda pode ter vários itens vendidos.
+
+[4:25] Um item vendido só pode estar relacionado com uma venda, e o item vendido, propriamente dito, tem só um produto.
+
+[4:35] Eu não posso ter, no mesmo item, vários produtos.
+
+[4:38] Então, o meu cadastro de produtos contém itens na relação de um para um.
+
+[4:47] Então, esse tipo de entendimento do processo da empresa, como é que as entidades se relacionam, constroem esse diagrama de relacionamento.
+
+[5:02] Aí cada entidade daquela, cliente, vendedor, produto, nota fiscal, item de nota fiscal que a gente identificou no processo, a gente tem que estabelecer o que nós chamamos das características das entidades.
+
+[5:19] Então, deixa eu voltar aqui.
+
+[5:23] Essas características são propriedades que aquela entidade possui, por exemplo, nome, idade, tamanho, preço.
+
+[5:31] Aí agora sim eu vou para o próximo slide, então, aquele diagrama de relacionamento que antes era só entre vendedor, venda, cliente, produto, itens vendidos, a gente estende ele e mostra as suas propriedades.
+
+[5:50] Por exemplo, o cliente tem nome, endereço, bairro, cidade, estado, CEP, idade, sexo.
+
+[5:57] O vendedor tem lá nome, bairro, que é onde fica o escritório do vendedor, comissão, data admissão, ou se está de férias ou não.
+
+[6:06] O produto tem lá descritor, sabor, tamanho.
+
+[6:11] E os itens vendidos normalmente eu tenho lá no cabeçalho da venda dados que são globais para a venda como um todo, que normalmente são os dados de imposto, do cliente e do vendedor.
+
+[6:24] E nos itens é que eu tenho dados do código do produto.
+
+[6:29] Então, eu tenho aqui um exemplo da expansão das propriedades em cima daquele modelo que eu estou ilustrando a vocês a modelagem.
+
+[6:41] Cada entidade de relacionamento ele acaba virando uma ou mais tabelas.
+
+[6:47] E cada conexão que está contida entre essas entidades, vai virar um relacionamento do banco de dados.
+
+[6:56] Então, aquele diagrama de entidades que eu criei vai virar tabelas onde eu vou definir como chaves primárias aquilo que não pode se repetir, aquilo que identifica a entidade.
+
+[7:13] Cada propriedade vai virar um campo da tabela, e aí dependendo da propriedade eu já especifico qual é o seu tipo.
+
+[7:22] E os relacionamentos serão as chaves estrangeiras.
+
+[7:25] Então, assim, esse diagrama de relacionamento acaba virando esse esquema de tabelas.
+
+[7:41] Aí quando a gente tem esse diagrama de tabelas pronto, a gente parte para construí-lo fisicamente em uma base de dados relacional.
+
+[7:49] No nosso caso, o MySQL.
+
+[7:51] Existem ferramentas que nós chamamos de ferramentas case, que já facilitam a construção desses bancos, onde a gente, nas ferramentas case, desenha esse esquema de relações, graficamente, e aí automaticamente a ferramenta gera os códigos de criação.
+
+[8:16] A gente, aqui, tem como objetivo conhecer o MySQL, então a gente não vai, claro, pegar uma ferramenta de relacionamento, colocar graficamente as tabelas e depois gerar o banco de forma automática.
+
+[8:31] A gente vai star construindo esse banco na mão, através de comandos SQL, mas baseados nesse esquema aqui em cima que nós estamos olhando, que foi resultado do esquema de entidades e relacionamento que nós construímos aqui, que veio originalmente do entendimento do negócio e das entrevistas com os nossos usuários.
+
+[8:58] Tá legal? Então tá, gente, é isso que eu queria falar um pouquinho sobre modelagem. Valeu.
+
+
+
+
+
+1-8  Requisitos de um banco de dados
+
+Marque as alternativas verdadeiras que representam requisitos para o início da construção de um banco de dados:
+
+Não efetuar as atividades de entrevistas e reuniões
+  Alternativa errada! É justamente o contrário, o requisito é efetuar as atividades de entrevistas e reuniões, que é um dos requisitos mencionados no vídeo.
+
+Entendimento das regras de negócio
+  Alternativa correta! Este é um dos requisitos mencionados no vídeo.
+
+Desenho de modelo mais fiel a realidade.
+  Alternativa correta! Este é um dos requisitos mencionados no vídeo.
+
+
+
+
+
+1-9  Passos importantes para construção do modelo conceitual.
+
+Marque as opções verdadeiras que representam os passos para construção de um modelo conceitual:
+
+Construção do diagrama de entidades e relacionamentos.
+  Alternativa Correta! Este é um dos requisitos mencionados no vídeo.
+
+Criar o banco de dados no SQL SERVER.
+  Alternativa Errada! Não fazemos isso ainda durante a definição do modelo conceitual.
+
+Estabelecer cardinalidade entre as entidades.
+  Alternativa Correta! Este é um dos requisitos mencionados no vídeo.
+
+
+
+
+
+
+1-10  Consolidando o seu conhecimento
+
+Chegou a hora de você seguir todos os passos realizados por mim durante esta aula. Caso já tenha feito, excelente. Se ainda não, é importante que você execute o que foi visto nos vídeos para poder continuar com a próxima aula.
+
+1) Instale o MySQL, conforme o vídeo Instalando o MySQL Server, da aula 1 do curso Introdução ao SQL: Manipule dados com MySQL.
+
+Curso
+https://cursos.alura.com.br/course/mysql-manipule-dados-com-sql/task/54324
+
+Aula:
+https://cursos.alura.com.br/course/mysql-manipule-dados-com-sql
+
+
+2) Abra o MYSQL Workbench. Use a conexão LOCALHOST e certifique que o ambiente está funcionando.
+Opinião do instrutor
+
+Continue com os seus estudos, e se houver dúvidas, não hesite em recorrer ao nosso fórum!
+
+
+
+
+
+1-11  O que aprendemos?
+
+  Como modelar um banco de dados baseado no negócio da empresa;
+  
+  Revisamos todas as entidades envolvidas em um banco de dados;
+  
+  Aprendemos os tipos de dados que compõem uma tabela.

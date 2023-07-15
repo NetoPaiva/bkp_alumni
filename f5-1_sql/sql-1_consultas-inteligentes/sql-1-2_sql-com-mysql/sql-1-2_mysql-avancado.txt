@@ -1,0 +1,136 @@
+https://cursos.alura.com.br/course/mysql-consultas-sql
+
+Data Science > Cursos de SQL e Banco de Dados
+
+Curso de
+Consultas SQL: avançando no SQL com MySQL
+
+
+Formação com esse curso
+SQL com MySQL Server da Oracle
+
+
+Instrutor(a)
+
+    instructor Victorino Vila
+
+    Linkedin
+    https://www.linkedin.com/in/victorino-vila-1a160/
+
+    Victorino é desenvolvedor com foco em .NET e Web Services. Durante mais de 20 anos gerenciou uma empresa de consultoria na área de tecnologia. Criou e desenvolveu projetos de planejamento, Business Intelligence e integração de dados, além de databases de relacionamento com foco em BI, usando SQL Server, MYSQL ou DB2. Suas soluções são usadas em Brasil, nos EUA e na Europa. É consultor sênior certificado em SAP BW.
+
+
+Faça esse curso de SQL e Banco de Dados e:
+
+    Pagine seus dados com LIMIT
+    Filtre consultas com HAVING
+    Entenda a diferença entre o LEFT e RIGHT JOIN
+    Saiba usar Sub-Queries
+    Use funções do MySQL
+    Ordene os seus dados usando o ORDER BY
+    Agrupe dados com GROUP BY
+
+
+
+Aulas
+
+1- Configurando ambiente e conhecendo o SQL | 0 / 8 | 47min
+
+https://cursos.alura.com.br/course/mysql-consultas-sql/section/8141/tasks
+
+    Introdução
+    Preparando ambiente
+    História do SQL
+    Vantagem da linguagem SQL
+    Longevidade do SQL
+    História do MYSQL
+    Consolidando o seu conhecimento
+    O que aprendemos?
+
+2- Filtrando as consultas de dados | 0 / 12 | 57min
+
+https://cursos.alura.com.br/course/mysql-consultas-sql/section/8142/tasks
+
+    Conhecendo o banco de dados
+    Por que visualizar o esquema de dados
+    Revisando consultas
+    Listando dados de uma tabela
+    Consultas condicionais
+    Resolvendo a estrutura lógica
+    Aplicando consultas condicionais
+    Selecionar vendas
+    Usando o LIKE
+    Buscando clientes
+    Consolidando o seu conhecimento
+    O que aprendemos?
+
+3- Apresentação dos dados de uma consulta | 0 / 14 | 51min
+
+https://cursos.alura.com.br/course/mysql-consultas-sql/section/8143/tasks
+
+    Usando DISTINCT para visualizar a tabela
+    Bairros da cidade do Rio de Janeiro
+    Limitando a saída da consulta
+    Observando uma amostra de dados
+    Ordenando a saída da consulta
+    Maior venda
+    Agrupando os resultados
+    Número de vendas
+    Usando a condição HAVING
+    Clientes de compras em 2016
+    Classificar resultados
+    Classificando o número de vendas
+    Consolidando o seu conhecimento
+    O que aprendemos?
+
+4- Juntando tabelas e consultas | 0 / 14 | 70min
+
+https://cursos.alura.com.br/course/mysql-consultas-sql/section/8144/tasks
+
+    Usando JOINS
+    Obtendo o faturamento anual
+    Exemplos de LEFT e RIGHT JOIN
+    Selecionando o tipo de JOIN
+    Exemplos de FULL e CROSS JOIN
+    Nova seleção do tipo de JOIN
+    Juntando consultas
+    Diferenças de UNION e UNION ALL
+    Subconsultas
+    Relação entre HAVING e subconsulta
+    Visão
+    Características da visão
+    Consolidando o seu conhecimento
+    O que aprendemos?
+
+5- Funções do MYSQL | 0 / 10 | 53min
+
+https://cursos.alura.com.br/course/mysql-consultas-sql/section/8145/tasks
+
+    Funções de string
+    Listando o endereço completo.
+    Funções de datas
+    Idade dos clientes
+    Funções matemáticas
+    Formato do faturamento
+    Conversão de dados
+    Listando expressão natural
+    Consolidando o seu conhecimento
+    O que aprendemos?
+
+6- Exemplos de relatórios | 0 / 9 | 52min
+
+https://cursos.alura.com.br/course/mysql-consultas-sql/section/8146/tasks
+
+    Relatório de vendas válidas
+    A consulta do relatório
+    Relatório de vendas por sabor
+    Vendas percentuais por tamanho
+    Consolidando o seu conhecimento
+    O que aprendemos?
+    Conclusão
+    Próximos passos
+    Projeto do curso
+
+
+
+

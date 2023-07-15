@@ -1,0 +1,251 @@
+https://cursos.alura.com.br/course/mysql-procedures
+
+Data Science
+Cursos de SQL e Banco de Dados
+
+Curso de
+Procedures SQL: executando código no MySQL
+
+
+
+Aula 1. Preparando ambiente | 0 / 5 | 30min
+
+  1-1  Introdução
+  1-2  Preparando o ambiente Instalando o MYSQL
+  1-3  Recuperando a base de dados
+  1-4  Consolidando o seu conhecimento
+  1-5  O que aprendemos?
+
+
+
+1-1  Introdução
+
+
+Transcrição
+
+[00:00] Tudo bem, gente? Meu nome é Victorino Vila e eu vou ministrar o curso de "PROCEDURES E FUNÇÕES MySQL". Como eu já falei em cursos anteriores, a linguagem "ANSI", que é a linguagem onde o "SQL" é baseado, não tem uma estrutura de fluxo. Então, a gente não consegue pelo "SQL" fazer coisas mais complexas.
+
+[00:24] Mas os bancos de dados implementam o que nós chamamos de stored procedures ou funções onde nós podemos construir programas um pouco mais estruturados. É essa linguagem que a MySQL disponibiliza para criar coisas mais estruturadas, que nós veremos nesse treinamento. A gente vai começar então, o treinamento, recuperando o ambiente.
+
+[00:45] Porque, claro, a gente vai levar em consideração que já existe um banco com dados e, que a gente vai usar esse banco como fonte para os nossos exercícios. Então, nós vamos começar recuperando esse ambiente e a gente vai falar um pouquinho sobre o conceito do stored procedures. Como ela se organiza, como é que a gente cria uma história em procedure básica.
+
+[01:04] E aí, vamos começar a aprender coisas um pouco mais complexas como, por exemplo, entender o que é uma variável dentro da stored procedures. Como a gente cria essa variável, é o que nós vamos aprender. Depois, nós vamos aprender como é que eu passo parâmetros para a stored procedures, ou seja, ao chamar a stored procedures, eu posso passar parâmetros para que esses parâmetros sejam, digamos assim, valores iniciais para a execução da história de procedures.
+
+[01:35] Depois, nós vamos ver um ponto muito importante - como é que a gente trata erros na stored procedures. Caso aconteça erro, em vez de eu querer que a stored procedures pare de ser executada, eu posso fazer um tratamento desse erro. A gente vai ver, também, variáveis dentro da stored procedure, como é que a gente declara essas variáveis e como a gente atribuir valores a elas quando essas variáveis têm que receber valores que vem de um comando select.
+
+[02:03] Algum select específico de alguma tabela. Eu quero buscar a informação que tá lá e atribuir a uma variável. A gente vai aprender como é que faz isso. Depois, nós vamos passar a entender o que realmente vale à pena, na stored procedures - que é o controle de fluxo. Como é que eu um "IF". Como é que eu uso um "CASE". E até mesmo como a gente constrói "LOOPS" dentro da própria stored procedures.
+
+[02:29] Aí finalmente, nós vamos falar sobre uma estrutura chamada "CURSOR". O "CURSOR" é quando a gente quer guardar dentro de uma variável, não o valor específico, mas sim uma série histórica de um resultado que tá vindo lá das minhas "QUERIES". Depois nós vamos ver como é que a gente trabalha com funções. Qual é a diferença básica realmente entre stored procedures e "FUNÇÕES".
+
+[02:54] E, finalmente, nós vamos ver dois problemas práticos: um é como a gente cria uma venda dentro do nosso banco de forma aleatória. E depois a gente vai falar sobre um problema que foi visto em um curso anterior a esse, na criação de triggers, como é que a gente melhora isso usando stored procedures. Temos bastante assunto a tratar nesse treinamento e espero que vocês gostem. Um grande abraço. Então, vamos iniciar. Tchau, tchau.
+
+
+
+1-2  Preparando o ambiente Instalando o MYSQL
+
+
+Transcrição
+
+[00:00] Então, vamos conversar? A primeira coisa que a gente precisa fazer é ter nosso ambiente para poder fazer os exercícios práticos desse treinamento. E a primeira coisa que a gente precisa ter é o MySQL instalado na nossa máquina. Se você está fazendo todos os treinamentos na ordem, e a máquina que você está usando agora é a mesma máquina que você usou no curso passado.
+
+[00:24] Ou seja, você tem o MySQL instalado, o "MySQL WORKBENCH" também instalado. Então, você não precisa nem seguir mais esse vídeo. Esse vídeo é mais para que, se você tem seguido a carreira de MySQL, mas por algum motivo está usando um computador vazio, em branco. Um computador onde você não tenha mais o ambiente instalado. Então, você tem que reinstalar o seu MySQL.
+
+[00:51] Ou então, caso você tenha começado esse treinamento direto sem ter passado pelos outros. Então, se você já tem um MySQL na sua máquina, pode dar "PAUSE" aí. Se você não tem, então vou fazer o seguinte, eu vou colocar agora um outro vídeo onde eu mostro a instalação do MySQL. Então vamos lá. Vamos começar. Vamos, então, fazer a instalação do MySQL.
+
+[01:18] Eu posso fazer essa instalação tanto no ambiente Windows quanto no Linux. O caso aqui, devido ao equipamento que eu tenho à disposição para fazer esse treinamento, eu vou fazer a instalação nesse vídeo usando o sistema operacional Windows. E, também, nós vamos instalar o "IDE" chamado "WORKBENCH". O que é um "IDE"? É um programa que permite que a gente possa visualizar os objetos do banco de uma maneira mais gráfica.
+
+[01:49] Quando a gente vai trabalhar com o MySQL, por exemplo, tudo pode ser feito por linha de comando. Mas um "IDE" fica interessante a gente está utilizando. Porque aí, a gente pode ter várias consultas na mesma tela, olhar as tabelas de maneira gráfica. E o "WORKBENCH" é um "IDE" próprio do MySQL, ou seja, é a MySQL que fornece o "WORKBENCH".
+
+[02:15] E sim, existem vários outros "IDEs" para MySQL no mercado, mas a gente vai usar o do próprio MySQL. E também, o "WORKBENCH" pode ser instalado tanto em ambiente Windows, quanto ambiente Linux. No caso aqui, eu vou fazer a instalação no ambiente Windows. E, inclusive, o pacote de instalação já instala não somente o servidor MySQL, mas também o "IDE WORKBENCH".
+
+[02:40] Então, vamos começar. Eu vou abrir aqui o browser. Eu vou procurar por "MySQL DOWNLOAD". Então, tem aqui o link "MySQL DOWNLOADS". E aqui, nesse link, eu vou procurar por essa opção aqui: "MySQL COMMUNITY EDITION GLP". Lembra? Eu tenho a versão gratuita e a versão paga. Nós vamos usar a versão gratuita. Então, eu vou clicar aqui no link "COMMUNITY (GLP) DOWNLOADS" e eu vou procurar a opção, essa daqui.
+
+[03:23] No meu caso, eu vou estar usando a "MySQL ON WINDOWS (INSTALLER & TOOLS)". Eu tenho aqui vários links. Por exemplo, se eu quiser só instalar o "WORKBENCH", eu escolheria esse link aqui. Mas, eu vou selecionar aqui a opção "MySQL INSTALLER". E aqui em baixo, eu tenho as opções da instalação que eu quero fazer. Então, eu vou estar escolhendo essa aqui "MySQL INSTALLER WEB COMMUNITY 8.0.15.0".
+
+[04:11] Não necessariamente a versão que você vai estar instalando é a mesma que está aqui no vídeo. Depende da época em que você esteja assistindo a esse treinamento. Porque as versões de MySQL ficam mudando com uma certa frequência. No caso, se você encontrar uma versão mais atual, não tem problema, instale a que ele estiver sugerindo como sendo a última versão.
+
+[04:33] Vou clicar aqui em "DOWNLOAD". E aí, ele vai me pedir para fazer um login no site da Oracle. Lembra do que eu falei? A Oracle comprou a "SUN MICROSYSTEMS" e a "SUN" era dona do MySQL. Então, a Oracle passou a ser a dona do MySQL. Para a gente poder instalar, baixar qualquer produto Oracle, a gente precisa se logar usando uma conta da Oracle.
+
+[05:04] Se você não tem conta da Oracle nenhum problema. Você vem aqui, clica em "SIGN UP", aqui do lado em verde, no botão verde e faça um cadastro. Você vai colocar o nome, um e-mail, uma senha e só isso. Não precisa colocar cartão de crédito, não precisa pagar nada. No caso, eu já tenho um login. Então, eu vou clicar no botão "LOGIN". Vou colocar aqui meu usuário. E vou colocar aqui a minha senha. Vou clicar em "INICIAR SESSÃO".
+
+[05:43] E aí, vou clicar agora no botão "DOWNLOAD NOW". Bem, ele vai fazer o download de um arquivo pequeno. Porque depois de tudo que eu vou instalar, ele vai fazer o download da internet no momento da instalação. Vou clicar, então, no programa aqui: "MySQL INSTALLER". Aí ele vai dizer uma opção opcional, se eu quero já checar se existem updates para serem feitos.
+
+[06:21] Para que a gente possa fazer a instalação agora, não somente da versão que eu escolhi, mas também dos updates mais atuais. Eu vou clicar "YES". Nenhum problema de fazer as instalações desses upgrades. Ele está fazendo aqui o download do instalador com os upgrades. Pronto, comecei a instalação. Vou aceitar os termos da licença. Aqui, eu vou escolher a opção "DEVELOPER DEFAULT", porque aí eu vou instalar o servidor e uma série de conectores, tudo que é preciso para o MySQL estar funcionando.
+
+[07:15] Clicar em "next". Aqui, eu quero fazer um conector com o "PYTHON", mas o caso não é o meu objetivo. Eu vou dar "next". Clico aqui, "YES". E aí eu tenho aqui tudo que ele vai baixar. Note que aqui no meio, eu já tenho a instalação do "WORKBENCH", ou seja, não vou precisar depois ter que instalar o "WORKBENCH" de forma separada. Eu vou clicar aqui "EXECUTE", e ele vai começar a fazer o download dos módulos que vão ser usados para a instalação.
+
+[07:56] Então, eu vou fazer o seguinte. Vou parar o vídeo um instantinho aqui. E aí quando esse download terminar, eu volto para a gente continuar a instalação. Acabou a instalação, o download aqui dos componentes. Vou continuar a instalação. Clica em "next" novamente. Aí, eu tenho aqui dois tipos de estrutura de bancos de dados que eu vou estar trabalhando.
+
+[08:19] Eu vou estar usando essa primeira aqui "STANDALONE MySQL SERVER / CLASSIC MySQL REPLICATION". Tem aqui as configurações de porta, forma de comunicação entre o cliente e o servidor. A gente vai manter o que está aqui. Aqui é a forma como eu vou usar a minha autenticação. Têm dois tipos: uma em que a senha é criptografada, que vale para o "MySQL 8.0", que é a versão atual.
+
+[08:54] E uma que usa a segurança dos MySQL mais antigos. Eu vou manter a primeira opção selecionada. Aqui, eu vou colocar a minha senha. Vou estar colocando aqui. Ele não gostou muito da minha senha, diz que ela está fraca, mas não tem problema. Vou clicar aqui em "next". Eu não vou aqui, deixa eu voltar aqui um instante. Eu não vou criar outros usuários por enquanto, porque eu vou estar usando esse mesmo usuário que é o usuário que a gente chama de "ROOT".
+
+[09:39] O quê que é o usuário root? É o usuário padrão do banco MySQL, e a gente vai usar esse usuário para acessar o banco e estar utilizando os nossos exercícios práticos. O que eu fiz aqui foi definir a senha desse usuário "ROOT". Não se esqueça dessa senha. "next" Aqui é o nome do serviço, porque o MySQL vai ser um serviço do Windows que vai ser sempre ser inicializado quando a máquina, por exemplo, for dar um "BOOT", alguma coisa.
+
+[10:15] Sempre quando a máquina voltar, o banco vai estar no ar também. E aí embaixo a gente seleciona aqui. Qual é o usuário que vai gerenciar esse serviço? Aqui nós não vamos mudar nada. Tem aqui tudo que ele vai executar durante a instalação. Eu clico "Execute". E aí ele vai começar a fazer a instalação, inicializar o banco de dados, inicializar o servidor e assim por diante.
+
+[10:45] Então eu vou parar o tempo aqui. Vou parar o vídeo um instantinho, e volto assim que todos os passos tiverem... Eu achei que ia demorar. Acabou rápido. Então, eu vou manter. Não vou nem parar o vídeo não. Vamos lá. Vou clicar em "FINISH". Vou dar aqui depois do Nexus. E agora vai fazer algumas outras configurações, por enquanto eu não vou não tá fazendo nada, clique em finish next novamente pelos aqui a conexão com o servidor eu vou colocar aqui a minha senha.
+
+[11:27] Posso até clicar em "CHECK" para saber se a conexão é feita. A conexão entre o cliente e o servidor foi feita com sucesso. E vou executar essa segunda parte da instalação. Agora sim, eu vou parar o vídeo. Eu não sei quanto tempo vai demorar. Olha só, me pegou de novo. Eu achei que ia demorar. Foi rápido. Vou clicar aqui em "FINISH". Ele vai fazer novas configurações.
+
+[12:02] E aqui, ao dar esse último "FINISH", ele já vai me inicializar o "WORKBENCH", que é aquela interface de "IDE" para a gente manipular o banco de dados MySQL. Vou clicar aqui em "FINISH". Essa tela que ele abriu aqui, a gente pode ignorar. E note, automaticamente ele já me criou aqui uma conexão. Essa aqui é a conexão local da minha máquina.
+
+[12:33] Ou seja, a minha máquina tem o servidor, mas tem um cliente também. E o update já vem com essa conexão previamente configurada. Se eu clicar aqui nesse quadradinho, ele vai perguntar a senha do meus usuário "ROOT". Vou colocar aqui. Vou salvar a senha para não precisar ter que colocar a senha toda hora. E aí pronto. Eu entrei e eu tenho aqui já o meu "WORKBENCH" já configurado.
+
+[13:12] Ele mostrou aqui uns códigos que, talvez, vocês não vão ver esse código aqui. Mas é porque essa minha máquina já tinha, antes de gravar esse treinamento, o MySQL instalado e tinha, na memória, alguns scripts de "SQL" já salvos. O que você vai ter, caso você tenha feito todos os passos de maneira correta, é essa tela aqui do "MySQL WORKBENCH". Tudo bem? Então, pronto. Já estamos preparados para começar o nosso tratamento de SQL.
+
+
+
+1-3  Recuperando a base de dados
+
+
+Transcrição
+
+O arquivo RecuperacaoAmbiente.zip pode ser baixado aqui.
+https://caelum-online-public.s3.amazonaws.com/1223-mysqlproceduresefuncions/01/RecuperacaoAmbiente.zip
+
+
+
+[00:00] Ok. A gente, agora, vai ter que recuperar uma base que nós vamos usar como exemplo para esse treinamento. Se você já vem fazendo os cursos da carreira de MySQL na sequência e está com o ambiente que você usou nos treinamentos anteriores; essa base de dados que nós vamos usar como exemplo, ela já existe. Se você teve que instalar o MySQL agora, então faz o seguinte: continue assistindo a esse vídeo.
+
+[00:24] E aí, eu vou mostrar agora aqui um outro vídeo onde a gente faz a recuperação desse ambiente. Então, não saia daí. Nesse momento todo mundo deve estar com o MySQL e o "MySQL WORKBENCH" instalados na máquina. Vamos agora recuperar a base. Eu vou executar o "MySQL WORKBENCH". E aí, vou acessar essa base aqui. Essa base não, essa conexão que foi configurada quando a gente instalou o nosso MySQL.
+
+[01:00] Vou clicar. E claro, aqui eu não tenho nenhum banco à disposição. Se você está usando o MySQL do curso de introdução ao "SQL" com o MySQL, você deve estar olhando aqui, também, a base que nós usamos nesse treinamento anterior. Mas não importa, nós vamos criar uma base nova. E para criar essa base nova, eu clico com o botão direito do mouse sobre essa área.
+
+[01:29] Clico em "CREATE ESQUEMA". E vou criar aqui uma base chamada "SUCOS_VENDAS". É esse o nome da base de dados que nós vamos trabalhar nesse treinamento. Vou clicar em "APPLY". "APPLY". "FINISH". Temos, então, aqui a nossa base "SUCO_VENDAS" criada, porém vazia. Sem tabela e sem nenhum dado. Mas vamos recuperar isso através de um link, que nós temos associado aqui a esse treinamento.
+
+[02:07] Clique nele. Baixe. Você vai ver um arquivo zip com esse nome aqui: "RECUPERAÇÃOAMBIENTE.ZIP". Descompacte ele. Você deve ver uma lista de arquivos como mostrado aqui em cima. Mas a nossa mais importante (pasta) é esse subdiretório aqui: "DUMPSUCOSVENDAS". Eu vou voltar aqui ao "WORKBENCH". Eu vou clicar nesse link aqui primeiro.
+
+[02:39] Na aba "ADMINISTRAÇÃO" e depois eu vou clicar em "DATA IMPORT/RESTORE". Cliquei e eu tenho aqui a minha caixa de diálogo, onde eu vou restaurar um arquivo que foi anteriormente feito o backup. No caso, é aquele diretório que eu especifiquei para vocês, o diretório "DUMPSUCOSVENDAS", que possui a base de dados que nós vamos recuperar.
+
+[03:12] E aqui, nessa caixa de diálogo, eu vou selecionar aquele subdiretório. Então, eu vou clicar aqui. No meu caso, ele está aqui. Selecionei o diretório, que foi o diretório que veio, que apareceu na descompactação do arquivo, e eu tenho ele aqui. Já posso recuperar. Só que tem um probleminha aqui. Note que a resolução que eu estou usando aqui na máquina, ela é muito baixa.
+
+[03:59] Justamente para gravar os vídeos e ficar umas letras um pouco maiores, para que vocês possam assistir ao vídeo de madeira mais clara. Só que eu não consigo aqui, não tem um scroll, eu não consigo clicar no botão de inicializar recuperação. Então, eu vou fazer uma coisa aqui. Eu vou mudar o meu computador, a configuração para 1600X1024, por exemplo.
+
+[04:34] Deixa eu mudar aqui, eu vou colocar 1400X900. E aí, eu agora consigo visualizar esse botão aqui que é o botão "START IMPORT". Vou clicar nele. E aí a recuperação da base, ela começa a ser executada. Pronto. Terminei a recuperação. Deixa eu voltar de novo a minha resolução para a resolução original. Então, eu volto aqui para o "WORKBENCH". Então, a minha importação funcionou.
+
+[05:28] Só para a gente ter certeza, eu vou clicar nessa pasta "query 1". Se você não tiver essa pasta, você clica aqui nesse botão. E aí, eu vou selecionar aqui uma consulta "SELECT*FROM". Vamos pegar aqui, por exemplo, a tabela de itens, notas fiscais, que é a tabela maior. Claro, eu tenho que selecionar o banco dando duplo clique sobre o banco "SUCOS_VENDAS" para ficar em negrito.
+
+[06:07] Tudo isso eu ainda vou explicar melhor quando a gente começar a fazer as consultas. Talvez eu precise, também, explicar um pouquinho para vocês como é que a gente trabalha "WORKBENCH". Eu aqui só estou testando para saber se a minha recuperação da base funcionou. Aqui têm informações, então essa recuperação funcionou. Então, nesse momento, eu já estou pronto para iniciar o treinamento.
+
+[06:35] Essa parte do vídeo é apenas caso você não tenha conseguido recuperar a sua base de dados através do diretório "DUMP", da recuperação deste diretório aqui. Por algum motivo, você não conseguiu. Deu erro. Então, faça o seguinte: eu vou mostrar uma segunda maneira de recuperar a base. Ela é um pouquinho mais trabalhosa, mas também tem mais probabilidade de funcionar.
+
+[07:06] Eu vou então aqui, apagar a base "SUCOS_VENDAS". Atenção! Só faça isso se o primeiro método não funcionou. Se o primeiro método funcionou, você pode até parar de assistir o vídeo nesse ponto. Então, eu vou clicar aqui "DROP SCHEMA". Então, não tem mais a minha base. E eu vou criar ela novamente. Clico em "CREATE ESQUEMA". Selecionei o nome "SUCOS_VENDAS". Dou o "APPLY" e dou o "FINISH".
+
+[07:50] Duplo clique sobre ela. Tenho a base de novo aqui criada, mas vazia. Aí, eu vou fazer o seguinte: eu vou clicar em "FILE", "RUN SQL SCRIPT". Vou escolher essa opção aqui. Eu tenho todos esses arquivos aqui com extensão ".SQL", que eu vou usar para importar a base de uma outra maneira. Eu vou começar com esse aqui. Primeiro arquivo: "CRIAÇÃO_ESQUEMA.SQL".
+
+[08:26] Eu vou clicar nele. Vou clicar em abrir. Eu vou ver um script de recuperação e eu vou escolher aqui a base "SUCOS_VENDAS. E vou escolher aqui em "DEFAULT CHARACTER SET", que é essa opção "UTF8" que está aqui embaixo. Eu dou o "RUN" e ele vai terminar. Vou agora de novo e vou fazer para esse arquivo aqui "CARGA_TABELAS_CADASTRAIS.SQL".
+
+[09:07] Seleciono a base. Seleciono "UTF8" e "RUN". Nesse momento, eu consegui recuperar as tabelas e os dados cadastrais. Agora, eu vou recuperar os dados referentes às notas fiscais. Clico de novo scripts em "RUN SQL SCRIPT" e vou escolher agora esse arquivo aqui "CARGA_NOTAS_01.SQL". Seleciono e dou "RUN". Esse script vai demorar um pouquinho mais, porque eu agora estou carregando dados com o volume substancial de linhas.
+
+[10:05] Então, vou fazer o seguinte, eu vou parar o vídeo e no instante quando essa barra terminar eu volto. Se eu tiver essa mensagem aqui é porque tudo correu bem. Vou agora, recuperar, só que agora é o arquivo 2: "CARGA_NOTA_02". Seleciono aqui a base. O "UTF8" e "RUN". Bem, ele está processando o arquivo 2. Vocês vão fazer para o arquivo "CARGA_NOTAS_02" e depois para o "CARGA_NOTAS_03".
+
+[10:51] E aí, toda parte do cabeçalho da nota fiscal vai estar importada no banco. Então, eu vou parar aqui o vídeo e eu vou voltar quando eu terminar o "CARGA_NOTAS_03". Vocês façam esses passos e me encontrem daqui à pouco. Pronto. Nesse momento, eu importei os arquivos: "CARGA_NOTAS" 01, 02 e 03. Eu, agora, vou importar o "CARGA_ITENS_NOTAS" de 01 à 07.
+
+[11:29] Então, eu vou começar aqui com o 01. Seleciono a "SUCOS_VENDAS". Seleciono aqui o "UTF8" e dou o "RUN". Então, eu vou começar a importar o "CARGA_ITENS_NOTAS_01". Então, façam isso. O 01, o 02, 03 até o 07. E aí, quando vocês terminarem o último arquivo, a base vai estar recuperada. Pronto. Importei aqui o "CARGA_ITENS_NOTAS_07". Então, nesse momento, eu também tenho a minha base recuperada.
+
+[12:15] Então, eu mostrei para vocês, nesse vídeo, duas maneiras de recuperar a base. Vocês devem tentar a primeira. Se não funcionar, tentem a segunda. Agora, estamos preparados para continuar o nosso treinamento.
+
+
+
+1-4  Consolidando o seu conhecimento
+
+Chegou a hora de você seguir todos os passos realizados por mim durante esta aula. Caso já tenha feito, excelente. Se ainda não, é importante que você execute o que foi visto nos vídeos para poder continuar com a próxima aula.
+
+1) Se você está usando uma máquina limpa, você deve instalar o MYSQL. Por isso siga as instruções abaixo.
+
+    Acesse o seu Browser e busque por MySQL Downloads. Acesse o link http://www.mysql.com/downloads
+
+    Procure pelo link MySQL Community Edition (GPL) / Community (GPL) downloads.
+
+    Vá para MySQL on Windows (Installer & Tools) / Downloads.
+
+    Clique em MySQL Installer.
+
+    Clique no botão de download ao lado da opção Windows (x86-32 Bits), MSI Installer (mysql-installer-web-community-8.0.15.0.msi).
+
+    Faça um login no site da Oracle. Se você não possuir um login faça um cadastro.
+
+    Após o Login clique em Download Now.
+
+    Execute o programa que foi baixado.
+
+    Clique em I Accept the license terms e depois em Next.
+
+    Escolha a instalação Developer Default. Clique em Next duas vezes.
+
+    Clique em Execute para o download e instalação do banco e seus componentes.
+
+    Clique em Next duas vezes.
+
+    Mantenha a escolha StandAlone MySQL Server / Classic MySQL Replication.
+
+    Mantenha as propriedades padrões do serviço e da porta de comunicação. Clique Next.
+
+    Mantenha a opção Use Strong Encryption for Authentication .... Clique em Next.
+
+    Inclua a senha do usuário root duas vezes. Clique em Next.
+
+    Mantenha as proprieades padrões. Clique em Next.
+
+    Clique Execute para iniciar a instalação.
+
+    Sempre selecione Next e Finish na medida que outras caixas de diálogo forem sendo exibidas. Se houver a pergunta sobre a senha do usuário root digite a senha configurada anteriormente na instalação.
+
+    Automaticamente o Workbench será aberto. Clique na conexão que está configurada. Você então acessará o ambiente com o MySQL no ar.
+
+    Instalação no Ubuntu
+
+        Comando para verificar se o Mysql está instalado
+
+        dpkg -l mysql-server
+        mysql -V
+
+Comando para remover o Mysql
+
+sudo apt-get remove --purge mysql*
+sudo apt-get purge mysql*
+sudo apt-get autoremove
+sudo apt-get autoclean
+
+Comando para instalar o Mysql
+
+sudo apt-get install mysql-server
+sudo apt-get install mysql-workbench
+
+        Configurando o Mysql ` sudo mysql_secure_installation Se você quiser fazer login como root através de programas externos: sudo mysql -u root ALTER USER 'root'@'localhost' IDENTIFIED WITH
+
+2) Se você está usando uma máquina limpa, você deve recuperar a base de dados a ser usada neste curso. Por isso siga as instruções abaixo:
+
+    Abra o MYSQL Workbench. Use a conexão LOCALHOST.
+
+    Botão da direita do mouse sobre a lista das bases e escolha Create Schema.
+
+    Insira o nome Sucos_Vendas. Clique em Apply duas vezes.
+
+    Faça Download do arquivo RecuperacaoAmbiente.zip.
+
+    Descompacte o arquivo.
+
+    Selecione, na área Navigator, em Administration.
+
+    Selecione o link Data Import/Restore.
+
+    Na opção Import From Dump Project Folder escolha o diretório DumpSucosVendas.
+
+    Selecione Start Import.
+
+    Verifique na base Sucos_Vendas se as tabelas foram criadas.
+
+Opinião do instrutor
+
+Continue com os seus estudos, e se houver dúvidas, não hesite em recorrer ao nosso fórum!
+
+
+
+1-5  O que aprendemos?
+
+  A instalar o MySQL
+
+  A recuperar da base de dados a ser usada neste treinamento
+

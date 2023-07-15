@@ -1,0 +1,771 @@
+https://cursos.alura.com.br/course/mysql-consultas-sql
+
+Data Science > Cursos de SQL e Banco de Dados
+
+Curso de
+Consultas SQL: avançando no SQL com MySQL
+
+
+Formação com esse curso
+SQL com MySQL Server da Oracle
+
+
+Instrutor(a)
+
+    instructor Victorino Vila
+
+    Linkedin
+    https://www.linkedin.com/in/victorino-vila-1a160/
+
+    Victorino é desenvolvedor com foco em .NET e Web Services. Durante mais de 20 anos gerenciou uma empresa de consultoria na área de tecnologia. Criou e desenvolveu projetos de planejamento, Business Intelligence e integração de dados, além de databases de relacionamento com foco em BI, usando SQL Server, MYSQL ou DB2. Suas soluções são usadas em Brasil, nos EUA e na Europa. É consultor sênior certificado em SAP BW.
+
+
+Faça esse curso de SQL e Banco de Dados e:
+
+    Pagine seus dados com LIMIT
+    Filtre consultas com HAVING
+    Entenda a diferença entre o LEFT e RIGHT JOIN
+    Saiba usar Sub-Queries
+    Use funções do MySQL
+    Ordene os seus dados usando o ORDER BY
+    Agrupe dados com GROUP BY
+
+
+
+Aulas
+
+5- Funções do MYSQL | 0 / 10 | 53min
+
+https://cursos.alura.com.br/course/mysql-consultas-sql/section/8145/tasks
+
+  5-1  Funções de string
+  5-2  Listando o endereço completo.
+  5-3  Funções de datas
+  5-4  Idade dos clientes
+  5-5  Funções matemáticas
+  5-6  Formato do faturamento
+  5-7  Conversão de dados
+  5-8  Listando expressão natural
+  5-9  Consolidando o seu conhecimento
+  5-10  O que aprendemos?
+
+
+5-1  Funções de string
+
+Transcrição
+
+Aqui você pode fazer o download completo do projeto realizado neste vídeo e continuar seus estudos.
+
+https://caelum-online-public.s3.amazonaws.com/1221-mysqlconsultasavancadas/05/Consultas%20string.sql
+
+
+Nesse vídeo, estudaremos funções. São nelas que residem as maiores diferenças entre os vários bancos que utilizam SQL. Neste curso, estamos conhecendo essa linguagem usando o MySQL. A maior parte do que aprendemos até agora (como DISTINCT e JOIN) é muito parecido ou igual entre o MySQL, o Oracle ou o SQL Server, por exemplo, citando os três principais bancos relacionais do mercado.
+
+Ao tratar de funções, no entanto, nos deparamos com algumas diferenças — como você utiliza uma função em um banco nem sempre é igual à do outro banco. Quando temos um projeto desenvolvido em SQL para MySQL e desejamos migrá-lo para Oracle ou SQL Server, uma ação muito importante é verificar o uso das funções e fazer a conversão pontual delas.
+
+A seguir, veremos alguns exemplos de funções e vamos classificá-las em três grandes grupos: funções escalares, que utilizam textos; funções de data que, como o próprio nome sugere, manipulam datas; e funções matemáticas, que realizam operações entre campos float ou inteiros na nossa base de dados.
+
+É humanamente impossível saber de cabeça todas as funções que o MySQL disponibiliza, mas por sorte temos a internet para nos ajudar. Um dos recursos que podemos acessar é o site da documentação oficial do MySQL. Essa documentação é muito bem detalhada e aborda tudo o que precisamos saber sobre MySQL. Nesse site, podemos clicar em "MySQL Reference Manual", selecionar "MySQL 8.0 Reference Manual" e seremos redirecionados para a página do Manual de Referência do MySQL 8.0, que é a versão que estamos usando. À esquerda, veremos o índice de capítulos, dentre eles haverá um chamado "Functions and Operators", no qual encontraremos uma lista de funções que podemos utilizar no banco de dados.
+
+Outro site interessante é o w3school.com, que também nos oferece uma gama de materiais específicos sobre bancos de dados relacionais, inclusive o MySQL, que é o nosso foco. Nesse vídeo, para abordar as funções de texto, vamos usar esse site como apoio, pois ele é mais simples e fácil de visualizar do que a documentação oficial.
+
+Então, começaremos na página de funções do MySQL. À esquerda, abaixo do título "String Functions", temos uma lista enorme de funções de textos. A seguir, vamos revisar algumas das mais importantes.
+
+    No vídeo, ao navegar pelos sites, optamos pela tradução automática do inglês para o português para tornar o conteúdo mais acessível. Nesse processo, algumas funções também tiveram seus nomes traduzidos. Para que elas funcionem, precisamos usar o nome original, em inglês.
+
+A função CONCAT() concatena strings. Ou seja, aplicando CONCAT() sobre duas strings, é possível uni-las em uma única sequência de texto. Podemos juntar um número ilimitado de strings, separando-as com vírgula:
+
+SELECT CONCAT("SQL ", "Tutorial ", "is ", "fun!") AS ConcatenatedString; 
+
+A função LTRIM() tira espaços à esquerda (left) de um texto. Trim, em português, significa "aparar" e é exatamente isso que a função faz:
+
+SELECT LTRIM("     SQL Tutorial") AS LeftTrimmedString;
+
+A função RTRIM(), por outro lado, vai remover os espaços à direita (right) da string:
+
+SELECT RTRIM("SQL Tutorial     ") AS RightTrimmedString;
+
+Já se o nosso objetivo for aparar o texto dos dois lados, podemos usar a função TRIM(), que retira espaços tanto da direita quanto da esquerda. Os espaços no meio da string não são removidos:
+
+SELECT TRIM('    SQL Tutorial    ') AS TrimmedString;
+
+Outro exemplo interessante é a função LCASE(), que transforma um texto que está em caixa-alta (ou seja, em maiúsculas) deixando-o com letras minúsculas (em inglês, lowercase):
+
+SELECT LCASE("SQL Tutorial is FUN!");
+
+Uma alternativa é o LOWER(), que faz o mesmo processo:
+
+SELECT LOWER("SQL Tutorial is FUN!");
+
+Já a função UCASE() fará o contrário, deixando toda a string em maiúsculas (em inglês, uppercase):
+
+SELECT UCASE("SQL Tutorial is FUN!");
+
+Um equivalente a essa função é o UPPER():
+
+SELECT UPPER("SQL Tutorial is FUN!");
+
+A função SUBSTRING() também é bastante usada. Com ela, conseguimos retirar um pedaço de texto de dentro de uma string maior. Para usá-la, devemos informar três parâmetros: a string original, a posição onde começaremos a retirada do texto e o número de caracteres que vamos extrair a partir da posição que especificamos:
+
+SELECT SUBSTRING("SQL Tutorial", 5, 3) AS ExtractString;
+
+Nesse caso, o texto original é "SQL Tutorial", vamos começar a extrair a partir do quinto elemento (a letra T, maiúscula) e pegaremos três caracteres. Então, a subtring resultante será "Tut".
+
+A função LENGTH() retorna o tamanho de uma string:
+
+SELECT LENGTH("SQL Tutorial") AS LengthOfString;
+
+Nesse caso, o retorno será 12, pois o espaço também é contado.
+
+Existe uma série de funções úteis e você pode continuar explorando o site para conhecê-las um pouco melhor. Não vamos nos aprofundar neste vídeo, mas você pode, por exemplo, ler mais sobre a função INSTR(), que faz uma pesquisa para saber se uma string está dentro de outra string.
+
+Dependendo dos nossos objetivos, podemos sempre consultar a documentação do MySQL ou fóruns na internet para buscar uma função específica que resolva o problema que estamos enfrentando em determinado projeto.
+
+Agora, vamos ao MySQL Workbench criar alguns exemplos com funções. Abriremos um novo script e começaremos com a seguinte consulta:
+
+SELECT LTRIM('    OLÁ')
+
+Note que fizemos um SELECT sem o FROM, sem selecionar uma tabela. É como se fôssemos exibir uma constante. Para nomear a coluna, usaremos a expressão AS:
+
+ SELECT LTRIM('    OLÁ') AS RESULTADO;
+
+Dessa forma, aplicamos LTRIM() sobre uma string que contém vários espaços e o resultado será o texto "OLÁ", com os espaços à esquerda aparados. Podemos fazer algo semelhante com RTRIM():
+
+SELECT RTRIM('OLÁ     ') AS RESULTADO;
+
+Nesse caso, aparamos os espaços à direita. Se nossa meta for remover espaços de ambos os lados de um texto, manipularemos o texto com a função TRIM():
+
+SELECT TRIM('    OLÁ    ') AS RESULTADO;
+
+    O MySQL Workbench dará sugestões de preenchimento automático à medida que digitamos, dando alguns palpites de funções.
+
+A seguir, vamos concatenar strings:
+
+SELECT CONCAT('OLÁ', ' ', 'TUDO BEM','?') AS RESULTADO;
+
+Note que um dos parâmetros é um espaço. Sem ele, as palavras "OLÁ" e "TUDO" apareceriam juntas.
+
+Também é possível fazer testes com as funções de texto que transformam letras minúsculas em maiúsculas:
+
+SELECT UPPER('olá, tudo bem?') AS RESULTADO;
+
+E vice-versa:
+
+SELECT LOWER('OLÁ, TUDO BEM?') AS RESULTADO;
+
+Para extrair uma sequência de strings dentro de um texto maior, optamos pela função SUBSTRING():
+
+SELECT SUBSTRING('OLÁ, TUDO BEM?', 6) AS RESULTADO;
+
+Perceba que informamos apenas dois parâmetros. O primeiro é o texto original e o segundo é a posição onde começamos a extrair a substring - a sexta posição, ocupada pela letra T. Na falta do terceiro parâmetro que especifique quantos caracteres retirar, o MySQL continuará até o fim do texto. Assim, o resultado dessa consulta será "TUDO BEM?".
+
+Caso seja esclarecida a quantidade de caracteres desejada, então o retorno será diferente:
+
+SELECT SUBSTRING('OLÁ, TUDO BEM?', 6, 4) AS RESULTADO;
+
+Nesse caso, a substring começa no T e, contando quatro caracteres a partir dessa letra, termina na letra O. O resultado será a palavra "TUDO".
+
+Esses foram alguns exemplos livres utilizando dados bem simples para embasar nossos conhecimentos de funções que manipulam textos. Em um cenário real, usaremos essas funções dentro de um SELECT com informações presentes em tabelas, por exemplo:
+
+SELECT CONCAT(NOME, ' (', CPF, ') ') AS RESULTADO FROM TABELA_DE_CLIENTES;
+
+Veja que, dessa vez, selecionamos uma tabela com o FROM. Para cada linha do nosso SELECT, a função CONCAT() foi aplicada com campos diferentes da tabela — o nome e o CPF entre parênteses de cada cliente.
+
+
+Links citados na aula
+
+Documentação MySQL
+https://dev.mysql.com/doc/
+
+Manual de Referência MySQL
+https://dev.mysql.com/doc/refman/8.0/en/
+
+Functions and Operators
+https://dev.mysql.com/doc/refman/8.0/en/functions.html
+
+W3School
+https://www.w3schools.com/
+
+Página de funções MySQL
+https://www.w3schools.com/sql/sql_ref_mysql.asp
+
+Função "concat()"
+https://www.w3schools.com/sql/func_mysql_concat.asp
+
+Função "ltrim()"
+https://www.w3schools.com/sql/func_mysql_ltrim.asp
+
+Função "rtrim()"
+https://www.w3schools.com/sql/func_mysql_rtrim.asp
+
+Função "trim()"
+https://www.w3schools.com/sql/func_mysql_trim.asp
+
+Função "lcase()"
+https://www.w3schools.com/sql/func_mysql_lcase.asp
+
+Função "lower()"
+https://www.w3schools.com/sql/func_mysql_lower.asp
+
+Função "ucase()"
+https://www.w3schools.com/sql/func_mysql_ucase.asp
+
+Função "substring()"
+https://www.w3schools.com/sql/func_mysql_substring.asp
+
+Função "length()"
+https://www.w3schools.com/sql/func_mysql_length.asp
+
+Função "instr()"
+https://www.w3schools.com/sql/func_mysql_instr.asp
+
+
+
+
+5-2  Listando o endereço completo.
+
+Faça uma consulta listando o nome do cliente e o endereço completo (Com rua, bairro, cidade e estado).
+
+Opinião do instrutor
+
+SELECT NOME, CONCAT(ENDERECO_1, ' ', BAIRRO, ' ', CIDADE, ' ', ESTADO) AS COMPLETO
+FROM tabela_de_clientes
+
+
+
+
+5-3  Funções de datas
+
+Transcrição
+
+Aqui você pode fazer o download completo do projeto realizado neste vídeo e continuar seus estudos.
+
+https://caelum-online-public.s3.amazonaws.com/1221-mysqlconsultasavancadas/05/Consultas%20DATAS.sql
+
+    No vídeo, ao navegar pelos sites, optamos pela tradução automática do inglês para o português para tornar o conteúdo mais acessível. Nesse processo, algumas funções também tiveram seus nomes traduzidos. Por exemplo, a função ADDTIME() aparece como "somaHorario". Para que funcionem, precisamos usar o nome original, em inglês.
+
+Agora, vamos estudar sobre funções que manipulam datas, muito importantes quando criamos sistemas utilizando a linguagem SQL, mais precisamente o MySQL no nosso caso.
+
+Como no vídeo anterior, usarei a página de funções SQL do site w3school.com como material de apoio. Nesse site, à esquerda, temos uma lista de funções de data sob o título "Date Functions". Vamos analisar algumas a seguir.
+
+A função ADDDATE() soma um intervalo de dias a uma data:
+
+SELECT ADDDATE("2017-06-15", INTERVAL 10 DAY);
+
+Essa função requer dois parâmetros: a data e o intervalo de tempo a ser adicionado, que pode ser de várias naturezas (como segundo, minuto, hora, dia, semana, mês, trimestre, ano e assim por diante). Note que não é preciso usar aspas no segundo parâmetro, pois ele é uma cláusula específica dessa função.
+
+Um recurso interessante desse site é a possibilidade de executar testes. Abaixo de cada exemplo, há um botão "Tente você mesmo" (Try it Yourself) que nos direciona para uma página na qual conseguimos rodar o código (pressionando o botão "Run SQL") e verificar o resultado no painel inferior. Dessa forma, podemos por exemplo substituir "10 DAY" por "1 YEAR" para somar 1 ano e obter um resultado diferente.
+
+A função ADDTIME() também soma um intervalo de tempo a uma data, porém essa data deve estar expressa em timestamp, ou seja, com horas, minutos e segundos. A seguinte consulta faz a adição de 2 segundos:
+
+SELECT ADDTIME("2017-06-15 09:34:21", "2");
+
+A função CURDATE() trará a data atual do computador. Ela não necessita de parâmetros e mostrará um retorno no formato ANO-MÊS-DIA:
+
+SELECT CURDATE();
+
+Já a função CURRENT_TIMESTAMP() é mais detalhada e mostrará a data atual com horas, minutos e segundos:
+
+SELECT CURRENT_TIMESTAMP();
+
+    Lembre-se de que você pode clicar no botão "Try it Yourself" e fazer alguns testes. A função CURRENT_TIMESTAMP() pode trazer um horário diferente do esperado, mais adiante nesse vídeo explicaremos melhor esse fenômeno.
+
+A função CURRENT_TIME() retornará apenas as horas, sem a data. E a CURRENT_DATE() é equivalente à CURDATE(), que vimos anteriormente.
+
+Na função DATEDIFF(), informamos duas datas como parâmetros e recebemos como retorno o número de dias entre elas:
+
+SELECT DATEDIFF("2017-06-25", "2017-06-15");
+
+O primeiro parâmetro é a data final; e o segundo, a inicial. Nesse caso, o resultado será 10. Se invertermos essas datas, o retorno será -10, pois a data final será menor que a inicial.
+
+    Essa função é um exemplo de como existem distinções de uso entre os bancos relacionais. No SQL Server, por exemplo, o parâmetro de data inicial vem antes da data final. Para quem trabalha com mais de um banco, é fácil se confundir com essas nuances, por isso é importante sempre consultar os manuais.
+
+A função DATE_ADD() é equivalente à ADDDATE() que exploramos agora há pouco.
+
+A função DAYNAME() nos informará o nome do dia da semana de determinada data. Similarmente, MONTHNAME() informará o nome do mês:
+
+SELECT DAYNAME("2017-06-15");
+SELECT MONTHNAME("2017-06-15");
+
+Nesse caso, o retorno da primeira consulta será "Thursday" (quinta-feira) e o da segunda seleção será "June" (junho).
+
+A função DAY() extrairá somente o dia da data especificada como parâmetro e, de forma semelhante, MONTH() mostrará o número do mês:
+
+SELECT DAY("2017-06-15");
+SELECT MONTH("2017-06-15");
+
+Respectivamente, os resultados são 15 e 6. Com isso, já temos uma noção de funções de datas que existem.
+
+Então, agora vamos ao MySQL Workbench para praticar com alguns exemplos. Criaremos um script e começaremos consultando a data atual:
+
+SELECT CURDATE();
+
+O resultado será a data de hoje, no formato ANO-MÊS-DIA. No meu caso, é a data em que estou gravando este vídeo. Para fazer uma seleção das horas, podemos usar o CURRENT_TIME():
+
+SELECT CURRENT_TIME();
+
+    Note que, quando escrevemos o nome de uma função, por padrão no MySQL Workbench ela fica na cor azul. Se for digitada uma função que não é reconhecida pelo programa, ela não ficará dessa cor.
+
+O retorno corresponde à hora em realizamos a consulta, dessa vez sem a data. Para obter a data e a hora juntas, uma opção é a função CURRENT_TIMESTAMP():
+
+SELECT CURRENT_TIMESTAMP();
+
+Anteriormente, fizemos o teste da função CURRENT_TIMESTAMP() no site w3schools.com e notamos que o horário do retorno não correspondia ao horário atual da nossa máquina. Perceba que agora, no MySQL Workbench, esse erro não acontece mais. Essa variação decorre dos diferentes lugares onde os servidores estão! Quando rodamos o comando no MySQL Workbench, estamos usando o MySQL na nossa própria máquina; por outro lado, ao usar o site w3school.com acionamos o MySQL de outro servidor, hospedado em outro lugar (cujo fuso horário difere de onde estamos no momento). Esses detalhes são importantes para entender o comportamento do programa.
+
+Continuando com nossos exemplos, a seguir vamos consultar dados mais específicos a partir da função CURRENT_TIMESTAMP(). Se nossa meta for isolar apenas o ano (year), o mês (month) ou o dia (day) de uma data, podemos respectivamente aplicar as seguintes funções:
+
+SELECT YEAR(CURRENT_TIMESTAMP());
+SELECT MONTH(CURRENT_TIMESTAMP());
+SELECT DAY(CURRENT_TIMESTAMP());
+
+Caso precisemos saber o nome do mês (e não apenas seu número), utilizaremos MONTHNAME():
+
+SELECT MONTHNAME(CURRENT_TIMESTAMP());
+
+A função DATEDIFF(), como vimos, nos informará a quantidade de dias entre duas datas, por exemplo, entre hoje e o primeiro dia de 2019:
+
+SELECT DATEDIFF(CURRENT_TIMESTAMP(), '2019-01-01') AS RESULTADO;
+
+Inclusive, podemos até criar uma consulta divertida e checar quantos dias já vivemos! Basta usar essa função para calcular a diferença entre o dia de hoje e a data do seu nascimento:
+
+SELECT DATEDIFF(CURRENT_TIMESTAMP(), '1965-09-04') AS RESULTADO;
+
+No meu caso, desde que nasci até o dia em que gravei este vídeo, já se passaram 19586 dias!
+
+Seguindo com os testes, a seguir vamos subtrair um intervalo de tempo de uma data:
+
+SELECT CURRENT_TIMESTAMP() AS DIA_HOJE, DATE_SUB(CURRENT_TIMESTAMP(), INTERVAL 5 DAY) AS RESULTADO;
+
+Dessa forma, o retorno mostrará a data de hoje (na coluna que nomeamos "DIA_HOJE") e o resultado da substração de 5 dias na segunda coluna.
+
+E, por fim, faremos um exemplo usando as tabelas do nosso banco de dados "sucos_vendas". Primeiramente, vamos verificar todas as datas em que foram emitidas notas fiscais:
+
+SELECT DISTINCT DATA_VENDA FROM NOTAS_FISCAIS;
+
+Agora, utilizaremos as funções DAYNAME() e MONTHNAME() para que seja mostrado no resultado o dia da semana e o mês em que as vendas ocorreram, bem como o ano (com a função YEAR()):
+
+SELECT DISTINCT DATA_VENDA,
+DAYNAME(DATA_VENDA) AS DIA, MONTHNAME(DATA_VENDA) AS MES, YEAR(DATA_VENDA) AS ANO FROM NOTAS_FISCAIS;
+
+Assim, além da primeira coluna informando a data, haverá outras três colunas mostrando o dia da semana, o nome do mês e o ano das vendas.
+
+Links citados na aula:
+
+Funções SQL - W3School
+https://www.w3schools.com/sql/sql_ref_mysql.asp
+
+Função "adddate()"
+https://www.w3schools.com/sql/func_mysql_adddate.asp
+
+Função "addtime()"
+https://www.w3schools.com/sql/func_mysql_addtime.asp
+
+Função "curdate()"
+https://www.w3schools.com/sql/func_mysql_curdate.asp
+
+Função "current_timestamp()"
+https://www.w3schools.com/sql/func_mysql_current_timestamp.asp
+
+Função "current_time()"
+https://www.w3schools.com/sql/func_mysql_current_time.asp
+
+Função "datediff()"
+https://www.w3schools.com/sql/func_mysql_datediff.asp
+
+Função "date_add()"
+https://www.w3schools.com/sql/func_mysql_date_add.asp
+
+Função "dayname()"
+https://www.w3schools.com/sql/func_mysql_dayname.asp
+
+Função "day()"
+https://www.w3schools.com/sql/func_mysql_day.asp
+
+
+
+
+5-4  Idade dos clientes
+
+Crie uma consulta que mostre o nome e a idade atual dos clientes.
+
+Dica: Vc pode usar a função "TIMESTAMPDIFF" neste caso
+
+
+Opinião do instrutor
+
+SELECT NOME, TIMESTAMPDIFF (YEAR, DATA_DE_NASCIMENTO, CURDATE()) AS    IDADE
+FROM  tabela_de_clientes
+
+
+
+5-5  Funções matemáticas
+
+Transcrição
+
+Aqui você pode fazer o download completo do projeto realizado neste vídeo e continuar seus estudos.
+
+https://caelum-online-public.s3.amazonaws.com/1221-mysqlconsultasavancadas/05/Consultas%20matem%C3%A1ticas.sql
+
+
+Neste vídeo, estudaremos funções matemáticas. Novamente nos apoiaremos nas explicações da página de funções MySQL do w3schools.com. Nesse site, à esquerda, temos à disposição uma extensa lista de funções matemáticas sob o título "Numeric Functions". Veremos algumas delas a seguir.
+
+Começando por ordem alfabética, a função ABS() nos fornecerá o valor absoluto de um número. Em seguida, temos ACOS(), ASIN() e ATAN() referentes ao cosseno, ao seno e à tangente - operações de cunho mais científico e que não usamos com frequência.
+
+A seguir, veremos um nome que nos é familiar: AVG(), que traz a média dos números. Todas as operações agregadoras que aplicamos anteriormente quando aprendemos sobre GROUP BY - SUM(), MAX(), MIN() - estão nessa lista.
+
+Existem também as funções de arredondamento, como CEILING(), FLOOR() e ROUND(). Logo, veremos alguns exemplos práticos para entendê-las melhor. Outra função interessante é a SQRT(), que retorna a raiz quadrada de um valor.
+
+De modo geral, as funções matemáticas são pouco usadas, até mesmo para aplicações mais comerciais. As exceções são as expressões escritas por extenso, com as quais calculamos adições, subtrações, multiplicações e divisões.
+
+Vamos ao MySQL Workbench fazer alguns testes. Abriremos um novo script e começaremos com um exemplo de expressão numérica:
+
+SELECT (23+((25-2)/2)*45) AS RESULTADO;
+
+Executando o código, obtemos o resultado 540,5.
+
+As funções CEILING(), FLOOR() e ROUND() serão muito úteis para arredondar valores com muitas casas decimais:
+
+SELECT CEILING(12.33333232323) AS RESULTADO;
+
+CEILING() (em português, "teto") arredondará "para cima", ou seja, para o próximo número inteiro, independentemente dos valores nas casas decimais. Logo, essa consulta retornará 13.
+
+Já ROUND() arredondará "para cima" somente se a primeira casa decimal for 5 ou maior:
+
+SELECT ROUND(12.33333232323) AS RESULTADO;
+SELECT ROUND(12.7777232323) AS RESULTADO;
+
+No caso, a primeira consulta retorna 12, já o resultado da segunda é 13. Quanto a FLOOR() (em português, "chão"), o valor será sempre arredondado "para baixo":
+
+SELECT FLOOR(12.7777232323) AS RESULTADO;
+
+Com esse valor, nosso retorno será 12, independentemente dos números nas casas decimais.
+
+Outra função útil, especialmente para a realização de simulações, é o RAND(), que nos entrega um número aleatório:
+
+SELECT RAND() AS RESULTADO; 
+
+Podemos rodar várias vezes esse mesmo SELECT e, a cada vez, teremos um número diferente. Esses retornos são convenientes para simular vendas e outros dados numéricos hipotéticos para fazer testes em nossos sistemas.
+
+Vejamos um exemplo com a nossa base "sucos_vendas". Primeiro, vamos selecionar o número, a quantidade e o preço dos registros da tabela "itens_notas_fiscais":
+
+SELECT NUMERO, QUANTIDADE, PRECO
+ FROM ITENS_NOTAS_FISCAIS;
+
+Para descobrir o faturamento, basta multiplicar a quantidade pelo preço de cada item. Podemos apresentar esse resultado numa nova coluna chamada "faturamento":
+
+SELECT NUMERO, QUANTIDADE, PRECO, QUANTIDADE * PRECO AS FATURAMENTO
+ FROM ITENS_NOTAS_FISCAIS;
+
+Veremos, no entanto, que os valores na coluna de faturamento vêm com muitas casas decimais. Como estamos lidando com preços, bastaria que tivessem apenas duas casas. Como solução, utilizaremos a função ROUND():
+
+ SELECT NUMERO, QUANTIDADE, PRECO, ROUND(QUANTIDADE * PRECO, 2) AS FATURAMENTO
+ FROM ITENS_NOTAS_FISCAIS;
+
+Note que essa função de arredondamento aceita um segundo parâmetro que corresponde à quantidade de casas decimais que desejamos ver. Dessa forma, aprendemos um pouco mais sobre as funções matemáticas.
+
+Links citados na aula:
+
+MySQL na W3School
+https://www.w3schools.com/sql/sql_ref_mysql.asp
+
+função "abs()"
+https://www.w3schools.com/sql/func_mysql_abs.asp
+
+função "avg()"
+https://www.w3schools.com/sql/func_mysql_avg.asp
+
+função "ceiling()"
+https://www.w3schools.com/sql/func_mysql_ceiling.asp
+
+função "floor()"
+https://www.w3schools.com/sql/func_mysql_floor.asp
+
+função "round()"
+https://www.w3schools.com/sql/func_mysql_round.asp
+
+
+
+
+5-6  Formato do faturamento
+
+Na tabela de notas fiscais temos o valor do imposto. Já na tabela de itens temos a quantidade e o faturamento. Calcule o valor do imposto pago no ano de 2016 arredondando para o menor inteiro.
+
+
+Opinião do instrutor
+
+SELECT YEAR(DATA_VENDA), FLOOR(SUM(IMPOSTO * (QUANTIDADE * PRECO))) 
+FROM notas_fiscais NF
+INNER JOIN itens_notas_fiscais INF ON NF.NUMERO = INF.NUMERO
+WHERE YEAR(DATA_VENDA) = 2016
+GROUP BY YEAR(DATA_VENDA)
+
+
+
+
+5-7  Conversão de dados
+
+Transcrição
+
+Aqui você pode fazer o download completo do projeto realizado neste vídeo e continuar seus estudos.
+
+https://caelum-online-public.s3.amazonaws.com/1221-mysqlconsultasavancadas/05/Consultas%20Conver.sql
+
+
+Um processo bastante recorrente quando trabalhamos com SQL é a conversão de dados. Cada campo das tabelas tem um tipo que condiz com seu conteúdo e que não deve mudar, porém nem sempre esse tipo será apropriado para certas manipulações (como algumas funções). Às vezes, precisamos exibir datas em um formato específico, convertidas em string, ou usar um dado de tipo numérico como texto, por exemplo. Não convém modificar o tipo da coluna na base de dados, visto que foi criada assim para melhor conveniência. A solução é a conversão de dados no momento em que formos usá-los — tal como em uma função.
+
+Vamos começar aprendendo sobre conversão de datas em strings, que é um processo extenso, com inúmeros parâmetros e que merece uma explicação mais detalhada. Como apoio, usaremos o Manual de Referências da documentação oficial do MySQL, mais especificamente o subcapítulo "Date and Time Functions", com ênfase na função DATE_FORMAT().
+
+Essa é uma função específica para conversão do tipo data para strings. O primeiro parâmetro dela é a data, enquanto o segundo parâmetro indica o formato — este é o ponto mais trabalhoso.
+
+No Manual, na descrição da função DATE_FORMAT(), há uma tabela com uma série de especificadores que se iniciam com o símbolo de porcentagem (%). Cada um deles é responsável por um tipo diferente de conversão e se relaciona com um segmento em particular da data (segundo, minuto, hora etc.). Para ficar mais claro, vamos criar alguns testes no MySQL Workbench.
+
+Abriremos um novo script e começaremos com uma consulta simples, selecionando a data atual no formato timestamp:
+
+SELECT CURRENT_TIMESTAMP() AS RESULTADO;
+
+O retorno será um dado no formato de data. A título de exemplo, vamos tentar rodar uma função de texto com esse dado em formato de data:
+
+SELECT CONCAT('O dia de hoje é: ', CURRENT_TIMESTAMP()) AS RESULTADO;
+
+A função CONCAT() teoricamente manipula somente textos. Ao executar a consulta acima, no entanto, ela consegue trabalhar com um dado em formato de data, pois se trata de uma conversão implícita. Vale ressaltar, no entanto, que nem todas as funções são capazes de realizar essa conversão automaticamente.
+
+Note que essa data é exibida no formato padrão (ano, mês, dia, horas, minutos e segundos). Agora, com a função DATE_FORMAT() e os especificadores que vimos há pouco, podemos modificar essa visualização. Vamos começar usando %Y:
+
+SELECT CONCAT('O dia de hoje é: ', 
+DATE_FORMAT(CURRENT_TIMESTAMP(),'%Y') ) AS RESULTADO;
+
+Nosso primeiro parâmetro é a data atual. Já o segundo parâmetro diz respeito ao formato: na tabela que consultamos, no Manual de Referências, a descrição de %Y indica a conversão do ano com quatro dígitos. Podemos optar por outro formato, por exemplo, usando o %y (com "y" minúsculo) e a exibição do ano terá apenas dois dígitos:
+
+SELECT CONCAT('O dia de hoje é: ', 
+DATE_FORMAT(CURRENT_TIMESTAMP(),'%y') ) AS RESULTADO;
+
+Ademais, é possível concatenar com outros especificadores e até símbolos, como a barra:
+
+SELECT CONCAT('O dia de hoje é: ', 
+DATE_FORMAT(CURRENT_TIMESTAMP(),'%m/%y') ) AS RESULTADO;
+
+Agora, teremos mês e ano. No caso, %m exibirá o número do mês com dois dígitos. Se nosso objetivo for apresentar o mês com apenas um dígito, nós vamos à tabela e procuramos como fazer essa mudança — com %c.
+
+Um padrão bastante usado é o dia, seguido do mês (com dois dígitos) e o ano (com quatro dígitos):
+
+SELECT CONCAT('O dia de hoje é: ', 
+DATE_FORMAT(CURRENT_TIMESTAMP(),'%d/%m/%Y') ) AS RESULTADO;
+
+Ademais, podemos acrescentar o dia da semana (com %W):
+
+SELECT CONCAT('O dia de hoje é: ', 
+DATE_FORMAT(CURRENT_TIMESTAMP(),'%W, %d/%m/%Y') ) AS RESULTADO;
+
+Também temos a opção de adicionar o número da semana (com %U). Ou seja, se o resultado mostrar o número 15, quer dizer que estamos na 15ª semana do ano:
+
+SELECT CONCAT('O dia de hoje é: ', 
+DATE_FORMAT(CURRENT_TIMESTAMP(),'%d/%m/%Y - %U') ) AS RESULTADO;
+
+    Note que, além das barras que separam a data, também podemos usar vírgulas e traços.
+
+É possível fazer diversas combinações a depender do formato de exibição de nossa preferência. Você pode continuar testando esses formatos no seu projeto, consultando a tabela do Manual de Referências.
+
+Finalmente, aprenderemos sobre a função CONVERT(), que faz a conversão de um tipo para outro (especificado como segundo parâmetro). Por exemplo, vamos transformar um valor numérico em char:
+
+SELECT CONVERT(23.3, CHAR) AS RESULTADO;
+
+No retorno, é difícil distinguir o tipo desse registro. Para confirmar a conversão, podemos executar uma função que só admite textos, como o SUBSTRING():
+
+SELECT SUBSTRING(CONVERT(23.3, CHAR),1,1) AS RESULTADO;
+
+Dessa vez, o retorno será 2, o que quer dizer que a função SUBSTRING() identificou "23.3" como um texto e fez a extração da substring (um caractere a partir do primeiro).
+
+Funções e conversões são tópicos extremamente amplos, neste curso não convém nos prolongar em explicações detalhadas sobre esses assuntos. Passamos por alguns exemplos e agora você já pode prosseguir com seus estudos, consultando a documentação e buscando em fóruns online quando necessário.
+
+links citados na aula:
+
+Date and Time Functions
+https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_date-format
+
+
+
+
+5-8  Listando expressão natural
+
+Queremos construir um SQL cujo resultado seja, para cada cliente:
+
+“O cliente João da Silva faturou 120000 no ano de 2016”.
+
+Somente para o ano de 2016.
+
+
+Opinião do instrutor
+
+SELECT CONCAT('O cliente ', TC.NOME, ' faturou ', 
+CAST(SUM(INF.QUANTIDADE * INF.preco) AS char (20))
+ , ' no ano ', CAST(YEAR(NF.DATA_VENDA) AS char (20))) AS SENTENCA FROM notas_fiscais NF
+INNER JOIN itens_notas_fiscais INF ON NF.NUMERO = INF.NUMERO
+INNER JOIN tabela_de_clientes TC ON NF.CPF = TC.CPF
+WHERE YEAR(DATA_VENDA) = 2016
+GROUP BY TC.NOME, YEAR(DATA_VENDA)
+
+
+
+
+5-9  Consolidando o seu conhecimento
+
+Chegou a hora de você seguir todos os passos realizados por mim durante esta aula. Caso já tenha feito, excelente. Se ainda não, é importante que você execute o que foi visto nos vídeos para poder continuar com a próxima aula.
+
+1) Nesta aula iremos ver exemplos de funções.
+
+2) Primeiro vimos as funções do tipo texto. Veja alguns exemplos com seus respectivos retornos:
+
+SELECT LTRIM('    OLÁ') AS RESULTADO;
+
+1.png
+
+SELECT RTRIM('OLÁ     ') AS RESULTADO;
+
+2.png
+
+SELECT TRIM('    OLÁ    ') AS RESULTADO;
+
+3.png
+
+SELECT CONCAT('OLÁ', ' ', 'TUDO BEM','?') AS RESULTADO;
+
+4.png
+
+SELECT UPPER('olá, tudo bem?') AS RESULTADO;
+
+5.png
+
+SELECT LOWER('OLÁ, TUDO BEM?') AS RESULTADO;
+
+6.png
+
+SELECT SUBSTRING('OLÁ, TUDO BEM?', 6) AS RESULTADO;
+
+7.png
+
+SELECT SUBSTRING('OLÁ, TUDO BEM?', 6, 4) AS RESULTADO;
+
+8.png
+
+SELECT CONCAT(NOME, ' (', CPF, ') ') AS RESULTADO FROM TABELA_DE_CLIENTES;
+
+9.png
+
+3) Temos as funções de datas. Execute os comandos abaixo:
+
+SELECT CURDATE();
+
+10.png
+
+SELECT CURRENT_TIME();
+
+11.png
+
+SELECT CURRENT_TIMESTAMP();
+
+12.png
+
+SELECT YEAR(CURRENT_TIMESTAMP());
+
+13.png
+
+SELECT DAY(CURRENT_TIMESTAMP());
+
+14.png
+
+SELECT MONTH(CURRENT_TIMESTAMP());
+
+15.png
+
+SELECT MONTHNAME(CURRENT_TIMESTAMP());
+
+16.png
+
+SELECT DATEDIFF(CURRENT_TIMESTAMP(), '2019-01-01') AS RESULTADO;
+
+17.png
+
+SELECT DATEDIFF(CURRENT_TIMESTAMP(), '1965-09-04') AS RESULTADO;
+
+18.png
+
+SELECT CURRENT_TIMESTAMP() AS DIA_HOJE
+, DATE_SUB(CURRENT_TIMESTAMP(), INTERVAL 5 DAY) AS RESULTADO;
+
+19.png
+
+SELECT DISTINCT DATA_VENDA,
+DAYNAME(DATA_VENDA) AS DIA, MONTHNAME(DATA_VENDA) AS MES
+, YEAR(DATA_VENDA) AS ANO FROM NOTAS_FISCAIS;
+
+20.png
+
+4) Alguns exemplos de funções matemáticas:
+
+SELECT (23+((25-2)/2)*45) AS RESULTADO;
+
+21.png
+
+SELECT CEILING(12.33333232323) AS RESULTADO;
+
+22.png
+
+SELECT ROUND(12.7777232323) AS RESULTADO;
+
+23.png
+
+SELECT FLOOR(12.7777232323) AS RESULTADO;
+
+24.png
+
+SELECT RAND() AS RESULTADO;
+
+25.png
+
+SELECT NUMERO, QUANTIDADE, PRECO, QUANTIDADE * PRECO AS FATURAMENTO
+ FROM ITENS_NOTAS_FISCAIS;
+
+26.png
+
+ SELECT NUMERO, QUANTIDADE, PRECO, ROUND(QUANTIDADE * PRECO, 2) AS FATURAMENTO
+ FROM ITENS_NOTAS_FISCAIS;
+
+27.png
+
+5) Temos também funções de conversão. Execute os exemplos abaixo:
+
+SELECT CURRENT_TIMESTAMP() AS RESULTADO;
+
+28.png
+
+SELECT CONCAT('O dia de hoje é : ', CURRENT_TIMESTAMP()) AS RESULTADO;
+
+29.png
+
+SELECT CONCAT('O dia de hoje é : ',
+
+DATE_FORMAT(CURRENT_TIMESTAMP(),'%W, %d/%m/%Y - %U') ) AS RESULTADO;
+
+30.png
+
+SELECT SUBSTRING(CONVERT(23.3, CHAR),1,1) AS RESULTADO;
+
+31.png
+
+
+Opinião do instrutor
+
+Continue com os seus estudos, e se houver dúvidas, não hesite em recorrer ao nosso fórum!
+
+
+
+
+5-10  O que aprendemos?
+
+  Algumas funções de texto;
+  
+  Funções matemáticas;
+  
+  Foi mostrado funções de datas;
+  
+  Abordamos funções de conversão.

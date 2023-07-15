@@ -1,0 +1,723 @@
+https://cursos.alura.com.br/course/mysql-dml-manipulacao-de-dados/section/8172/tasks
+
+Data Science | Cursos de SQL e Banco de Dados
+
+Curso de
+Comandos DML: manipulação de dados com MySQL
+
+Aula 4- Alterando e excluindo dados existentes nas tabelas | 0 / 13 |39min
+
+  4-1  Alterando dados da tabela
+  4-2  Alterando dados da tabela de clientes
+  4-3  Usando UPDATE com FROM
+  4-4  Mudando o volume de compra dos clientes que possuem vendedores em seus bairros
+  4-5  Excluir dados da tabela
+  4-6  Excluindo Notas
+  4-7  Alterando e apagando toda a tabela
+  4-8  Cuidado ao alterar ou excluir dados
+  4-9  Apagar todos os dados da tabela
+  4-10  COMMIT e ROLLBACK
+  4-11  Usando ROLLBACK duas vezes
+  4-12  Consolidando o seu conhecimento
+  4-13  O que aprendemos?
+
+
+
+4-1  Alterando dados da tabela
+
+
+Transcrição
+
+[0:00] Bem, vamos continuar?
+
+[0:01] A gente até agora então aprendeu a incluir dados dentro das nossas tabelas, seja por um comando insert simples, um comando insert composto, seja por um comando select vindo de uma outra base de dados e um arquivo externo.
+
+[0:18] Agora com dados dentro do nosso banco em alguns momentos a gente também quer modificar esses dados.
+
+[0:26] Então nós vamos aprender agora a usar o comando update.
+
+[0:30] O comando update modifica um dado já existente, e basicamente a gente dá update, o nome da tabela, o conjunto de campos que serão modificados com os seus novos valores e uma condição de filtro.
+
+[0:47] Essa condição de filtro é a semelhante usada quando a gente faz uma seleção de dados da tabela.
+
+[0:54] Então talvez esse slide deixe um pouquinho mais claro, ou seja, update, o nome da tabela Sete, o nome do campo igual ao seu novo valor, e aí virgula, outro nome de campo igual ao novo valor e assim por diante, e uma condição.
+
+[1:16] Vamos fazer isso na prática lá no nosso banco de trabalho.
+
+[1:22] Então eu vou voltar aqui para o workbench, vou criar aqui um script novo e eu vou dar uma olhada aqui na minha tabela de produtos.
+
+[1:38] Tenho aqui os meus dados da minha tabela de produtos, e aí eu posso, por exemplo, mudar o preço de lista de um produto.
+
+[1:50] Vamos pegar esse produto aqui, esse produto que o código, deixa eu fazer de novo, o código é 1889, cujo preço de lista está bem aqui na pontinha, mas dá para notar que é seis ponto trinta.
+
+[2:08] Nós vamos mudar esse código aqui, então vou fazer assim: update, o nome da tabela que eu vou modificar, produtos Sete; o nome do campo que será modificado, então no caso precolista; o novo valor, então esse cara vai ter valor Cinco; o where, a condição.
+
+[2:32] Em que campos que essa modificação será feita.
+
+[2:35] No caso, será em código igual ao número 1000889.
+
+[2:44] Finalizando com ponto e vírgula.
+
+[2:47] Vou selecionar aqui esse comando e vou executar.
+
+[2:51] Executado com sucesso, se eu executar de novo o meu select note que agora campo 1889, o preço de lista não é mais o seis ponto trinta e sim o cinco, que foi o que eu fiz no comando.
+
+[3:11] Posso também não somente mudar valores, posso também mudar uma outra propriedade.
+
+[3:19] No caso aqui, nosso produto sabor da montanha 700 uva, digamos que eu queria mudar a embalagem.
+
+[3:30] Em vez de garrafa, ele vai ser pet.
+
+[3:33] Vai ser meio coerente, que normalmente pet é acima de um litro, e se eu modificar esse cara eu teria que teoricamente também modificar o tamanho, e para modificar o tamanho eu também teria que modificar o nome do produto.
+
+[3:54] Então vamos fazer essas modificações todas.
+
+[3:58] Update, produtos Sete.
+
+[4:03] Primeiro, a embalagem, que é garrafa, vai virar pet, a embalagem igual a pet.
+
+[4:18] Aí eu quero modificar outros campos, então coloco uma vírgula.
+
+[4:22] O campo que eu vou mudar, o tamanho vai ser um litro.
+
+[4:32] Vírgula, e aí eu tenho que modificar o nome também, então o descritor vai ser igual, eu vou continuar aqui embaixo, sabor da montanha um litro uva.
+
+[4:58] É um aqui.
+
+[5:01] Um litro uva.
+
+[5:05] O where, a mesma condição.
+
+[5:08] Código igual a 100889.
+
+[5:16] Ok?
+
+[5:17] Então note que agora o meu comando update está modificando ao mesmo tempo diversos campos.
+
+[5:26] Vamos rodar.
+
+[5:28] Rodou com sucesso, se eu fizer o meu select nome que agora o meu sabor da montanha é um litro, está aqui um litro, e ele é pet.
+
+[5:40] O preço continua cinco porque eu não mudei nada.
+
+[5:48] Bem, eu posso fazer uma modificação em lote ao mesmo tempo em vários registros, e isso somente depende do tipo de filtro que eu vou usar no where, então por exemplo, se eu fizer um select asterisco from produtos where sabor igual a maracujá, vamos ver quantos produtos eu tenho sabor maracujá.
+
+[6:24] Eu tenho dois produtos.
+
+[6:29] Então eu posso, por exemplo, digamos o seguinte, a minha área de negócios disse para mim, que sou da área de tecnologia: "Precisamos aumentar em 10% os preços de lista dos produtos sabor maracujá porque a matéria-prima ficou mais cara, então foi uma decisão estratégica da empresa".
+
+[6:54] Então eu não vou ter que fazer o update para o código igual a 243083 e para o código 723457.
+
+[7:06] Eu posso fazer assim: update, produtos, Sete.
+
+[7:15] O precolista vai ser igual o próprio precolista vez um ponto dez.
+
+[7:23] Isso aqui eu estou pegando o valor atual e aumentando 10%.
+
+[7:31] E aí eu posso colocar where sabor igual a maracujá, então ao colocar esta condição aqui, eu vou aplicar esta modificação a todo mundo que tem sabor maracujá.
+
+[7:52] Que no caso, são dois produtos, então somente nesses dois produtos que o preço de lista vai aumentar em 10%.
+
+[8:01] Eu faço seleção, executo, rodado com sucesso; se eu agora fizer o select de novo, esse preço aqui já foi aumentado em 10% do que estava anteriormente.
+
+[8:16] Então é isso aí, eu posso fazer o update para um ou para um conjunto de campos.
+
+[8:23] Posso fazer a modificação para um campo apenas, modificar apenas o valor de um campo, ou para vários campos separados por vírgula.
+
+[8:33] Então é isso aí, gente, valeu.
+
+
+
+
+4-2  Alterando dados da tabela de clientes
+
+Atualize o endereço do cliente com cpf 19290992743 para R. Jorge Emílio 23 o bairro para Santo Amaro, a cidade para São Paulo, o estado para SP e o CEP para 8833223.
+
+Opinião do instrutor
+
+UPDATE CLIENTES
+SET ENDERECO = 'R. Jorge Emilio 23',
+BAIRRO = 'Santo Amaro',
+CIDADE = 'São Paulo',
+ESTADO = 'SP',
+CEP = '8833223'
+WHERE CPF = '19290992743 '
+
+
+
+4-3  Usando UPDATE com FROM
+
+
+Transcrição
+
+[0:00] A gente pode também fazer o update através de um comando select.
+
+[0:07] Deixa eu mostrar para vocês o problema que eu tenho que resolver.
+
+[0:10] Nós temos aqui no nosso ambiente dois bancos de dados.
+
+[0:15] Nós temos o venda sucos, que é o banco que nós estamos construindo e inserindo e alterando dados; e nós temos o banco suco vendas, que é um banco de dados de fonte.
+
+[0:28] Vamos fazer o seguinte: mantendo o venda sucos selecionado, ou seja, venda sucos tem que estar em negrito, nós vamos criar aqui um novo script e eu vou fazer dois selects.
+
+[0:40] Eu vou fazer um select, uma tabela de vendedores, da base venda sucos, que é a base que eu estou trabalhando; e eu vou fazer ao mesmo tempo um select da tabela sucos vendas ponto tabela de vendedores.
+
+[1:07] Deixa eu só me certificar para saber se esse nome, tabela de vendedores. Ok.
+
+[1:12] Eu seleciono esses dois selects e eu posso rodá-los.
+
+[1:16] Então, eu tenho aqui na tabela fonte, a tabela de vendedores, eu tenho o campo de férias, com valores; e na tabela do meu banco, o campo férias.
+
+[1:35] Inclusive, o nome do campo é outro.
+
+[1:37] Férias está vazio.
+
+[1:39] O que eu quero fazer é pegar o campo de férias da tabela de vendedores e colocar esses valores, alterar os valores do campo férias da tabela de vendedores com aqueles valores da base fonte.
+
+[1:56] Ficou um pouco complicado?
+
+[1:58] Vamos tentar mostrar isso melhor no desenvolvimento desse update.
+
+[2:03] Então, para primeiro a gente entender, eu vou fazer um select juntando essas duas tabelas.
+
+[2:12] Então, eu vou fazer o seguinte: vou colocar aqui um select asterisco from.
+
+[2:19] Vou pegar a tabela de vendedores, eu vou chamar ela de A.
+
+[2:25] A.
+
+[2:30] Vamos fazer assim.
+
+[2:32] Pronto.
+
+[2:34] Inner join com esta tabela lá do outro banco.
+
+[2:41] B.
+
+[2:42] Qual é o campo em comum das duas? É o campo matrícula.
+
+[2:47] Note que na tabela de vendedores eu tenho o campo matrícula aqui e na tabela de vendedores do outro banco eu tenho o campo matrícula aqui.
+
+[2:56] Só que o campo matrícula da tabela de vendedores da fonte tem uma diferença.
+
+[3:02] Tem esses dois zeros aqui que ele tem que ser tirado na hora que eu for fazer o join, e aí a função que eu uso é a função substring.
+
+[3:16] Quem fez o curso Consultas Avançadas vai lembrar dessa função.
+
+[3:20] Então, eu faço assim.
+
+[3:22] On A ponto matrícula igual a substring de B ponto matrícula três de três.
+
+[3:34] Por que três de três?
+
+[3:37] Que eu estou pegando a partir do terceiro caracter, que é o 2. No caso ali, naquela linha que está destacada, onde está zero zero dois três cinco.
+
+[3:48] O elemento três, que é o elemento inicial da função, é o 2.
+
+[3:53] E eu pego os próximos três, ou seja, eu vou pegar o 2, o 3 e o 5.
+
+[4:00] Três.
+
+[4:03] Vamos rodar essa consulta aqui.
+
+[4:07] Então, eu tenho lá, olha lá.
+
+[4:10] Até aqui são os campos da minha tabela.
+
+[4:15] E depois do lado, os campos da outra tabela.
+
+[4:19] Note que há uma correspondência entre o férias do meu campo, da minha tabela, que está nulo, com o de férias que está aqui.
+
+[4:28] Então, eu quero que esse valor aqui, por exemplo, seja gravado aqui.
+
+[4:33] Que esse valor da segunda linha seja gravado aqui na segunda linha.
+
+[4:39] Que o valor da terceira linha seja gravado na terceira linha.
+
+[4:42] E assim por diante.
+
+[4:44] Como é que fazemos isso?
+
+[4:46] Fazemos assim.
+
+[4:49] Eu pego update, o nome da tabela que eu quero modificar, vendedores, que é a tabela A, e aí eu aplico aqui o inner join, ou seja, esse comando todo aqui.
+
+[5:07] Update a tabela, inner join com outra tabela ou campo e aí aqui embaixo, eu coloco meu set.
+
+[5:18] Quem é que vai ser modificado?
+
+[5:20] Esse campo aqui que vai receber.
+
+[5:23] É o campo férias.
+
+[5:25] O campo férias está na tabela A.
+
+[5:27] A ponto férias recebe o valor de quem?
+
+[5:32] Do campo de férias, que está na tabela B.
+
+[5:37] B ponto de férias.
+
+[5:44] Vamos rodar esse comando update.
+
+[5:48] Rodou com sucesso.
+
+[5:49] Agora eu vou rodar de novo esse meu select aqui que juntava as duas tabelas.
+
+[5:56] Note que agora o campo férias, que estava nulo, tem os mesmos valores que estavam aqui.
+
+[6:08] Então, através de um select pegando dados de uma outra tabela, eu alterei os campos da minha tabela.
+
+[6:18] Um caso prático para isso seria, por exemplo, eu tenho uma tabela master que tem os preços de lista de cada produto e aí eu quero transferir isso para a minha tabela do meu banco de dados, fazendo uma sincronização entre os dois bancos.
+
+[6:40] Então, esse update, rodando ele periodicamente, eu posso fazer essa sincronização.
+
+[6:46] Foi o que eu fiz aqui. Eu sincronizei o campo férias da minha tabela vendedores com o campo de férias da tabela de vendedores do banco fonte.
+
+[7:00] Então tá, gente. Era isso aí que eu queria mostrar a vocês.
+
+
+
+4-4  Mudando o volume de compra dos clientes que possuem
+vendedores em seus bairros
+
+Podemos observar que os vendedores possuem bairro associados a eles. Vamos aumentar em 30% o volume de compra dos clientes que possuem, em seus endereços bairros onde os vendedores possuam escritórios.
+
+Dica: Vamos usar um UPDATE com FROM usando o seguinte INNER JOIN:
+
+SELECT A.CPF FROM CLIENTES A
+INNER JOIN VENDEDORES B
+ON A.BAIRRO = B.BAIRRO
+
+
+Opinião do instrutor
+
+UPDATE CLIENTES A INNER JOIN VENDEDORES B
+ON A.BAIRRO = B.BAIRRO
+SET A.VOLUME_COMPRA = A.VOLUME_COMPRA * 1.30
+
+
+
+4-5  Excluir dados da tabela
+
+
+Transcrição
+
+[0:00] Vamos continuar estudando?
+
+[0:01] A gente já aprendeu então a incluir, a alterar, e agora a gente precisa aprender a excluir dados de uma tabela do banco de dados de uma SQL.
+
+[0:12] E o comando para fazer isso é o comando Delete.
+
+[0:16] Aqui em cima está a sintaxe mais complexa do comando Delete, mas a gente pode reduzir essa sintaxe a, simplesmente, isto aqui:
+
+[0:29] DELETE ; WHERE (<Condição>), que vai fazer com que eu selecione quem eu quero excluir daquela minha tabela.
+
+[0:42] Vamos fazer alguns exemplos práticos? Diferenciados para podermos mostrar a vocês como conseguimos excluir dados de uma tabela.
+
+[0:52] Mas, antes disso, façam o seguinte: faça o download desse ZIP, descompacte-o e então nós vamos abrir com um editor de texto o arquivo Inclusão de Registros.sql.
+
+https://caelum-online-public.s3.amazonaws.com/1222-mysqlmanipulacaodedados/04/inclusao-registros.zip
+
+
+[1:13] Abrir com um editor de texto, OK?
+
+[1:18] Eu vou usar aqui o Notepad ++, mas pode ser o Notepad normal.
+
+[1:22] Eu vou copiar esse conjunto de comandos aqui, que farão inclusão de novos produtos na tabela de produtos, tudo bem?
+
+[1:33] Eu vou copiar, vou no meu Workbench, vou criar um Script novo e vou colar.
+
+[1:41] Certifico-me de que estou olhando a base Vendas_Sucos e vou executar esse comando INSERT.
+
+[1:50] Pronto. Eu inseri uma série de produtos novos.
+
+[1:55] Voltando aqui ao arquivo que nós abrimos; se eu agora executar esse comando SELECT aqui, ele vai me mostrar todos os produtos que têm o nome Sabor dos Alpes.
+
+[2:11] Então eu tenho aqui na minha tabela de produtos, no banco Vendas_Sucos, uma série de produtos novos, OK?
+
+[2:22] Bem, fizemos isso porque, claro, iremos excluí-los.
+
+[2:29] Para excluir um produto específico basta colocarmos a condição. Então seria:
+
+[2:33] "Delete From Produtos Where Codigo =" a por exemplo: "1001000".
+
+[2:55] Então eu vou excluir este produto aqui, olhe. Eu coloquei a condição; se eu fizer isso, ele diz lá que uma linha foi afetada, se eu agora fizer a seleção de novo, note que o produto cem mil 1001000 não existe mais na lista.
+
+[3:18] Mas isso foi uma exclusão simples. Eu posso fazer isso também, olhe:
+
+[3:23] "Delete From Produtos Where Tamanho = 1 Litro And", podemos pegar essa condição que está aqui, ou seja: eu vou excluir todos os produtos Sabor dos Alpes do tamanho um litro.
+
+[3:55] Se a gente, novamente, fizer aqui a seleção, temos aqui vários produtos; temos um, dois, três, quatro, cinco, seis.
+
+[4:08] Então se eu rodar esse Delete aqui, seis linhas foram afetadas, podemos olhar aqui, ou seja: apaguei seis registros, e então se eu fizer a minha seleção de novo, eu não tenho mais nenhum produto de um litro.
+
+[4:28] A gente pode também fazer a exclusão usando como base o conteúdo de uma outra tabela. Vamos fazer o seguinte:
+
+[4:37] Eu vou escrever isso aqui, olhe:
+
+[4:38] "Select Codigo_Do_Produto From", então eu vou pegar lá da tabela de produtos que eu tenho lá na base Sucos_Vendas que a gente considera como fonte dos nossos dados, não é? Então é:
+
+[5:01] "Sucos_Vendas.Tabela_de_produtos". OK?
+
+[5:17] Então tem lá uma série de produtos que estão aqui na tabela de produtos no banco Sucos_Vendas.
+
+[5:27] E eu posso fazer então uma seleção que é assim:
+
+[5:29] "Select...", eu, agora, vou selecionar os produtos da tabela de produtos que eu tenho na base Vendas_Sucos, ou seja: aqui.
+
+[5:44] Então: "...Codigo From..." porque o campo no meu banco é Código, não é? "...From...", e se eu fizer isso aqui, olhe:
+
+[6:01] "...Where Codigo Not In", o quê? Esta seleção aqui.
+
+[6:11] Estamos usando uma subquery como condição.
+
+[6:19] Então se eu fizer aqui, olhe, ele vai listar uma série de produtos que são os produtos que existem na tabela de produtos mas não existem na tabela de produtos do outro banco.
+
+[6:34] Digamos que eu quero fazer uma sincronização, ou seja:
+
+[6:36] "olha, a minha tabela de produtos do banco Vendas_Sucos tem que ser igual à tabela de produtos do Sucos_Vendas", então eu posso fazer o seguinte:
+
+[6:52] "Delete From Produtos Where..." e então eu coloco essa condição aqui.
+
+[7:04] Então esse comando que eu estou fazendo aqui de Delete está sincronizando as duas tabelas, ele está apagando quem tem na tabela do meu banco e quem não tem na tabela, digamos modelo, ou padrão, que eu estou usando.
+
+[7:23] Então é uma forma de eu fazer um Delete usando uma condição um pouco mais complexa.
+
+[7:31] Se eu executar aqui, olhe:
+
+[7:34] ele executou nove exclusões, e seu eu rodar essa consulta aqui de cima novamente, virá vazio, por quê? Porque agora as duas tabelas estão sincronizadas, estão com os valores iguais. Tudo bem?
+
+[7:54] É isso aí, gente. Valeu.
+
+
+
+4-6  Excluindo Notas
+
+Desafio: Vamos excluir as notas fiscais (Apenas o cabeçalho) cujos clientes tenham a idade menor ou igual a 18 anos.
+
+Dica: Usaremos consulta abaixo:
+
+SELECT A.NUMERO FROM NOTAS A
+INNER JOIN CLIENTES B ON A.CPF = B.CPF
+WHERE B.IDADE <= 18
+
+E use uma sintaxe parecida com a usada no UPDATE com FROM.
+
+
+Opinião do instrutor
+
+DELETE A FROM NOTAS A
+INNER JOIN CLIENTES B ON A.CPF = B.CPF
+WHERE B.IDADE <= 18
+
+
+
+4-7  Alterando e apagando toda a tabela
+
+
+Transcrição
+
+[0:00] Vamos continuar vendo mais uma coisinha de DELETE.
+
+[0:04] Eu vou aqui criar aqui um novo script no workbench.
+
+[0:09] E note uma coisa: se eu clico aqui na tabela de produtos e dou o botão da direita do mouse, eu tenho uma série de opções aqui que me ajudam a construir alguns comandos de SQL.
+
+[0:23] Então, por exemplo, eu venho aqui e escolho essa opção: Send to SQL Editor.
+
+[0:35] E eu vou escolher a opção, por exemplo, Create Statement.
+
+[0:39] Eu estou fazendo isso, botão direito do mouse sobre a tabela de produtos.
+
+[0:45] Ao fazer isso, ele vai escrever o comando de SQL para criar uma tabela igual aquela tabela que já existe.
+
+[0:57] Então, note que ele escreveu aqui create table, os campos, me disse quem é a primary key. Ele não falou nada de chave estrangeira. Nem essa tabela tem chave estrangeira.
+
+[1:13] Bem, e ele colocou, claro, algumas informações a mais aqui a respeito da parte de tipo de caracteres que essa tabela vai poder manipular.
+
+[1:26] Eu vou colocar aqui em vez de produtos, produtos 2. Vou criar uma outra tabela e vou tirar esse engine aqui. Não é importante para mim, por enquanto.
+
+[1:37] Vou rodar.
+
+[1:39] Então, se eu vier aqui no meu ambiente onde eu tenho o banco de dados e dar um refresh all, eu vou ter aqui uma outra tabela chamada produtos 2.
+
+[1:53] Só que ela está vazia.
+
+[1:56] Se eu fizer isso aqui e rodar esse comando, não vai me trazer nada.
+
+[2:04] Mas aí eu posso vir aqui, insert into produto 2, select asterisco from produto.
+
+[2:20] Já que a tabela de produto e produto 2 são iguais, se eu fizer isso daqui, eu vou transferir todo o conteúdo que eu tenho na tabela de produto para a tabela de produto 2.
+
+[2:32] Na verdade, é produtos. Deixa eu colocar aqui o S. Tanto na tabela destino quanto origem.
+
+[2:40] Então, se eu rodar isso daqui, eu agora, se eu fizer um select na tabela de produtos 2, eu tenho dados.
+
+[2:56] Lembrando uma coisa que já fizemos: se eu quiser, por exemplo, alterar todo mundo, todas as linhas num determinado campo, por exemplo, update produtos 2, set preco lista igual a 8.
+
+[3:21] Note que nesse comando aqui update, eu não coloquei um WHERE. Isso significa que ele vai fazer essa alteração em toda a tabela.
+
+[3:34] Vamos ver?
+
+[3:36] Executei.
+
+[3:38] Se eu fizer um select agora, note que preco lista está tudo com número 8.
+
+[3:46] E eu posso também apagar a tabela, apagar o conteúdo dela. Basta fazer delete from produtos 2.
+
+[4:01] Se eu fizer isso daqui, novamente se eu fizer o meu select, minha tabela voltou a ficar vazia.
+
+[4:11] Tomar muito cuidado com o delete from o nome da tabela.
+
+[4:15] Quer dizer, a gente tem que tomar cuidado realmente com qualquer delete, mas o delete from sem o WHERE, você vai perder tudo que você tem dentro da sua tabela e não tem como recuperar.
+
+[4:31] Então era isso que eu queria mostrar a vocês como é que eu consigo fazer update sem ter estes deletes genéricos na tabela toda.
+
+
+
+
+4-8  Cuidado ao alterar ou excluir dados
+
+Porque devemos ter cuidado ao usarmos comandos UPDATE ou DELETE sem condições de WHERE?
+
+Não é preciso ter cuidado, pois não é possível usar comando DELETE e UPDATE sem condição de WHERE
+  Alternativa errada! Podemos sim usar comandos DELETE e UPDATE sem condições WHERE.
+
+Porque não conseguiremos recuperar os dados caso eu execute um comando sem a cláusula WHERE sobre toda a tabela.
+  Alternativa Correta! É esse o cuidado que é mencionado no vídeo da aula.
+
+Porque ficará trabalhoso voltar os dados originais caso haja um erro.
+  Alternativa errada! Não ficará trabalhoso, ficará impossível! (Ainda não aprendemos o ROLLBACK)
+
+
+
+
+4-9  Apagar todos os dados da tabela
+
+
+Apague todos os dados da tabela NOTAS e ITENS_NOTAS.
+
+
+Opinião do instrutor
+
+DELETE FROM ITENS_NOTAS;
+DELETE FROM NOTAS;
+
+Observação: Por causa da chave estrangeira devemos apagar, primeiro, a tabela de ITENS_NOTAS para depois apagar a tabela de NOTAS.
+
+
+
+4-10  COMMIT e ROLLBACK
+
+
+Transcrição
+
+[0:00] Lembra no vídeo passado que eu falei para a gente tomar um certo cuidado quando a gente utilizar update de DELETE? Isso porque eu posso perder os dados, eu posso às vezes apagar uma informação que eu não gostaria de ter apagado, só que existe um mecanismo dentro do MySQL que pode nos dar uma certa segurança caso eu faça uma operação não desejada, é o que a gente chama de uma transação.
+
+[0:29] Até agora a gente tem executado os comandos sem nos preocuparmos em relação a uma transação. Toda vez que eu dou INSERT um dado é inserido, toda vez que eu dou um UPDATE o dado é alterado, toda vez que eu dou um DELETE o dado é apagado.
+
+[0:47] Agora, se eu crio uma transação tudo que eu fizer depois de eu criar a transação vai ficar em memória, não vai ser gravado no banco, ou seja, eu posso dar INSERTS, UPDATES, DELETES, porém depois que eu encerrar a transação aí sim dependendo da forma como eu encerro a transação eu realmente efetivo a gravação, as modificações na base de dados ou não.
+
+[1:20] Como é que eu termino a transação? Bem, na verdade, desculpe, como é que eu inicio uma transação? Através do comando START TRANSACTION, ou seja, lá no MySQL quando eu digitar START TRANSACTION uma transação será inicializada. E como é que eu acabo a transação? Com um COMMIT ou um ROLLBACK. A diferença é que o COMMIT, se eu der COMMIT eu confirmo no banco de dados tudo aquilo que eu modifiquei depois do START TRANSACTION. Se eu der um ROLLBACK eu volto atrás e não consigo ver as modificações, as modificações não são confirmadas no banco.
+
+[2:05] Na prática isso é muito importante quando a gente faz um sistema transacional e aí o nosso usuário tem uma tela lá amigável, uma transação por exemplo, um pagamento ou uma baixa de estoque, que vai afetar aquela operação vários INSERTS ou vários UPDATES ou vários DELETES no banco de dados. Então quando o usuário vai fazer lá a operação normalmente a gente dá um START TRANSACTION, o usuário faz lá o que ele tem que fazer e aí quando ele clicar em salvar eu dou o COMMIT, porque eu vou confirmar aquilo que ele fez, e seu der um CANCEL eu dou um ROLLBACK, ou seja, eu volto tudo que tinha anteriormente ao START TRANSACTION, é como se aquela operação fosse descartada. Vamos ver isso na prática lá no Workbench.
+
+[3:04] Então eu vou entrar aqui no Workbench e vou criar aqui um novo script. Vamos começar uma transação, então para começar a transação é START TRANSACTION. A transação está inicializada. Vamos pegar a nossa tabela de vendedores. Note que eu tenho aqui as comissões dos vendedores que está em 0.08, o segundo também é 0.08, o terceiro é 0.11 o quarto é 0.
+
+[3:45] Digamos que eu vá fazer um UPDATE, eu quero aumentar a comissão de todo mundo em 15%, então eu vou fazer isso aqui. Lembrando que eu estou dentro da transação, certo? UPDATE, VENDEDORES, SET, COMISSÃO igual a COMISSÃO vezes 1.15. Não coloquei o WHERE, significa que eu vou aumentar em 15% todo mundo. Fiz a operação, vamos dar um SELECT em vendedores? Note que agora o número da comissão ele está em 0.092, 0.092 o segundo, aumentou 15%. O 0.08 foi para 0.92 e o 0.11 foi para 0.1265.
+
+[4:44] Agora o que eu vou fazer? Eu vou dar um ROLLBACK. Eu não quero confirmar, ao dar o ROLLBACK a transação vai ser finalizada, e o que eu fiz será descartado, então note, dei um ROLLBACK. Agora se eu der agora de novo um SELECT na tabela, note que a comissão ela está agora, voltou ao que estava antes. Agora vamos fazer o contrário, eu vou dar meu START TRANSACTION, iniciei uma nova transação, dei o meu UPDATE e vou dar aqui o meu SELECT. Está lá de novo a comissão 15%, só que agora em vez de dar um ROLLBACK eu vou dar um COMMIT, ou seja, eu vou confirmar essa alteração. Ao dar o COMMIT se eu der o SELECT de novo agora ficou gravada na base o aumento da comissão em 15%.
+
+[5:54] Isso vale também para o INSERT. Vamos lá de novo, eu vou copiar aqui essa linha, vou colocar aqui. Então vou inicializar uma outra transação, vou fazer aqui o INSERT, INSERT + INTO, vamos aproveitar antes de dar o INSERT manualmente vindo aqui em vendedores Send to SQL Editor, Insert Statement. Olha, ele já escreve para mim o comando todo INSERT e eu aqui só vou colocar os dados. Então a matrícula eu vou botar uma matrícula 999, aqui em nome eu vou colocar 'JOAO DA SILVA', bairro eu vou colocar 'Icaraí', comissão eu vou botar o 0.08, data de admissão eu vou colocar 2012 01 15, por exemplo e está de férias? Eu vou botar o número 0. Então isso aqui é o INSERT. Opa, a matrícula está muito longa, eu botei muitos dígitos, vamos ver agora. Foi. Uma linha afetada. Se eu der aqui o meu SELECT eu tenho lá o 999 inserido.
+
+[7:43] Agora vamos dar aqui um ROLLBACK. Na verdade, eu não vou fazer nem um ROLLBACK, eu vou além de fazer o INSERT olha só, vou ainda fazer o UPDATE. Então eu fiz o INSERT, ainda fiz o UPDATE, então vamos lá, as comissões aumentaram e eu vou por exemplo apagar, eu vou inserir um segundo, ó vou copiar esse cara aqui, esse comando de INSERT, vou colocar aqui embaixo do UPDATE, vou colocar como JOAO DA SILVA2 por exemplo, só modifiquei ali o código e o nome. Então eu tenho aqui dois novos vendedores e aí olha só, agora eu vou dar um ROLLBACK. Ao dar o ROLLBACK, que dizer eu fiz o INSERT, fiz o UPDATE, fiz outro INSERT, ao dar o ROLLBACK se eu vir aqui o conteúdo da tabela de vendedores eu vou ter a original. Novamente, vou dar um START TRANSACTION, iniciei nova transação, vou rodar esses três comandos aqui, ou seja, vou dar dois INSERTS e um UPDATE, rodei. Se eu der o SELECT voltei a ter a tabela lá com os ajustes e os dois novos vendedores, mas agora vou dar um COMMIT. Agora sim, a minha modificação foi confirmada, a transação acabou e aí claro, se eu rodar o meu SELECT estão lá as modificações já confirmadas dentro da base de dados.
+
+[10:00] Tá legal? Então era sobre isso que eu queria falar com vocês, sobre START TRANSACTION, COMMIT e ROLLBACK. Valeu, um abraço.
+
+
+
+
+4-11  Usando ROLLBACK duas vezes
+
+Quando usamos ROLLBACK duas vezes, temos erro?
+
+Sim, porque o primeiro ROLLBACK limpa o trace que estava sendo armazenado pelo MYSQL. Para usar mais de uma vez devemos intercalar com COMMIT.
+  Alternativa errada! Da mesma maneira que no item A o COMMIT após um ROLLBACK, ou mesmo vários COMMITS, mesmo que não haja iniciado nenhuma transação não causa erro. mas torna os comandos inúteis.
+
+Sim, porque o primeiro ROLLBACK limpa o trace que estava sendo armazenado pelo MYSQL. Para usar mais de uma vez devemos intercalar com START TRANSACTION.
+  Alternativa errada! Podemos usar o ROLLBACK mais de uma vez. Isso não causa erro no MYSQL, apesar dele acabar sendo um comando inútil porque, realmente, não há mais comandos salvos para serem desfeitos porque o primeiro ROLLBACK já limpou o TRACE..
+
+Não, porque podemos usar ROLLBACK simultâneos na mesma tela de script.
+  Alternativa correta! Podemos sim usar ROLLBACKs seguidos num mesmo script, mesmo que não haja iniciado nova transação. Mais o comando se torna inútil porque nada acontece.
+
+
+
+
+
+4-12  Consolidando o seu conhecimento
+
+Chegou a hora de você seguir todos os passos realizados por mim durante esta aula. Caso já tenha feito, excelente. Se ainda não, é importante que você execute o que foi visto nos vídeos para poder continuar com a próxima aula.
+
+1) Vamos verificar a lista de produtos.
+
+SELECT * FROM produtos;
+
+1.png
+
+2) Vamos alterar o preço de lista de um dos produtos. Para isso digite:
+
+UPDATE produtos SET PRECO_LISTA = 5 WHERE CODIGO = '1000889';
+
+3) Podemos alterar os dados da tabela em forma de lote. Digite e execute:
+
+UPDATE produtos SET EMBALAGEM = 'PET', TAMANHO = '1 Litro', DESCRITOR =
+
+'Sabor da Montanha - 1 Litro - Uva' WHERE CODIGO = '1000889';
+
+4) Também podemos alterar o preço de lista baseado no mesmo campo que será alterado. Digite e execute:
+
+UPDATE produtos SET PRECO_LISTA = PRECO_LISTA * 1.10 WHERE SABOR = 'Maracujá';
+
+5) Da mesma maneira que incluímos dados na tabela baseado nos dados de uma outra tabela, podemos também alterar dados desta mesma maneira. Digite e execute:
+
+UPDATE VENDEDORES A INNER JOIN SUCOS_VENDAS.TABELA_DE_VENDEDORES B
+
+ON A.MATRICULA = SUBSTRING(B.MATRICULA,3,3)
+
+SET A.FERIAS = B.DE_FERIAS;
+
+6) É possível apagar dados da tabela. Antes disto vamos incluir novos registros que depois serão excluídos. Digite e execute:
+
+  INSERT INTO PRODUTOS (CODIGO,DESCRITOR,SABOR,TAMANHO,EMBALAGEM,PRECO_LISTA)
+
+     VALUES ('1001001','Sabor dos Alpes 700 ml - Manga','Manga','700 ml','Garrafa',7.50),
+
+         ('1001000','Sabor dos Alpes 700 ml - Melão','Melão','700 ml','Garrafa',7.50),
+
+         ('1001002','Sabor dos Alpes 700 ml - Graviola','Graviola','700 ml','Garrafa',7.50),
+
+         ('1001003','Sabor dos Alpes 700 ml - Tangerina','Tangerina','700 ml','Garrafa',7.50),
+
+         ('1001004','Sabor dos Alpes 700 ml - Abacate','Abacate','700 ml','Garrafa',7.50),
+
+         ('1001005','Sabor dos Alpes 700 ml - Açai','Açai','700 ml','Garrafa',7.50),
+
+         ('1001006','Sabor dos Alpes 1 Litro - Manga','Manga','1 Litro','Garrafa',7.50),
+
+         ('1001007','Sabor dos Alpes 1 Litro - Melão','Melão','1 Litro','Garrafa',7.50),
+
+         ('1001008','Sabor dos Alpes 1 Litro - Graviola','Graviola','1 Litro','Garrafa',7.50),
+
+         ('1001009','Sabor dos Alpes 1 Litro - Tangerina','Tangerina','1 Litro','Garrafa',7.50),
+
+         ('1001010','Sabor dos Alpes 1 Litro - Abacate','Abacate','1 Litro','Garrafa',7.50),
+
+         ('1001011','Sabor dos Alpes 1 Litro - Açai','Açai','1 Litro','Garrafa',7.50);
+
+7) Vamos apagar um registro apenas. Digite e execute:
+
+DELETE FROM PRODUTOS WHERE CODIGO = '1001000';
+
+8) Podemos aplicar um filtro para selecionar dados a serem excluidos. Digite e execute:
+
+DELETE FROM PRODUTOS WHERE TAMANHO = '1 Litro' AND SUBSTRING(DESCRITOR,1,15) = 'Sabor dos Alpes';
+
+9) Outra forma é apagar usando a seleção de dados de outra tabela. Digite e execute:
+
+DELETE FROM PRODUTOS WHERE CODIGO NOT IN ( SELECT CODIGO_DO_PRODUTO FROM SUCOS_VENDAS.TABELA_DE_PRODUTOS);
+
+10) Os comandos UPDATE e DELETE podem ser executados sobre a tabela inteira. Vamos então criar uma tabela de forma temporária para depois alterá-la e apagá-la. Digite e execute:
+
+CREATE TABLE `produtos2` (
+
+  `CODIGO` varchar(10) NOT NULL,
+
+  `DESCRITOR` varchar(100) DEFAULT NULL,
+
+  `SABOR` varchar(50) DEFAULT NULL,
+
+  `TAMANHO` varchar(50) DEFAULT NULL,
+
+  `EMBALAGEM` varchar(50) DEFAULT NULL,
+
+  `PRECO_LISTA` float DEFAULT NULL,
+
+  PRIMARY KEY (`CODIGO`)
+
+) ;
+
+11) Depois inclua os dados nesta tabela:
+
+INSERT INTO produtos2 SELECT * FROM produtos;
+
+12) Altere os dados para toda a tabela:
+
+UPDATE produtos2 SET preco_lista = 8;
+
+13) O comando abaixo apaga todos os registros da tabela. Digite o comando abaixo e execute para apagar os dados da tabela:
+
+DELETE FROM produtos2;
+
+14) Vamos criar uma transação. Digite e execute o comando abaixo para iniciar uma transação:
+
+START TRANSACTION;
+
+15) Vamos verificar a tabela de vendedores:
+
+SELECT * FROM VENDEDORES;
+
+2.png
+
+16) Modifique os dados referentes a comissão. Digite e execute:
+
+UPDATE VENDEDORES SET COMISSAO = COMISSAO * 1.15;
+
+
+SELECT * FROM VENDEDORES;
+
+3.png
+
+17) Vamos refazer o comando acima. Digite e execute:
+
+ROLLBACK;
+
+18) Verifique a tabela. Digite e execute:
+
+SELECT * FROM VENDEDORES;
+
+4.png
+
+19) Vamos repetir a modificação iniciando nova transação. Digite e execute:
+
+START TRANSACTION;
+
+UPDATE VENDEDORES SET COMISSAO = COMISSAO * 1.15;
+
+SELECT * FROM VENDEDORES;
+
+5.png
+
+20) Agora iremos confirmar a inclusão destes dados. Para isso digite:
+
+COMMIT;
+
+21) Verifique novamente a tabela. Para isso digite:
+
+SELECT * FROM VENDEDORES;
+
+6.png
+Opinião do instrutor
+
+Continue com os seus estudos, e se houver dúvidas, não hesite em recorrer ao nosso fórum!
+
+
+
+
+4-13  O que aprendemos?
+
+  Alterar e excluir dados de uma tabela, através de comando ou em lotes;
+  
+  Vimos que podemos alterar ou excluir todos os dados de uma tabela;
+  
+  O que é uma transação e como podemos desfazer modificações efetuadas anteriormente na base de dados.

@@ -1,0 +1,795 @@
+https://cursos.alura.com.br/course/mysql-dba-administracao/section/8468/tasks
+
+Curso de
+  Administração do MySQL: segurança e otimização do banco
+
+Instrutor
+
+  Victorino Vila
+
+    Linkedin
+    https://www.linkedin.com/in/victorino-vila-1a160/
+
+
+Aula 4- Plano de execução e índices | 0 / 17 | 84min
+
+  4-1  Arquivos necessários para a aula
+  4-2  Plano de execução*
+  4-3  Consulta mais lenta
+  4-4  Visualizando o plano de execução*
+  4-5  Custo da consulta
+  4-6  Conceito de índices*
+  4-7  Custo de ter um índice
+  4-8  Algoritmos Hash e BTree*
+  4-9  Algoritmo de busca
+  4-10  Usando índices*
+  4-11  Índices para melhorar uma consulta
+  4-12  Usando o Workbench*
+  4-13  Plano de execução gráfico
+  4-14  A ferramenta mysqlslap*
+  4-15  Criando índices
+  4-16  Consolidando o seu conhecimento
+  4-17  O que aprendemos?
+
+
+4-1  Arquivos necessários para a aula
+
+Ao longo dos vídeos, o instrutor irá utilizar alguns arquivos específicos, que são necessários para o decorrer desta aula e do treinamento. Você pode baixar um ZIP com esse conteúdo aqui.
+
+https://caelum-online-public.s3.amazonaws.com/1224-mysql-adminstracao/04/arquivos-aula-4.zip
+
+
+
+4-2  Plano de execução
+
+
+Transcrição
+
+[00:00] Um dos principais fatores de performance dentro de um banco de dados é o tempo com que eu faço consultas sql à base e dependendo de quanto mais complexas são essas consultas, mais tempo eu perco para poder obter o resultado de uma consulta.
+
+[00:24] E é claro, é função do DBA poder ajudar o analista a melhorar a performance das consultas que estão sendo colocadas no relatórios das aplicações que esse analista está colocando em produção. Vamos entrar aqui no Workbench e vamos fazer aqui três consultas.
+
+[00:45] Primeiro, eu vou fazer uma consulta, Select, eu vou chamar aqui: “A.Nome_Do_Produto From tabela_de_produtos”, simplesmente... e aí, eu vou chamando essa tabela de tabela A. Se eu rodo isso daqui, eu vejo lá todos os nomes dos produtos, mas eu quero ver, além do nome do produto, eu quero ver a quantidade que ele vendeu.
+
+[01:25] Então, eu posso pegar aqui: “C.Quantidade” e aí, eu vou pegar a tabela de produtos A e fazer um “INNER”... vamos botar aqui em baixo, “INNER JOIN”, qual é a tabela que tem a quantidade? É a tabela aqui de itens_notas_fiscais, eu tenho o campo quantidade aqui.
+
+[01:55] Então, eu vou colocar aqui itens... eu tenho aqui a tabela, “C ON”, qual é o campo que une as duas? É o campo código do produto, que tem tanto na tabela de itens_notas_fiscais, quanto na tabela de produtos. Então, eu vou botar: “A.codigo_do_produto = C.codigo_do_produto”.
+
+[02:33] Vamos ver se vai funcionar a consulta. Pronto, está lá, cada produto, eu estou vendo a quantidade, mas eu queria também olhar isso por data, eu quero saber quanto eu vendi em casa cano, por exemplo. Então, eu posso vir aqui, vou pegar essa consulta, só que aí, eu vou adicionar aqui “B.Data_Venda”.
+
+[03:01] Deixa eu ver se o campo chama-se realmente data_venda, o campo data_venda, eu tenho aqui em notas_fiscais, é isso aí, “Data_Venda”, só que eu quero ver isso por ano, então eu vou colocar um “Year” de “Data Venda As Ano”.
+
+[03:19] E aí, claro, eu vou fazer um “Inner Join” com a tabela de “notas_fiscais B ON”. Qual é o campo que eu tenho em comum? É o campo número, então “A.Numero = B.Numero”. Vamos rodar isso daqui. Na verdade, o campo não é número... não, o campo é número. Ah, é com a tabela...
+
+[03:57] Na verdade, eu tenho que juntar a tabela C, com a tabela B, que eu tenho que juntar a tabela de itens_notas_fiscais, com notas_fiscais, então é C com B, aqui que estava o meu erro. Pronto. Só que aí, eu estou linha a linha, eu poderia estar querendo ver isso daqui agrupado.
+
+[04:25] Então, eu vou pegar aqui mais uma consulta, vou botar aqui “Sum” de quantidade e aí, todo esse processo aqui, eu vou botar um “Group By”, o nome do produto e o ano, posso até colocar aqui um “Order By” com os mesmos campos. Se rodar esse Select, mas é complicado.
+
+[05:06] Notem que... já tive um tempo, se a gente olhar aqui no canto, deixa eu ver se eu consigo aqui... chegar aqui para o lado, acho que eu vou fazer assim... Ah, vamos lá.
+
+[05:29] Aqui, note que todas as consultas estavam demorando 0 segundos, bem instantâneo, mas a última já demorou 0.828 segundos, porque essa última consulta já começou a fazer join, group by, order by, então, ou seja, quanto mais agregada é a minha consulta sql, mais tempo eu vou gastar.
+
+[05:58] Claro que esse nosso banquinho aqui, ele é muito pequeno, ele tem poucos registros, mas quando a gente estiver falando de um banco de dados corporativo, a performance dos comandos sql é muito importante. Claro que aqui, foi meio que no olho, que a gente concluiu as nossas consultas.
+
+[06:24] Agora, será que eu tenho um instrumento que eu possa realmente saber qual é o tempo esperado que cada comando Select vai demorar? Nós temos, sim, nós temos o comando explain.
+
+[06:43] O comando explain, ele me dá o plano de execução da consulta, é como se fosse um pré-planejamento do que o MySQL vai fazer para resolver aquela consulta, independente do plano de execução que eu vou estar seguindo, eu posso tomar algumas atitudes em termos de performance do eu banco, para que as minhas consultas fiquem de uma certa maneira, um pouco mais rápidas.
+
+[07:17] Então, a gente vai se dedicar agora, os próximos vídeos dessa aula, a tentar entender como é que funciona o plano de execução, quais são os impactos que esse plano de execução dá dentro da minha base e ver os resultados deles, através desse comando que chama-se explain, que é o comando que nos mostra o plano de execução.
+
+[07:46] Mas aí, isso aí, eu vou continuar nos próximos vídeos. Tchau, tchau.
+
+
+
+4-3  Consulta mais lenta
+Analise as consultas abaixo:
+
+1)
+
+  SELECT * FROM TABELA1 INNER JOIN TABELA2 ON TABELA1.ID = TABELA2.ID INNER JOIN TABELA3 ON TABELA2.ID = TABELA3.ID
+  GROUP BY 2 ORDER BY TABELA1.ID
+
+2)
+
+  SELECT * FROM TABELA2 INNER JOIN TABELA1 ON TABELA1.ID = TABELA2.ID INNER JOIN TABELA3 ON TABELA1.ID = TABELA3.ID
+
+3)
+
+  SELECT * FROM TABELA1 INNER JOIN TABELA2 ON TABELA1.ID = TABELA2.ID INNER JOIN TABELA3 ON TABELA2.ID = TABELA3.ID
+
+Qual delas o banco de dados vai demorar mais a fazer?
+
+
+Consulta 3
+  Alternativa errada! Esta consulta, comparada com a primeira, é mais rápida, porque não tem o GROUP BY. Comparada com a segunda, é igual, porque a ordem dos JOIN não influencia na performance.
+
+Consulta 2
+  Alternativa errada! Esta consulta, comparada com a primeira, é mais rápida, porque não tem o GROUP BY. Comparada com a terceira, é igual, porque a ordem dos JOIN não influencia na performance.
+
+Consulta 1
+  Alternativa correta! Além de ter dois JOIN, a consulta tem um GROUP BY.
+
+
+
+4-4  Visualizando o plano de execução
+
+
+Transcrição
+
+[00:00] Vamos entender na prática como é que o plano de execução pode mostrar para a gente, se uma consulta vai ser rápida ou demorada e para isso, a gente vai usar o MySQL como linha de comando.
+
+[00:16] Então, eu vou buscar aqui, vou abrir a minha janela de linha de comando e vou lá para o diretório do MySQL, fica em program files, MySQL, MySQL Server 8.0 e bin. E aí, para entrar no MySQL, é mysql -uroot -p, coloco a minha senha root e aí, pronto, tenho aqui o meu ambiente do MySQL por linha de comando.
+
+[00:58] Vou na minha base sucos_vendas e aí, vou executar uma daquelas consultas, vou começar pela consulta mais simples, que é a primeira, vou colar aqui. Opa, não copiei, copy, pronto. E aí, eu tenho lá o resultado da minha consulta pela linha de comando.
+
+[01:27] Para a gente poder ver o plano de execução, a gente escreve explain e a consulta que eu quero executar, ele me dá esses campos aqui, onde cada campo me dá uma pista de como vai se comportar essa consulta. Eu vou ter uma linha para cada tabela envolvida na query que está sendo analisada pelo explain.
+
+[01:58] Como no caso aqui, esse Select, somente utilizou uma tabela, que eu chamei de tabela A, somente a tabela A está envolvida nessa consulta, mas tem uma outra forma de a gente ver esse resultado, se eu botar aqui no final da linha um “\G”, eu tenho o meu resultado, invés de no formato de tabela, sequencialmente, fica até mais simples de a gente poder estar olhando.
+
+[02:34] Agora, eu tenho um terceiro formato do explain, que é o meu preferido, que é o seguinte, eu coloco aqui, “Format=Json”, ao colocar esse comando, eu vou ter a minha resposta assim. Aparentemente, você pode achar que isso é mais confuso, mas é que eu tenho informações mais interessantes nessa consulta.
+
+[03:10] Uma delas é essa aqui, o query cost, o query cost, ele é basicamente o custo da consulta. Você vai me perguntar: “Que unidade de medida é essa? É segundo? É hora? É minuto?”, na verdade é uma unidade indefinida. Pense no seguinte, quanto menor o query cost, mais rápida vai ser a consulta.
+
+[03:41] Então o seu objetivo é ir arrumando a consulta, de tal maneira que o query cost seja o menor possível. Aqui, por exemplo, tem o número de linhas que vão ser examinadas e basicamente, esses dois valores mostram o custo de leitura e de escrita da consulta.
+
+[04:11] Então, primeira... a nossa primeira consulta custou 3.75, então eu vou até colocar aqui como comentário aqui em cima, 3.75. Vamos ser a segunda consulta, eu vou até fazer uma dica, antes de copiar e colar, vamos tirar os espaços aqui da consulta, deixar ela numa linha única.
+
+[04:38] Então, eu vou copiar e voltando lá para a linha de comando, eu vou colocar aqui: “Explain Format=Json” e vou colar essa segunda consulta, só que eu vou colocar o “\G” no final. Bem, essa consulta, ela tem um Json um pouco maior, note que eu tenho dois loopings.
+
+[05:04] Eu tenho um looping que vai buscar dados da primeira tabela e note que ele aqui tem uma outra informação, que é possível chave de uso “Primary”, por quê? Porque lembra? Eu tenho que fazer um join entre a tabela de produto e a tabela de itens, pelo código do produto e na tabela de produtos, o meu código é um primary key.
+
+[05:34] Então, ele vai usar essa... a primary key para ajudar a fazer com que a performance desse join seja maior. Tem lá os mesmos custos, muito parecidos com a query, quando eu rodei ela sozinha, só que depois, eu tenho uma segunda query que inclusive, os custos são bem altos.
+
+[06:00] E aí, o importante é que esse join trouxe esse custo total, 76mil 517.94, então, note que a query ficou mais pesada ainda. Então, eu vou até colocar esse número aqui, 76517.94, foi o curso da segunda query. Note, muito mais custosa, simplesmente pelo fato de eu ter feito um join.
+
+[06:41] Vamos para a terceira, a terceira, eu já faço dois joins, então copiei aqui a consulta, vou vim aqui na linha de comando, lá em baixo. Opa. Vou dar um “Enter” aqui, até aparecer. Pronto. “Explain Format=Json” e eu vou colar a consulta, colocando o “\G” no final.
+
+[07:19] Então está lá, tem já bastante coisa, vamos lá para o topo, essa minha consulta já custou 260242.51, note que ela foi mais pesada do que a consulta anterior e a de baixo que vai usar group by e order by, será que ela vai custar mais do que a outra?
+
+[08:00] Vamos ver. “Explain Format=Json”, “\G”. Opa, cometi algum erro? Vamos repetir aqui o comando. Ah, sim, porque “;” aqui em baixo, tinha um “;” perdido aqui no canto, eu vou tirar ele. Pronto, vou executar. Ok, foi. Tenho lá as minhas buscas e o custo aqui foi 260.242.51, foi praticamente o mesmo custo que a query... Praticamente não, igual, o mesmo custo que a query anterior.
+
+[09:14] Ou seja, inserir o group by e o order by, não influenciou no resultado da consulta. Então, a gente já conseguiu ver que explain dá mais ou menos esse indicador, para dizer se a query é pesada ou ela é leve. O que a gente precisa é tentar redesenhar ou colocar artifícios dentro do MySQL, para fazer com que essa consulta fique mais rápida, que o custo dela caia.
+
+[09:52] Esse é um desafio que o DBA tem para ajudar o analista de negócio, na verdade não é o analista de negócio, mas o analista que está projetando o banco, criando sistema, para que ele, ao construir consultas que vão gerar relatórios para os usuários, que ele faça consultas, de tal maneira que o custo da query acabe sempre sendo um pouco menor.
+
+[10:23] Então é isso aí, gente, é isso que eu queria falar para vocês sobre o comando explain e como que ele nos dá esse resultado do custo da query. Valeu.
+
+
+
+4-5  Custo da consulta
+
+Há uma unidade de medida que representa o custo da consulta?
+
+
+Não há unidade de medida
+  Alternativa correta! O custo é expresso em uma unidade desconhecida. Na verdade, não é expresso em unidade alguma. Apenas usamos este valor como comparação com outros planos de execução. Quanto menor o valor, mais rápido vai ser a consulta.
+
+Sim, é representado em bytes processados
+  Alternativa errada! Na verdade, não é expresso em unidade alguma.
+
+Sim, é representado em segundos
+  Alternativa errada! Na verdade, não é expresso em unidade alguma.
+
+
+
+4-6  Conceito de índices *
+
+
+Transcrição
+
+[00:00] Vamos falar um pouquinho sobre índices. O conceito de índice baseia-se assim, que... se eu for pesquisar um conjunto de dados, buscar um dado dentro de uma lista de informações, onde esse dado que eu estou buscando, se ele está previamente classificado, ordenado, é muito mais fácil achar esse dado, do que se eu tivesse procurando essa informação numa lista totalmente espalhada.
+
+[00:34] Porque assim, se eu tenho uma coisa ordenada de forma alfabética, por exemplo e eu vou procurar por um nome, por exemplo, Pedro, eu já buscar direto na letra “p”, porque eu sei... se ela está ordenada, eu tenho essa busca de uma maneira mais inteligente, mais rápida, do que se eu for buscar esse nome dentro de uma listra totalmente bagunçada.
+
+[01:02] Então, o índice, ele serve para ajudar a gente na busca dessas informações, então é uma estrutura que auxilia a tabela a achar dados. Quando o MySQL, ele cria um índice, seja esse índice uma ou mais colunas, ele vai e cria para a gente uma copia dessa coluna, numa outra estrutura, mas de forma ordenada.
+
+[01:40] O que nós estamos vendo aqui em cima, seria a representação de como funciona o índice. Atenção, numa tabela do tipo MyISAM, a informação que é colocada na tabela, ela está apresentada de forma, como eu posso dizer, assim... de forma... na ordem com que os registros forem incluídos.
+
+[02:06] Então, eu tenho aqui no canto uma tabela de livros, onde o primeiro livro que foi inserido foi o livro 7-234-5, deixa eu só colocar aqui o apontador. Pronto. Foi o livro 7-234-5, Moby Dick e esse é o autor.
+
+[02:22] Depois, eu inclui esse outro ID, com esse no título e esse autor e o de baixo, depois, foi o terceiro livro a ser colocado nessa base de dados. Se eu quiser procurar pelo livro 2-345, se eu não tiver a estrutura de índice, eu tenho que percorrer essa tabela e ir procurando, até acha-la.
+
+[02:51] Mas aí, em tabelas MyISAM, que é o exemplo que eu estou mostrando aqui em cima, quando eu crio um índice, ele cria uma estrutura a parte, onde ele coloca a coluna, onde o índice está sendo representado, já de forma ordenada e eu tenho do lado uma estrutura que diz a posição daquela coluna dentro da tabela.
+
+[03:20] Então, por exemplo, o 2-2315 é o segundo registro, está aqui, é o segundo registro. O 7234-5, é o primeiro registro, está aqui em cima. Então, esse aqui seria a tabela de índices, quando a gente utiliza o ID como índice.
+
+[03:41] Agora, se tu quiser criar índices para a coluna título ou para a coluna autor, eu vou ter outras estruturas, onde o campo está ordenado de forma alfabética e eu tenho como referência o registro que está aqui em cima. Então, nesse caso aqui, eu tenho uma tabela e três índices.
+
+[04:04] Não importa se o índice é de uma coluna que é chave primária ou não, relembrando, chave primária é aquela chave que a tabela tem, onde nenhum registro pode se repetir com aquela mesma chave. Aqui no caso, a chave primária é ID, mas a representação do índice dentro de uma tabela MyISAM, funciona da mesma maneira que os outros índices.
+
+[04:36] Agora, essa estrutura, ele tem um certo custo. Apesar de o índice facilitar o processo de busca, se eu, por acaso, for incluir um novo registro na minha tabela, eu vou ter que estar colocando, atualizando esses índices, toda a vez que eu modificar a minha tabela.
+
+[05:09] E isso de uma certa maneira, é custoso. Imagine, eu tenho aqui três índices, toda a vez que eu modificar ou incluir alguém, quando essa operação for feita nessa tabela, eu tenho que também estar atualizando as tabelas de índice.
+
+[05:31] Então, claro, se eu tiver uma tabela muito grande dentro do MySQL e se eu tiver muitos índices associados a essa tabela, toda a vez que eu for incluir, alterar ou excluir ou... um registro daquela tabela, eu vou ter um problema de performance, porque essa operação vai ficar muito mais lenta, porque a cada modificação da tabela, eu vou ter que alterar os índices.
+
+[06:02] Então, isso é um peso de benefício e custo, que você deve estar meio que prestando atenção, sempre que você for projetar os índices e tudo mais, dentro da tabela que você vai usar na base de dados.
+
+[06:26] Agora, nas tabelas do tipo InnoDB, apesar de o índice também ser de uma certa maneira custoso ao atualizar a tabela, a estrutura de índices na InnoDB, ela é um pouquinho diferente da apresentada aqui.
+
+[06:45] Então, vamos passar para o próximo slide, aqui está a representação dos índices numa InnoDB. Na InnoDB, há uma distinção entre o índice que está associado à chave primária e ao que não é chave primária. Quando eu tenho um índice associado à chave primária, ele faz parte da tabela de dados.
+
+[07:09] Então, aqui no caso, note, apesar de a minha tabela ter uma ordem natural de inclusão dos dados, ao fazer isso, uma tabela InnoDB já organiza a própria tabela usando o índice da chave primária. Então, é como se o índice e a tabela de dados, para a chave primária, fossem uma coisa só.
+
+[07:37] Então, note que aqui os dados na minha tabela já estão orneados pelo ID, porque o ID é a chave primária, por isso que quando a gente faz uma leitura, uma inclusão de dados numa tabela InnoDB, alteração em massa, por exemplo, “Ah, estou carregando um Data Werehouse, então tem que ler 1 milhão de registro de um canto para o outro canto”.
+
+[08:10] Se os dados que eu estou usando para fazer essa leitura de massa já vierem ordenados lá da fonte, usando o mesmo critério que a chave primária da tabela, eu vou ter uma melhora substancial na performance de leitura desses dados. Agora, como é que são os índices?
+
+[08:33] No caso dos índices dos outros campos, que não são chaves primárias, ele também cria aqui uma estrutura a parte, só que aqui, no caso, eu vou ter só uma estrutura para o índice do título e do autor, porque o índice de ID, que é chave primária está na própria tabela.
+
+[05:55] E aí, a referência que eu vou ter, não é a posição do registro na tabela e sim, o código da chave primária. Então, por exemplo, vamos subir aqui antes. Antes os dados estão desordenados na tabela e a referência é a posição do registro.
+
+[09:18] Já na InnoDB, a tabela já vem ordenada automaticamente e a referência é pelo campo da própria chave primária. A vantagem dessa ordenação de índices, através da chave primária, é que, por exemplo, se a gente precisar fazer uma busca por ID, a gente não precisa estar trabalhando com duas estruturas ao mesmo tempo.
+
+[09:50] Na MyISAM, por exemplo, se eu quero buscar um ID, eu tenho que vir aqui no índice, achar o ID, ver a posição e aí, depois ir para a tabela e buscar a informação. Se eu quero buscar por ID, dentro da InnoDB, ele vai buscar na própria tabela, então não utilizo uma outra estrutura.
+
+[10:15] É claro que o custo para achar alguém, que não é chave primária, é praticamente o mesmo, tanto na MyISAM, quanto na InnoDB, porque eu vou ter que realmente usar a estrutura de índices para achar quem eu estou procurando, ver a referência, não importa se aqui no caso a referência é uma chave primária, no caso de InnoDB ou uma posição dentro da tabela, como é no caso do MyISAM.
+
+[10:43] Eu vou buscar essa posição e aí, eu tenho a ligação com a informação na tabela. Então, essas são duas diferenças substâncias internas de como é que funciona um índice dentro de tabelas MyISAM e InnoDB. Valeu.
+
+
+
+
+4-7  Custo de ter um índice
+
+Em que uma tabela que tenha muitos índices pode ser prejudicial ao banco de dados?
+
+
+Muitos índices vão fazer com que a consulta se perca em saber o índice correto a ser usado
+  Alternativa errada! Não há este tipo de confusão.
+
+Muitos índices vão fazer com que comandos de INSERT, UPDATE e DELETE fiquem mais lentos
+  Alternativa correta! Como os índices devem ser reconstruídos a cada manutenção dos dados das tabelas, muitos índices afetam realmente esta performance.
+
+Muitos índices vão fazer com que o plano de execução seja complexo
+  Alternativa errada! O número de índices não influencia na complexidade do plano de execução.
+
+
+
+
+4-8  Algoritmos Hash e BTree*
+
+
+Transcrição
+
+Nota: No tempo 16:16 do vídeo, o instrutor fala que apenas o HASH vai funcionar direito no InnoDB sendo que na verdade é o BTree, assim como ele explicou no início do vídeo.
+
+[00:00] A gente já viu em vídeos anteriores, principalmente no vídeo passado, mais precisamente, que o MyISAM e o InnoDB têm estruturas diferentes quando constroem os seus índices.
+
+[00:14] No caso do MyISAM, independente se o índice é chave primária ou não, a gente constrói sempre uma estrutura de dados ordenados pelo critério do índice e a referência na tabela é pelo posicionamento do registro na ordem com que eles forem inseridos, independente se é PK ou não.
+
+[00:41] Já o InnoDB, ele tem uma distinção de o índice é PK ou não PK, se ele é PK, a própria tabela é ordenada pelo índice, pelo critério da chave primária e os outros índices possuem uma estrutura muito parecida com o MyISAM, só que a referência entre o dado que está no índice e na tabela, não é pela posição do dado que foi inserido e sim pela localização da própria PK.
+
+[01:18] Agora, para a gente procurar o valor dentro do índice, a gente tem dois tipos de algoritmos que nós podemos fazer isso e em outro vídeo, bem no início dessa aula, eu até mencionei isso e falei que iria explicar sobre isso um pouco mais na frente.
+
+[01:38] Esses dois algoritmos são os BTREE e HASH, são dois algoritmos diferentes que nós usamos para buscar alguém dentro de uma lista ordenada. Então, independente de como é a minha estrutura de índice, eu vou ter que fazer buscas nessas listas que já foram previamente ordenadas.
+
+[02:05] E aí, eu posso fazer essas buscas através o BTREE ou através do HASH, porém o MyISAM, ele suporta índices que usam o algoritmo de cada BTREE ou HASH. Já o InnoDB não, o InnoDB, ele só utiliza algoritmos de busca, do tipo BTREE. Agora, como é que funcionam esses algoritmos?
+
+[02:37] Para entender bem como é que funciona esses algoritmos, a gente precisa primeiro entender um conceito, um pouco diferente, que é o conceito de uma árvore binária. Então, o que eu estou vendo aqui em cima é uma árvore binária.
+
+[02:56] Quando a gente monta essa árvore binária, a gente garante sempre que todos os valores que estão a esquerda do nó, são valores menores do que o valor do nó e todos os valores que estão a direita do nó, são valores maiores do que o nó.
+
+[03:20] Então, se a gente olhar aqui esse exemplo, essa figura, note o seguinte, todos os valores que estão a esquerda do 27, são nós menores que 27 e todos que estão a direita do 27 são nós maiores que 27. Então, se eu estiver olhando o 27 e quiser buscar um número menor que 27, eu vou para o lado esquerdo.
+
+[03:49] Se eu quiser achar um número maior do que o 27, eu vou para o lado direito, se eu quiser achar o próprio 27, eu não preciso ir para lugar nenhum, já o encontrei. Agora, se a gente olha o foco do outro nó, por exemplo o 14, todos os nós que estão à esquerda 14, são menores do que 14 e todos que estão a direita do 14, são maiores do que o 14.
+
+[04:16] Então, por exemplo, então eu estou vendo... vamos fazer um exemplo aqui hipotético, digamos que eu queria buscar o número 19, como é que o algoritmo funciona? Ele vai no 27, 19 é maior que 27? Não, é menor, então eu sei que está tudo do lado esquerdo.
+
+[04:42] Eu esqueço os nós do lado direito. Aí, eu passo para o nó de baixo que é o 14, o 14, ele é menor ou maior que 19? “Ah, ele é maior que 19”, então eu sei que o 19 está a direita do 14, eu não... tudo o que estiver a esquerda do 14, eu não vou mais, aí eu desço mais um nível.
+
+[05:06] Aí, eu acho o próprio número 19. Agora, o que que é uma BTREE, uma BTREE é uma árvore binária balanceada, por isso a letra B, de balance, qual é a diferença então de uma árvore binária normal e uma árvore binária balanceada?
+
+[05:34] Na árvore binária normal, quando eu monto esse algoritmo de esquerda e direita, eu não garanto para vocês que a árvore tem os mesmos nós, tanto para um lado, quanto para o outro. Já numa árvore balanceada, a gente meio que garante que os nós estão bem distribuídos, ou seja, normalmente o topo da árvore binária é a mediana dos números, das opções que eu estou procurando.
+
+[06:14] E aí, eu garanto que se eu for buscar para o lado direito ou buscar para o lado esquerdo, tanto faz, eu vou ter mesmos custos para achar um determinado número. Agora, como é que a gente usa esse algoritmo de BTREE para achar um dado dentro do índice, quer dizer, como é que o índice faz isso?
+
+[06:47] Então, o que acontece é o seguinte, a gente arruma, o índice, ele arruma os dados dentro de um topo, usando um algoritmo que chama D e dois D. Então, é como se eu pegasse o menor e o maior valor e criasse intervalor constantes que a gente chamaria de D e eu vou colocar esse números nesse topo.
+
+[07:15] E aí, eu sei, por exemplo, que o que está a esquerda do 7, está nesse grupo aqui, o que está entre o 7 e o 16, está nesse grupo aqui e o que está para lá do 16, está nesse grupo aqui. Então, ela é uma árvore binária um pouquinho, então se eu quiser buscar o número 7, eu já acho de cara.
+
+[07:41] Se eu quiser buscar o número 9, por exemplo, eu vou ver aonde que o 9 está, então o 9 não está aqui, porque o 9 não é menor que sete, o 9 não está aqui nessa região, porque ele não é maior que 16, eu sei que o 9 está entre o 7 e o 16. Então, ele sabe que ele vai estar num grupo de número ali do meio.
+
+[08:12] Então, essa busca... a gente faz esse exemplo aqui com números, mas esses valores a serem buscados podem ser textos, claro... qual é o texto que é menor do que outro? Respeitando a ordem alfabética, o A sempre vai ser menor do que B, menor que C e assim por diante.
+
+[08:36] O algoritmo de BTREE, ele é matematicamente eficiente, se eu tiver, por exemplo, 4 bilhões de nós, por exemplo. Se você olhar matematicamente, no máximo eu vou precisar fazer 32 buscas para achar qualquer número num algoritmo de BTREE, por quê?
+
+[09:06] Porque assim, tem 4 bilhões, então o nó do meio da árvore balanceada, vai ser o número 2 bilhões. Então, se eu quero achar um número, a primeira coisa, digamos que eu queira achar o número 1450, eu vou no 2 milhões, eu vejo esse número está à direita ou a esquerda?
+
+[09:33] Está a esquerda. Aí, no segundo nível a esquerda do 2 milhões, eu tenho um nó central que é um bilhão. Aí, eu vou testar, estou no segundo nível. O número está à esquerda do um bilhão ou a direita de um bilhão? “Ah, está a esquerda”.
+
+[09:52] Aí, o nó de baixo do grupo da esquerda, vai estar em 500 milhões e assim por diante e aí, até eu descer, depois de descer 32 níveis, eu vou conseguir chegar ao grupo de nós, que o número que eu estou buscando o existe, por isso que é uma consulta que requer... é um algoritmo que requer um esforço computacional para achar qualquer valor bem pequeno.
+
+[10:24] Do que, por exemplo, eu percorrer os 4 bilhões e saber quem é número, esse número é o que eu quero? Não. É o que eu quero? Não. Lembrando que essa busca da árvore binária, seria a busca para eu achar o valor que e usado como critério do índice.
+
+[10:45] Se eu tenho um índice por estado, então eu estou usando o método BTREE para achar o estado dentro da lista ordenada. Quando eu achar o estado, aí eu vejo a referência, se for MyISAM, a referência é pela linha da tabela, se for InnoDB, essa referência é a PK e aí, vou na tabela e consigo capturar todos os dados que eu estou procurando.
+
+[11:16] Então, esse aqui é o conceito do algoritmo BTREE. O algoritmo HASH, ele é um pouquinho mais difícil de entender, até eu mesmo tenho um pouco de dificuldade, porque ele tem algumas coisas meio misteriosas embutidas nele.
+
+[11:37] Algoritmo de HASH, ele é usado, não somente para índices, mas o HASH é usado muito para criptografia, para armazenagem de senhas e o algoritmo de HASH é um algoritmo matemático que permite que a gente pegue um valor de texto, um string, independente do seu tamanho, se é uma string de um caractere ou de 100 caracteres.
+
+[12:05] A gente reduz isso a uma palavra de tamanho fixo, então é como se a gente, por exemplo, essa tabela, eu tenho lá o seguinte, eu tenho uma string, aqui tem um montão de letras e aplicando o algoritmo de HASH nele, eu transformo essa string em outros caracteres de string com tamanho fixo.
+
+[12:29] Mas, se eu por acaso pegar uma outra string, um pouco menor, eu consigo reduzir ele para uma string do mesmo tamanho que o anterior, isso vai depender dos parâmetros que eu estou colocando no HASH. E aí, o algoritmo de HASH tenta tanto transformar o string em HASH, como pegar o HASH e transformar de volta para string.
+
+[12:57] Os valores que foram transformados pelo HASH, são valores completamente embaralhados, que eu não consigo entender, por isso que esse algoritmo é muito usado em criptomoedas, criptografia, armazenar senha, essas coisas. Agora, como é que isso então ajuda a gente a achar alguém em uma tabela dentro do banco de dados?
+
+[13:25] Você imagina um livro, um livro que você compra na banca, na livraria, numa banca de jornal. A primeira coisa que o livro tem, na primeira página dele tem um negócio chamado índice, que tem os capítulos e cada capitulo tem subtópicos e dentro de cada subtópico do capitulo, tem a página.
+
+[13:49] Então, eu só quero pegar aquele livro e eu quero entender um assunto, eu quero ler sobre tal coisa. Eu vou olhar o índice, eu vejo em que página o índice está, o assunto, desculpe, vou pegar o índice, acho o meu assunto, vejo a página que o assunto está.
+
+[14:09] E aí, eu vou naquela página e aí, eu começo a ler o texto, até encontrar o tópico que eu estou procurando. O HASH funciona da mesma maneira, como é que funciona isso? Então eu tenho o meu índice, lá com os meus dados num estrutura separada.
+
+[14:32] E aí, eu guardo dentro de palavras HASHs o endereço de memória de alguns conjuntos de dados, então é como se, por exemplo aqui, eu tenho tanto o ID5, quanto o ID3 armazenados nesse conjunto de endereço de memórias HASH e aí, é como se esse “id=3” e “id=5”, fizessem parte do mesmo capítulo de um livro, que é esse grupo aqui.
+
+[15:15] Então, quando eu quero pegar o dado de 5, eu aplico o algoritmo de HASH, ele vai me dar uma palavra constante, que é o endereço de memória onde o dado está e aí, eu vou buscar aqui dentro o registro que eu quero achar. E aí, pode ser que seja esse ou seja esse ou seja esse, porque esse endereço de memória está ligando a posição da tabela onde o resto do dado está.
+
+[15:53] A gente tem que entender um pouquinho o seguinte, que tanto o HASH, quanto o BTREE, eles são algoritmos de buscas, cada um tem o seu conceito deferente de trabalhar e que o MySQL suporta esses dois algoritmos internamente, porém apenas se for MyISAM.
+
+[16:12] Se a gente tiver um banco InnoDB, apenas o HASH vai funcionar direito. Então é isso aí. Valeu.
+
+
+
+4-9  Algoritmo de busca
+
+Qual é o algoritmo que monta um árvore binária balanceada?
+
+
+O próprio algoritmo de árvore binária já a constrói de forma balanceada
+  Alternativa errada! A árvore binária não se preocupa com o balanceamento da árvore.
+
+O algoritmo de Hash
+  Alternativa errada! O Hash não monta árvores.
+
+O algoritmo de BTree
+  Alternativa correta! Este é o algoritmo que monta árvores balanceadas.
+
+
+
+4-10  Usando índices*
+
+
+Transcrição
+
+[00:00] Agora, você vê que essa aula eu comecei falando de explain, para a gente entender o plano de execução e como é que a gente consegue ver o custo de uma query, depois eu pulei de assunto e falei de índice, como é que funciona o índice, quais são os algoritmos de busca.
+
+[00:22] Agora, eu vou juntar as duas coisas, porque acontece muito o seguinte, o índice é um dos principais instrumentos para a gente melhorar o custo das queries, quer ver? Vamos fazer um exemplo prático para ilustrar isso. Então, voltei aqui para o meu ambiente do meu MySQL em linha de comando e eu vou fazer o seguinte.
+
+[00:46] Eu vou pegar a seguinte consulta: “Select * From Notas_Fiscais Where Data_Venda = 20170101”, deixa eu até selecionar essa linha, vou dar um “Ctrl + C”, porque eu vou usar esse comando várias vezes, então vamos lá, eu vou rodar.
+
+[01:19] Eu trouxe lá uma série de linhas, todas elas são notas fiscais para o dia 27/01. Claro que internamente, o MySQL fez um plano de execução e executou a query, vamos ver como é que foi o custo dessa query? Se eu der um “Explain Format = Json”, colocar o “\G”, note que o custo da query foi 8849.05.
+
+[02:06] Eu vou até aqui abrir um editor de texto e vou guardar isso daqui, essa query, ela custou para mim: 8849.05, eu vou até manter esse editor aberto e tudo que é comando que eu for executar, eu vou salvar aqui, para depois salvar esse arquivo e vocês terem como material para usar como complemento do curso.
+
+[02:44] Então eu rodei o explain, “Format = Json” e query. Aí, nós vamos fazer o seguinte, nós vamos criar um índice, como é que eu crio um índice? Eu coloco o comando: “Alter Table” o nome da tabela, “Notas_Fiscais Add Index” e o campo que vai ser o índice e no caso aqui, eu vou colocar “Data_Venda”. [03:23] Por que que eu estou criando um índice para data_venda? Porque era o seguinte, aqui na minha consulta, note que a minha condição de filtro, que é where, eu tenho que buscar na tabela, registros cuja a data da venda é 01 de janeiro de 2017.
+
+[03:47] Se eu tiver um índice pela data da venda, pelo campo data da venda, esse where vai ser muito mais eficiente, porque invés de eu percorrer a tabela toda, eu vou lá no índice, acho aquela posição através do BTREE ou do HASH e pegando esse cara, se for MyISAM, eu vou pegar a posição dos registros que aquele cara pertence ou se for InnoDB, a posição da primary key da tabela_notas_fiscais.
+
+[04:24] E aí, eu consigo buscar as linhas da tabela que respeitam essa condição, por isso que, teoricamente, criar o índice vai funcionar, vai deixara query mais rápida, é o que vamos tentar ver se o plano de execução me mostra isso. Então, eu rodei esse comando aqui, o Alter Table, vou executá-lo aqui.
+
+[05:04] Então, pronto, o índice foi criado, vamos rodar agora o explain novamente? Vou rodar de novo o explain. Vamos ver o custo da query? Olha só o custo da query, caiu para 60.28, ou seja, depois que eu rodo a criação do índice, o custo da query caiu para 60.28, olha com o que o custo melhorou.
+
+[05:48] Para a gente ter certeza que realmente isso ajudou, note que... No Jason da consulta, onde o índice não havia sido criado, a gente tem aqui uma informação que é a seguinte: eu não tenho aqui... Eu tenho esse acess_type = all, significa que ele vai acessar a tabela toda.
+
+[06:29] E eu não tenho uma informação aqui chamada key, porque ele não achou pelo critério que eu coloquei, que é where, nenhuma chave que me ajude a achar aquela informação. Agora, já no Json que a gente rodou com o índice, o access_type, mudou a ser ref e ele achou aqui uma chave possível data da venda e achou o índice aqui.
+
+[07:07] Esse aqui data_venda, é o índice que eu criei, então ele achou esse índice e falou: “Opa, eu vou usar esse índice porque é melhor do que eu não usar nada”, enquanto que aqui em cima, ele não usou nenhuma chave, porque ele não encontrou.
+
+[07:27] Para a gente ver que realmente o índice está fazendo diferença, a gente pode, depois que criar o índice, a gente pode apagar esse índice, é: “Alter Table Notas_Fiscais Drop Index Data_Venda”. Eu agora, apaguei o índice, o índice não mais existe, o que acontece então se a gente rodar o explain de novo?
+
+[08:17] Vou tirar aqui o espaço e aqui, vou no final, colocar o “\G”. Pronto, agora melhorou. Note que o custo voltou ao valor 8994.33, “Poxa, mas o número, está diferente daqui”, na verdade esse custo da query é variável. Talvez vocês executando aí na máquina de vocês, vocês vão encontrar números diferentes.
+
+[09:08] Isso, como eu falei, também depende muito da memória, do hardware que você está usando e assim por diante, mas o importante é que os dois são muito maiores do que 60.28, isso mostra o quanto que um índice, ele ajuda na resolução desse... de melhorar a consulta.
+
+[09:32] Então, imagina que eu tenho um relatório, um relatório num sistema e o usuário fica reclamando: “Olha, eu rodo esse relatório aqui, demora séculos”, as vezes você criando um índice, vai fazer com que o relatório fique rápido. É o caso aqui em cima.
+
+[09:52] Então tá, é isso que eu queria falar com vocês. Misturando um pouco agora a análise do plano de execução da query, com o índice para ver como é que ela melhora, quando você consegue adicionar os índices corretos. Valeu.
+
+
+
+
+
+4-11  Índices para melhorar uma consulta
+
+Veja a consulta abaixo:
+
+SELECT A.ID, B.ID, A.NOME, B.NOME FROM TABELA A 
+INNER JOIN TABELA B ON A.ID = B.ID
+WHERE B.NOME = 'JOÃO'
+
+Sabendo que as tabelas não têm chaves primárias nem estrangeiras, quais índices devemos construir para melhorar ao máximo esta consulta?
+
+Alternativa A:
+    TABELA A (ID)
+    TABELA B (ID)
+  Alternativa errada! Está faltando um campo para ser usado na criação de todos os índices que irão melhorar esta consulta.
+  
+Alternativa B:
+    TABELA A (ID)
+    TABELA B (ID)
+    TABELA B (NOME)
+  Alternativa correta! São estes os índices. Usamos índices para os campos que fazem parte da igualdade do JOIN e o que está no filtro do WHERE.
+
+Alternativa C:
+
+    TABELA A (ID)
+    TABELA A (NOME)
+    TABELA B (ID)
+    TABELA B (NOME)
+  Alternativa errada! Não é necessário criar o índice com TABELA A (NOME).
+
+
+
+4-12  Usando o Workbench*
+
+
+Transcrição
+
+[00:00] Vocês se lembram em alguns vídeos passados, a gente executou essas quatro consultas e teve esse plano de execução aqui, crescente. A gente consegue também fazer o plano de execução pelo Workbench.
+
+[00:16] Eu vou criar aqui um script novo e vou pegar essa primeira consulta aqui e se eu rodar, claro, o comando aqui: “Explain” e eu rodar ela aqui, eu tenho um plano de execução em forma de tabela, aqui e eu posso também, se quiser, botar aqui: “Format Json” e executar essa consulta.
+
+[00:57] Só que o Json fica meio... eu não consigo ver ele de uma forma mais “identada”, como eu consigo ver lá no... na linha de comando do MySQL, mas a informação mais importante, que é o custo da query, eu consigo ver, que está aqui. Agora, no Workbench, tem uma maneira mais fácil de ver o plano de execução.
+
+[01:22] Se eu executar a consulta normalmente, eu aqui no canto direito, tenho formas de visualizar o resultado, a gente viu até esse tópico, quando viu o curso de consultas avançadas, não, foi o curso de... Eu não sei se foi o curo de consultas avançadas ou de manipulação de dados com o MySQL.
+
+[01:46] A gente viu algumas opções diferentes que estão do lado direito do resultado da consulta, mas a última opção dessa lista é o plano de execução da query. Então, se a gente olhar aqui para baixo, clicar aqui no último, eu tenho aqui o plano de execução da minha consulta.
+
+[02:15] Então, ele mostra, em mostra em vermelho o que ele teve que fazer... ele chama de um Full Table Scan, ou seja, percorrer a tabela nem nenhum índice por isso que ele está com a cor vermelha, ele fez isso com a tabela A e fez isso em 3.75, o custo, capturou 35 linhas a aí, exibiu o resultado.
+
+[02:40] Agora, se eu pegar o segundo, vamos colocar aqui o segundo, eu vou criar um outro script, vou colar aqui e aí, eu vou rodar agora esse segundo... esse segunda consulta.
+
+[02:55] Está lá o meu resultado e se eu for lá no plano de execução, eu já tenho um plano de execução um pouco mais complexo, onde ele aqui, nesse canto, ele fez o Full Table Scan, se eu deixo o mouse em cima, eu consigo ver informações mais detalhadas sobre essa tarefa.
+
+[03:15] Depois, ele fez o Non-Unique Key Look, note que essa segunda busca ficou verde, porque ele achou um índice para estar fazendo essa busca. Depois eu falo um pouquinho mais a frente quem é esse índice, porque a gente não criou nenhum índice específico para o campo código produto lá da tabela de quantidades.
+
+[03:48] Mas aí, depois, ele faz aqui o Join, junta as duas tabelas e mostra o nosso custo. Já, se eu pegar a terceira consulta, vou criar aqui um outro script, tenho aqui o meu resultado e aí, claro, essa terceira consulta já vai ter um plano de execução um pouco mais rebuscado, porque ele ai estar fazendo o Join de três tabelas.
+
+[04:21] Então, pega a A, B, com a C, faz o Join, depois volta com a A, então, note que aqui eu tenho um custo crescente, o custo foi 133 mil, só para fazer esses dois Join, depois cresceu para 207 e aí, exibiu resultado... Esse tempo aqui, daqui para cima é o tempo de saída, o dado já está pronto, ele cospe de uma vez só, não perde muito tempo.
+
+[04:47] E aí, o custo final fica praticamente igual ao custo desse segundo looping. E se a gente executar a nossa consulta usando o order by e o group by? A gente viu lá na linha de comando que o custo praticamente não se alterou e é claro que o resultado aqui também que ser o mesmo.
+
+[05:14] Se a gente olhar o plano de execução, ele já é um pouquinho mais rebuscado, mas note que grupar e ordenar foi uma tarefa fácil, porque o dado já estava de uma certa maneira pronto aqui e o resultado final dessa tabela é muito pequeno, mas ele mostra aqui o plano de execução com crescimento do tempo, na medida em que os Joins vão sendo feitos.
+
+[05:44] E depois, o group e order até o resultado final, que está aqui em cima. Então, esse plano de execução gráfico, ele dá uma noção até bem mais organizada, digamos assim, que o plano de execução, através da linha de comando, a gente vê o Json pronto.
+
+[06:08] Então o Workbench é uma boa ferramenta para a gente estar fazendo esses plano de execução. Aí, eu queria aproveita então esse assunto e linkar com um outro tópico, que faz parte desse vídeo, que é o seguinte. Quando a gente executou essa consulta, note que ele tem aqui duas consultas em verde, porque ele usou, ele achou um índice para usar isso.
+
+[06:37] Note, Index: Primary e ele usou a chave primária como índice, o que isso significa? Vocês se recordam que quando a gente viu os nossos cursos de MySQL, eu falei para vocês que existe duas entidades importantes dentro do banco de dados, que é a chave primária e a chave estrangeira.
+
+[07:03] A crave primária, é aquela chave que faz com que nenhuma linha da tabela possa se repetir, se aquela chave se repetir também. Por exemplo, cadastro de cliente, eu tenho como chave primária o CPF, eu não posso ter dois clientes com o mesmo CPF.
+
+[07:29] Por exemplo, uma tabela com automóveis, onde eu tenho como chave primaria a placa do veículo, eu não posso ter dois veículos com a mesma placa e a placa estrangeira é aquela que liga as tabelas, que faz o relacionamento entre as tabelas dentro do banco de dados.
+
+[07:47] O que acontece é que quando eu crio chaves primárias ou estrangeiras, seja num momento de criação da tabela ou dá alteração da mesa, automaticamente o MySQL cria índices internos, usando como critério as chaves primárias e as chaves estrangeiras.
+
+[08:08] Então, automaticamente uma chave primária e uma chave estrangeira em índices e é claro, porque internamente, o banco de dados vai fazer buscas ali. Quando eu vou incluir um novo registro, ele sempre vai testar se aquele registro já existe.
+
+[08:27] Se ele vai testar, ele precisa procurar ele dentro da chave primária e essa busca, o índice é mais eficiente, da mesma maneira, quando a gente faz um relacionamento, se eu tenho uma tabela de notas fiscais que faz uma relação com a tabela de clientes, eu só posso colocar cliente na tabela de notas fiscais, que estejam no cadastro de clientes.
+
+[08:50] Estão essa busca, esse cheque, antes de eu aceitar o insert, ele faz usando índice, por isso que as chaves primárias e estrangeiras possuem índice.
+
+[09:03] Eu vou fazer um exercício agora para vocês aqui, que é o seguinte, eu vou criar aqui três novas tabelas sem índices e colocar todo o conteúdo do banco de sucos_vendas para essas tabelas e ver que quando a gente faz uma consulta que internamente não tem chave primária, nem estrangeira, o custo dela vai aumentar bastante.
+
+[09:36] Então, olha o que eu vou fazer. Eu vou vir aqui, vou pegar a tabela de itens de notas fiscais, botão direito do mouse e vou vir “Send to”, “Create Statement”, eu tenho aqui o comando para criar a tabela itens_notas_fiscais.
+
+[09:58] Eu vou colocar aqui um número 2, porque eu vou criar uma nova tabela e vou tirar todas essas linhas, porque essas linhas, são as linhas que criam a chave primária e as chaves estrangeiras para essa tabela. Opa, não foi. Selecionei, apaguei, agora foi.
+
+[10:25] Vou fazer a mesma coisa, vou dar um “Enter” aqui, dois “Enter”, vou fazer a mesma coisa para a tabela de notas fiscais, vou apagar a criação das chaves primárias e estrangeiras e vou fazer também a mesma coisa com a tabela de produtos.
+
+[10:53] Aqui, no caso, não tem chave estrangeira, a tabela de produtos, só tem chave primária e vou colocar aqui também o número 2 e o número 2. Então, vou criar três tabelas novas, sem chaves primárias e sem chaves estrangeiras. Executei.
+
+[11:15] Vou agora pegar um novo script e vou fazer o seguinte, eu vou escrever esse comando aqui: “Insert Into”, a tabela: “itens_notas_fiscais2” e vou escrever isso daqui: “Select * From itens_notas_fiscais”.
+
+[11:42] Ou seja, eu estou incluindo na tabela de notas fiscais 2, que é a sem índice, sem chave primária e estrangeira, ou seja, sem índices, o conteúdo da tabela original itens_notas_fiscais, essa sim com chave primária e com chave estrangeira. Estou executando. Pronto.
+
+[12:05] Transferi 213.803 registros, vou fazer a mesma coisa com a tabela de notas fiscais. Rodando. Colocou 87.960 registros e vou fazer também com a tabela de produto. Opa, tabela de produtos, é no plural, é isso? É isso aí. Pronto.
+
+[13:19] Então agora, eu tenho três tabelas que não possuem chaves primárias, nem estrangeiras, que são iguais as mesmas três tabelas que possuem chaves primárias e estrangeiras, vamos fazer um comparativo de consultas. Eu vou pegar essa consulta aqui, essa do meio, que faz o Join entre duas tabelas.
+
+[13:43] Vou copiar ela aqui, vou criar um novo script e aí, esse custo aqui, 76.519 foi o custo original, com chave primária e estrangeira, com PK e FK. E eu agora, vou executar essa outra, essa mesma consulta, só que invés de usar a tabela_de_produtos, eu vou usar a tabela_de_produtos2 e itens notas fiscais, itens notas fiscais 2.
+
+[14:29] Vamos executar e ver se vai ter diferença no plano de execução. Rodei. Vamos olhar aqui o plano de execução. Note que o plano de execução fez isso em 769.497, ou seja, 10 vezes mais, 769.497.31, é o sem PK e FK, ou seja, como não tem chave primária, nem estrangeira, não tem índice, como não tem índice a query custa mais.
+
+[15:12] E se a gente olhar aqui a resolução, note que aqui, ele teve que fazer um Full Table Scan nas duas tabelas, porque ele não achou índice, teve que percorrer a tabela toda para achar as coincidências, para ele poder fazer o join. Então, olha só, a diferença foi essa daqui.
+
+[15:34] Então, isso mostra como que ter chave primária e ter chave estrangeira ajudam também na performance do banco, quando eu faço uma consulta. Então é isso aí. Valeu.
+
+
+
+4-13  Plano de execução gráfico
+
+Quando vemos um retângulo em verde no plano de execução, o que significa?
+
+Nada. As cores servem apenas para diferenciar os Table Scans, quando a consulta tem mais de uma tabela envolvida
+  Alternativa errada! As cores possuem sim um significado.
+
+Que aquele Table Scan não está usando um índice
+  Alternativa errada! Não é esta funcionalidade que a cor verde representa.
+
+Que aquele Table Scan está usando um índice
+  Alternativa correta! Exatamente o que significa os retângulos verdes.
+
+
+
+4-14  A ferramenta mysqlslap*
+
+
+Transcrição
+
+[00:00] Antes de terminar a performance, eu gostaria de falar de uma ferramenta que já vem no MySQL chamado: MySQL Slap, o que que essa ferramenta faz?
+
+[00:12] Ela simula acessos concorrentes a uma determinada consulta, assim, a gente aqui está vendo o custo da consulta, mas a gente consegue simular no MySQL... criar uma simulação, onde eu estou dizendo: “Vamos ver o que acontece se 100 usuários ao mesmo tempo, fazem 10 consultas nesta base, usando a consulta tal”.
+
+[00:45] E aí, a gente pode usar ela com índice e ela sem índice e ver o resultado. Vamos começar, vamos pegar... vou criar aqui um script novo no Workbench, vamos pegar aquela consulta, “Select * From Notas_Fiscais Where Data_Venda = 20170101”.
+
+[01:25] A gente executou, se a gente olhar o plano de execução dela, a gente tem lá um Full Scan, porque não estou usando índice, lembra? Se a gente criar aqui “Alter Table Notas_Fiscais Add Index(Data_Venda)”, então eu estou aqui criando um índice.
+
+[01:59] E aí, agora, com o índice, se eu executo de novo a consulta no Execution Plan, note que ele fiou aqui verde, porque ele conseguiu usar o índice para poder fazer aquela busca da data específica, então a consulta ficou muito mais rápida, mas vamos simulas o acesso de várias usuários concorrentes a essa consulta.
+
+[02:29] A gente vai comparar ela com essa daqui, com aquele 2, lembra? A tabela 1, 2, é uma tabela sem backup, sem FK e é claro, sem esse índice, porque o índice, eu criei na tabela normal, então vamos executar ela aqui. O custo original aqui deu 63.10, se eu executar consulta na tabela 2.
+
+[03:02] Vamos olhar aqui o Execution Plan, deu um valor de 8.831.73, quer dizer, ficou bem mais pesada a consulta, mas vamos ver o resultado disso num sql slap. Então, para isso, eu vou voltar lá para o prompt do comando do Windows, no diretório Program Files, MySQL Server 8.0 bin e vou digitar MySQLSLAP -uroot -p.
+
+[03:49] E aí, é o seguinte, eu vou entrar com dois parâmetros, um parâmetro é número de inteirações e o outro parâmetro é número de acesso concorrentes. Então, eu vou colocar aqui: concurrency, eu vou colocar 100, 100 acessos concorrentes, fazendo, iterations 10.
+
+[04:39] Então aqui, eu estou dizendo: 100 acessos concorrentes, 10 interações, aonde? No create... espera aí, que eu estou... iterations, vamos lá para o final... create_schema, aí é o meu schema que eu estou usando, sucos_vendas e “query =” e entre aspas duplas, eu vou colocar aquela nossa consulta.
+
+[05:24] Eu vou pegar primeiro a consulta com PK, com FK e com índice. Então, vamos ver se o comando ficou certo, ficou assim: “Mysqlslap -uroot -p --concurrency = 100 --iterations=10 --create-schema, o nome do esquema, -equery select From Notas_Fiscais Where Data_Venda”, tem a minha data da venda.
+
+[06:06] Vamos rodar. Vou entrar com a senha. Vamos esperar. Está lá, ele fez a minha simulação e note, em média, essa query vai retornar em 0.54 segundos o seu resultado, nas simulações, o maior tempo foi 1.28 e o menor tempo 0.23 segundos.
+
+[06:40] Agora, vou repetir o comando, só que agora, eu vou botar o 2, coloquei aqui o 2, para eu simular a outra tabela que não tem PK, não tem FK e não tem índice o data venda. Lembrando que o conteúdo das duas tabelas é o mesmo, porque uma foi fonte da outra.
+
+[07:05] Então, eu vou rodar. Entrei com a senha. Eu não sei se deu para sentir, mas inclusive, visualmente o tempo está maior, está demorando mais tempo para fazer a simulação. Terminou.
+
+[07:24] Note que o tempo médio foi de 0.54, para 2.6, o maior tempo que era 1.28, foi 3.44 e o menor tempo aqui foi 2.31, ou seja, o menor tempo na tabela que não tem chave primária, nem estrangeira, nem índice, o menor tempo ainda foi maior do que o maior tempo com os índices.
+
+[08:02] Então, esse comando também é um comando muito legal para você testar, então, vale a pena você estar sempre usando o explain para ver o custo da query e o MySQL Slap para calcular o tempo. E aí, depois que a gente falou disso tudo, vem aquela pergunta: “Se eu acho uma query lenta, o que eu preciso fazer para que essa query fique rápida?”.
+
+[08:34] Existem dezenas de procedimentos que podem ser feitos para a query melhorar, eu vou falar só de depois específicos. Primeiro, vamos pegar aquela query mais rebuscada, ela está aqui... A primeira coisa interessante, quando você tiver Join, que você garanta que haja índices nessas igualdades aqui.
+
+[09:25] Claro que normalmente os Joins são feitos pelas PKs, então se a tabela não tem PK, cria PK, mesmo assim, se você fizer um Join com alguém que não tem índice, você cria o índice. Então, por exemplo, o código do produto, ele é índice na tabela de produtor e ele é índice na tabela de itens notas fiscais também, porque faz parte da PK.
+
+[09:50] O número a mesma coisa, mas digamos que tivesse fazendo um Join com data ou tivesse fazendo Join com um atributo da tabela que não é chave. Então é interessante você criar um índice para ela.
+
+[10:09] Outra dica importante é quando a gente fez essa última consulta, de quando eu tiver um where, principalmente wheres de igualdades, menor, maior, between, like, de também ter índice nesse campo que você utiliza para fazer o critério de filtro.
+
+[10:40] Então, assim, existem várias outras coisas que podem ser feitas para a query ficar mais rápidas, mas seguindo esses dois pontos, você já vai ter grandes ganhos. Índices nas igualdades dos Joins e índice nos filtros de consulta, se você conseguir fazer isso, você vai conseguir um ganho enorme, em termos de resultados das suas consultas.
+
+[11:10] É isso aí. Valeu, um abraço.
+
+
+
+
+4-15  Criando índices
+
+Voltando à seguinte consulta:
+
+SELECT A.ID, B.ID, A.NOME, B.NOME FROM TABELA A 
+INNER JOIN TABELA B WHERE A.ID = B.ID
+WHERE B.NOME = 'JOÃO'
+
+Sabendo que as tabelas têm chaves primárias, quais índices devemos construir para melhorar ao máximo esta consulta?
+
+Alternativa A:
+    TABELA A (NOME)
+    TABELA B (NOME)
+  Alternativa errada! É desnecessário criar o índice para um dos campos da opção.
+
+Alternativa B:
+    TABELA B (NOME)
+  Alternativa correta! Somente o campo que faz parte do filtro (WHERE), porque os campos do JOIN já são chaves primárias, não precisando criar índice.
+
+Alternativa C:
+    TABELA A (ID)
+    TABELA A (NOME)
+    TABELA B (NOME)
+  Alternativa errada! Não é preciso criar índices para TABELA A(ID) e TABELA B(ID), porque eles já são chaves primárias e, quando são chaves, os índices já são criados automaticamente.
+
+
+
+
+4-16  Consolidando o seu conhecimento
+
+Chegou a hora de você pôr em prática o que foi visto na aula. Para isso, execute os passos listados abaixo.
+
+1) Na base sucos_vendas, abra um novo script MySQL.
+
+2) Digite as três consultas abaixo:
+
+SELECT A.NOME_DO_PRODUTO FROM tabela_de_produtos A;
+
+SELECT A.NOME_DO_PRODUTO, C.QUANTIDADE 
+FROM tabela_de_produtos A
+INNER JOIN itens_notas_fiscais C ON A.codigo_do_produto = C.codigo_do_produto;
+
+SELECT A.NOME_DO_PRODUTO, YEAR(B.DATA_VENDA) AS ANO, C.QUANTIDADE 
+FROM tabela_de_produtos A
+INNER JOIN itens_notas_fiscais C ON A.codigo_do_produto = C.codigo_do_produto
+INNER JOIN notas_fiscais B ON C.NUMERO = B.NUMERO;
+
+SELECT A.NOME_DO_PRODUTO, YEAR(B.DATA_VENDA) AS ANO, SUM(C.QUANTIDADE) AS QUANTIDADE 
+FROM tabela_de_produtos A
+INNER JOIN itens_notas_fiscais C ON A.codigo_do_produto = C.codigo_do_produto
+INNER JOIN notas_fiscais B ON C.NUMERO = B.NUMERO
+GROUP BY A.NOME_DO_PRODUTO, YEAR(B.DATA_VENDA)
+ORDER BY A.NOME_DO_PRODUTO, YEAR(B.DATA_VENDA);
+
+3) Se você executar estas consultas, uma a uma, você verá que, a cada execução, o tempo de retorno das consultar passa a demorar cada vez mais. É que cada consulta vai exigindo mais processamento do banco de dados:
+
+4) Na linha de comando do Windows, acesse o diretório do MySQL:
+
+cd\
+cd "Program Files"
+cd "MySQL"
+cd "MySQL 8.0"
+cd Bin
+
+5) Em seguida, acesse a interface de linha de comando do MySQL (a senha do usuário root será necessária):
+
+mysql -uroot -p
+
+6) Já dentro da interface de linha de comando do MySQL, digite:
+
+explain SELECT A.NOME_DO_PRODUTO FROM tabela_de_produtos A;
+
+7) Você verá alguns indicadores que refletem o custo de execução desta consulta.
+
+8) Para visualizar em outro formato, digite:
+
+explain format=JSON SELECT A.NOME_DO_PRODUTO FROM tabela_de_produtos A \G;
+
+Acima, você terá o plano de execução desta consulta e o parâmetro cost_info expressa o custo de resolução desta query (no caso acima, 3.75).
+
+9) Veja o custo de outra consulta. Digite:
+
+explain format=JSON SELECT A.NOME_DO_PRODUTO, C.QUANTIDADE FROM tabela_de_produtos A INNER JOIN itens_notas_fiscais C ON A.codigo_do_produto = C.codigo_do_produto; \G;
+
+Aqui, o custo da consulta, pelo plano de execução, passou a custar 76.517,94. Dezenas de vezes em relação à medição original.
+
+10) Veja o custo de mais uma consulta. Digite:
+
+explain format=JSON SELECT SELECT A.NOME_DO_PRODUTO, YEAR(B.DATA_VENDA) AS ANO, C.QUANTIDADE FROM tabela_de_produtos A INNER JOIN itens_notas_fiscais C ON A.codigo_do_produto = C.codigo_do_produto INNER JOIN notas_fiscais B ON C.NUMERO = B.NUMERO \G;
+
+O custo aumenta mais ainda (260.242,51).
+
+11) Você pode acompanhar o plano de execução pelo Workbench. Execute a consulta:
+
+SELECT A.NOME_DO_PRODUTO FROM tabela_de_produtos A;
+
+12) Exiba o resultado através da opção Execution Plan:
+
+Você terá:
+
+13) Comparar as outras consultas mais complexas. Primeiramente, execute:
+
+SELECT A.NOME_DO_PRODUTO, C.QUANTIDADE FROM tabela_de_produtos A INNER JOIN itens_notas_fiscais C ON A.codigo_do_produto = C.codigo_do_produto;
+
+14) Já na outra consulta mais complexa, digite:
+
+SELECT SELECT A.NOME_DO_PRODUTO, YEAR(B.DATA_VENDA) AS ANO, C.QUANTIDADE FROM tabela_de_produtos A INNER JOIN itens_notas_fiscais C ON A.codigo_do_produto = C.codigo_do_produto INNER JOIN notas_fiscais B ON C.NUMERO = B.NUMERO
+
+15) Quando você vê retângulos verdes, significa que a consulta utilizou algum tipo de índice. Quando você cria chaves primárias e estrangeiras, automaticamente, índices são criados e eles são usados nas consultas. Veja como isso acontece, primeiro criando três novas tabelas, com os comandos abaixo:
+
+CREATE TABLE `itens_notas_fiscais2` (
+  `NUMERO` int(11) NOT NULL,
+  `CODIGO_DO_PRODUTO` varchar(10) NOT NULL,
+  `QUANTIDADE` int(11) NOT NULL,
+  `PRECO` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `notas_fiscais2` (
+  `CPF` varchar(11) NOT NULL,
+  `MATRICULA` varchar(5) NOT NULL,
+  `DATA_VENDA` date DEFAULT NULL,
+  `NUMERO` int(11) NOT NULL,
+  `IMPOSTO` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `tabela_de_produtos2` (
+  `CODIGO_DO_PRODUTO` varchar(10) NOT NULL,
+  `NOME_DO_PRODUTO` varchar(50) DEFAULT NULL,
+  `EMBALAGEM` varchar(20) DEFAULT NULL,
+  `TAMANHO` varchar(10) DEFAULT NULL,
+  `SABOR` varchar(20) DEFAULT NULL,
+  `PRECO_DE_LISTA` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+Estas tabelas são semelhantes às existentes, mas sem chaves primárias e estrangeiras.
+
+16) Inclua dados nestas tabelas, executando:
+
+INSERT INTO itens_notas_fiscais2 SELECT * FROM itens_notas_fiscais;
+INSERT INTO notas_fiscais2 SELECT * FROM notas_fiscais;
+INSERT INTO tabela_de_produtos2 SELECT * FROM tabela_de_produtos;
+
+17) Observe o plano de execução da consulta original:
+
+SELECT A.NOME_DO_PRODUTO, C.QUANTIDADE
+FROM tabela_de_produtos A INNER JOIN itens_notas_fiscais C
+ON A.codigo_do_produto = C.codigo_do_produto;
+
+Aqui, o custo foi de 76517.94.
+
+18) Já executando a consulta com as tabelas sem chaves primárias e estrangeiras:
+
+SELECT A.NOME_DO_PRODUTO, C.QUANTIDADE
+FROM tabela_de_produtos2 A INNER JOIN itens_notas_fiscais2 C
+ON A.codigo_do_produto = C.codigo_do_produto;
+
+O custo sobe para 769497.31.
+
+19) Veja a influência do índice. Execute e veja o plano de execução:
+
+SELECT * FROM NOTAS_FISCAIS WHERE DATA_VENDA = '20170101'
+
+20) Crie o índice, executando:
+
+ALTER TABLE NOTAS_FISCAIS ADD INDEX (DATA_VENDA);
+
+21) Veja o plano de execução novamente:
+
+SELECT * FROM NOTAS_FISCAIS WHERE DATA_VENDA = '20170101'
+
+22) Agora, apague o índice:
+
+ALTER TABLE NOTAS_FISCAIS DROP INDEX DATA_VENDA;
+
+23) E execute novamente:
+
+24) Há outra ferramenta, chamada mysqlslap, que simula acessos concorrentes a uma consulta. Você executa-o através da linha de comando. Logo, vá para:
+
+cd\
+cd "Program Files"
+cd "MySQL"
+cd "MySQL 8.0"
+cd Bin
+
+25) Execute:
+
+MYSQLSLAP -uroot -p --concurrency=100 --iterations=10 --create-schema=sucos_vendas --query="SELECT * FROM NOTAS_FISCAIS WHERE DATA_VENDA = '20170101'";
+
+26) Você terá:
+
+Average number of seconds to run all queries: 0.548 seconds
+Minimum number of seconds to run all queries: 0.203 seconds
+Maximum number of seconds to run all queries: 1.281 seconds
+Number of clients running queries: 100
+Average number of queries per client: 1
+
+A melhor execução da consulta retornou resultados em 0.548 segundos e a pior 1.281.
+
+27) Use as tabelas sem chaves primárias e estrangeiras. Execute:
+
+MYSQLSLAP -uroot -p --concurrency=100 --iterations=10 --create-schema=sucos_vendas --query="SELECT * FROM NOTAS_FISCAIS2 WHERE DATA_VENDA = '20170101'";
+
+28) Você terá:
+
+Average number of seconds to run all queries: 2.628 seconds
+Minimum number of seconds to run all queries: 2.312 seconds
+Maximum number of seconds to run all queries: 3.422 seconds
+Number of clients running queries: 100
+Average number of queries per client: 1
+
+
+Opinião do instrutor
+
+Continue com os seus estudos, e se houver dúvidas, não hesite em recorrer ao nosso fórum!
+
+
+
+
+4-17  O que aprendemos?
+
+  O que é um índice;
+  
+  Como funciona os algoritmos de Hash e BTree;
+  
+  Como analisar um plano de execução;
+  
+  Como o índice melhora o plano de execução;
+  
+  Que as chaves primárias e estrangeiras criam índices e ajudam a melhorar o plano de execução;
+  
+  A usar a ferramenta mysqlslap.

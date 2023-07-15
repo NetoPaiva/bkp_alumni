@@ -1,0 +1,111 @@
+https://cursos.alura.com.br/course/mysql-manipule-dados-com-sql
+
+Data Science > Cursos de SQL e Banco de Dados
+
+Curso de
+SQL com MySQL: manipule e consulte dados
+
+
+Formação com esse curso
+SQL com MySQL Server da Oracle
+
+
+Instrutor(a)
+
+    instructor Victorino Vila
+
+    Linkedin
+    https://www.linkedin.com/in/victorino-vila-1a160/
+
+    Victorino é desenvolvedor com foco em .NET e Web Services. Durante mais de 20 anos gerenciou uma empresa de consultoria na área de tecnologia. Criou e desenvolveu projetos de planejamento, Business Intelligence e integração de dados, além de databases de relacionamento com foco em BI, usando SQL Server, MYSQL ou DB2. Suas soluções são usadas em Brasil, nos EUA e na Europa. É consultor sênior certificado em SAP BW.
+
+
+Faça esse curso de SQL e Banco de Dados e:
+
+    Saiba instalar e acessar o banco de dados MySQL
+    Realize consultas com SELECT e filtre com WHERE
+    Adicionando dados no banco com o INSERT
+    Atualize e apague dados com UPDATE e DELETE
+    Estruture suas tabelas com CREATE TABLE e ALTER TABLE
+
+
+Aulas
+
+1- Instalando e configurando o MYSQL | 0 / 7 | 44min
+https://cursos.alura.com.br/course/mysql-manipule-dados-com-sql/section/8032/tasks
+
+    Introdução
+    Slides do curso
+    História do SQL
+    História do MySQL
+    Instalando o MySQL Server
+    Consolidando o seu conhecimento
+    O que aprendemos?
+
+2- Manipulando o banco de dados | 0 / 14 | 59min
+https://cursos.alura.com.br/course/mysql-manipule-dados-com-sql/section/8033/tasks
+
+    Definições
+    Localização da tabela
+    Componentes de tabelas
+    Agrupando tabelas
+    Conhecendo o Workbench
+    Criando um banco de dados
+    Comando para criação de banco de dados
+    Criando um banco de dados usando assistente
+    Criando um banco de dados
+    Apagando banco de dados
+    Exclusão de um banco de dados
+    MYSQL por linha de comando
+    Consolidando o seu conhecimento
+    O que aprendemos?
+
+3- Gerenciando as tabelas do banco de dados | 0 / 9 | 50min
+https://cursos.alura.com.br/course/mysql-manipule-dados-com-sql/section/8034/tasks
+
+    Tipos de dados
+    Tipo data
+    Criando a primeira tabela
+    Criando tabela de vendedores
+    Criando a tabela pelo assistente
+    Apagando tabelas
+    Apagando a tabela de vendedores
+    Consolidando o seu conhecimento
+    O que aprendemos?
+
+4- Manutenção dos dados nas tabelas | 0 / 14 | 55min
+https://cursos.alura.com.br/course/mysql-manipule-dados-com-sql/section/8035/tasks
+
+    Inserindo registros na tabela
+    Incluindo o primeiro vendedor
+    Inserindo vários registros na tabela
+    Incluindo mais dois vendedores
+    Alterando registros
+    Alterando informações sobre os vendedores
+    Excluindo registros
+    Excluindo vendedor
+    Incluindo a chave primária
+    Comando para criação da chave primária
+    Manipulando datas e campos lógicos
+    Modificando a tabela de Vendedores
+    Consolidando o seu conhecimento
+    O que aprendemos?
+
+5- Consultando os dados | 0 / 13 | 48min
+https://cursos.alura.com.br/course/mysql-manipule-dados-com-sql/section/8036/tasks
+
+    Incluindo dados na tabela
+    Selecionando todos os vendedores
+    Filtrando registros
+    Selecionando um vendedor
+    Filtrando usando maior, menor e diferente
+    Selecionando vendedor pelo valor da comissão
+    Filtrando datas
+    Selecionando vendedor pela data
+    Filtros compostos
+    Seleção composta
+    Consolidando o seu conhecimento
+    O que aprendemos?
+    Conclusão
+
+

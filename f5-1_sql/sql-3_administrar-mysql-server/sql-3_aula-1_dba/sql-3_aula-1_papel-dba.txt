@@ -1,0 +1,448 @@
+https://cursos.alura.com.br/course/mysql-dba-administracao/section/8465/tasks
+
+Curso de
+  Administração do MySQL: segurança e otimização do banco
+
+Instrutor
+
+  Victorino Vila
+
+    Linkedin
+    https://www.linkedin.com/in/victorino-vila-1a160/
+
+
+
+Aula 1- O papel do DBA | 0 / 11 | 51min
+
+  1-1  Introdução
+  1-2  Instalando o MySQL
+  1-3  Recuperando a base de dados
+  1-4  DBA - Database Administrator
+  1-5  Funções do DBA
+  1-6  Conexões no MySQL
+  1-7  Informações para as conexões
+  1-8  Serviço do MySQL
+  1-9  Formas de parar e iniciar o serviço
+  1-10  Consolidando o seu conhecimento
+  1-11  O que aprendemos?
+
+
+1-1  Introdução
+
+
+Transcrição
+
+[00:00] O meu nome é Victorino Vila e nós vamos iniciar mais um curso, dentro da carreira de MySQL e esse curso vai se dedicar a parte de administração de um ambiente de SQL, a gente vem respeitando a mesma linha didática de um curso parecido que temos aqui na Alura, de Microsoft SQL server.
+
+[00:22] Então aqui no curso de MySQL, a gente viu a introdução ao SQL, vimos a parte de consultas, a parte de manipulação de dados, vimos um curso específico sobre a parte de programação e aí, terminamos agora com esse curso que vamos iniciar, que é da parte de administração de um ambiente MySQL.
+
+[00:46] Falar de administração do MySQL, consiste em falar de muito assunto, muita coisa, claro que esse treinamento não vai percorrer de forma detalhada tudo o que o profissional que administra um ambiente de banco de dados precisa saber, mas a gente vai dar algumas pinceladas das coisas mais importantes.
+
+[01:09] E aí, claro, se você quiser se aprofundar nesse assunto, tem vasta documentação na internet para serem consultada. E aí, a gente vai começar basicamente fazendo de novo uma revisão, de como é que se instala o MySQL e entendendo também qual é a função do DBA, que é o profissional que administra o banco de dados.
+
+[01:34] Cabe ao DBA, entender bem a administração do ambiente e poder ajudar os analistas e os usuários nas necessidades de... que eles possam ter em relação aos bancos de dados. O DBA também, ele vai precisar saber como é que se faz uma conexão entre um cliente e um MySQL, falaremos sobre isso nesse treinamento.
+
+[02:00] E é claro, a gente vai começar o treinamento também, mostrando como a gente recupera uma base de dados, que nós vamos usar como exemplo. Aí, nós vamos começar o nosso treinamento em si e a gente vai falar um pouco sobre (tuning) de hardware.
+
+[02:17] Quais são os fatores básicos que um hardware precisa para poder suportar uma boa instalação do MySQL e aí, a gente vai pular para uma coisa chamada: variáveis de ambiente do MySQL, que são variáveis que ajudam o administrador a fazer o seu tuning dentro do branco de dados.
+
+[02:40] Existem diversas variáveis, algumas delas, por exemplo, tem a ver com limitações que o ambiente vai ter, para tratar os dados dos bancos de dados. Vamos entender também o que é um mecanismo de armazenado do MySQL, falar um pouquinho sobre os principais mecanismos de armazenamento e dar ênfase a dois deles, que é o MyISAM e o InnoDB.
+
+[03:07] E aí, vamos pular para uma assunto que é importante em qualquer base de dados, é o backup, dados estão sujeitos a perdas e perder dados, significa dentro de uma empresa, custo. Logo, nós vamos falar sobre as formas de se efetuar backups dentro do MySQL.
+
+[03:30] Nós vamos dar ênfase a dois tipos, uns backups que nós chamamos de frios e quentes, a gente faz a cópia de todo o ambiente e o outro, através de um aplicativo do MySQL, onde a gente consegue extrair e salvar aquilo que a gente quer salvar.
+
+[03:50] E aí, depois, claro, vamos aprender a recuperar esses ambientes. Aí, nós vamos pular para uma coisa muito importante, uma tarefa muito importante do DBA, que é ajudar os analistas de negócio, os analistas de sistema, que estão projetando o sistema e os bancos de dados a fazer, que é performance nas consultas.
+
+[04:17] A gente vai entender o que é um plano de execução, como ele funciona, que tipo de informação um plano de execução dá e aí, em paralelo, a gente também vai falar sobre índices, como é que são os índices dentro de um ambiente MySQL, como eles se organizam.
+
+[04:33] E aí, depois, nós vamos juntar essas duas coisas e ver como é que índice pode melhorar o plano de execução de uma consulta à base de dados. E aí, depois, finalmente, nós vamos falar de usuários. Uma outra função do administrador do ambiente de MySQL é criar usuários e dar privilégios a esses usuários.
+
+[04:57] Nós vamos criar alguns usuários do tipo leitura, usuários normais, usuários que fazem somente backup, usuários administradores e veremos também como é que a gente dá privilégios aos usuários, para apenas olharem um banco ou até mesmo, apenas olharem uma tabela de dados.
+
+[05:18] E finalmente, terminaremos vendo como é que eu limpo privilégios previamente cadastrados aos usuários, dentro do ambiente MySQL. Como eu falei no início desse vídeo, esse é o assunto que nós vamos pincelar sobre administração do MySQL, mas existem muitos outros que a gente, infelizmente pelo tempo, não vai conseguir entrar em detalhe, a fundo.
+
+[05:44] Mas eu acho que será um excelente pontapé inicia e um ótimo complemento a carreira de MySQL, que a gente vem percorrendo desde o primeiro curso da introdução ao SQL, com o MySQL, até esse. Então, gente obrigado pela preferência, espero que vocês gostem desse treinamento.
+
+[06:05] Vamos seguir frente, um forte abraço. Tchau, tchau.
+
+
+
+1-2  Instalando o MySQL
+
+
+Transcrição
+
+[00:00] A gente agora vai ter que recuperar uma base, que nós vamos usar como exemplo para esse treinamento, se você já vem fazendo os cursos da carreira de MySQL na sequência e está com o ambiente que você usou nos treinamentos anteriores, essa base de dados que nós vamos usar como exemplo, ela já existe.
+
+[00:18] Se você teve que instalar o MySQL agora, então faz o seguinte, continue assistindo esse vídeo e aí, eu vou mostrar agora aqui um outro vídeo, onde a gente faz a recuperação desse ambiente, então não saia daí. Nesse momento todo mundo deve estar com o MySQL e o MySQL Workbench instalados na máquina.
+
+[00:37] Vamos agora recuperar a base. Então, eu vou aqui executar o MySQL Workbench e aí, vou acessar essa base aqui... essa base não, essa conexão que foi configurada, quando a gente instalou o nosso MySQL, vou clicar. E claro, aqui eu não tenho nenhum banco a disposição.
+
+[01:05] Se você está usando o MySQL do curso introdução ao MySQL com o MySQL, você deve estar olhando aqui também a base que nós usamos nesse treinamento anterior, mas não importa, nós vamos criar uma base nova.
+
+[01:21] E para criar essa base nova, eu dou o botão direito do mouse sobre essa área, clico em Create Schema e vou criar aqui uma base chamada sucos_vendas, esse é o nome da base de dados que nós vamos trabalhar nesse treinamento. Vou clicar em apply, finish.
+
+[01:48] Temos então aqui a nossa base suco_vendas criada, porém vazia, sem tabela e sem dado, nós vamos recuperar isso através de um link, que nós temos associado aqui a esse treinamento, clique nele, baixe vamos... Você vai ver um arquivo Zip com esse nome aqui: RecuperacaoAmbiente.zip.
+
+[02:12] Descompacte ele, você deve ver uma lista de arquivos, como mostrado aqui em cima, mas aqui a nossa mais importante é esse subdiretório aqui: DumpSucosVendas. Vou voltar aqui ao Workbench, eu vou clicar nesse link aqui, primeiro na aba administração e depois eu vou clicar em Data Import/Restore.
+
+[02:46] Cliquei, eu tenho aqui a minha caixa de diálogo, onde eu vou restaurar um arquivo que foi anteriormente feito um Backup, no caso é aquele diretório que eu especifiquei para vocês, o diretório DumpSucosVendas, que possui a base de dados que nós vamos recuperar.
+
+[03:08] E aqui, nessa caixa de diálogos, eu vou selecionar aquele subdiretório, então vou clicar aqui, no meu caso, ele está no driver... o treinamento que eu estou dando é esse aqui, está aqui, selecionei o diretório, que foi o diretório que veio... que apareceu na descompactação do arquivo e eu tenho ali aqui, já posso recuperar.
+
+[03:47] Só que tem um probleminha aqui, note que a resolução que eu estou usando aqui na minha máquina, ela é muito baixa, porque justamente para grava os vídeos e ficar umas letras um pouco maiores, para que vocês possam assistir o vídeo de maneira mais clara.
+
+[04:03] Só que eu não consigo aqui, não tem um scroll, eu não consigo clicar no botão de inicializar recuperação. Então, eu vou fazer uma coisa aqui, eu vou mudar o meu computador, a configuração para 1.600 x 1.024, por exemplo, deixa eu mudar aqui, eu vou colocar 1.400 x 900.
+
+[04:41] Ok e aí, eu agora consigo visualizar esse botão aqui , que é o botão Start Import, eu vou clicar nele e aí, a recuperação da base, ela começa a ser executada. Pronto, terminei a recuperação, deixa eu voltar de novo a minha resolução, para resolução original.
+
+[05:17] Ok, então eu volto aqui para o Workbench, então a minha importação funcionou, só para a gente ter a certeza, eu vou clicar nessa pasta Query 1, se vocês não tiverem essa pasta, vocês cliquem aqui nesse botão.
+
+[05:37] E aí, eu vou selecionar aqui uma consultas, select “*” from, vamos pegar aqui, por exemplo, a tabela de itens_notas_fiscais, que é a tabela maior. Claro, eu tenho que selecionar o banco, dando duplo clique sobre o banco sucos_venda, para ficar negrito esse banco.
+
+[06:04] Tudo isso, eu ainda vou explicar melhor quando a gente começar a fazer as consultas, talvez... eu vou precisar também explicar um pouquinho para vocês, como é que a gente trabalhar no Wordbench. Eu aqui, só estou testando para saber se a minha recuperação da base funcionou.
+
+[06:20] Está aqui, eu tenho informações, então essa recuperação funcionou, então nesse momento eu já estou pronto para iniciar o treinamento. Essa parte do vídeo, é apenas, caso você não tenha conseguido recuperar a sua base de dados através do diretório Dump, da recuperação deste diretório aqui.
+
+[06:48] Por algum motivo você não conseguiu, deu erro. Então, faça o seguinte, vou mostrar uma segunda maneira de recuperar a base, ela é um pouquinho mais trabalhosa, mas também tem mais probabilidade de funcionar. Eu vou então aqui apagar a base sucos_vendas.
+
+[07:10] Atenção, só façam isso se o primeiro método não funcionou, se o primeiro método funcionou, vocês podem até parar de assistir o vídeo nesse ponto, então eu vou clicar aqui em Drop Schema.
+
+[07:30] Então não tenho mais a minha base e eu vou cria-la novamente, clico em Create Schema, selecionou a base, o nome sucos_vendas, dou o apply e dou o finish, duplo clique sobre ela, tenho a base de novo aqui criada, mas vazia. Aí, eu vou fazer o seguinte, eu vou clicar em File, Run SQL Script, vou escolher essa opção aqui.
+
+[08:05] E eu tenho todos esses arquivos aqui com extenção “.sql”, que eu vou usar para importar a base de uma outra maneira, eu vou começar com esse aqui, primeiro arquivo, criação_esquema.sql, eu vou clicar nele, vou clicar em abrir e vou ver um script recuperação e aí, eu vou escolher aqui a base sucos_vendas.
+
+[08:36] E vou escolher aqui em Default Character Set, que é essa opção utf8, que está aqui em baixo, do Run e aqui, ele vai terminar. Vou agora de novo e vou fazer agora, para esse arquivo aqui, Carga_Tabelas_Cadastrais.sql. Seleciono a base, seleciono o utf8 e run.
+
+[09:14] Nesse momento, eu consegui recuperar as tabelas e os dados cadastrais, agora eu vou recuperar os dados referentes às notas fiscais. Clico de novo em Run SQL Script e vou escolher agora esse arquivo aqui, Carga_Notas_01. Seleciono e dou run.
+
+[09:50] Esse script vai demorar um pouquinho mais, porque eu agora estou carregando dados com um volume substancial de linhas, então eu vou fazer o seguinte, eu vou parar o vídeo num instante, quando essa barra terminar, eu volto. Ok, se eu tiver essa msg aqui, é porque tudo correu bem.
+
+[10:15] Vou agora recuperar, só que agora é o arquivo 2, Carga_Notas_02, seleciono aqui a base, utf8 e Run. Ele está processando o arquivo 02, vocês vão fazer para o arquivo Carga_Notas_02 e depois para o Carga_Notas_03. E aí, toda a parte do cabeçalho da nota fiscal, vai estar importada no banco.
+
+[10:52] Então eu vou parar aqui o vídeo e eu vou voltar quando eu terminar o Carga_Notas_03, vocês façam esses passos e aí, me encontrem daqui a pouco. Até já. Pronto, nesse momento eu importei os arquivos Carga_Notas_01, 02 e 03. Eu agora, vou importar o Carga_Intens_Notas, de 01 a 07.
+
+[11:24] Então, eu vou começar aqui com o 01, seleciono a suco_vendas, seleciono aqui o utf8, dou o Run, então eu vou começar a importar o Carga_Itens_Notas_01. Então, façam isso com o 01, 02, 03, até o 07 e aí, quando vocês terminarem o último arquivo, a base vai estar recuperada.
+
+[11:59] Pronto, importei aqui o Carga_Itens_Notas_07, então, nesse momento, eu também tenho a minha base recuperada. Então, eu mostrei para vocês nesse vídeo, duas maneiras de recuperar a base, vocês devem tentar a primeira, se não funcionar, tentem a segunda.
+
+[12:22] Agora, estamos preparados para continuar o nosso treinamento. Um abraço, até a próxima.
+
+
+
+
+1-3  Recuperando a base de dados
+
+
+Transcrição
+
+    O arquivo RecuperacaoAmbiente.zip pode ser baixado aqui.
+
+https://caelum-online-public.s3.amazonaws.com/1224-mysql-adminstracao/01/RecuperacaoAmbiente.zip
+
+
+[00:00] A gente agora vai ter que recuperar uma base, que nós vamos usar como exemplo para esse treinamento, se você já vem fazendo os cursos da carreira de MySQL na sequência e está com o ambiente que você usou nos treinamentos anteriores, essa base de dados que nós vamos usar como exemplo, ela já existe.
+
+[00:18] Se você teve que instalar o MySQL agora, então faz o seguinte, continue assistindo esse vídeo e aí, eu vou mostrar agora aqui um outro vídeo, onde a gente faz a recuperação desse ambiente, então não saia daí. Nesse momento todo mundo deve estar com o MySQL e o MySQL Workbench instalados na máquina.
+
+[00:37] Vamos agora recuperar a base. Então, eu vou aqui executar o MySQL Workbench e aí, vou acessar essa base aqui... essa base não, essa conexão que foi configurada, quando a gente instalou o nosso MySQL, vou clicar. E claro, aqui eu não tenho nenhum banco a disposição.
+
+[01:05] Se você está usando o MySQL do curso introdução ao MySQL com o MySQL, você deve estar olhando aqui também a base que nós usamos nesse treinamento anterior, mas não importa, nós vamos criar uma base nova.
+
+[01:21] E para criar essa base nova, eu dou o botão direito do mouse sobre essa área, clico em Create Schema e vou criar aqui uma base chamada sucos_vendas, esse é o nome da base de dados que nós vamos trabalhar nesse treinamento. Vou clicar em apply, finish.
+
+[01:48] Temos então aqui a nossa base suco_vendas criada, porém vazia, sem tabela e sem dado, nós vamos recuperar isso através de um link, que nós temos associado aqui a esse treinamento, clique nele, baixe vamos... Você vai ver um arquivo Zip com esse nome aqui: RecuperacaoAmbiente.zip.
+
+[02:12] Descompacte ele, você deve ver uma lista de arquivos, como mostrado aqui em cima, mas aqui a nossa mais importante é esse subdiretório aqui: DumpSucosVendas. Vou voltar aqui ao Workbench, eu vou clicar nesse link aqui, primeiro na aba administração e depois eu vou clicar em Data Import/Restore.
+
+[02:46] Cliquei, eu tenho aqui a minha caixa de diálogo, onde eu vou restaurar um arquivo que foi anteriormente feito um Backup, no caso é aquele diretório que eu especifiquei para vocês, o diretório DumpSucosVendas, que possui a base de dados que nós vamos recuperar.
+
+[03:08] E aqui, nessa caixa de diálogos, eu vou selecionar aquele subdiretório, então vou clicar aqui, no meu caso, ele está no driver... o treinamento que eu estou dando é esse aqui, está aqui, selecionei o diretório, que foi o diretório que veio... que apareceu na descompactação do arquivo e eu tenho ali aqui, já posso recuperar.
+
+[03:47] Só que tem um probleminha aqui, note que a resolução que eu estou usando aqui na minha máquina, ela é muito baixa, porque justamente para grava os vídeos e ficar umas letras um pouco maiores, para que vocês possam assistir o vídeo de maneira mais clara.
+
+[04:03] Só que eu não consigo aqui, não tem um scroll, eu não consigo clicar no botão de inicializar recuperação. Então, eu vou fazer uma coisa aqui, eu vou mudar o meu computador, a configuração para 1.600 x 1.024, por exemplo, deixa eu mudar aqui, eu vou colocar 1.400 x 900.
+
+[04:41] Ok e aí, eu agora consigo visualizar esse botão aqui , que é o botão Start Import, eu vou clicar nele e aí, a recuperação da base, ela começa a ser executada. Pronto, terminei a recuperação, deixa eu voltar de novo a minha resolução, para resolução original.
+
+[05:17] Ok, então eu volto aqui para o Workbench, então a minha importação funcionou, só para a gente ter a certeza, eu vou clicar nessa pasta Query 1, se vocês não tiverem essa pasta, vocês cliquem aqui nesse botão.
+
+[05:37] E aí, eu vou selecionar aqui uma consultas, select “*” from, vamos pegar aqui, por exemplo, a tabela de itens_notas_fiscais, que é a tabela maior. Claro, eu tenho que selecionar o banco, dando duplo clique sobre o banco sucos_venda, para ficar negrito esse banco.
+
+[06:04] Tudo isso, eu ainda vou explicar melhor quando a gente começar a fazer as consultas, talvez... eu vou precisar também explicar um pouquinho para vocês, como é que a gente trabalhar no Wordbench. Eu aqui, só estou testando para saber se a minha recuperação da base funcionou.
+
+[06:20] Está aqui, eu tenho informações, então essa recuperação funcionou, então nesse momento eu já estou pronto para iniciar o treinamento. Essa parte do vídeo, é apenas, caso você não tenha conseguido recuperar a sua base de dados através do diretório Dump, da recuperação deste diretório aqui.
+
+[06:48] Por algum motivo você não conseguiu, deu erro. Então, faça o seguinte, vou mostrar uma segunda maneira de recuperar a base, ela é um pouquinho mais trabalhosa, mas também tem mais probabilidade de funcionar. Eu vou então aqui apagar a base sucos_vendas.
+
+[07:10] Atenção, só façam isso se o primeiro método não funcionou, se o primeiro método funcionou, vocês podem até parar de assistir o vídeo nesse ponto, então eu vou clicar aqui em Drop Schema.
+
+[07:30] Então não tenho mais a minha base e eu vou cria-la novamente, clico em Create Schema, selecionou a base, o nome sucos_vendas, dou o apply e dou o finish, duplo clique sobre ela, tenho a base de novo aqui criada, mas vazia. Aí, eu vou fazer o seguinte, eu vou clicar em File, Run SQL Script, vou escolher essa opção aqui.
+
+[08:05] E eu tenho todos esses arquivos aqui com extensão “.sql”, que eu vou usar para importar a base de uma outra maneira, eu vou começar com esse aqui, primeiro arquivo, criação_esquema.sql, eu vou clicar nele, vou clicar em abrir e vou ver um script recuperação e aí, eu vou escolher aqui a base sucos_vendas.
+
+[08:36] E vou escolher aqui em Default Character Set, que é essa opção utf8, que está aqui em baixo, do Run e aqui, ele vai terminar. Vou agora de novo e vou fazer agora, para esse arquivo aqui, Carga_Tabelas_Cadastrais.sql. Seleciono a base, seleciono o utf8 e run.
+
+[09:14] Nesse momento, eu consegui recuperar as tabelas e os dados cadastrais, agora eu vou recuperar os dados referentes às notas fiscais. Clico de novo em Run SQL Script e vou escolher agora esse arquivo aqui, Carga_Notas_01. Seleciono e dou run.
+
+[09:50] Esse script vai demorar um pouquinho mais, porque eu agora estou carregando dados com um volume substancial de linhas, então eu vou fazer o seguinte, eu vou parar o vídeo num instante, quando essa barra terminar, eu volto. Ok, se eu tiver essa msg aqui, é porque tudo correu bem.
+
+[10:15] Vou agora recuperar, só que agora é o arquivo 2, Carga_Notas_02, seleciono aqui a base, utf8 e Run. Ele está processando o arquivo 02, vocês vão fazer para o arquivo Carga_Notas_02 e depois para o Carga_Notas_03. E aí, toda a parte do cabeçalho da nota fiscal, vai estar importada no banco.
+
+[10:52] Então eu vou parar aqui o vídeo e eu vou voltar quando eu terminar o Carga_Notas_03, vocês façam esses passos e aí, me encontrem daqui a pouco. Até já. Pronto, nesse momento eu importei os arquivos Carga_Notas_01, 02 e 03. Eu agora, vou importar o Carga_Intens_Notas, de 01 a 07.
+
+[11:24] Então, eu vou começar aqui com o 01, seleciono a suco_vendas, seleciono aqui o utf8, dou o Run, então eu vou começar a importar o Carga_Itens_Notas_01. Então, façam isso com o 01, 02, 03, até o 07 e aí, quando vocês terminarem o último arquivo, a base vai estar recuperada.
+
+[11:59] Pronto, importei aqui o Carga_Itens_Notas_07, então, nesse momento, eu também tenho a minha base recuperada. Então, eu mostrei para vocês nesse vídeo, duas maneiras de recuperar a base, vocês devem tentar a primeira, se não funcionar, tentem a segunda.
+
+[12:22] Agora, estamos preparados para continuar o nosso treinamento. Um abraço, até a próxima.
+
+
+
+
+1-4  DBA - Database Administrator
+
+
+Transcrição
+
+[00:00] Vamos começar falando sobre o DBA, quem é esse profissional? O DBA, ele é o profissional responsável por administrar o banco de dados e aí, eu menciono algumas características das funções de um DBA.
+
+[00:17] A primeira característica é avaliar o ambiente, o DBA, ele é o profissional que avalia os hardwares necessários para a instalação e funcionamento de uma SQP, ele deve avaliar se os equipamentos disponíveis são necessários, para que os bancos de dados possam corresponder às necessidades operacionais da empresa.
+
+[00:43] Outra característica do DBA, é que ele é responsável por configurar o acesso à base de dados, seja através de conexões ou através de interfaces IDE, são aquelas interfaces amigáveis, como por exemplo o MySQL Workbengh ou outra interface qualquer.
+
+[01:07] Cabe a ele também configurar as conexões de forma segura, para que o acesso entre o cliente e o servidor não seja, por exemplo, hackeado. Cabe também ao DBA manter o banco de dados performático, um dos instrumentos a sua disposição, por exemplo, são os índices.
+
+[01:27] Os índices são estruturas que melhoras as consultas e o retorno dos dados, sabe ao DBA buscar os melhores índices, para que ele seja usado nas aplicações que acessão dados, aos bancos de dados, também o DBA, ele é responsável pela armazenagem dos dados.
+
+[01:50] Cabe a ele fazer o backup das informações, para que as mesmas não sejam perdidas e também a sua função, recuperar esses dados, que eventualmente foram perdidos ou então, por uma necessidade qualquer do usuário.
+
+[02:08] Também cabe ao DBA auxiliar a área de desenvolvimento, fazendo cargas em lotes de dados, criar e apagar dados indesejáveis e desfragmentar o banco de dados e fazer a manutenção das tabelas. Também o DBA é responsável por monitorar a instalação do MySQL.
+
+[02:33] Cabe a ele observar os recursos que estão sendo consumidos pelo banco e fazer gerenciamentos pontuais na instalação atual, para que ela se adapte as necessidades dos usuários.
+
+[02:50] Também o DBA, ele é responsável por configurar o ambiente, através de arquivos de inicialização e dentro desses arquivos, ele pode configurar diversas propriedades, como por exemplo, configurar o auto incremento do tamanho das bases, gerenciar o seu crescimento, gerenciar o uso do espaço e administração do esquema de dados, enfim.
+
+[03:13] Diversas propriedades que são configuradas nesse arquivo de inicialização. Finalmente, o DBA também é responsável por administrar os usuários que irão acessar o MySQL. Ele é responsável por criar usuários básicos e avançados, usuários que vão poder fazer backups, usuários que vão, por exemplo, somente ler dados, enfim.
+
+[03:40] Cabe a ele administrar esses usuários e determinar que função cada um vai fazer dentro da base de dados. Enfim, essas são as funções mais o menos básicas de um DBA, dentro do ambiente do MySQL. Algumas pessoas questionam se ainda existe a necessidade de um DBA dentro das empresas.
+
+[04:07] Primeiro, porque já existe algumas ferramentas que otimizam a administração do banco de dados de forma automática e também com o adento das nuvens, ou seja, cada vez mais as empresas estão colocando os seus bancos de dados em nuvens.
+
+[04:28] O DBA perde um pouco o sentido, já que quem vai se preocupar em fazer backup, manutenção dos dados é o administrador da nuvem, mas eu diria que essas novas tecnologias, elas não invalidam a necessidade de um DBA, talvez as funções desse profissional tenham que ser modificadas.
+
+[04:51] Ou seja, cabe a ele ser expert nas ferramentas de produtividade ou então, cabe a ele entender a fundo como criar e administrar recursos de banco de dados em nuvem. Enfim, é um ponto que a gente pode ficar aqui durante muito tempo discutindo, mas não é o nosso foco.
+
+[05:12] Vamos seguindo esse treinamento, vendo algumas dessas funcionalidades na prática, funcionalidades que são de responsabilidade do DBA. Valeu. Obrigado.
+
+
+
+
+1-5  Funções do DBA
+
+Qual das alternativas abaixo são funções do DBA (Database Administrator)?
+
+Instalar o software
+  Alternativa correta! Instalar o software é uma função do DBA.
+
+Otimizar as consultas dos relatórios
+  Alternativa correta! Esta função está relacionada com a melhora de performance. É uma função sim do DBA.
+
+Desenvolver relatórios de consultas
+  Alternativa errada! Esta é uma função do analista de sistemas.
+
+
+
+
+1-6  Conexões no MySQL
+
+
+Transcrição
+
+[00:00] Nesse momento eu tenho o meu MySQL instalado e agora, o que eu preciso fazer é configurar as conexões entre o meu cliente e o meu servidor. Quando eu fiz a instalação do MySQL, eu já fiz uma configuração com o meu cliente servidor locais.
+
+[00:19] Apesar de eu estar usando uma única máquina, aqui está instalado o servidor e o cliente e a comunicação deles está sendo feita também via TCP/IP, só que as duas (distâncias) não estão fisicamente no mesmo hardware, no mesmo PC, vamos entrar no MySQL Workbench e olhar essas propriedades de conexão.
+
+[00:47] Então eu ou entrar aqui no MySQL Workbench e aí, eu já tenho aqui a minha propriedade de conexão, que foi criada durante a instalação do MySQL, se eu quiser modificar ou verificar os parâmetros dessa conexão, basta eu escolher aqui, esse ícone que mostra... é o ícone de uma ferramenta, onde eu consigo ver as propriedades de conexão.
+
+[01:14] Eu vou clicar aqui então na ferramenta e eu consigo ver, escolhendo a minha conexão, as propriedades de conexão. Aqui, eu tenho várias maneiras de se conectar com o meu servidor, eu estou usando o TCP/IP padrão, em alguns lugares a gente usa o... através de SSH, que é uma conexão criptografada, que é uma coisa mais segura.
+
+[01:43] Nós temos aqui o servidor, a porta de comunicação, que normalmente a gente usa a 3306, um padrão, mas isso não significa que eu seja obrigado a usar esse número sempre, dependendo da instalação, eu posso estar trocando esse número e aqui eu tenho o meu usuário.
+
+[02:05] Claro que esse meu PC, é um PC local, eu não estou em uma rede, eu não tenho como me conectar aqui em outro servidor, mas para mostrar a vocês como é que a gente faz uma configuração em um outro servidor no mesmo Workbench, eu vou me conectar num outro MySQL, que está na nuvem.
+
+[02:28] Eu tenho pessoalmente um MySQL que está na nuvem, eu uso ele para fazer várias coisas e eu vou estar acessando nesse MySQL que está na nuvem, usando essa mesma máquina que já está se conectando com o servidor local.
+
+[02:46] Eu vou então aqui fechar essa caixa de diálogo e vou clicar nesse ícone aqui que tem um mais, vou clicar nele, vou colocar um nome para a conexão, então MySQL nuvem. Aqui, eu vou colocar o IP desse servidor, o IP, eu tenho ele aqui, a porta é a 3306 e o usuário também é Root.
+
+[03:19] Vou testar a conexão, note que ele vai me perguntar aqui a senha desse servidor que eu disse que eu tenho na nuvem, então eu vou parar o vídeo um instante, vou colocar a senha e volto já, já. Pronto, coloquei a minha senha, vou clicar ok e vou clicar... tenho a conexão, conectado com sucesso, clico ok.
+
+[03:44] E agora, eu tenho aqui no meu Workbench duas conexões configuradas. Vou clicar na segunda. Novamente, essa segunda conexão, você não vão conseguir fazer, eu estou mostrando só como um exemplo para mostrar para vocês como é que eu me conecto em dois servidores ao mesmo tempo, através do mesmo cliente.
+
+[04:09] Então, eu tenho aqui o meu ambiente da nuvem, tenho aqui uns bancos de dados de trabalho e aí, se eu clicar aqui em cima no ícone home, eu volto para a tela principal, se eu der um duplo clique também na minha instância local.
+
+[04:23] Então eu tenho aqui, tenho aqui as tabelas da minha instância local e se eu clicar aqui, eu estou vendo as tabelas da minha instância de nuvem. Se eu colocar alguma coisa aqui, por exemplo, eu vou estar executando num MySQL que está lá na nuvem.
+
+[04:41] Se eu vier aqui em instância local e fazer algum comando aqui, eu vou estar executando no banco que está localmente na minha máquina. Eu vou fechar aqui a minha instância de nuvem, vou fechar a minha instância local e aí, eu posso também pelo administrador do Workbench apagar conexões, basta eu vir aqui, clicar na manutenção.
+
+[05:10] Clico aqui no meu MySQL nuvem e eu tenho aqui o ícone delete. Clico nele, clico em delete e a coxão é apaga. Eu vou criar de novo uma outra conexão, só que usando as mesmas propriedades locais, então vou clicar aqui, vou colocar aqui: Local Instane MySQL80 v2.
+
+[05:43] Vou colocar aqui local host, mesma porta, usuário Root, vou testar a conexão e dou um ok. Então, note que eu tenho agora aqui duas conexões, só que claro, ela são iguais, mas não deixa de ser duas conexões diferentes. Onde é que isso fica armazenado na minha máquina?
+
+[06:06] Se eu vier aqui, eu já tenho até um diretório aqui salvo, deixa eu copiar aqui ele e aí, eu vou explicar onde é que esse diretório fica. Eu, na verdade, estou indo no profile do meu usuário, AppData, Roaming, MySQL, Workbench, ou seja, são um diretório local do meu usuário.
+
+[06:34] Existe um arquivo aqui chamado connections.xml, eu posso... botão direito do mouse aqui, verificar esse arquivo com um editor de texto e eu tenho aqui, olha só, um xml com as minhas duas conexões. Eu tenho uma conexão aqui e outra aqui. Pois bem.
+
+[07:00] Caso eu queria, por exemplo, replicar essa minha conexão para que outros usuários e outras máquinas que tenham somente o cliente MySQL, acesse esses servidores, eu não preciso ir de máquina em máquina, sair configurando conexão de todo mundo.
+
+[07:20] Imagina, eu tenho uma empresa com 10 conexões e faço a instalação numa outra máquina, eu vou ter que ir no Workbench, colocar manualmente essas conexões, pois bem, eu posso fazer isso numa máquina única e eu posso pegar esse arquivo connections.xml, copiar ele e transportar ele para o diretório AppData, Roaming, MySQL, Workbench.
+
+[07:44] E aí, o outo cliente já vai ter configurado na sua máquina as mesmas conexões, então isso é uma forma de você replicar as conexões dentro de vários clientes da sua organização. Então é isso aí, gente, que eu queria falar com vocês. Valeu.
+
+
+
+
+1-7  Informações para as conexões
+
+Quais são as principais informações para a criação de uma conexão?
+
+Usuário, servidor e senha
+  Alternativa errada! Está faltando uma informação importante.
+
+Usuário, servidor, porta e banco de dados
+  Alternativa errada! Além de estar faltando propriedades importantes, não é necessário definir o banco de dados no momento da conexão.
+
+Usuário, servidor, porta e senha
+  Alternativa correta! São estas as principais informações para criar uma conexão.
+
+
+
+1-8  Serviço do MySQL
+
+
+Transcrição
+
+[00:00] Quando eu me conecto com o banco, esse banco está lá no servidor rodando e ele tem que estar ativo, ou seja, ele tem que estar preparado para receber as solicitações dos clientes. Só que esse banco pode, eventualmente, estar parado ou fora do ar.
+
+[00:17] Eu como administrador, tenho o poder de parar esse banco ou não, vamos fazer então o seguinte, eu vou parar aqui a conexão que eu criei extra, vou me conectar de novo localmente. Então entrei, estou aqui na minha conexão, eu vou fechar a conexão.
+
+[00:44] E note que aqui na parte de serviços do Windows, eu tenho esse serviço rodando aqui, MySQL80, ele está em execução e inclusive está configurado como sendo automático, ou seja, quando o sistema operacional der boot, esse serviço automaticamente será inicializado novamente.
+
+[01:10] Esse serviço, ele roda no servidor, como a minha máquina, ele é cliente/servidor ao mesmo tempo, eu agora estou olhando o servidor. Eu posso parar esse serviço, então, se eu vier aqui, selecionar esse serviço e clicar no ícone aqui de parada do serviço, note que o serviço no MySQL não está rodando mais.
+
+[01:32] Se eu vier aqui e tentar me conectar agora localmente, note que eu entro, mas eu não consigo ver nenhuma tabela e ele me mostra aqui uma série de informações, basicamente dizendo que os servidor está parado, ele não está rodando. Eu vou fechar, se eu vier aqui em serviço e inicializar ele novamente.
+
+[02:05] Agora, voltando ao Workbench, se eu escolho a conexão, eu consigo entrar no meu servidor. O serviço pode ser parado e inicializado através do serviços do Windows ou então, eu posso executar também em linha de comando, então eu posso vir aqui em linha de comando.
+
+[02:29] Vou executar como administrador, vamos lá de novo e aí, se eu colocar “net stop mysql80”, o serviço, ele é parado. Então, se eu novamente tentar entrar aqui, eu não vou conseguir ver nada e se eu colocar aqui “net star mysql80”, o serviço é inicializado novamente, se eu entrar agora aqui, eu entro dentro do MySQL.
+
+[03:22] Qual é a importância de eu parar e subir o serviço ou parar e subir o servidor? Depende, pode ser que durante um período de tempo, o DBA queira fazer uma manutenção no ambiente, então eu posso parar o serviço, para que ninguém mais entre no MySQL, enquanto eu vou processar algum tipo de manutenção.
+
+[03:43] Outra coisa que a gente vai ver com mais detalhes mais a frente, é os parâmetros de inicialização do MySQL, uma série de características do nosso banco de dados, ela é configurada através de um arquivo de inicialização, onde eu tenho inúmeras variáveis de ambiente, que podem ser configuradas.
+
+[04:03] Algumas dessas variáveis, elas precisam que o banco pare e retorne novamente, então pode ser que ao modificar uma variável de ambiente, eu precise parar o serviço e subir o banco de novo, para que essas variáveis de ambiente, façam parte do MySQL.
+
+[04:22] Então tá, era isso que eu queria falar para vocês sobre o serviço. Um abraço.
+
+
+
+
+1-9  Formas de parar e iniciar o serviço
+
+No Windows, quais são as formas de parar e iniciar o serviço do MySQL, mostradas no último vídeo?
+
+Somente através dos Serviços
+  Alternativa errada! Não foi apenas através dos Serviços a forma apresentada no último vídeo para parar e iniciar o serviço do MySQL.
+
+Somente através da linha de comando
+  Alternativa errada! Não foi apenas por linha de comando a forma apresentada no último vídeo para parar e iniciar o serviço do MySQL.
+
+Através dos Serviços e através da linha de comando
+  Alternativa correta! No último vídeo, foram mostradas duas formas de iniciar e parar o serviço do MySQL: pela linha de comando e pelos Serviços do Windows.
+
+
+
+
+1-10  Consolidando o seu conhecimento
+
+
+
+Chegou a hora de você pôr em prática o que foi visto na aula. Para isso, execute os passos listados abaixo.
+
+1) Se você está usando uma máquina limpa, deve instalar o MySQL. Para isso, siga as instruções a seguir (caso você já tenha o MySQL instalado, pode pular para o passo 22).
+
+2) Acesse o link https://www.mysql.com/downloads/, para baixar o MySQL.
+
+3) Procure por MySQL Community Edition e clique em Community (GPL) Downloads.
+
+4) Em MySQL on Windows (Installer & Tools), clique em Download.
+
+5) Clique em MySQL Installer.
+
+6) Clique no botão de download ao lado da opção Windows (x86, 32-bit), MSI Installer.
+
+7) Clique em No thanks, just start my download e espere o download terminar.
+
+8) Execute o instalador que foi baixado.
+
+9) Aceite os termos e clique em Next.
+
+10) Escolha a instalação Developer Default, clique em Next e em Next também na próxima tela.
+
+11) Clique em Execute, para fazer o download e instalação do banco e seus componentes. Terminado isso, clique em Next.
+
+12) Na próxima tela, clique em Next.
+
+13) Mantenha a escolha Standalone MySQL Server / Classic MySQL Replication e clique em Next.
+
+14) Mantenha as propriedades padrões do serviço e da porta de comunicação. Clique Next.
+
+15) Mantenha a opção Use Strong Password Encryption for Authentication. Clique em Next.
+
+16) Inclua a senha do usuário root e repita-a. Clique em Next.
+
+17) Em Windows Service, mantenha as propriedades padrões e clique em Next.
+
+18) Clique Execute para iniciar a instalação. Terminada a instalação, clique em Finish.
+
+19) Nas próximas telas, clique em Next, Finish e em Next.
+
+20) Na tela Connect To Server, digite a senha configurada anteriormente e clique em Check. Em seguida, clique em Next e em Execute em seguida.
+
+21) Finalize a instalação e automaticamente o Workbench será aberto. Clique na conexão que está configurada. Ao digitar a senha e clicar em OK, você acessará o ambiente com o MySQL no ar.
+
+22) Se você está usando uma máquina limpa, você deve recuperar a base de dados a ser usada neste curso. Para isso, siga as instruções a seguir.
+
+23) Caso ainda não tenha feito, faça o download do arquivo RecuperacaoAmbiente.zip aqui e descompate-o.
+https://caelum-online-public.s3.amazonaws.com/1224-mysql-adminstracao/01/RecuperacaoAmbiente.zip
+
+24) Abra o MySQL Workbench. Utilize a conexão que está configurada.
+
+25) Clique com o botão direito do mouse sobre a área vazia de Schemas e escolha Create Schema.
+
+26) Insira o nome sucos_vendas. Clique em Apply duas vezes e em Finish em seguida.
+
+27) Na área Navigator, clique na aba Administration.
+
+28) Clique em Data Import/Restore.
+
+29) Na opção Import from Dump Project Folder, escolha o diretório DumpSucosVendas, que você baixou e extraiu anteriormente.
+
+30) Em seguida, clique no botão Start Import.
+
+31) Verifique se as tabelas foram criadas na base sucos_vendas.
+Opinião do instrutor
+
+Continue com os seus estudos, e se houver dúvidas, não hesite em recorrer ao nosso fórum!
+
+
+
+
+1-11  O que aprendemos?
+
+  A instalar o MySQL e recuperar o ambiente que será utilizado neste treinamento;
+  
+  Como criar conexões e distribuí-las pelos clientes;
+  
+  Como paramos e iniciamos o serviço do MySQL.

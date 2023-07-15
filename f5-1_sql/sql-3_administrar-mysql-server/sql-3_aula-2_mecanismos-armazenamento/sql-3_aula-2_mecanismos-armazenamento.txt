@@ -1,0 +1,497 @@
+https://cursos.alura.com.br/course/mysql-dba-administracao/section/8466/tasks
+
+Curso de
+  Administração do MySQL: segurança e otimização do banco
+
+Instrutor
+
+  Victorino Vila
+
+    Linkedin
+    https://www.linkedin.com/in/victorino-vila-1a160/
+
+
+Aula 2- Mecanismos de armazenamento | 0 / 13 | 55min
+
+  2-1  Arquivos necessários para a aula
+  2-2  Tuning de Hardware
+  2-3  Pontos importantes do Tuning
+  2-4  Variáveis de ambiente
+  2-5  Valor da variável
+  2-6  Mecanismo de armazenamento MyISAM
+  2-7  Aplicação do mecanismo de armazenamento
+  2-8  InnoDB e Memory
+  2-9  Acesso ao dados
+  2-10  Usando os mecanismos de armazenamento
+  2-11  Mecanismo de armazenamento padrão
+  2-12  Consolidando o seu conhecimento
+  2-13  O que aprendemos?
+
+
+
+2-1  Arquivos necessários para a aula
+
+Ao longo dos vídeos, o instrutor irá utilizar alguns arquivos específicos, que são necessários para o decorrer desta aula e do treinamento. Você pode baixar um ZIP com esse conteúdo aqui.
+
+https://caelum-online-public.s3.amazonaws.com/1224-mysql-adminstracao/02/arquivos-aula-2.zip
+
+
+
+2-2  Tuning de Hardware
+
+
+Transcrição
+
+[00:00] Vamos falar um pouquinho de tuning. Eu, quando estava preparando esse curso, eu tentei achar uma palavra que traduzisse tuning, não encontrei, seria “envenenar”, digamos assim, o nosso ambiente de MySQL, quando a gente fala que a gente faz um tuning num carro ou carro tunado, é uma palavra aportuguesada, da palavra tuning.
+
+[00:27] Eu estou envenenando o motor do carro, então fazer um tuning no MySQL, significa, a gente envenenar o MySQL, deixar ele mais rápido e a gente tem quatro maneiras de fazer um tuning dentro do nosso ambiente do MySQL.
+
+[00:42] Primeiro, trabalhando com os banco de dados e índices, são coisas que eu vou falar depois, nós temos tuning através das variáveis internas do MySQL, que a gente chama ali de MySQLD tuning e através do hardware e do sistema operacional que o MySQL está instalado.
+
+[01:10] Vou começar a falar agora um pouquinho para vocês sobre o tuning de hardware e depois o tuning do MySQLD. A primeira coisa que eu posso falar sobre o tuning de hardware, é claro, é considerar sempre sistemas operacionais de 64bits.
+
+[01:33] O MySQL tem uma gama de poder utilizar vários processadores em paralelo e de consumir realmente toda a capacidade de memória de hardware que a máquina possui.
+
+[01:50] Então, a gente dar preferencia a processadores de 64 bits, significa a gente poder ter processos com RAMs muito maiores do que, por exemplo, se eu estivesse usando processadores de 32 bits, onde os meus processos ficariam limitados a 2.4GB de RAM por processo.
+
+[02:18] Hoje em dia isso é muito pouco, então vamos dar ênfase, claro, aos sistemas operacionais de 64 bits. Claro que hoje em dia, a maioria dos computadores já são 64 bits, mas as vezes no ambiente corporativo, ainda temos servidores antigos e as vezes quando a gente vai instalar o MySQL, esses servidores antigos, são os que são disponibilizados para a gente poder trabalhar.
+
+[02:46] Outra coisa importante é ver a configuração de RAM que está sendo utilizada, na verdade, existe um parâmetro interno no MySQL, que a gente diz quanto de RAM os nossos processos vão poder consumir no máximo, é claro que eu não vou disponibilizar toda a RAM disponível dentro da minha máquina.
+
+[03:12] Normalmente a dica é que você disponibilize, pelo menos, no máximo 50% da sua RAM existente. Então, se eu estiver usando, por exemplo, um servidor com 32G de RAM, a gente vai ter então disponível para o MySQL, preferencialmente metade disso ou 16G.
+
+[03:38] Aí, cabe a você definir se esses 16G é muita coisa ou não e há aí uma relação que a experiência mostra... direta, entre o tamanho da base e a quantidade de RAM que o processo vai gastar, um exemplo é o seguinte. Opa, eu passei para frente, vamos lá.
+
+[04:02] Um exemplo é o seguinte, uma base normalmente de 1GB de tamanho, não vai gastar mais do que 8GB de RAM para fazer qualquer coisa nessa sua base. Claro que um ambiente real, a gente não vai ter só uma conexão fazendo coisa na base, eu vou ter várias conexões.
+
+[04:23] Então, dependendo da forma com que o banco é usado, talvez, mesmo tendo um bando de 1GB, 8G de RAM vai ser pouco, porque eu posso ter muitos processos acessando a base ao mesmo tempo. Outro ponto importante que deve ser colocado é o tipo de leitura de disco, o “io”, que esse banco vai ter.
+
+[04:51] E aí, claro, aonde estiver armazenado a base de dados, vai fazer uma enorme diferença. Hoje em dia, a gente tem diversos tipos de HDs de discos rígidos, onde nós podemos armazenar os nossos dados.
+
+[05:08] Claro que se você tiver dinheiro e capacidade de colocar tudo num disco SSD, que é um disco rígido de memória, aí ia ser imbatível, a velocidade de “io” vai ter um ganho enorme, mas hoje os SSDs ainda são caros. Então, a gente sempre vai encontrar discos do tipo: SCSI, SATA e SAS.
+
+[05:36] Desses três, normalmente SCSI são muito velhos, a gente quase não encontra mais hoje em dia e entre disco SAS e SATA, de preferência aos discos SAS, porque eles são mais performáticos. Outra forma também é como é que você usa a sua controladora de disco RAID.
+
+[05:59] Geralmente os discos RAID são usados, para a gente poder trazer segurança aos nossos dados. Existem vários tipos de RAID, os mais usados são RAID 0, RAID 1, RAID 5 e RAID 10, normalmente o seguinte, o RAID 0, ele vai dividir o seu dado e dois discos rígidos diferentes.
+
+[06:22] Então, eu tenho dois discos rígidos físicos, mas logicamente, eu enxergo somente um drive e aí, o sistema operacional vai dividindo esse dado entre os discod. O RAID 1, normalmente é uma cópia, eu tenho dois discos rígidos, eu olho um só, mas a capacidade do que eu olho de discos normalmente é de um deles somente.
+
+[06:51] E internamente, toda a vez que eu gravo, que eu incluo, altero ou excluo informações, essa operação é feita ao mesmo tempo nos dois discos, esse é o tipo RAID 1. Aí, você tem variantes do RAID 5 e RAID 10. RAID 5 seria a divisão dos dados, só que em mais discos.
+
+[07:14] E o RAID 10, seria o espelhamento dos discos, usando mais discos rígidos. Claro que o RAID 10 e o RAID 1, eles gastam metade do espaço físico fazendo redundância, mas com certeza, eles são mais seguros para suportar um bando de dados MySQL, porque se por acaso um dos discos quebrar ou tiver indisponível, eu tenho o meu dado no outro disco preservado.
+
+[07:50] Claro que essas configurações de hardware, elas vem muito com a experiência do profissional e o pessoal de infraestrutura e de suporte, eles podem ajudar muito o DBA a desenhar o melhor ambiente para o banco de dados MySQL, mas aí, novamente falando sobre nuvens, hoje em dia, a gente usa muito a nuvem para criar uma instância do MySQL.
+
+[08:22] E aí, quando a gente fala de nuvem, da mesma maneira que a gente não precisa mais estar se preocupando em configurações de backup de ambiente, também performance, a gente não se preocupa mais, porque a gente tem dentro da configuração do MySQL na nuvem, seja ela na Amazon, na Azure ou na Google, você tem configurações de recursos de hardware que você vai reservar para o seu banco de dados MySQL.
+
+[08:55] E aí, você consegue em maneira lógica, ir aumentando esses recursos, na medida em que seu banco vai sendo usado e aí, internamente, se eu estou usando RAID, quanto te RAM, se é RAID 0, RAID 1, RAID 5, isso tudo é transparente para mim, que na parametrização da nuvem está pedindo para que aquele MySQL utilize mais recursos.
+
+[09:25] Então são esses comentários que eu gostaria de falar sobre a parte de tuning do MySQL, no que diz respeito a hardware. Valeu.
+
+
+
+2-3  Pontos importantes do Tuning
+
+A respeito do Tuning de Hardware, quais das alternativas abaixo são verdadeiras?
+
+Usar uma controladora de disco RAID
+  Alternativa correta! Esta opção de análise para Tuning do MySQL é correta.
+
+Ver relação entre RAM e base de dados
+  Alternativa correta! Esta opção de análise para Tuning do MySQL é correta.
+
+Preferência à sistemas operacionais de 32 bits
+  Alternativa errada! Devemos dar ênfase aos sistemas operacionais de 64 bits.
+
+
+
+2-4  Variáveis de ambiente
+
+
+Transcrição
+
+[00:00] Uma outra forma de a gente melhorar a performance do nosso ambiente do MySQL é através das variáveis de ambiente. As variáveis de ambiente são variáveis que são declaradas na inicialização do ambiente MySQL e elas valem para várias coisas.
+
+[00:22] Elas não só definem limites dentro dos bancos de dados, como também alguns parâmetros do tipo, a porta de comunicação, em que diretório a base de dados será criada e assim por diante, existem mais de 250 variáveis de ambiente, a gente não é nem obrigado a saber todas elas.
+
+[00:44] E cada versão nova de MySQL, a lista dessas variáveis de ambiente sofre modificações, algumas variáveis novas são acrescidas, outras deixam de existir.
+
+[00:56] Então é sempre bom, a cada versão nova do MySQL, se as variáveis de ambiente são importantes para você fazer a configuração do ambiente onde você está trabalhando, sempre de uma conferida na documentação para saber se aquela variável de ambiente está valendo ou não para a nova versão do MySQL.
+
+[01:16] O comando Show Status, ele mostra a situação atual das variáveis de ambiente, então é uma forma de a gente verificar o valor dessa variável de ambiente e nós temos dois tipos de variáveis de ambiente, a global e a session.
+
+[01:32] A global, ela vai valer para o MySQL todo, então quando eu modificar essa variável de ambiente, ela vale para todo o ambiente MySQL. Já a session vai valer apenas para a minha conexão, essas variáveis de ambiente, elas ficam armazenadas num arquivo externo chamado my.ini, se for Windows ou my.cnf, se a gente estiver falando de Linux.
+
+[02:01] E dentro desse arquivo, nós temos duas diretivas, a MySQLD e a client, a MySQLD tem a ver com as globais e a client, tem a ver com as sessions e ali eu tenho um link mostrando onde eu consigo entrar a documentação dessas variáveis de ambiente.
+
+https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html
+
+[02:24] Então, vamos primeiro dar uma olhada, como é que é o formato desse arquivo my.ini, ele está localizado... deixa eu abrir uma... no explorador do Windows, ele está localizado nesse diretório programdata.
+
+[02:45] Para vocês irem no programdata, vocês precisam digitar, porque normalmente o diretório programdata é um diretório escondido dentro do ambiente operacional, MySQL, MySQL Server 8.0, eu tenho o arquivo aqui my.ini. Eu vou abrir ele com o editor de texto.
+
+[03:04] Então, eu tenho aqui a declaração de todas as variáveis aqui, uma variável aqui “max_connections=151”, pelo próprio nome diz, essa é uma variável que diz quantas conexões concorrentes eu posso ter no MySQL, então eu tenho no máximo 151 conexões concorrentes.
+
+[03:31] Esse, por exemplo, é o que significa esse parâmetro. Aqui, “tmp_table_size=103M”, isso significa o tamanho máximo de tabelas temporárias que vão poder ser criadas em memória, é o que significa esse parâmetro, “tmp_table_size”.
+
+[03:59] Vamos falar um pouquinho mais sobre essas tabelas temporárias, como um exemplo para a gente ilustrar como que as variáveis de ambiente, elas são importantes para a gente configurar a performance do MySQL.
+
+[04:15] Mas antes disso, eu vou voltar aqui para a minha apresentação e eu vou mostrar também para vocês o link que eu coloquei aqui, para olhar a documentação dessas variáveis de ambiente. Então, note, eu entrei aqui na página do MySQL e note, se eu arrastar aqui, eu tenho muitas variáveis de ambiente aqui criadas.
+
+[04:41] Cada uma delas... vou pegar uma aqui aleatoriamente, “disabled-storage-engines”, então diz aqui o que que significa a variável de ambiente, que escopo ela é, se ela é global ou session, o tipo dela, um valor default, ou seja, se ela não for declarada, se ela é inicializada ou não e com que valor ela vai ser inicializada.
+
+[05:10] Então, usar essa documentação aqui é super importante para você saber se aquela variável de ambiente que você trabalha, está valendo ou não. Vamos então voltar para aquele exemplo das tabelas temporárias, para a gente ver como é que a gente pode usar tabelas... como que é a configuração de tabelas temporárias pode mexer com a performance.
+
+[05:33] Eu vou entrar aqui no meu MySQL e aí, eu vou aqui... deixa eu ver aqui nas minhas anotações, ok. Eu vou fazer o seguinte, eu vou colocar aqui “Show Global Status Like – eu vou colocar uma variável que é a – ‘Created_tmp_disk_tables’”.
+
+[06:13] Então eu tenho Created_tmp_disk_tables está com o valor 0. Eu tenho uma outra variável, é a LIKE... Created_tmp_tables, vamos olhar o conteúdo dela, eu tenho aqui 290. Deixa eu rodar as duas, vamos explicar um pouquinho o que que é isso. O que que é uma tabela temporária dentro do MySQL? [06:49] Toda a vez que eu fizer um join, um group by ou seja, quando eu fizer uma consulta um pouco mais rebuscada, o MySQL automaticamente vai criar tabelas temporárias lá dentro, para poder fazer essas contas e essas tabelas temporárias, elas são criadas em memória.
+
+[07:10] Claro, porque se eu estou fazendo uma consulta, é preciso juntar, somar, fazer cálculos em cima (quare) que eu estou executando, eu jogo sem memória porque é muito mais rápido. A variável created tmp tables, mostra para mim o número de tabelas temporárias que foram criadas e que estão em memória.
+
+[07:42] Então eu tenho aqui 292 tabelas temporárias criadas em memória e o primeiro comando vai me mostrar quantas tabelas temporárias eu tenho criada em disco, é a variável Created_tmp_disk_tables, o que acontece?
+
+[08:03] Existe uma variável global que diz o número máximo de memória que eu posso gastar para criar tabelas temporárias, essa variável, eu ainda vou mostrar para vocês qual é.
+
+[08:18] Se eu começar a fazer muita consulta com group by, order by, joins, assim por diante, se esse limite de tamanho de tabelas temporárias que eu posso criar em memória estourar, ele começa a criar essas tabelas temporárias e disco, ele tem que resolver a consulta para mim.
+
+[08:41] Só que quando ele começar a fazer a criação dessas tabelas temporárias em disco, vai ficar mais lento, porque eu tenho que escrever e ler do disco, o que... eu estou vendo aqui, rodando essas duas (quares), é que por enquanto eu tenho 295 em memória e não tenho nenhuma em disco, o que significa?
+
+[09:08] Que o espaço que eu reservei para trabalhar com tabela temporária está legal, está satisfatório, porque se não tiver satisfatório, eu teria tabelas temporárias criadas em disco.
+
+[09:22] É claro, esse meu MySQL eu acabei de instalar, eu abri ele agora, não fiz nenhuma (quare), por isso que o número de tabelas temporárias em disco está 0 e o número de tabelas temporárias em memória está até baixo, mas vamos supor que eu tivesse encontrado na Created_tmp_disk_tables um número grande, o que isso significa?
+
+[09:48] Que eu estou gastando disco para gerar tabela temporária, com certeza as consulta, as (quares) que os sistemas ou os usuários estão fazendo no meu ambiente estão lentas, porque eu estou gastando tempo escrevendo e lendo de disco, então o que que eu posso fazer?
+
+[10:10] Eu posso aumentar a variável que diz: “Eu vou reservar mais memória do meu hardware para a criação de tabelas temporárias, porque o que eu tenho reservado no momento, não é suficiente”, como é que eu sei qual é o valor dessa variável de memória?
+
+[10:35] Eu venho aqui e posso escrever aqui, “Show Global Variables Like”, e aí, a variável que eu estou achando é a tmp underscore, table underscore, size. Essa variável tmp table size, que é justamente aquela que eu mostrei para vocês, quando eu mostrei o arquivo “ini”, cadê ele aqui?
+
+[11:11] É essa variável aqui. Ela é definida quando eu inicializo o MySQL com 103M, 103M, traduzindo para bytes, vai dar esse número aqui, dá 108 milhões de bytes. Ok, com 108 milhões de bytes, eu tenho 0 tabelas criadas no disco, então esses 180 milhões de bytes ou 103... foi isso mesmo?
+
+[11:48] Isso, 103, desculpe, 103M é o suficiente, mas vamos supor que não fosse suficiente, digamos que eu tivesse muita tabela em disco escrita, eu poderia então vir aqui no MySQL e aumentar o parâmetro tmp table size.
+
+[12:07] Então eu posso fazer o seguinte: “Set Global tmp_table_size = ...” e aí eu posso colocar aqui, por exemplo 208003328. Ao fazer isso, se eu olhar agora o tamanho dessa variável, note que eu aumentei, aumentei em 100 milhões de bytes.
+
+[12:42] Então, eu fui para, se eu não me engano, 203M de espaço de RAM, reservado para tabela temporária. Se eu tivesse muita tabela temporária em disco, ao fazer esse parâmetro aumentar, as próximas consultas não vão mais gravar em disco, porque eu reservei um tamanho maior na memória.
+
+[13:08] Então as tabelas temporárias vão voltar a serem criadas na memória, aumentando a performance do meu ambiente. É claro que quando eu faço isso, todas as conexões passam a olhar esse parâmetro maior, porque essa variável, ela é global.
+
+[13:32] Mais uma coisa importante, eu tenho ela definida aqui na inicialização, no my.ini, o que que vai acontecer? Eu aumentei, mas se eu chegar, parar o serviço e subir ele de novo, aí essa variável volta a valer 103M, ou seja, essa modificação que eu fiz aqui, ela está valendo enquanto o meu servidos MySQL estiver no ar, estiver funcionando.
+
+[14:06] A hora que ele parar e subir de novo, vai valer o que está no my.ini, então o que eu teria que fazer talvez, é vir aqui, aumentar também esse parâmetro aqui, para que quando eu parasse o servidor e subisse ele novamente, o parâmetro tabelas temporárias fosse aumentado.
+
+[14:33] Eu quis dar um pequeno exemplo, existem inúmeros outros exemplos, que mexendo com as variáveis de ambiente, eu consigo aumentar a performance, isso tudo vai depender da forma com que eu estou configurando o meu MySQL e a forma com que ele está se relacionando com o hardware que está disponível para ele estar executando.
+
+[15:04] Então é isso aí. Valeu.
+
+
+
+2-5  Valor da variável
+
+Qual comando é usado para ver o valor de uma variável global?
+
+SHOW VAR GLOBAL
+  Alternativa errada! Não existe este comando no MySQL.
+
+SHOW GLOBAL STATUS
+  Alternativa correta! Este é o comando para visualizar o valor de uma variável global.
+
+SHOW STATUS SESSION
+  Alternativa errada! Este comando não mostra os valores de variáveis globais.
+
+
+
+
+2-6  Mecanismo de armazenamento MyISAM
+
+
+Transcrição
+
+[00:00] Vamos falar um pouquinho sobre mecanismos de armazenamento, esses mecanismos de armazenamento que existem no MySQL, são um dos recursos mais exclusivos do banco de dados, ele tem a ver com a forma com que o dado é guardado dentro das tabelas e o MySQL disponibiliza cerca de 20 diferentes tipos de mecanismos de armazenamento.
+
+[00:31] Então, como eu falei, ele é um mecanismo que gerencia a forma com que o dado é gravado em tabelas e a gente pode ter num mesmo banco de dados, diferentes tipos de mecanismos diferentes, como ele é aplicado a nível de tabela, as vezes a gente confunde muito o mecanismo de armazenamento com um tipo de tabela.
+
+[00:57] A gente pode chamar assim mesmo, quando a gente se refere a um mecanismo de armazenamento, na verdade, nós estamos falando de um tipo de tabela diferente do meu bando de dados.
+
+[01:08] Nas instruções de criação de tabela e de alteração de tabela, respectivamente os create tables e os alter tables, nós temos uma opção chamada engine, onde eu posso definir ou alterar o mecanismo de armazenamento que aquela tabela respectiva vai ter.
+
+[01:33] Uma outra característica interessante é que o mecanismo de armazenamento da tabela, ela está... não está associada com a arquitetura interna do MySQL, separando, justamente a forma com que eu tenho o (core) do banco de dados, com a forma com que eu vou armazenar a informação dentro da tabela.
+
+[02:02] Apesar de a gente ter esses 20 diferentes tipos de mecanismos de armazenamento, normalmente a gente trabalha com três principais, é o MyISAM, o InnoDB e o MEMORY. Vamos falar então um pouquinho do que que é o MyISAM.
+
+[02:23] O MyISAM, ele é, na verdade, o mecanismo padrão do MySQL, inclusive, as tabelas internas do MySQL são armazenadas usando MyISAM. Ele é um mecanismo bem confiável e ele herdou do mecanismo original, que foi implementado nas primeiras versões do MySQL, que era o mecanismo chamado de ISAM.
+
+[02:54] E a partir da versão, crio que 3.2 do MySQL, eles substituíram o padrão original ISAM, para o MyISAM, qual é a característica principal do mecanismo MyISAM? Ele não é um mecanismo puramente transacional, ele não implementa mecanismos de bloqueio dos registros dentro das tabelas.
+
+[03:25] O tipo de bloqueio que o MyISAM faz quando uma tabela está sendo atualizada, é um (lock) na tabela como um todo, isso permite com que a tabela seja muito mais rápida, se eu quiser, por exemplo, usá-la para efetuar somente leituras, mas aí, você tem um problema.
+
+[03:49] Se você tiver muita gravação simultânea, por diferentes usuários, diferentes sessões dentro do banco, como esse controle não é tão específico, a gente pode ter problemas usando tabelas MyISAM, por isso nós temos que tomar cuidado.
+
+[04:11] Então, algumas características específicas do MyISAM, para a gente decidir que tipo de forma de tabela a gente vai utilizar, por exemplo... Então, se eu tiver uma tabela que não vai ter muitas transações, eu posso usar MyISAM.
+
+[04:29] O MyISAM tem uma característica que a chave estrangeira não suporta o tipo FULLTEXT, que é um tipo de dado específico da tabela. Quando a gente cria um cache de dados ou um cache de índice, a gente nunca pode se referenciar a ele através do nome.
+
+[04:49] Nós temos uma vantagem que o MyISAM implementa dois tipos de forma de índice, que é o HASH e o BTREE, a gente vai falar um pouquinho sobre eles mais a frente, como eu já falei, o MyISAM, ele implementa bloqueio a nível de tabela, isso faz com que a atividade de leitura seja muito rápida, quando você usa o MyISAM.
+
+[05:10] Então ela é muito específica para bancos de dados, que nós chamamos de Data Warehouse, ou seja, bancos de dados gerenciais de consulta e internamente, os dados que são armazenados dentro das tabelas do MyISAM, já são automaticamente armazenados de forma compacta, melhorando o tamanho do banco de dados, quando eu tenho muita informação.
+
+[05:38] Lembra que a gente falou sobre variáveis de ambiente? Existe algumas variáveis de ambiente que são diretamente ligadas ao MyISAM. A primeira variável é o key_buffer_size, o key_buffer_size, ele determina, esse parâmetro, o tamanho de cache que a gente vai usar para armazenar os índices do MyISAM.
+
+[06:07] Dependendo do sistema operacional, se eu estiver usando 32 bits ou 64 bits, esse padrão pode ir desde 8MB, até 4GB. Um outro parâmetro importante é o concurrent_insert, é outro parâmetro que a gente pode estar especificando lá no my.cnf ou no my.ini, que é o arquivo de inicialização do MySQL.
+
+[06:36] Esse parâmetro determina o comportamento das inserções concorrentes dentro de uma tabela MyISAM. Existe uma variável chamada: intervalo de dados, que é uma espera que MySQL faz entre a inserção de um dado e de outro dado. Se essa variável concurrent_insert for igual a 1, você consegue fazer inserções simultâneas, sem intervalo de dados.
+
+[07:06] Se a configuração for igual a 0, a gente desativa as inserções simultâneas, ou seja, uma inserção sempre vai esperar a tabela ser liberada para funcionar e quando tiver a configuração número 2, eu permito a inserção simultâneas com um intervalo de dados ativado.
+
+[07:28] Outra variável é a delay_key_write, a gente usa essa variável para criar um atraso entre a atualização dos índices e o momento que a tabela é fechada, por exemplo, quando eu faço uma inserção de dados, se eu usar o delay_key_write, o MySQL vai esperar todas as inserções serem efetuadas, para depois fazer uma atualização dos índices.
+
+[08:02] Isso cria, claro, uma melhor consistência no dado dentro do banco de dados, porém, isso cria uma lentidão um pouco maior no momento da atualização da informação. O padrão do MyISAM é essa variável delay_key_write, com o valor igual a 1.
+
+[08:28] Então, quando eu crio automaticamente uma tabela do tipo MyISAM, automaticamente o delay_key_write vai estar ativado, se eu quiser melhorar um pouco a performance dos inserts, eu devo ir lá na configuração e colocar essa variável delay_key_write como off.
+
+[08:50] Nós temos também a variável max_write_lock_count, essa variável de ambiente, ela determina quantas gravações em uma tabela vão ter precedências às leituras, ou seja, quando tiver gravações e leituras ao mesmo tempo, qual vai ser a prioridade da inclusão de dados na tabela, em relação às leituras.
+
+[09:28] E a gente tem uma outra variável, que é a preload_buffer_size, essa variável, ela determina o tamanho do buffer que vai ser usado no pré carregamento do índice de caches de chaves da tabela. O padrão dessa variável, normalmente, é 32KB.
+
+[09:55] Claro que o uso dessas variáveis de ambiente vai vir com o tempo, na medida em que o administrador do MySQL começa a entender melhor o seu ambiente, entente melhor os mecanismos de MyISAM e pode mexer com essas variáveis.
+
+[10:15] Mas a minha experiência diz o seguinte, use sempre o padrão, quando você cria uma tabela do tipo MyISAM, você deve apenas levar em consideração se o seu caso, ele está dentro dessa opções aqui, específicas, para determinar se você vai usar o MyISAM ou não como tipo de tabela.
+
+[10:44] O que nós estamos vendo aqui, são três utilitários que existem dentro do MySQL, para a gente poder manipular tabelas do tipo MyISAM. A gente tem um primeiro aplicativo que é o myisamchk, ele é usado para a gente poder analisar, otimizar e reparar tabelas MyISAM, pode ser que as tabelas estejam mal construídas, algum problema no seu armazenamento interno.
+
+[11:16] Então o myisamchk, reconstrói essas tabelas. O myisampack, ele é usado para a gente poder criar tabelas MyISAM compactadas, que vão ser só usadas para leitura, nada mais. São tabelas que a gente, durante o uso do aplicativo, a gente cria elas, coloca informação e elas não vão poder sofrer nenhum tipo de insert.
+
+[11:43] Claro que essas tabelas vão ter mecanismos de controle de escrita, praticamente nulos, praticamente inexistentes, fazendo com que a performance da leitura seja muito rápida.
+
+[11:57] E um outro aplicativo é o myisam_ftdump, que é usado para a gente poder exibir informações sobre os campos do tipo texto, que eu tenho dentro do MyISAM, ele fornece uma informação mais completa sobre esses campos.
+
+[12:14] Então, tá, era mais ou menos isso que eu gostaria de falar para vocês, sobre os tipos de tabela MyISAM. Valeu.
+
+
+
+
+
+2-7  Aplicação do mecanismo de armazenamento
+
+Onde aplicamos o mecanismo de armazenamento?
+
+No banco de dados
+  Alternativa errada! O mecanismo de armazenamento não  está associado ao banco de dados.
+
+No registro
+  Alternativa errada! O mecanismo de armazenamento não está associado ao registro.
+
+Na tabela
+  Alternativa correta! O mecanismo de armazenamento é uma propriedade da tabela.
+
+
+
+
+
+2-8  InnoDB e Memory
+
+
+Transcrição
+
+[00:00] Agora vamos falar do InnoDB. O InnoDB é um mecanismo de armazenamento usando quando eu vou realmente ter um banco de dados transacional.
+
+[00:12] Quando eu falo banco de dados transacional, eu estou imaginando um banco de dados onde eu tenho uma aplicação, onde eu tenho dezenas, centenas ou milhares de usuários fazendo inclusões, alterações, exclusões e consulta de dados naquela banco ao mesmo tempo.
+
+[00:32] É uma forma diferente, quando eu falo de bancos de dados gerenciais, onde durante um período, eu faço uma carga grande desse banco e depois os usuários apenas consultam as informações. Nesse caso, o MyISAM, ele é mais direcionado.
+
+[00:51] Já para bancos de dados com várias transações, a gente aconselha usar o mecanismo de armazenamento InnoDB e foi o InnoDB que trouxe para o MySQL o suporte a transações relacionais, até versões anteriores, quando não utilizavam esse tipo de mecanismo, o MySQL não era full transacional.
+
+[01:17] Então, claro, algumas características do mecanismo de armazenamento InnoDB. Claro, suporte completo ao banco de dados transacional, o bloqueio da tabela durante uma atualização, ele é feito a nível de linha.
+
+[01:38] Ou seja, quando eu atualizo um informação, aquela linha está bloqueada, mas a tabela toda está liberada para sofrer outras alterações e também tem suporte completo à chaves estrangeiras.
+
+[01:56] Em termos de índice, o InnoDB só utiliza índice do tipo BTREE, eu ainda não estou explicando para vocês o que é um índice e quais são os seus tipos, mas a gente já vai adiantando que InnoDB só suporta BTREE.
+
+[02:13] Para a gente configurar um cache de buffer, para poder ele agilizar os seus processos internos, no caso de um banco de dados InnoDB, a configuração do cache, tanto para o banco, quanto para o índice, pode ser feita de formas separas, diferente, por exemplo, do MyISAM.
+
+[02:35] E eu consigo, através de bancos InnoDB, fazer um backup do banco sem bloqueá-lo, sem precisar tirar ele do ar para fazer isso. Nós temos algumas variáveis de ambiente, as três primeiras, elas estão relacionadas com as tabelas.
+
+[02:59] A gente tem o Innodb_data_file_path, que determina o caminho dentro do sistema operacional, onde as informações serão armazenadas e o tamanho desses arquivos máximos. O InnoDB, ele armazena as informações através de um arquivo que vai crescendo e depois quando ele acaba, ele vai criando um outro arquivo com sufixo 1, 2, 3 e assim por diante.
+
+[03:30] O local desse arquivo e o tamanho máximo de cada parte do arquivo é determinado através desse parâmetro. Um outro parâmetro é o innobd_data_home_dir, como o próprio nome diz, ele é feito para dizer qual é o caminho comum de diretório de todos os arquivos InnoDB.
+
+[03:54] Se eu especificar esse cara, ele vai gravar tudo dentro desse diretório, diferente do default, o default, o padrão, ele vai gravar tudo dentro de um diretório chamado MySQL Data, que é o padrão do armazenamento de dados de um banco de dados MySQL.
+
+[04:18] A gente tem o Innodb_file_per_table, a gente pode especificar cada tabela de armazenamento InnoDB, os arquivos que armazenam as informações, eles tem uma extensão “.ibd”. E aí, quando a gente usa esse parâmetro Innodb_file_per_table, a gente consegue separar o armazenamento dos dados, com os índices.
+
+[04:55] O padrão é que a gente armazene essas informações num espaço compartilhado, com essa variável de ambiente, a gente consegue separar o armazenamento do índice e também do dado. Já as três últimas variáveis que estão aqui nesse slide, ele diz respeito a variáveis que estão relacionadas com performance.
+
+[05:20] A primeira variável, que é a Innobd_buffer_pool_size, ela determina o tamanho de buffer que o mecanismo de armazenamento InnoDB, vai estar usando para armazenar dados e índices em cache. Quando a gente utiliza cache, a gente está falando de coisas que ficam em memória que melhoram a performance.
+
+[05:43] Já a variável de ambiente Innodb_flush_log_at_trx_commit, nome grande, ela vai configurar a frequência com que o buffer de log é liberado para o disco. Na medida em que a gente vai usando o banco, esse buffer de log vai crescendo e de tempos em tempos, ele é descarregado para o disco rígido.
+
+[06:11] Então essa variável vai dizer a frequência com que isso vai ser feito. Finalmente, a innodb_log_file_size, ele vai determinar o trabalho em bytes que cada um dos arquivos de log (InnoDB) vão ter. O padrão dessa variável, quando você não menciona nada, é ter um log de no máximo 5MB.
+
+[06:38] Essa variável vai dizer se o tamanho desse log vai ser maior ou menor por arquivo, isso não significa que o log terá 5MB ou mais ou menos, significa que cada arquivo de log, será criado de 5 em 5MB.
+
+[07:01] Vamos agora falar de outro mecanismo de armazenamento, que é o Memory e como o próprio nome diz, o Memory, ele é um mecanismo de armazenamento que cria tabelas penas na memória, quando eu falo memória, eu estou falando apenas na memória RAM.
+
+[07:24] E aí, claro, se a informação... se a tabela está lá na memória RAM, isso significa que o acesso a ela é super rápido, porém tem uma desvantagem, essa informação, ela não fica armazenada no disco. Os dados, eles precisam ser sempre reinicializados quando o servidor é inicializado.
+
+[07:51] Ou seja, eu inicializei um servidor, as tabelas de Memory estão vazias, se eu for criar tabelas e colocar dados em memory, eles vão ficar lá até o servido ser reinicializado novamente. Se isso acontecer, se houver uma reinicialização, os dados são perdidos.
+
+[08:12] Nós temos algumas características dos bancos em memory, das tabelas em memory. Não tem chave estrangeira. É claro, o ato de ler e escrever dados nas tabelas memory são muito rápidos.
+
+[08:31] Claro, porque a informação está em memória e o bloqueio é muito parecido com o MyISAM, ou seja, quando eu vou bloquear algum registro, porque eu estou atualizando ele, eu bloqueio a tabela toda.
+
+[08:48] Em termos de índices, o Memory, ele também utiliza os mecanismos de HASH e de BTREE, mas o padrão é o HASH, novamente, índices eu vou falar mais a frente o que significa.
+
+[09:06] Mas a gente já viu, tanto nesse vídeo, quanto no anterior, que o padrão MyISAM, InnoDB e Memory, possuem alguns tipos de índices que são suportados e alguns tipos de índices que são padrões. As tabelas de Memory, elas têm uma característica específica para armazenar o dado.
+
+[09:32] Eles usam um formato que no MySQL, nós chamamos de formato de linha de comprimento fixo, então, por causa disso, eu não posso ter tipos de campos muito grandes, como por exemplo, tipos Blob ou tipos Text, ou seja, campos que são muito... são campos que tem tamanho muito grande, que armazenam muitos caracteres.
+
+[09:58] Então era isso que eu queria falar para vocês sobre as tabelas do tipo InnoDB e Memory. Valeu.
+
+
+
+
+
+2-9  Acesso ao dados
+
+Supondo que as estruturas a serem comparadas sejam idênticas, qual dos mecanismos de armazenamento abaixo é o mais rápido para acessar o dado?
+
+InnoDB
+  Alternativa errada! Este não é o mecanismo de armazenamento mais rápido dos apresentados nos vídeos.
+
+MyISAM
+  Alternativa errada! Este não é o mecanismo de armazenamento mais rápido dos apresentados nos vídeos.
+
+Memory
+  Alternativa correta! O mecanismo de armazenamento em memória é o mais rápido para acesso.
+
+
+
+
+
+2-10  Usando os mecanismos de armazenamento
+
+
+Transcrição
+
+[00:00] Vamos ver na prática um pouquinho como é que funciona durante a manipulação de tabelas, os mecanismos de armazenamento. Então, eu vou criar aqui um script novo, eu entrei aqui no MySQL Workbench e eu vou usar esse banco aqui, o sakila, que é um banco de dados padrão que vem, quando a gente instala o MySQL.
+
+[00:26] Eu vou criar uma tabela: “Create Table”, é o comando para criar tabela, “Default_Table”, vai ser o nome da tabela, a gente quando viu o curso de manipulação de dados ou curso de consulta avançada e até o curso de introdução, a USQL, usando o MySQL, a gente já viu o comando Create Table.
+
+[00:54] Mas a gente não viu esse mecanismo de armazenamento, ou seja, especificar qual é o mecanismo de armazenamento que uma tabela vai usar. Estou criando a tabela, eu vou criar um campo ID que inteiro, “Integer” e um campo, nome, que eu vou colocar como “Varchar (100)”.
+
+[01:23] Não estou especificando nada, não estou falando qual é o mecanismo de armazenamento que essa tabela vai usar, eu simplesmente vou rodar o comando.
+
+[01:33] Se eu vier aqui no meu banco sakila, botão direito do mouse dou um Refresh e vou ver aqui que eu tenho a minha default_table e aqui do lado, eu tenho um campinho que me dá a informação sobre essa tabela. Eu vejo os campos, os índices, as chaves, tudo mais.
+
+[01:50] Bem, eu vou clicar aqui no “i” e aí note que ele tem esse parâmetro aqui: Engine InnoDB, o que significa? Significa que se eu não falar nada, automaticamente o MySQL vai criar uma tabela do tipo InnoDB.
+
+[02:11] Ou seja, vai preparar a minha tabela para um banco de dados relacional, que vai suportar muitas transações, que vai fazer o controle da transação por linha, banco que está sendo preparado para ser usado numa aplicação que vai ter muitos usuários acessando ao mesmo tempo, incluindo, alterando, excluindo ou consultando informação.
+
+[02:41] Mas eu posso, se quiser, alterar esse mecanismo da tabela, mesmo com a tabela criada a inclusive, mesmo com a tabela com dados. Se eu pegar esse comando aqui, vou colar aqui, só que... Não, não vou fazer isso, desculpe, vou alterar o mecanismo.
+
+[03:04] Então, eu uso o “Alter Table”, coloco aqui o nome da tabela e aí, o parâmetro é engine, se eu botar aqui “EnGINE = MySAM”, vamos olhar aqui, eu coloquei aqui “Engine = MySAM”, essa tabela default table que originalmente é InnoDB, se eu rodar esse comando, vier aqui e olhar a informação da tabela, note que ela agora ficou MySAM.
+
+[03:39] Ou seja, agora é uma tabela que vai estar locando a tabela toda quando eu for alterar uma coisa nela, é uma tabela que fica mais rápido para leitura, mas que pode não se dar bem, quando a gente tiver muitas transações sobre ela, alterando ou incluindo coisas novas.
+
+[04:04] Mas durante a criação da tabela, eu posso estar especificando o mecanismo de armazenamento, então agora sim, eu vou copiar aqui o comando de cima, vou criar uma tabela dois e aqui, depois da criação da tabela, eu posso colocar o engine, por exemplo, memory.
+
+[04:29] Ou seja, eu estou forçando e especificando que durante a criação da tabela, essa tabela vai ser do tipo de memória, memory. Eu vou selecionar a linha, rodei, atualizo aqui o meu banco, as tabelas do meu banco, então eu tenho aqui o meu default table 2, botão direito do mouse.
+
+[04:52] Não, na verdade, não, clicando no table 2, eu vou clicar no “i” de informação e eu tenho aqui o meu padrão memory. A gente viu e eu falei sobre o InnoDB, o MyISAM e o Memory, que são os mais utilizados.
+
+[05:11] Mas por exemplo, se eu clicar aqui em tables, botão direito do mouse e usar a opção create tables, ou seja, eu vou ver a caixa de diálogo, de criação de uma tabela, para eu poder criar tabela, não necessariamente por comando.
+
+[05:28] Note que ao selecionar essa caixa de diálogo, a opção engine aqui em cima, ela já vem InnoDB selecionada, porque é o padrão, é o default do MySQL criar tabelas do tipo InnoDB, mas note, eu tenho uma gama de outras formas de... outros mecanismos de armazenamento que a gente pode estar utilizando.
+
+[05:54] A gente viu o InnoDB, o MyISAM e o Memory, eu dei ênfase a esses três tipos, desse treinamento porque são os mais usados, mas eu tenho aqui uma série de outros tipos de mecanismos, que tem propriedades específicas.
+
+[06:11] Claro que você tem uma vasta documentação no MySQL e você pode depois dar uma lida sobre o que significa cada um e a principal característica desses mecanismos de armazenamento, para ver qual é a situação que eles vão mais se adaptar ao seu caso.
+
+[06:34] Então era isso que eu queria mostrar a vocês sobre o mecanismo de armazenamento. Valeu.
+
+
+
+
+2-11  Mecanismo de armazenamento padrão
+
+Se não modificarmos nenhum parâmetro do ambiente original, qual é o mecanismo de armazenamento padrão da versão 8 do MySQL?
+
+MyISAM
+  Alternativa errada! Este não é o mecanismo padrão do MySQL.
+
+InnoDB
+  Alternativa correta! Este é o mecanismo padrão do MySQL.
+
+Memory
+  Alternativa errada! Este não é o mecanismo padrão do MySQL.
+
+
+
+
+2-12  Consolidando o seu conhecimento
+
+
+Chegou a hora de você pôr em prática o que foi visto na aula. Para isso, execute os passos listados abaixo.
+
+1) As variáveis que estão declaradas no C:\ProgramData\MySQL\MySQL Server 8.0\my.ini serão inicializadas com os valores declarados no arquivo sempre que o MySQL for inicializado.
+
+2) Aqui, você pode ver a documentação de inúmeras variáveis de ambiente.
+
+https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html
+
+
+
+3) O valor das variáveis durante a seção pode ser vista pelo Workbench. Entre no Workbench e, na base de dados sakila, digite no editor de comandos SQL:
+
+SHOW GLOBAL STATUS LIKE 'Created_tmp_disk_tables';
+
+4) Ainda na base de dados sakila, outra variável pode ser observada:
+
+SHOW GLOBAL STATUS LIKE 'Created_tmp_tables';
+
+Estas duas variáveis estão relacionadas com o número de tabelas temporárias que podem ser abertas durante uma seção em memória e em disco. Claro que isso influencia na performance do banco, caso seja necessário usar o HD para armazenar tabelas temporárias criadas pelo MySQL durante os comandos SQL.
+
+5) A variável tmp_table_size, que foi inicializada pelo my.ini, tem o valor de 103 e ele pode ser visto pelo comando do WorkBench:
+
+SHOW GLOBAL VARIABLES LIKE 'tmp_table_size';
+
+6) A variável de ambiente pode ser modificada pelo usuário que tenha privilégios para isso. Para isso, novamente na base de dados sakila, digite o seguinte comando:
+
+SET GLOBAL tmp_table_size = 208003328;
+
+7) Assim, é possível modificar o valor desta variável e ignorar o que estava, inicialmente, especificado no my.ini.
+
+8) Já sobre mecanismos de armazenamentos, durante a criação da tabela, é possível determinar qual mecanismo a mesma irá utilizar. Crie uma tabela, na base de dados sakila, conforme o comando abaixo:
+
+CREATE TABLE DEFAULT_TABLE (ID INTEGER, NOME VARCHAR(100));
+
+9) Se você for na tabela, na árvore de objetos do Workbench e clicar sobre o ícone de informações, verá as características de armazenamento desta tabela que foi criada:
+
+10) Você pode ver que, por padrão, as tabelas são criadas com o mecanismo de armazenamento InnoDB:
+
+11) É possível alterar a propriedade do mecanismo de armazenamento da tabela, com o comando:
+
+ALTER TABLE DEFAULT_TABLE ENGINE = MyISAM;
+
+12) Além disso, você pode definir o tipo de mecanismo de armazenamento que será usado na tabela no momento de sua criação. Para isso, digite:
+
+CREATE TABLE DEFAULT_TABLE2 (ID INTEGER, NOME VARCHAR(100)) ENGINE = MEMORY;
+
+13) Quando você cria uma tabela pelo assistente do Workbench, você pode ver a opção de seleção do mecanismos de armazenamento, sempre apresentando o InnoDB como padrão:
+
+Opinião do instrutor
+
+Continue com os seus estudos, e se houver dúvidas, não hesite em recorrer ao nosso fórum!
+
+
+
+2-13  O que aprendemos?
+
+
+  A importância das variáveis de ambiente;
+  
+  Como modificar a variável de ambiente pelo Workbench;
+  
+  O que são os mecanismos de armazenamento e os tipos principais, com suas características;
+  
+  Como determinar o mecanismo de armazenamento no momento da criação das tabelas.

@@ -1,0 +1,46 @@
+https://www.alura.com.br/artigos/conectando-workbench-mysql-linux
+
+Artigo Alura / Data Science
+Formação SQL com MySQL Server / Oracle
+
+Conectando o Workbench ao MySQL no Linux
+
+  Maria Gabriela Oliva
+  04/11/2021
+
+Como instalar a interface gráfica para acessar Banco Dados
+
+1. Baixar MySQL Workbench
+
+  - página para download
+    https://dev.mysql.com/downloads/workbench/
+
+    - selecionar sistema operacional / versão
+      - Ubuntu Linux
+      - 22.04(x86, 64-bit)
+
+    - selecionar arquivo ".deb" para baixar
+      - Community 8.0.33 - 24.5Mb
+        - requer instalar 4 pacotes
+
+    - login Oracle opcional
+
+2. Instalação
+
+  - duplo clique no arquivo baixado
+    ou via terminal
+    - habilitar usuário root (sudo su)
+    - digitar senha usuário root
+    - entrar na pasta onde esta aquivo (cd Downloads)
+    - decompactar arquivo baixado (dpkg -i nome-do-arquivo.deb)
+    - instalar workbench (apt-get -f install)
+
+3. Conectar com servidor
+
+  - abrir Workbench
+  - configurar conexão
+    (localhost pré-configurada)
+  
+
+Artigo Edivaldo para instalar/desinstalar workbench
+https://www.edivaldobrito.com.br/como-instalar-o-instalar-mysql-workbench-no-ubuntu-e-derivados/

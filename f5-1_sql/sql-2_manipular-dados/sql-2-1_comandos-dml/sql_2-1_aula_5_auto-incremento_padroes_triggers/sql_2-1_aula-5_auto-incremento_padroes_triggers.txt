@@ -1,0 +1,774 @@
+https://cursos.alura.com.br/course/mysql-dml-manipulacao-de-dados/section/8173/tasks
+
+Data Science | Cursos de SQL e Banco de Dados
+
+Curso de
+Comandos DML: manipulação de dados com MySQL
+
+Aula 5- Auto incremento, padrões e Triggers | 0 / 11 | 59min
+
+  5-1  Campos autoincremento
+  5-2  Valor da sequência
+  5-3  Definindo padrões para os campos
+  5-4  Comportamento do padrão durante o INSERT
+  5-5  TRIGGER
+  5-6  BEFORE INSERT
+  5-7  TRIGGER UPDATE e DELETE
+  5-8  Outras formas de manipulação de dados
+  5-9  Consolidando o seu conhecimento
+  5-10  O que aprendemos?
+  5-11  Conclusão
+
+
+
+5-1  Campos autoincremento
+
+
+Transcrição
+
+[0:00] Um campo do tipo inteiro pode ter uma propriedade que nós chamamos de Auto Incremento; o que é o Auto Incremento?
+
+[0:09] É um número sequencial que será incluído dentro dessa coluna de forma automática, na medida em que eu vou dando INSERTS.
+
+[0:20] Veja o exemplo aqui em cima:
+
+[0:22] vamos supor que eu tenho uma tabela com um campo ID e um campo DESCRITOR, e esse campo ID tem essa propriedade de auto incremento.
+
+[0:35] Quando eu faço a inclusão de um novo registro, automaticamente uma SQL vai dar ID igual a um para esse novo registro, porque a tabela, originalmente, estava vazia.
+
+[0:52] Note aqui em cima que no comando Insert eu nem falei sobre o campo ID, nem mencionei ele, então, automaticamente, ele coloca lá o número um.
+
+[1:04] Se eu der um segundo Insert, automaticamente o campo ID será o dois, por quê? Porque a tabela agora tem dois registros. Ou seja:
+
+[1:15] na medida em que eu vou dando Inserts, esse ID vai crescendo, respeitando uma sequência numérica.
+
+[1:26] Se eu apagar o ID um, por exemplo, então sim, na hora de fazer um Delete, um Select, um Update, eu posso me referenciar na cláusula WHERE aquele campo ID.
+
+[1:39] Se eu quiser dar um Delete no ID = 1 ele vai sumir, só vai ficar o código dois, e então se eu der um novo Insert, automaticamente ele continua fazendo um incremento sequencial, criando o código três. ok?
+
+[1:55] Então é assim que funciona o Auto Incremento.
+
+[1:58] A propriedade chama-se Auto_Increment, como eu falei, não é necessário especificar o campo AutoIncrement no comando Insert; não é necessário, mas pode ser especificado, Ok?
+
+[2:17] Só podemos ter apenas um campo AutoIncrement dentro de uma tabela, e nós podemos forçar o valor do AutoIncrement quando, então sim, mencionamos ele no Insert, ou seja:
+
+[2:30] se eu colocar no Insert o valor do ID, eu estou forçando o valor do auto incremento e depois daquele Insert o auto incremento vai usar como o último valor, aquele valor que eu coloquei.
+
+[2:44] Vamos fazer isso na prática e ver como é que funciona.
+
+[2:48] Então eu vou vir aqui no Workbench, vou criar aqui... espere, porque eu já tenho aqui o meu, eu vou apagar aqui o meu exemplo, porque, claro, eu antes estudo sobre a aula que eu vou treinar e eu já estava lá com o exercício pronto, então, na verdade, é assim:
+
+[3:08] não temos ainda aquele Script pronto no Workbench, eu vou criar um Script novo e então faremos o seguinte:
+
+[3:16] criaremos uma tabela nova comum campo AutoIncrement. Então:
+
+[3:21] "Create Table Tab_Identity...", por exemplo, é o nome da tabela, vou colocar, eu vou criar um campo ID que vai ser Inteiro e vai ser AutoIncrement, e eu vou criar um campo Descritor que vai ser um Varchar de vinte.
+
+[3:50] Então vamos criar essa tabela.
+
+[4:00] Na verdade, eu tenho que definir o auto incremento como chave primária.
+
+[4:11] Vamos ver aqui... agora sim, ok?
+
+[4:15] Essa é uma outra característica: o campo auto incremento sempre deve fazer parte da chave primária da tabela, ok?
+
+[4:24] Esse é um outro detalhe que eu não mencionei lá nos Slides, mas o próprio MySQL já me deu uma dica quando ele me mostrou esse erro aqui, olhe, eu já saquei logo que eu tinha esquecido de colocar o ID como chave primária da tabela.
+
+[4:46] Agora vamos lá: "Insert Into Tab_Identity..." não menciono o ID, só vou mencionar o "...(Descritor) Values Cliente 1", por exemplo.
+
+[5:09] Vamos dar esse Insert? Incluiu.
+
+[5:13] Se eu der um "Select * From Tab_Identity", vamos ver como está o conteúdo da nossa tabela. Está lá.
+
+[5:25] Note que ele colocou o número um para o ID automaticamente, eu não mencionei nada do ID dentro do comando Insert. Então vamos lá.
+
+[0:05:37] Eu vou vir aqui e vou inserir o cliente dois e o cliente três; vou rodar esses dois comandos. Rodei.
+
+[5:47] Se eu faço meu Select, tenho lá, olhe, o número um, o número dois, e o número três.
+
+[5:59] Posso também fazer isso aqui: eu posso mencionar o ID, mas eu posso colocar aqui um Null, ok? Olhe:
+
+[6:11] mencionei o ID, mas coloquei como Null. Isso faz o mesmo efeito de eu não mencionar o ID.
+
+[6:19] Ok, esse cara aqui vai ser o cliente quatro; note que rodou, quando eu dou o Select eu tenho lá o cliente quatro criado, está bem?
+
+[6:33] Bem, eu posso vir aqui apagar, por exemplo, o ID igual a dois.
+
+[6:48] Então estou dando um Delete; From, o nome da tabela; o Where ID igual a dois. Vamos lá, rodou.
+
+[6:57] Note que o ID dois não existe mais, só tem o um, o três e o quatro.
+
+[7:03] Agora se eu incluir aqui um cliente cinco, não importa se tem o Null ou não, incluí, se eu vier aqui, note que ele começou a contar do último valor que eu tinha, tudo bem?
+
+[7:24] Se eu apagar o cinco, olhe, eu vou apagar o cinco, que é o último; apaguei o cinco e eu vou inserir agora o cliente seis; qual será o ID que ele vai colocar? Cinco ou seis?
+
+[7:47] Olha a pergunta, vamos ver: coloquei.
+
+[7:53] Note que ele colocou seis, apesar de eu apagar o cinco. Acontece o seguinte: a estrutura Auto Incremento é uma estrutura do banco de dados chamada Sequência, então quando eu inseri o cliente cinco, ele internamente tem essa sequência salva, do um até o cinco, ele sabe que o próximo valor é o seis.
+
+[8:21] Eu apaguei da tabela o cinco, mas não importa, na hora que eu incluir, o campo é auto incremento, ele vai lá na estrutura sequência; quem é o próximo? É o seis.
+
+[8:31] Não importa se o cinco não existe mais, o próximo é o seis.
+
+[8:35] Então ele coloca seis lá no ID quando eu faço o Insert daquela linha.
+
+[8:42] E eu posso também forçar e dar um pulo para essa sequência. Assim:
+
+[8:53] eu, ao invés de Null, vou colocar 100; vou rodar; rodou.
+
+[9:01] Se eu der o meu Select, note que eu tenho agora aqui o cliente cem, e esse cem eu forcei, eu disse:
+
+[9:08] "olha, eu quero que o ID seja cem"; ao fazer isso, a sequência interna foi para cem.
+
+[9:17] Então se eu agora inserir um novo cliente, cliente sete, quando eu dou o meu Select, note que o valor foi para cento e um. Ou seja:
+
+[9:36] a sequência pulou e então vai crescendo de um em um e vai embora. Tudo bem?
+
+[9:43] Bem, gente, era isso que eu queria falar com vocês sobre Campo de Auto Incremento, tudo bem? Valeu, um abraço.
+
+
+
+
+5-2  Valor da sequência
+
+Qual será o valor final da sequência após a execução dos comandos abaixo?
+
+CREATE TABLE TAB_IDENTITY2 (ID INT AUTO_INCREMENT, DESCRITOR VARCHAR(20), PRIMARY KEY(ID));
+
+INSERT INTO TAB_IDENTITY2 (DESCRITOR) VALUES ('CLIENTE1');
+
+INSERT INTO TAB_IDENTITY2 (DESCRITOR) VALUES ('CLIENTE2');
+
+INSERT INTO TAB_IDENTITY2 (DESCRITOR) VALUES ('CLIENTE3');
+
+INSERT INTO TAB_IDENTITY2 (ID, DESCRITOR) VALUES (NULL, 'CLIENTE4');
+
+DELETE FROM TAB_IDENTITY2 WHERE ID = 3;
+
+INSERT INTO TAB_IDENTITY2 (ID, DESCRITOR) VALUES (NULL, 'CLIENTE6');
+
+INSERT INTO TAB_IDENTITY2 (ID, DESCRITOR) VALUES (NULL, 'CLIENTE7');
+
+DELETE FROM TAB_IDENTITY2 WHERE ID = 2;
+
+
+Opinião do instrutor
+
+O valor final da sequência será 6 (Seis).
+
+
+
+
+
+5-3  Definindo padrões para os campos
+
+
+Transcrição
+
+[0:00] Quando a gente cria um campo inteiro do tipo Auto Incremento, é como se eu tivesse determinado um padrão para aquele campo, caso ele não seja mencionado no Insert.
+
+[0:14] Eu posso definir outros padrões para campos, então vamos fazer um exemplo:
+
+[0:22] Eu vou, novamente, criar um Script novo, e eu vou criar uma tabela assim:
+
+[0:29] "Create Table Tab_Padrao", vou criar um ID que vai ser Inteiro do tipo AutoIncrement.
+
+[0:46] Vou criar um campo chamado Descritor que será Varchar, por exemplo, de vinte.
+
+[0:58] Colocarei um campo Endereço Varchar de cem, só que eu vou escrever a palavra Null do lado; vocês vão entender por que eu fiz isso.
+
+[1:11] Vou colocar aqui Cidade Varchar de cinquenta; só que aqui eu farei o seguinte, eu escreverei isso aqui:
+
+[1:21] "Default Rio de Janeiro", e, por exemplo: Data, criação, eu vou colocar como um Timestamp; lembrando que Timestamp é data com hora, minuto e segundo; Default, e aqui eu vou usar uma função que é a Current Timestamp.
+
+[2:04] A função Current Timestamp me dá a data e hora do computador.
+
+[2:11] E então, como eu criei um campo Auto Incremento, Primary Key, ID. Pronto.
+
+[2:29] Antes de rodar este comando, vamos explicar:
+
+[2:33] o campo ID é Auto Incremento, ou seja: terá aquela sequência numérica.
+
+[2:40] O campo Descritor, note que depois da vírgula eu não coloquei nada; significa o seguinte:
+
+[2:45] que esse campo não tem um padrão Default, um padrão para o seu valor; logo, ele será sempre obrigatório ser colocado.
+
+[3:00] O campo endereço tem um padrão Null, significa que se eu não falar nada ele será nulo.
+
+[3:08] Já o campo cidade, ele tem como Default Rio de Janeiro, ou seja: se eu não falar nada durante o Insert, o valor a ser colocado será Rio de Janeiro, enquanto que o campo Data_Criação, o padrão será a hora do computador.
+
+[3:28] Então olhe lá: vou dar um Insert Into Tab Padrao, vou colocar os campos, o ID eu não preciso colocar, não é?
+
+[3:42] Descritor, Endereço, Cidade, Data, Criação; Values, então vamos botar um descritor para ele... Cliente X, o endereço: rua Projetada a, cidade São Paulo, e a data da criação eu vou colocar 2019-01-01.
+
+[4:22] Vou rodar esse Insert... na verdade, eu não rodei o cliente, não é? Vou ter que rodar o cliente antes. Pronto.
+
+[4:34] Agora criei a tabela, agora sim eu posso rodar o Insert. Pronto.
+
+[4:40] Se eu der aqui um "Select * From Tab_Padrao" a gente pode observar o conteúdo da tabela.
+
+[4:53] Tenho lá os valores; o um que é o sequencial, e os valores que foram especificados.
+
+[5:00] Agora, por exemplo, se eu fizer isso aqui: "Insert Into Tab_Padrao (Descritor) Values ('Cliente Y')", note que agora aqui, eu não coloquei nada sobre endereço, sobre cidade e sobre data da criação.
+
+[5:31] Só coloquei sobre o Descritor.
+
+[5:33] Mas endereço, cidade e data da criação, se vocês se lembrarem, aqui em cima, eles possuem padrões, ou seja:
+
+[5:44] caso não seja mencionado no Insert valores para estes três campos, uma SQL vai colocar na tabela os valores padronizados que foram colocados durante a criação da tabela.
+
+[5:58] Vamos ver aqui, eu vou rodar esse Insert, rodou; se eu faço o meu Select, note que o cliente Y tem endereço nulo, a cidade foi Rio de Janeiro, porque eu disse que era o padrão, e a data da criação é a hora e data do computador no momento em que eu estou gravando este vídeo. OK?
+
+[6:24] Então note que ele colocou tudo.
+
+[6:29] O Auto Incremento eu também não mencionei, mas ele já colocou aqui o dois, ele só colocou o descritor do cliente porque é o único campo que não tem um padrão. Tudo bem?
+
+[6:44] Nós usamos muito, quando desenvolvemos sistemas, esse cara aqui, olhe:
+
+[6:52] Timestamp Default Current_Timestamp, por quê?
+
+[6:57] Porque é sempre legal você ter um registro na tabela para te dizer em que momento aquele campo foi alterado ou inserido; é muito legal, às vezes, para fazer manutenção de sistema, precisa saber quais foram os últimos registros colocados na base, então, normalmente, quando o pessoal desenvolve um sistema transacional, todas as tabelas têm um campo lá perdido, porque eu não preciso mencionar ele no Insert, não é?
+
+[7:29] Então tem um campo lá que tem um nome padronizado que é do tipo Timestamp e tem como Default o Current Timestamp, tudo bem?
+
+[7:38] Então é isso, gente. Valeu.
+
+
+
+
+5-4  Comportamento do padrão durante o INSERT
+
+Um campo que possui um padrão definido quando da tabela criada tem qual comportamento durante o INSERT?
+
+Se ele não estiver no comando INSERT, o valor que será incluído será NULO.
+  Alternativa errada! Seria nulo se o comando não possuísse um padrão de valor.
+
+Se ele não estiver no comando INSERT, o valor que será incluído será o padrão definido na criação da tabela.
+  Alternativa Correta! O campo estará preenchido com o padrão caso ele não seja declarado no INSERT.
+
+Mesmo o padrão definido deve estar obrigatoriamente declarado no INSERT.
+  Alternativa errada! Ele não é obrigatório estar no comando INSERT, mesmo que ele tenha um padrão.
+
+
+
+
+5-5  TRIGGER
+
+
+Transcrição
+
+[0:00] Existe uma funcionalidade no MySQL chamada TRIGGER, e é uma funcionalidade inclusive que eu considero muito poderosa e que pouca gente usa no banco de dados.
+
+[0:13] O que seria uma TRIGGER? A TRIGGER seria um, como o próprio nome em inglês diz, é um gatilho. É uma regra que é disparada no momento em que uma tabela sofre uma modificação nos seus dados, ou seja, uma inclusão, alteração ou exclusão.
+
+[0:34] Veja esse exemplo aqui, digamos que eu tenha uma TRIGGER associada a essa tabela da esquerda que escreve o que foi feito em uma outra tabela da direita. Então eu vou incluir um cliente, por exemplo, e ao fazer isso eu posso disparar uma TRIGGER dizendo: "olha, o cliente 1 foi incluído". Depois eu posso fazer um outro INSERT e aí eu escrevo nessa tabela ID LOG aqui outro cliente foi incluído, ou por exemplo, eu apago um cliente, eu escrevo no LOG que um cliente foi excluído e assim por diante. Ou seja, a regra que eu vou especificar para ser executada pela TRIGGER pode ser um ou mais comandos de SQL. E o gatilho eu digo no momento de definir a TRIGGER, eu digo se ela vai ser executada antes ou depois de um INSERT, UPDATE ou DELETE.
+
+[1:45] Vamos fazer um exemplo prático lá no Workbench. Vou criar aqui um script novo e a ideia é a seguinte, eu vou criar uma tabela que vai ter a totalização das vendas, ou seja, na medida em que vendas forem incluídas dentro do sistema vendas sucos, essa tabela de totalização vai ser preenchida.
+
+[2:16] Então, primeiro eu vou criar essa tabela. Então eu vou colocar aqui CREATE TABLE TAB PADRÃO, não, eu vou dar um nome melhor para essa tabela, TAB FATURAMENTO. E eu vou colocar como campos a data da venda que vai ser um DATE e depois eu vou colocar o TOTAL VENDA que vai ser um FLOAT. Então essa tabela bem pequena auxiliar, não tem nem primary key, vou criar ela. Então é claro, se eu vier aqui e der um SELECT nela eu tenho aqui vazia.
+
+[3:19] Bem, nós temos duas tabelas que nos dão o faturamento da empresa, é a tabela de notas que tem os cabeçalhos das notas e a tabela de itens de notas que tem os itens das notas fiscais. Se a gente pegar aqui a tabela de notas, ela está vazia e a de itens notas também está vazia. Vamos incluir um faturamento, ou até dois faturamentos dentro dessas tabelas. Então sempre tem que estar inserindo o cabeçalho da nota e os itens das notas fiscais, então vamos lá.
+
+[4:04] INSERT, INTO, NOTAS, a gente vai colocar aqui, vamos ver os campos, é NÚMERO, DATA da VENDA, CPF, MATRÍCULA, IMPOSTO. VALUES, vamos colocar aqui um número de nota fiscal, começa com 100, data da venda eu vou colocar a data de hoje que está aqui no meu computador. CPF vou escolher um CPF qualquer que tem aqui na tabela de clientes, então deixa eu pegar aqui algum cliente qualquer que tenha cadastro, vou pegar esse cara aqui, o primeiro, então vou colocar aqui esse CPF. Matrícula é o código do vendedor, então deixa eu pegar aqui um código de um vendedor qualquer, o 235 pode ser. E o imposto 0.10.
+
+[5:28] Esse aqui é o cabeçalho da nota. Itens da nota, pode ter até mais de um item, então vai ser INSERT, INTO, ITENS, NOTAS, vamos pegar aqui a tabela de itens notas e ver o que temos aqui. Temos número, temos código que é o código do produto, quantidade e o preço. Então vamos lá, o número sempre tem que ser o mesmo número da nota porque são os itens dessa nota fiscal que eu estou incluindo, código do produto vamos pegar aqui alguns produtos, vamos pegar esses dois códigos aqui que a gente vai criar mais de um item, vamos jogar o código para cá, então o primeiro código vai ser esse. Quantidade eu vou botar 100 unidades e o preço 10, e eu vou copiar essas duas linhas, colar aqui e eu só vou modificar o código do produto. Então essas três linhas aqui correspondem a uma venda, é uma nota fiscal que tem um cabeçalho e dois itens. Eu fiz até muito rápido, vamos ver se vai funcionar. Incluí. Então se eu vier agora aqui eu tenho na minha tabela de notas uma nota fiscal, na tabela de itens notas tem dois itens.
+
+[7:11] Vamos até para poder funcionar direito eu vou incluir aqui uma nota 101, vou manter os mesmos valores, vou executar, aí agora se a gente ver o conteúdo da tabela de notas e de itens notas já temos quatro itens e duas notas. Então nós temos já informações da tabela de notas. Qual seria o SELECT para a gente saber o faturamento e a data do faturamento? Seria esse aqui.
+
+[7:53] Vamos primeiro fazer o JOIN depois a gente volta para colocar os campos. A gente pegaria, na tabela de notas eu vou chamar de A INNER JOIN com a tabela ITENS, NOTAS que eu vou chamar de B ON, qual é o campo em comum das duas? É um número. Só que eu quero ver isso. Só um instantinho, vamos rodar isso aqui para ver se vai. Tudo bem, eu tenho as quatro linhas, o cabeçalho se repetindo aqui e os itens separados. Só que eu preciso fazer isso aqui, eu quero ver a data da venda que é da tabela de notas e um SUM de isso aqui, TOTAL VENDA. Como eu coloquei um SUM GROUP BY, a data da venda. Então se eu rodar esse SELECT, vamos ver aqui onde é que foi o erro.
+
+[9:13] Na verdade quantidade e preço vem da tabela B, que é a tabela de itens. A tabela de notas não tem quantidade nem preço. Vamos rodar de novo, agora sim. Então está ali, o total de vendas foi 4000 unidades financeiras, reais, vamos supor, no dia 8 do 5. Se eu por acaso incluir uma terceira nota fiscal, vou botar aqui 103, incluir, eu rodo o SELECT, foi para 6000. Como eu criei essa tabela aqui, TAB FATURAMENTO, eu posso fazer isso aqui, INSERT INTO TAB FATURAMENTO SELECT, porque o nome do campo data da venda eu coloquei aqui e o campo TOTAL VENDA eu coloquei aqui. Então rodei, se eu der um SELECT asterisco FROM TAB FATURAMENTO tem lá o valor total. Então a tabela TAB FATURAMENTO tem um valor total.
+
+[00:10:43] Agora, imagina o seguinte, isso tudo foi a preparação do problema. Se eu for inserir uma venda nova aqui embaixo, a 104, o que eu preciso fazer é que ao incluir uma nova venda eu devo também rodar esse INSERT. Quer dizer, quando eu incluo uma venda nova eu tenho que atualizar a tabela de faturamento, então são esses quatro comandos aqui que eu tenho que rodar sempre para que quando eu olhar a tabela de faturamento já vá de 6 para 8000. Na verdade, eu até me enganei, eu tenho que fazer isso aqui, DELETE FROM TAB FATURAMENTO para depois inserir de novo que senão ele vai repetir os dias como ele fez isso, isso foi um erro meu.
+
+[00:11:48] Então, novamente, se eu colocar aqui a nota 105, vamos manter o 104 aqui porque depois eu vou reaproveitar todos esses INSERTS aqui. Vamos fazer agora aqui para 105, 105. Então toda vez que eu rodar uma nota, uma asserção de uma nota eu tenho que apagar a tabela de faturamento e inserir de novo fazendo o cálculo da venda total. Foi, e aí se eu ver o conteúdo da tabela de faturamento eu tenho lá, e aí a tabela vai aumentando na medida que eu incluo novas vendas.
+
+[12:32] Pois bem, só que imagina a cada INSERT desse eu vou ter que depois fazer isso. Tem um jeito automático de fazer? A resposta é sim, através de TRIGGER. Ou seja, na minha TRIGGER eu vou dizer no momento que eu inserir dados na minha tabela eu vou executar alguma coisa. Ou seja, no momento que eu inserir dados na tabela de itens que é a tabela realmente final eu vou dizer, olha, toda vez que eu fizer um INSERT execute esses dois comandos aqui. Ou seja, inserir um novo item atualiza automaticamente a tabela de faturamentos, para toda vez que eu veja a tabela de faturamentos eu possa ver o valor total. Então vamos fazer isso.
+
+[13:25] Antes de fazer isso, claro, eu vou fazer a seguinte coisa, eu vou apagar a tabela de notas, de itens e vou apagar a tabela de notas. Então eu deixei tudo vazio, a tabela de notas e de itens agora estão vazias, as duas. Vamos então aqui embaixo, como é que eu crio uma TRIGGER?
+
+[14:05] Primeiro eu vou colocar um comando que eu vou explicar por que eu estou colocando ele. DELIMITER, por exemplo, barra barra. Barra barra poderia ser outro símbolo qualquer, pode usar dólar, per cent, não importa, eu vou usar o barra barra. Já vou explicar o porquê do DELIMITER. Abaixo do DELIMITER eu vou colocar o comando CREATE TRIGGER e aí eu vou colocar o nome de uma TRIGGER, eu vou chamar TG CALCULA FATURAMENTO INSERT. TG de TRIGGER, CALCULA FATURAMENTO que é o que eu vou fazer, os comandos serão disparados pela TRIGGER e INSERT porque isso vai ser executado quando fizer um INSERT na tabela. AFTER, ou seja, eu quero fazer depois de eu incluir o dado, eu não posso fazer antes porque se eu fizer antes de incluir o dado eu não consigo calcular o faturamento, o faturamento só vai poder ser calculado quando o dado estiver inserido na tabela. AFTER INSERT ON o nome da tabela.
+
+[15:25] Lembra que eu falei? Não basta eu apenas colocar uma tabela de notas, eu só vou ter o faturamento quando colocar a tabela de itens, então eu vou botar aqui itens notas. E aí eu coloco a seguinte cláusula, FOR EACH ROW BEGIN. E aqui eu boto um END, só que esse END você pensaria, END é o final do comando, eu boto ponto e vírgula, mas não, eu vou colocar o barra barra, porque eu disse que o delimitador, o DELIMITER é barra barra, então o meu END ele vai terminar com barra barra.
+
+[16:18] Porque que eu coloquei o barra barra e não o ponto e vírgula? Porque dentro do FOR EACH eu vou colocar vários comandos e aqui dentro do FOR EACH entre o FOR EACH ROW BEGIN e END vão ter comandos delimitados aí sim por ponto e vírgula. E se eu não coloco esse comando DELIMITER barra barra o MySQL vai pensar que o meu comando TRIGGER acabou aqui no meio.
+
+[16:45] Quer ver? Deixa eu escrever o comando e aí vocês vão entender melhor. O que que eu vou fazer aqui no meio? Eu vou justamente calcular o faturamento total e gravar ele na tabela de faturamento. Ou seja, eu vou fazer esses comandos, esses dois comandos que teoricamente eu teria que fazê-los toda vez que eu insiro alguém na tabela de itens notas. Então eu vou colar aqui dentro. Então o comando ficou assim, deixa eu aumentar um pouquinho aqui o espaço para a gente poder olhar melhor isso daqui.
+
+[17:29] Bem, aí vamos falar um pouquinho sobre DELIMITER de novo. Tá vendo que aqui o meu comando ele termina com ponto e vírgulas? Eles estão mostrando para o MySQL que aqui dentro FOR EACH ROLL BEGIN END tem dois comandos que são separados por ponto e vírgula. Se eu não uso o DELIMITER o que que vai acontecer? Eu vou ter um erro porque ele vai achar que o CREATE TRIGGER terminou aqui porque ele vai achar o CREATE TRIGGER vai dizer: "poxa, mas eu não posso terminar o CREATE TRIGGER sem um END", porque ele achou esse ponto e vírgula primeiro. Então eu digo para o MySQL: "olha, no caso do CREATE TRIGGER você vai usar como delimitador o barra barra". Então ele vai somente terminar o comando quando ele achar esse barra barra, e ele vai ignorar esse ponto e vírgula. Para ele o ponto e vírgula não é mais final de comando, mas para o comando TRIGGER esse ponto e vírgula é importante porque separa o espaço que eu tenho que executar quando a TRIGGER for disparada. Entendido?
+
+[18:56] Então vamos lá. Vou rodar agora o meu comando DELIMITER aqui, o DELIMITER não, o TRIGGER. Rodou. Agora vamos fazer o seguinte, vamos ver como é que é o valor da tabela. Vamos fazer o seguinte aqui, como é que está a TAB FATURAMENTO? Ela está até com dados lá, vamos apagar ela. Agora sim. Olha lá, está vazia. Eu vou apenas inserir as notas, note que eu não estou aqui fazendo o cálculo do faturamento e inserindo na TAB FATURAMENTO, não estou, só estou inserindo as notas. Inseri as notas. Agora eu vou rodar o SELECT na TAB FATURAMENTO. A TAB FATURAMENTO passou a ter 2000. Foi mágica? Não. Quando eu dei o INSERT ele disparou a TRIGGER e ao disparar a TRIGGER ele apagou a tabela de faturamento e inseriu o valor total.
+
+[20:34] Então toda vez que eu tiver uma inclusão da tabela de itens notas ele vai fazer o cálculo. Agora eu vou inserir a nota 101. Se a gente vier aqui calcular o valor do faturamento foi para 4000. Agora eu vou inserir a nota 103, inseri. Se eu fizer o SELECT do faturamento foi para 6000. Se eu agora inserir a nota 104 e eu rodar o código do faturamento 8000.
+
+[21:26] Então esse foi o exemplo de TRIGGER no caso de a gente colocar um INSERT. Isso aí, gente, valeu.
+
+
+
+
+5-6  BEFORE INSERT
+
+O BEFORE INSERT é responsável por disparar a TRIGGER antes que um evento de inserção ocorra na tabela. Sua sintaxe é demonstrada abaixo:
+
+DELIMITER//
+CREATE TRIGGER nome_do_trigger
+    BEFORE INSERT
+    ON nome_da_tabela FOR EACH ROW
+BEGIN
+-- codigo_a_ser_executado
+END//
+
+Seguindo o exemplo da aula, é demonstrado um SQL que calcula a idade em anos baseado na data atual:
+
+SELECT CPF, IDADE, DATA_NASCIMENTO, timestampdiff(YEAR, DATA_NASCIMENTO, NOW()) AS ANOS FROM
+CLIENTES
+
+Caso seja necessário calcular a idade de um(a) novo(a) cliente, que será inserido(a) na tabela CLIENTES, podemos utilizar o BEFORE INSERT. Antes do registro ir para a tabela, o cálculo da idade será realizado como é demonstrado abaixo:
+
+
+DELIMITER//
+
+CREATE TRIGGER TG_CLIENTES_IDADE_INSERT BEFORE INSERT ON CLIENTES
+
+FOR EACH ROW
+
+BEGIN
+
+SET NEW.IDADE = timestampdiff(YEAR, NEW.DATA_NASCIMENTO, NOW());
+
+END//
+
+Vale ressaltar que o código acima é válido para novos(as) clientes. Em caso de registros já existentes no banco de dados, a idade não se altera. Observe que não utilizamos o UPDATE, mas sim a cláusula SET diretamente. Uma vez que não podemos utilizar um comando UPDATE em uma trigger, na qual a tabela a ser atualizada é a mesma que sofrerá a ação para acionar a trigger (neste caso, a tabela "clientes"), utilizamos o comando SET atualizando apenas os novos registros a serem inseridos na tabela. O operador NEW representa o novo registro que será incluído.
+
+
+
+
+5-7  TRIGGER UPDATE e DELETE
+
+
+Transcrição
+
+[0:00] OK. Agora, e se eu alterar um valor na minha tabela de itens de nota, ou até mesmo excluir um item, ou excluir uma nota... o que vai acontecer com a minha tabela de faturamento?
+
+[0:16] Vamos fazer um teste, aqui, criando um novo script.
+
+[0:20] Então, deixa eu relembrar aqui quais são as notas fiscais nós temos.
+
+[0:29] Então, temos lá a 100, 101, 103, 104 e os itens que eu tenho. Tenho lá os itens daquelas notas todas.
+
+[0:44] E nós vamos fazer aqui uma tabela faturamento. Tab_faturamento que tá lá no valor de 8000.
+
+[0:59] Então, digamos que eu vá aqui e esse item aqui da nota 104, a quantidade é 100, eu vou botar quantidade 200. Isso vai implicar em um aumento de 1000 no meu faturamento, né?
+
+[1:15] Então, olha lá, vamos ver aqui. Update itens_notas, set quantidade vai ser igual a 200. Where número igual a 0104 and código igual a 100 2 3 3 4.
+
+[1:54] Então, vou alterar esse cara aqui. Vamos relembrar: a minha tabela de faturamento, o total tá 8000. Eu vou fazer o update. Fiz o update.
+
+[2:05] Se eu vier no tab_faturamento continuou 8000, mas na verdade, o faturamento total aumentou em 1000 porque eu acrescentei mais 100 unidade a uma venda. E melhor: eu posso dar um delete from essa tabela aqui; usar esse mesmo where aqui.
+
+[2:31] Então, na verdade, agora eu estou diminuindo de 1000, tirei um item. E a tabela de faturamento continua a mesma.
+
+[2:41] É que, na verdade, quando a gente criou o trigger - vamos relembrar o outro script do vídeo anterior - a gente só disse que esse script era para ser executado no after insert. Eu tenho que, na verdade, criar trigger também para o after update e para o after delete. É o que nós vamos fazer agora.
+
+[3:03] Então eu vou pegar o mesmo script que está aqui, vou colar aqui na... vou pegar o mesmo comando, desculpe. Vou colar nesse novo script. Eu só vou colocar aqui um outro nome, vou chamar esse cara aqui de update e aí vai ser after update, e vou criar o faturamento delete after delete.
+
+[3:41] Então vou rodar aqui o update. Deixa eu dar uma olhada para ser se rodou corretamente... ok, rodou corretamente. E agora eu vou criar um trigger para ser executado após a exclusão. Rodou com sucesso.
+
+[4:04] Se eu vier aqui do lado, der um refresh all, eu tenho as três triggers aqui criadas, associadas à tabela de itens de nota.
+
+[4:17] Então agora a gente pode fazer o seguinte. Para a gente poder calcular a coisa correta, eu vou pegar aqui alguns comandos... vou jogar para cá. Vou incluir uma nota 106 aqui. Vou inserir ainda, não estou fazendo update nem delete. Vamos lá?
+
+[4:54] Tab_faturamento, vamos ver... Está lá 9000, ok? Aí eu vou dar um... vou pegar esse comando delete aqui. Vou deletar, só que agora a nota é a 106. Vou deletar um item dessa nova nota que eu coloquei.
+
+[5:23] Rodei. Como eu dei o delete, ele recalculou o faturamento. Então, de 9000 passou a ser 8000. E eu vou pegar o... Vamos pegar aqui os itens_notas que nós temos. E eu vou pegar aqui, por exemplo, update itens_notas set quantidade igual - vou botar 400, vou aumentar bastante a quantidade - where número igual a 0 100 end, o código vou usar esse mesmo aqui.
+
+[6:10] Ou seja, eu vou fazer uma modificação. Vamos ver de novo, o faturamento está em 8000. Vou fazer uma modificação em um item que já existe na tabela. Fiz a modificação, o faturamento agora foi para 11000. Ok?
+
+[6:29] Bem, uma observação: diferente de alguns outros bancos de dados, eu só posso criar uma trigger para fazer ou insert, ou update, ou delete, ok? E aí eu repeti o código. Teoricamente, isso pode ser um procedimento meio... não muito elegante.
+
+[6:55] Imagina que eu tenha que recalcular a forma com que eu calculo o faturamento: eu vou ter que modificar a trigger de insert, de update e de delete para os mesmos comandos.
+
+[7:09] E que, na verdade, quando a gente cria uma trigger, a gente não cria assim do jeito que eu mostrei a vocês. Normalmente a gente pega esses grupos de comandos aqui e nós transformamos eles em uma stored procedure.
+
+[7:25]Uma stored procedure é como se fosse um programa onde eu tenho uma lista de comandos a serem executados. E aí a trigger não chama comando, ele executa stored procedure. Então aí sim eu posso ter a chamada da stored procedure tanto no insert, quanto no update, quanto no delete e aí no código da stored procedure é que eu coloco a regra de cálculo do faturamento. E aí se essa regra mudar, eu mudo somente dentro da stored procedure e aí as minhas triggers, não preciso nem mexer nelas.
+
+[8:01] Bem, eu não fiz dessa maneira porque a gente ainda não aprendeu stored procedures. Stored procedure e funções são temas de um curso a seguir esse curso. Ele é um curso que está dentro da carreira de SQL com MySQL, que seria o próximo treinamento após esse, tá legal?
+
+[8:22] Inclusive, durante o curso de stored procedure, a gente até volta a esse exemplo aqui e faz ele de uma maneira mais elegante.
+
+[8:31] Tá legal? Então tá, gente, é isso aí que queria falar com vocês. Valeu.
+
+
+
+
+5-8  Outras formas de manipulação de dados
+
+
+Transcrição
+
+[0:00] Esse curso se dedicou a mostrar a vocês como é que a gente consegue, pela linguagem SQL, fazer manipulação de dados. Ou seja: incluir, alterar ou excluir dados e tabelas.
+
+[0:14] Mas, na prática, você não vai fazer isso no seu dia a dia usando o Workbench. Claro, eventualmente você pode entrar para fazer algum tipo de manipulação pontual, mas na verdade quem vai fazer essas atualizações são interfaces mais amigáveis que os usuários vão usar através de sistemas. Ou, então, ferramentas que vão fazer processos de transferência ou de integração de dados.
+
+[0:48] Uma outra forma também de manipular as informações das tabelas é através de stored procedures. Como eu já falei no curso, na parte de história do SQL, stored procedures são programas estruturados dentro do ambiente de banco de dados, que foge um pouquinho ao padrão sequel. Porque o padrão sequel não tem uma estrutura de programação.
+
+[1:18] Já nos stored procedures você tem ifs, whiles, fors e assim por diante. Você consegue construir uma estrutura lógica muito bem definida. Então uma maneira de manipular dados é através de stored procedures do MySQL.
+
+[1:37] A outra forma é você utilizar o que a gente chama de ferramentas de integração ou de ETL. ETL vem de uma sigla que chama-se extract, transform e load. Traduzindo do inglês para o português seria extrair, transformar e carregar.
+
+[1:57] Os processos de ETL servem para você transferir dados de um lugar para outro. E isso é muito utilzado, por exemplo, quando eu faço cargas de informações gerenciais, que a gente chama de business intelligence. Ou mesmo integrações onde dois sistemas devem se falar. Acontece uma coisa em um sistema, automaticamente essas ferramentas pegam essa informação e colocam em outro.
+
+[2:22] Quando ele coloca no sistema final, ele vai falar com esse sistema, se esse sistema final, por exemplo, for o MySQL, ele vai falar com ele usando linguagem SQL, usando insert, update ou delete.
+
+[2:39] Mas também a gente pode trabalhar através de programação. A gente pode fazer um programa, seja ele em .NET, Java, PHP ou Phyton, onde eu vou me conectar com o banco através de drivers de conexão, onde eu vou passar as propriedades de acesso, e aí o que eu vou jogar para esses drivers nada mais são do que os meus comandos inserts, updates ou deletes. Só que eu vou montar eles de forma dinâmica através da programação, dependendo da ação que o usuário está fazendo no meu sistema.
+
+[3:18] Bem, aqui na Alura, a gente tem alguns outros treinamentos, e aí eu vou puxar um pouco a sardinha pro meu lado, desculpe, eu vou mostrar alguns treinamentos que eu mesmo ministro que falam um pouquinho desses assuntos. Então a gente vai poder ver outras formas de manipular dados em bancos de dados não diretamente através da interface nativa do banco, no aqui do MySQL do Workbench.
+
+[3:51] Por exemplo: nesse curso aqui VB.NET com Windows Forms Parte 11, trabalhando com bancos de dados, eu dedico aqui uma aula específica para MySQL, ou seja, aqui eu mostro como é que a gente consegue, através de um programa, manipular dados no MySQL. Claro que o curso é de VB.NET, mas a forma com que a gente faz isso no VB.NET é muito parecida com o que a gente faz no C#, no Java, ou em outras linguagens.
+
+[4:32] Um outro curso interessante é o curso de Pentaho Data Integration. Pentaho Data Integration é uma daquelas ferramentas de ETL que eu falei para vocês que pega dados de um lugar e traz para outros lugares. Inclusive, nesse treinamento, a base de dados que é a gente manipula é também o MySQL.
+
+[4:51]Então esse curso aqui é um exemplo muito legal, mostrando como é que uma ferramenta de integração consegue falar com o MySQL. E aí vocês vão ver que, nesse treinamento, você acaba usando insert, update, delete, select, para fazer esses trabalhos.
+
+[5:10] E um terceiro curso que eu aconselho é o curso de ETL e Integration Services. Integration Services é uma ferramenta da Microsoft que faz a mesma coisa que o Pentaho Data Integration.
+
+[5:23] Apesar de ser Microsoft, ela está, digamos assim, aberta para qualquer outro banco. Então eu posso pegar dados do MySQL e colocar em outro MySQL utilzando o Integration Services. Tá legal?
+
+[5:41] Bem, então nesse vídeo eu só queria ilustrar a vocês na prática como é que a gente trabalha com tudo aquilo que a gente aprendeu nesse treinamento. Tá lega? Então valeu, gente, um abraço.
+
+
+
+
+5-9  Consolidando o seu conhecimento
+
+Chegou a hora de você seguir todos os passos realizados por mim durante esta aula. Caso já tenha feito, excelente. Se ainda não, é importante que você execute o que foi visto nos vídeos para poder continuar com os próximos cursos que tenham este como pré-requisito.
+
+1) O campo do tipo auto incremento cria uma sequência numérica de números inteiros em um campo. Para definir este campo precisamos configurá-lo na criação da tabela. Logo digite o comando abaixo e execute:
+
+CREATE TABLE TAB_IDENTITY (ID INT AUTO_INCREMENT, DESCRITOR VARCHAR(20), PRIMARY KEY(ID));
+
+2) Para inserir um registro não precisamos nos referenciar ao campo auto incremento no comando INSERT. Digite e execute:
+
+INSERT INTO TAB_IDENTITY (DESCRITOR) VALUES ('CLIENTE1');
+
+3) Verifique o conteúdo da tabela. Digite e execute:
+
+SELECT * FROM TAB_IDENTITY;
+
+1.png
+
+4) Abaixo vemos diversas formas de inclusão de novos registros. Digite e execute:
+
+INSERT INTO TAB_IDENTITY (DESCRITOR) VALUES ('CLIENTE2');
+
+INSERT INTO TAB_IDENTITY (DESCRITOR) VALUES ('CLIENTE3');
+
+INSERT INTO TAB_IDENTITY (ID, DESCRITOR) VALUES (NULL, 'CLIENTE4');
+
+5) Verifique o conteúdo da tabela. Digite e execute:
+
+SELECT * FROM TAB_IDENTITY;
+
+2.png
+
+6) Ao apagar um registro não interrompemos a sequência do contador. veja também que, se quisermos manter o campo auto incremento no comando INSERT temos que referencia-lo com null para não interromper a sequência. Digite e execute:
+
+DELETE FROM TAB_IDENTITY WHERE ID = 2;
+
+INSERT INTO TAB_IDENTITY (ID, DESCRITOR) VALUES (NULL, 'CLIENTE5');
+
+SELECT * FROM TAB_IDENTITY;
+
+3.png
+
+7) Caso a gente force um valor para o campo auto incremento a sequência será re- atualizada. Digite e execute:
+
+INSERT INTO TAB_IDENTITY (ID, DESCRITOR) VALUES (100, 'CLIENTE5');
+
+DELETE FROM TAB_IDENTITY WHERE ID = 5;
+
+INSERT INTO TAB_IDENTITY (ID, DESCRITOR) VALUES (NULL, 'CLIENTE6');
+
+SELECT * FROM TAB_IDENTITY;
+
+4.png
+
+8) Podemos definir padrões para os campos. Com isto um campo pode ter um valor default caso não seja referenciado no comando INSERT. Digite e execute:
+
+CREATE TABLE TAB_PADRAO
+
+(ID INT AUTO_INCREMENT,
+
+DESCRITOR VARCHAR(20),
+
+ENDERECO VARCHAR(100) NULL,
+
+CIDADE VARCHAR(50) DEFAULT 'Rio de Janeiro',
+
+DATA_CRIACAO TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
+
+PRIMARY KEY(ID));
+
+9) Padrões foram criados para o campo ENDERECO, CIDADE e DATA_CRIACAO. Digite e execute:
+
+INSERT INTO TAB_PADRAO (DESCRITOR, ENDERECO, CIDADE, DATA_CRIACAO)
+
+VALUES ('CLIENTE X', 'RUA PROJETADA A', 'SÃO PAULO', '2019-01-01');
+
+SELECT * FROM TAB_PADRAO;
+
+5.png
+
+Aqui o comando INSERT funciona normalmente porque todos os campos foram referenciados.
+
+10) Vamos repetir o comando INSERT, mas agora usando somente os campos que não possuem padrões. Digite e execute:
+
+INSERT INTO TAB_PADRAO (DESCRITOR) VALUES ('CLIENTE Y');
+
+SELECT * FROM TAB_PADRAO;
+
+6.png
+
+Note que os campos que não foram referenciados no comando INSERT os seus valores padrões foram incluídos na tabela.
+
+11) Vamos criar uma tabela auxiliar que irá sempre ter o faturamento consolidado por data da venda. Execute o comando:
+
+CREATE TABLE TAB_FATURAMENTO
+
+(DATA_VENDA DATE NULL, TOTAL_VENDA FLOAT);
+
+12) O objetivo é que, a cada inclusão de dados na tabela de NOTAS e ITENS_NOTAS o valor da TAB_FATURAMENTO seja atualizado. Para isso digite e execute:
+
+INSERT INTO NOTAS (NUMERO, DATA_VENDA, CPF, MATRICULA, IMPOSTO)
+
+VALUES ('0100', '2019-05-08', '1471156710' , '235', 0.10);
+
+INSERT INTO ITENS_NOTAS (NUMERO, CODIGO, QUANTIDADE, PRECO)
+
+VALUES ('0100', '1000889', 100, 10);
+
+INSERT INTO ITENS_NOTAS (NUMERO, CODIGO, QUANTIDADE, PRECO)
+
+VALUES ('0100', '1002334', 100, 10);
+
+
+INSERT INTO NOTAS (NUMERO, DATA_VENDA, CPF, MATRICULA, IMPOSTO)
+
+VALUES ('0101', '2019-05-08', '1471156710' , '235', 0.10);
+
+INSERT INTO ITENS_NOTAS (NUMERO, CODIGO, QUANTIDADE, PRECO)
+
+VALUES ('0101', '1000889', 100, 10);
+
+INSERT INTO ITENS_NOTAS (NUMERO, CODIGO, QUANTIDADE, PRECO)
+
+VALUES ('0101', '1002334', 100, 10);
+
+
+INSERT INTO NOTAS (NUMERO, DATA_VENDA, CPF, MATRICULA, IMPOSTO)
+
+VALUES ('0103', '2019-05-08', '1471156710' , '235', 0.10);
+
+INSERT INTO ITENS_NOTAS (NUMERO, CODIGO, QUANTIDADE, PRECO)
+
+VALUES ('0103', '1000889', 100, 10);
+
+INSERT INTO ITENS_NOTAS (NUMERO, CODIGO, QUANTIDADE, PRECO)
+
+VALUES ('0103', '1002334', 100, 10);
+
+13) Para atualizarmos a tabela TAB_FATURAMENTO temos que executar o comando abaixo. Para isso digite e execute:
+
+INSERT INTO TAB_FATURAMENTO
+
+SELECT A.DATA_VENDA, SUM(B.QUANTIDADE * B.PRECO) AS TOTAL_VENDA FROM
+
+NOTAS A INNER JOIN ITENS_NOTAS B
+
+ON A.NUMERO = B.NUMERO
+
+GROUP BY A.DATA_VENDA;
+
+
+SELECT * FROM TAB_FATURAMENTO;
+
+7.png
+
+14) Se queremos manter a tabela TAB_FATURAMENTO atualizada temos que repetir sempre o cálculo atual do valor total das vendas sempre que novos registros forem incluídos. Para isso digite e execute:
+
+INSERT INTO NOTAS (NUMERO, DATA_VENDA, CPF, MATRICULA, IMPOSTO)
+
+VALUES ('0104', '2019-05-08', '1471156710' , '235', 0.10);
+
+INSERT INTO ITENS_NOTAS (NUMERO, CODIGO, QUANTIDADE, PRECO)
+
+VALUES ('0104', '1000889', 100, 10);
+
+INSERT INTO ITENS_NOTAS (NUMERO, CODIGO, QUANTIDADE, PRECO)
+
+VALUES ('0104', '1002334', 100, 10);
+
+
+INSERT INTO NOTAS (NUMERO, DATA_VENDA, CPF, MATRICULA, IMPOSTO)
+
+VALUES ('0105', '2019-05-08', '1471156710' , '235', 0.10);
+
+INSERT INTO ITENS_NOTAS (NUMERO, CODIGO, QUANTIDADE, PRECO)
+
+VALUES ('0105', '1000889', 100, 10);
+
+INSERT INTO ITENS_NOTAS (NUMERO, CODIGO, QUANTIDADE, PRECO)
+
+VALUES ('0105', '1002334', 100, 10);
+
+
+DELETE FROM TAB_FATURAMENTO;
+
+
+INSERT INTO TAB_FATURAMENTO
+
+SELECT A.DATA_VENDA, SUM(B.QUANTIDADE * B.PRECO) AS TOTAL_VENDA FROM
+
+NOTAS A INNER JOIN ITENS_NOTAS B
+
+ON A.NUMERO = B.NUMERO
+
+GROUP BY A.DATA_VENDA;
+
+
+SELECT * FROM TAB_FATURAMENTO;
+
+8.png
+
+15) Podemos criar uma TRIGGER para que a tabela TAB_FATURAMENTO seja recalculada sempre que um novo registro for incluído na tabela de ITENS_NOTAS. Para isso digite e execute:
+
+DELIMITER //
+
+CREATE TRIGGER TG_CALCULA_FATURAMENTO_INSERT AFTER INSERT ON ITENS_NOTAS
+FOR EACH ROW BEGIN
+
+  DELETE FROM TAB_FATURAMENTO;
+
+  INSERT INTO TAB_FATURAMENTO
+
+  SELECT A.DATA_VENDA, SUM(B.QUANTIDADE * B.PRECO) AS TOTAL_VENDA FROM
+  NOTAS A INNER JOIN ITENS_NOTAS B
+  ON A.NUMERO = B.NUMERO
+  GROUP BY A.DATA_VENDA;
+END//
+
+16) Ao inserir novos registros não é mais preciso executar o cálculo da tabela consolidada. Para isso digite e execute:
+
+INSERT INTO NOTAS (NUMERO, DATA_VENDA, CPF, MATRICULA, IMPOSTO)
+VALUES ('0106', '2019-05-08', '1471156710' , '235', 0.10);
+
+INSERT INTO ITENS_NOTAS (NUMERO, CODIGO, QUANTIDADE, PRECO)
+VALUES ('0106', '1000889', 100, 10);
+
+INSERT INTO ITENS_NOTAS (NUMERO, CODIGO, QUANTIDADE, PRECO)
+VALUES ('0106', '1002334', 100, 10);
+
+SELECT * FROM TAB_FATURAMENTO;
+
+9.png
+
+17) Porém foi criado uma TRIGGER somente para inclusão de registros na tabela. Vamos incluir TRIGGERS para a atualização e exclusão. Para isso digite e execute:
+
+DELIMITER //
+
+CREATE TRIGGER TG_CALCULA_FATURAMENTO_UPDATE AFTER UPDATE ON ITENS_NOTAS
+FOR EACH ROW BEGIN
+  DELETE FROM TAB_FATURAMENTO;
+
+INSERT INTO TAB_FATURAMENTO
+  SELECT A.DATA_VENDA, SUM(B.QUANTIDADE * B.PRECO) AS TOTAL_VENDA FROM
+  NOTAS A INNER JOIN ITENS_NOTAS B
+  ON A.NUMERO = B.NUMERO
+  GROUP BY A.DATA_VENDA;
+END//
+DELIMITER //
+
+CREATE TRIGGER TG_CALCULA_FATURAMENTO_DELETE AFTER DELETE ON ITENS_NOTAS
+FOR EACH ROW BEGIN
+  DELETE FROM TAB_FATURAMENTO;
+
+INSERT INTO TAB_FATURAMENTO
+  SELECT A.DATA_VENDA, SUM(B.QUANTIDADE * B.PRECO) AS TOTAL_VENDA FROM
+  NOTAS A INNER JOIN ITENS_NOTAS B
+  ON A.NUMERO = B.NUMERO
+  GROUP BY A.DATA_VENDA;
+END//
+
+18) Vamos incluir novos registros e verificar a tabela consolidada. Para isso digite e execute:
+
+INSERT INTO NOTAS (NUMERO, DATA_VENDA, CPF, MATRICULA, IMPOSTO)
+VALUES ('0107', '2019-05-08', '1471156710' , '235', 0.10);
+
+INSERT INTO ITENS_NOTAS (NUMERO, CODIGO, QUANTIDADE, PRECO)
+VALUES ('0107', '1000889', 100, 10);
+
+INSERT INTO ITENS_NOTAS (NUMERO, CODIGO, QUANTIDADE, PRECO)
+VALUES ('0107', '1002334', 100, 10);
+SELECT * FROM TAB_FATURAMENTO;
+
+19) E alterar/excluir alguns registros. Para isso digite e execute:
+
+DELETE FROM ITENS_NOTAS WHERE NUMERO = '0107' AND CODIGO = '1002334';
+UPDATE ITENS_NOTAS SET QUANTIDADE = 400
+WHERE NUMERO = '0100' AND CODIGO = '1002334';
+SELECT * FROM TAB_FATURAMENTO;
+
+10.png
+Opinião do instrutor
+
+Continue com os seus estudos, e se houver dúvidas, não hesite em recorrer ao nosso fórum!
+
+
+
+5-10  O que aprendemos?
+
+  Vimos como funciona campos de auto incremento;
+  
+  Aprendemos a determinar valores padrões para os campos;
+  
+  Foi mostrado como trabalhar com TRIGGERs para executar comandos no momento da inclusão, alteração e exclusão de registros.
+
+
+5-11  Conclusão
+
+
+Transcrição
+
+[0:00] Oi, gente, tudo bem? Meus parabéns. Se você chegou até aqui, você encerrou o curso de manipulação de dados no MySQL.
+
+[0:09] A gente, nesse treinamento, deu ênfase ao gerenciamento dos dados que estão no banco de dados.
+
+[0:17] Esse já é o nosso terceiro treinamento da carreira de MySQL. No primeiro, a gente fez uma introdução do banco e uma introdução da linguagem SQL pra quem nunca viu esse tipo de linguagem. No segundo treinamento a gente deu ênfase às consultas e, nesse treinamento, a gente deu ênfase à manipulação de dados.
+
+[0:35] E a gente começou claro o treinamento, revisando um pouco sobre as entidades existentes em um banco de dados. Quando a gente vai manipular as informações, é preciso que a gente saiba quem são as unidades envolvidas.
+
+[0:51] E aí a gente aprendeu, também, como transformar um problema real de uma empresa em um banco de dados. É a parte de análise de sistemas. É a parte onde um analista entende o problema da empresa e desenha os bancos de dados para suportar aquele problema.
+
+[1:09] Bem, com o nosso banco de dados projetado, o que a gente fez? A gente foi pro MySQL e começou a criar esse banco. Então nós criamos o banco vazio e aprendemos a criar as tabelas. Sejam elas com as chaves primárias ou com as chaves estrangeiras.
+
+[1:26] E depois de ter terminado a construção do banco, a gente viu como que MySQL Workbench, a gente consegue ver o diagrama do banco de dados de maneira gráfica. Esse diagrama é muito importante não somente, caso eu queira fazer consultas ao banco, mas também quando eu quero gerenciar os dados do banco.
+
+[1:50] Ok. Com o banco pronto, a gente aprendeu a parte de inclusão de dados. Como é que eu incluo dados dentro das tabelas. Seja através de comandos simples, ou um comando em lote.
+
+[2:07] Também, aprendemos como que eu consigo ler informações de um outro banco e usar essas informações para incluir dados. A gente aprendeu também como que, pelo SQL Workbench, eu consigo ler dados de arquivos externos.
+
+[2:28] Ok, depois que a gente aprendeu a incluir dados, a gente foi pra parte de alterar os dados já existentes. E da mesma maneira, a gente aprendeu a alterar o dado pontualmente, ou alterar ele em lote através de uma condição, ou através de uma consulta. Ou seja, alterar dados baseado em uma consulta.
+
+[2:50] Bem, quem aprende a incluir e a alterar tem que aprender também a excluir. Foi então o que a gente aprendeu nesse treinamento. A gente aprendeu a excluir dados também pontualmente, ou em conjuntos de dados, ou até mesmo excluir dados completos de uma tabela.
+
+[3:07] A gente depois passou a aprender o que que é uma transação no MySQL e como é que, com comandos commit e rollback, eu consigo confirmar a manipulação de dados feita, ou voltar atrás e ter o meu banco antes do início da transação. Às vezes eu posso fazer algum tipo de manipulação e me arrepender e querer voltar status inicial.
+
+[3:35] A gente viu também o que que é um campo auto incremento, ele é muito usado normalmente. E vimos como que é o comportamento do campo auto incremento quando a gente insere ou altera dados de uma tabela.
+
+[3:48] E, finalmente, terminamos o treinamento falando sobre triggers. Que são gatilhos que disparam uma série de comandos a serem feitos no banco de dados quando alguma coisa é atualizada nele.
+
+[4:02] A gente viu nesse treinamento alguns exemplos de triggers. Para fazer esse tipo de mecanismo de disparar alguns comandos quando alguma coisa é alterada no banco. Tá legal?
+
+[4:15] Bem, claro que existe ainda muito mais coisa a ser vista em termos de manipulação de dados MySQL, mas eu acho que esse treinamento foi um pontapé inicial muito importante pra você se aprofundar mais nesse tipo de coisa. Tá legal?
+
+[4:31] Bem, gente, muito obrigado pela atenção. Um abraço e até o próximo curso.

@@ -1,0 +1,816 @@
+https://cursos.alura.com.br/course/mysql-procedures
+
+Data Science
+Cursos de SQL e Banco de Dados
+
+Curso de
+Procedures SQL: executando código no MySQL
+
+
+Aula 6. Problema prático | 0 / 12 | 78min
+
+  6-1  Criando números aleatórios
+  6-2  Tabela com números aleatórios
+  6-3  Obtendo cliente aleatorio
+  6-4  Fazendo função para produto aleatório
+  6-5  Fazendo função para vendedor aleatório
+  6-6  Incluindo a venda
+  6-7  Resolvendo o problema de PK
+  6-8  Melhorando Triggers
+  6-9  Aplicando Stored Procedures a Triggers
+  6-10  Conclusão
+  6-11  Consolidando o seu conhecimento
+  6-12  O que aprendemos?
+
+
+6-1  Criando números aleatórios
+
+
+Transcrição
+
+[00:00] Agora eu vou criar uma aplicação prática usando todo o conhecimento que nós tivemos nesse tratamento. E essa aplicação, ela vai criar uma venda fictícia na base de dados da empresa de suco de frutas. Como é que vai funcionar essa stored procedure? Eu vou passar para ela alguns parâmetros. Basicamente, uma data, que é a data onde essa venda fictícia vai acontecer.
+
+[00:28] O número máximo de itens da nota fiscal. Lembra? Uma nota fiscal é formada por um cabeçalho e vários itens. Então, quantos itens máximos essa nota vai poder ter? E para cada item comprado, qual é o número máximo de quantidade de produtos comprados? Com esses três parâmetros, a stored procedures vai na tabela de clientes e vai buscar um CPF, de forma aleatória.
+
+[00:57] Vai buscar uma matrícula, de forma aleatória. E com a matrícula, o CPF e a data vai formar um cabeçalho da nota fiscal. Depois, ele vai achar um número de itens dessa nota, também de forma aleatória, entre 1 e o número máximo de itens. E ,dependendo do número de itens, ele vai buscar códigos de produto, os preços de lista desses códigos de produtos.
+
+[01:24] E para cada item desse vai pegar uma quantidade aleatória baseado no número máximo de quantidades que eu posso estar comprando nessa venda fictícia. E aí, ele vai formar uma nota fiscal com um cabeçalho e vários itens. E aí, colocar isso nas tabelas. Então, é isso que a nossa stored procedures vai fazer. Como deve ter sido meio óbvio, muitas das coisas aqui, nós vamos pegar de forma aleatória.
+
+[01:55] Eu vou pegar uns clientes de forma aleatória, uma matrícula. O número máximo de itens será aleatório. A quantidade de cada item também ser aleatório. Bem como os produtos. Enfim. Então, a primeira coisa que eu tenho que fazer é criar uma função que me traga um número aleatório. Como é que eu faço isso no MySQL? Vamos, então, lá para o "MySQL WORKBENCH".
+
+[02:21] Pronto. Estou aqui no "WORKBENCH". E aí, eu vou criar aqui um novo script de "SQL". E aí, para começar, eu vou mostrar uma função interna que existe no MySQL que é a função "RAND". Ela se escreve assim. Ela não têm parâmetros. Se eu executo a função "RAND", eu acho um número aleatório entre 0 e 1. No caso aqui, eu rodei e achou o número 0.9642.
+
+[02:57] Se você rodou a função "RAND" aí junto comigo, com certeza o número que você achou vai ser diferente porque é um número aleatório. Vou rodar de novo. 0.7000. 0.6704. E assim por diante. Ou seja, a cada vez que eu rodar esse select, ele vai me trazer um número aleatório diferente entre 0 e 1. Só que números aleatórios entre 0 e 1 não me servem. Por que não me servem?
+
+[03:29] Deixa eu voltar aqui para a apresentação. Como é que eu vou buscar um cliente aleatório, ou um vendedor aleatório da tabela de clientes ou de vendedores. Ou até mesmo um produto aleatório. Eu vou fazer a seguinte coisa. Digamos que eu tenha 50 clientes na tabela de clientes. Eu vou. Eu posso fazer um select para saber o número de clientes que eu tenho na tabela. Eu tenho 50, por exemplo.
+
+[04:00] Então, eu vou buscar um número aleatório entre 1 e 50. Digamos que dê 27. Eu vou pegar esse número 27, vou percorrer a tabela e buscar o vigésimo sétimo elemento da tabela. Ah, o número aleatório deu 12. Então, o cliente que eu vou pegar é o cliente que está na 12ª posição na tabela e assim por diante. Então, o que me interessa não são números aleatórios entre 0 e 1, mas números aleatórios entre um valor mínimo e um valor máximo.
+
+[04:39] Por exemplo, digamos que eu vou especificar que o número máximo que eu posso comprar de quantidades dos produtos sejam 100 garrafas ou 100 latas. 100 unidades do meu produto das empresa de suco de frutas. Mas eu posso especificar, também, um valor mínimo. Olha, o menor valor de venda é 5. Então, eu vou precisar, quando for criar aqui, achar uma quantidade aleatória para um determinado item, um número aleatório entre 5 e 20, entre 5 e 100.
+
+[05:13] Ou seja, eu vou ter que estar buscando números aleatórios sempre entre o número mínimo e o número máximo. Visto que eu preciso disso para continuar, como é que eu faço isso? Eu vou mostrar uma mágica para vocês. Não é o objetivo deste treinamento dar aulas de matemática, mas basicamente o seguinte, se eu quiser pegar esse número de 0 a 1 e subir para uma base, ou seja, pegar ele e transcender para um número que seja, por exemplo,, 10 12, 15 vezes.
+
+[05:54] Porque, por exemplo, se eu pego um número aleatório entre 0 e 1. Eu quero pegar esse cara e fazer uma regra de três para buscar qual seria o número correspondente se fosse entre 5 e 200, por exemplo. Eu faço isso, eu pego o número aleatório que eu tenho. Eu multiplico pelo número máximo, menos o número mínimo, mais um. E esse valor todo, toda essa expressão aqui, eu faço, eu somo o número mínimo.
+
+[06:34] Então, é essa que é a fórmula matemática para pegar um número aleatório, que está entre 0 e 1, e passar a olhar ele entre um número mínimo e o número máximo. Vamos ver se isso vai funcionar. Vamos supor aqui que o meu número mínimo é 15, e o meu número máximo é 300. Vamos ver se vai funcionar. Então, eu vou pegar agora aqui essa expressão. E vou colocar aqui do lado só que, aleatória não existe. O que existe é a função randômica.
+
+[07:19] E o meu máximo 300 menos o mínimo que é 15 + 1 + o mínimo que é 15. Então, vamos rodar agora esse select. 283.0431 e assim por diante. É um número aleatório entre 15 e 300. Vamos rodar de novo? 262.159. 284. 69. 52. Consegui, então, pegar números aleatórios. Só que, ainda não está legal porque como eu vou buscar o cliente para uma posição, ou seja, eu quero pegar o cliente número 25 ou o cliente número 32, números decimais, como resultado da minha função aleatória, não vão me servir.
+
+[08:20] Eu preciso pegar somente a parte inteira do número. Então, eu aplicar a função "FLOOR". Que é a função matemática do MySQL que pega só a parte inteira de um número decimal. Então, vamos rodar agora. 36. 298. 225. 213 e assim por diante. Então, já tenho aqui o meu select que me traz um número aleatório, entre um número mínimo e o número máximo.
+
+[09:00] Visto isso, vamos agora construir a nossa funçãos para fazer isso de forma automática passando como parâmetro para função do MySQL o número mínimo e o número máximo. Então eu vou clicar aqui com o botão direito do mouse sobre "FUNCTIONS". Vou criar uma nova função. Essa função, eu vou chamar ela de "F_NÚMERO_ALEATÓRIO". E vou passar como parâmetro, o quê? O número mínimo e o número máximo.
+
+[09:37] O retorno dessa função vai ser um número inteiro, porque vai ser um número... Eu passo o mínimo e máximo como inteiros e eu vou ter como retorno o número inteiro. Vou criar aqui uma variável que eu vou chamar de "VRETORNO, que vai ser inteira. E essa variável vai ser a variável que vai ser o retorno da função. Então, aqui, eu vou substituir esse número um, que meio que um padrão que ele mostra aqui para mim quando eu vou editar função pelo "VRETORNO".
+
+[10:11] Agora aqui no meio, eu vou associar "VRETONO" àquele select que eu mostrei para vocês, que está aqui no script. Então, eu vou pegar esse select aqui. Vou copiar. Vou colar aqui. Esse valor vai ser atribuído "INTO" à variável "VRETORNO". E aqui, eu vou substituir. Onde está o 300, é o "MAX". Onde está o 15, é o mínimo. E aqui também é o mínimo.
+
+[10:38] Então, ficou assim. Eu passo o mínimo e o máximo. Declaro uma variável retorno, porque eu estou dizendo que a função vai retornar ao inteiro. Então, essa variável tem que ser um inteiro. Aplico. Busco um número aleatório entre o valor mínimo e máximo, pela fórmula matemática. Atribuo esse valor à variável "VRETORNO". E eu termino a função jogando para fora o valor calculado.
+
+[11:13] Vou dar um "APPLY". "APPLY" de novo. E "FINISH". Pronto. Está aqui a minha função criada. Voltando, então, aqui para o meu script. Se eu botar aqui "SELECT F NÚMERO_ALEATÓRIO". Se eu colocar "15,300", eu vou estar buscando um número aleatório entre 15 e 300. Vamos rodar? 18. 115. 220. 170. 176. 68 e assim por diante. Se eu quero um número aleatório entre 1 e 10, olha lá: 7, 6, 9, 5, 9, 8 e assim por diante.
+
+[12:08] Então, o nosso primeiro passo para a gente construir a nossa aplicação, que crie uma venda fictícia, foi criar uma função que gere para mim um número aleatório entre o número mínimo e o máximo. E ela está criada aqui.
+
+
+
+
+6-2  Tabela com números aleatórios
+
+
+Crie uma tabela chamada TABELA_ALEATORIOS. O comando para cria-la é mostrado abaixo:
+
+CREATE TABLE TABELA_ALEATORIOS(NUMERO INT);
+
+Faça uma SP (Chame-a de Tabela_Numeros) que use um loop para gravar nesta tabela 100 números aleatórios entre 0 e 1000. Depois liste numa consulta esta tabela.
+
+(Use a função f_numero_aleatorio criado no vídeo desta aula).
+
+
+Opinião do instrutor
+
+CREATE PROCEDURE `Tabela_Numeros`()
+BEGIN
+DECLARE CONTADOR INT;
+DECLARE CONTMAXIMO INT;
+SET CONTADOR = 1;
+SET CONTMAXIMO = 100;
+DELETE FROM TABELA_ALEATORIOS;
+WHILE CONTADOR <= CONTMAXIMO
+DO
+INSERT INTO TABELA_ALEATORIOS (NUMERO) VALUES (f_numero_aleatorio(0,1000));
+SET CONTADOR = CONTADOR + 1;
+END WHILE;
+SELECT * FROM TABELA_ALEATORIOS;
+END
+
+
+
+6-3  Obtendo cliente aleatorio
+
+
+Transcrição
+
+[00:00] Vamos fazer agora a função que pega o cliente de forma aleatória. Então, vamos logo criar aqui a função. Botão direito do mouse sobre "FUNCTIONS". Eu vou criar uma função chamada "F_CLIENTE_ALEATÓRIO". Eu não preciso passar nenhum parâmetro porque eu só vou buscar um cliente aleatório. E a gente sabe que o CPF, vamos olhar aqui na tabela de clientes. O CPF é um "varchar (11). E é esse cara que tem que retornar a função.
+
+[00:41] Então, o "RETURNS" aqui vai ser um "varchar (11)". E eu vou declarar já a variável, aqui, retorno "varchar (11)", que vai ser retornada pela função. Eu preciso, então, saber quantos clientes eu tenho na tabela de clientes. Lembra? Eu vou usar um número aleatório entre 1 e o número máximo de clientes da tabela de clientes. Então, vou criar aqui "DECLARE NÚMERO_MÁXIMO_TABELA". Vai ser um inteiro.
+
+[01:31] Porque é um número que eu quero buscar. O número de linhas da tabela é um número inteiro. Eu não tenho um ponto cinco linhas, um ponto sete linhas. Ou é cinco, ou é 10, ou é 20 e assim por diante. Como é que eu obtenho o número de linhas de uma tabela? Basicamente, eu uso o "COUNT" usando essa fórmula de grupamento da tabela. Então, se eu fizer isso "SELECT COUNT FROM TABELA_DE_CLIENTES".
+
+[02:06] Eu tenho aqui. Eu tenho 15 linhas na tabela de clientes. Então, eu vou até aproveitar esse select que está aqui. Vou jogar aqui. Só que eu vou aplicar aqui o "INTO NUM_MAS_TABELA". Então, já tenho na variável "NUM_MAX_TABELA", o número máximo de clientes. Quantos clientes eu tenho na tabela. Agora, eu preciso pegar um número aleatório entre 1 e esse número.
+
+[02:47] Então, eu vou "DECLARE_NUM_ALEATÓRIO_INTEIRO". E aí, eu vou. Como é que eu vou lhe referenciar, como é que eu vou obter esse número? Usando aquela outra função que eu criei no vídeo anterior. Então, eu vou botar "SET NUM_ALEATÓRIO = F_NUMÉRO_ALEATÓRIO" entre 1 e o número máximo que eu tenho na tabela. Nesse ponto, eu tenho aqui um número entre 1 e o número máximo de clientes.
+
+[03:32] Eu agora tenho que buscar, da tabela de clientes, esse cara nessa posição. Como é que eu faço isso? Se eu tenho 15 clientes, e o número aleatório deu 12, como é que eu pego o décimo segundo cliente da tabela de clientes? Deixa eu mostrar para vocês uma coisa que nós vimos já no curso de consultas avançadas de MySQL. Nós vamos fazer uma revisão dessa cláusula, que a gente pode usar no comando select, que é a "LIMIT".
+
+[04:05] Como é que ela funciona dentro do MySQL. Digamos que eu faça um "SELECT FROM TABELA LIMIT 5". Eu vou até repetir esse comando aqui. Por exemplo, eu faço isso: "SELECT* FROM TABELA_DE_CLIENTES LIMIT 5". Ao fazer isso, eu pego cinco clientes da tabela de clientes. O primeiro cliente é 147. 192. 260, ele vai até o 492. Se eu rodo todos, note que o quinto cliente está aqui. Só que aí, o "SELECT*" traz todo mundo.
+
+[04:57] Se eu coloco "LIMIT", ele traz só os cinco primeiros. Levando em consideração a ordem com que esses clientes foram gravados na tabela. A ordem natural da tabela. Voltando, então, aqui. Agora, se eu coloco "5,1" lá no comando "LIMIT". Ele vai pegar os cinco primeiros clientes e, como é igual a 1, ele vai pegar o próximo abaixo do quinto cliente. Então, ele vai pegar daqui até aqui, que são cinco. Porque ele pegou esse parâmetro.
+
+[05:38] E aí, como tem um parâmetro 1, ele vai pegar o próximo a seguir. A partir do quinto. Então, ele vai pegar o cliente 6 quando eu aplicar isso daqui. Vamos ver? Se eu rodo aqui esse select. Vamos lá. Quem é o sexto cliente? Primeiro, segundo, terceiro, quarto, quinto. O sexto é esse cara aqui. Vou até copiar ele e colocar o código dele aqui. É o cliente "505344".
+
+[06:14] Se eu rodo essa consulta "LIMIT", eu vou até o quinto cliente. Agora, se eu coloco aqui vírgula um. Olha lá o cliente que ele traz o "505344", ou seja, o próximo cliente depois do quinto cliente. Se eu colocar aqui o8 de 1, ele vai pegar o cliente 9. Vai pegar até o 8º e vai vir de 1. Se eu colocar 12 de 1, ele vai pegar o cliente na posição 13. Vamos voltar aqui para a apresentação.
+
+[07:00] Agora, o que acontece se eu colocar 8 de 1? Eu tenho 8 clientes na tabela. Eu quero pegar o próximo a partir do oitavo. Como a tabela termina no 8, quando eu botar 8 de 1, ele vai trazer "NULO". Quer ver? Eu vi aqui pe lo "COUNT" que eu tenho 15 clientes. Antão, se eu pegar... Eu vou fazer assim: 14 de 1. Eu estou pegando o último cliente que é o "95939".
+
+[07:42] Se eu pegar a tabela toda, olha lá. O último é o "95939". É o último da tabela. Agora, se eu pegar aqui 15 de 1. Ele vai trazer "NULO". Então, a minha posição... Sempre, esse cara aqui não pode ser minha posição da tabela. Então, ele não pode ser 15. Ele tem que ir até 14. Já que a tabela tem 15 posições. E olha o outro caso. Se eu pego o "LIMIT" de 0 e vejo o próximo, eu estou pegando o primeiro cliente da tabela.
+
+[08:25] Se eu der um "SELECT*", o primeiro cliente é "1471156710". Então, se eu pegar agora aqui "LIMIT" 0 de 1, olha lá. "1471156". Então, eu vou pegar isso daqui. Vou copiar essa consulta. Vou voltar para a função. E aí, o CPF que eu quero buscar vai ser o "SELECT CPF INTO VRETORNO FROM TABELA_DE_CLIENTES LIMIT". Eu tenho um número aleatório aqui. Vamos fazer isso aqui por enquanto.
+
+[09:25] O número aleatório vírgula um. O quê que vai acontecer se eu manter isso daqui? O número aleatório é entre 1 e o número máximo de registros da tabela. Então, se ele der 1, esse cara vai ser 1 de 1. Se o número aleatório der 1, vai ser "LIMIT 1,1". O quê que vai acontecer "1,1"? Se eu rodar aqui "1,1", ele vai pegar o segundo elemento da tabela. Quer dizer, o menor número aleatório, que é 1, vai me retornar o segundo elemento da tabela.
+
+[10:07] E o maior número aleatório, que é 15, vai me retornar "NULO". Então, o número aleatório que eu achar, eu tenho que fazer o quê? Eu tenho que diminuir de 1. Ou seja, se eu achar como número aleatório 1, eu tenho que botar no limite zero. Se eu achar número aleatório 15, eu tenho que jogar no "LIMIT" 14. Ou seja, eu tenho que diminuir de 1, o número obtido pela função aleatório.
+
+[10:39] Então, eu vou fazer aqui assim: "SET NUM_ALEATÓRIO = NUM_ALEATÓRIO - 1". Fazendo isso, eu acerto o parâmetro que eu tenho que colocar no "LIMIT". Eu vou buscar o CPF nesta posição aqui. Vou jogar em "VRETORNO" e ele vai retornar para mim da função. Vou dar um "APPLY". "APPLY" de novo. "FINISH". Então, tenho a função criada. Agora, vamos lá.
+
+[11:27] Se eu fizer isso daqui. "SELECT F_CLIENTE_ALEATÓRIO". Vamos lá. Achei um CPF lá. "771579779". Se eu rodar de novo, outro CPF. Outro CPF. Ou seja, cada vez que eu rodo essa função, eu estou trazendo um número, um CPF de forma aleatória. Já tem, então, a função para obter o cliente de forma aleatória pronta.
+
+
+
+
+
+6-4  Fazendo função para produto aleatório
+
+
+No vídeo desta aula criamos uma função para obter o cliente através da função de número aleatório. Neste exercício crie outra função para obter o produto também usando a função aleatório.
+
+
+Opinião do instrutor
+
+CREATE FUNCTION `f_produto_aleatorio`() RETURNS varchar(10) BEGIN
+DECLARE vRetorno VARCHAR(10);
+DECLARE num_max_tabela INT;
+DECLARE num_aleatorio INT;
+SELECT COUNT(*) INTO num_max_tabela FROM tabela_de_produtos;
+SET num_aleatorio = f_numero_aleatorio(1, num_max_tabela);
+SET num_aleatorio = num_aleatorio - 1;
+SELECT CODIGO_DO_PRODUTO INTO vRetorno FROM tabela_de_produtos
+LIMIT num_aleatorio, 1;
+RETURN vRetorno;
+END
+
+
+
+
+6-5  Fazendo função para vendedor aleatório
+
+
+No vídeo desta aula criamos uma função para obter o cliente através da função de número aleatório. Neste exercício crie outra função para obter o vendedor também usando a função aleatório.
+
+
+Opinião do instrutor
+
+CREATE FUNCTION `f_vendedor_aleatorio`() RETURNS varchar(5) BEGIN
+DECLARE vRetorno VARCHAR(5);
+DECLARE num_max_tabela INT;
+DECLARE num_aleatorio INT;
+SELECT COUNT(*) INTO num_max_tabela FROM tabela_de_vendedores;
+SET num_aleatorio = f_numero_aleatorio(1, num_max_tabela);
+SET num_aleatorio = num_aleatorio - 1;
+SELECT MATRICULA INTO vRetorno FROM tabela_de_vendedores
+LIMIT num_aleatorio, 1;
+RETURN vRetorno;
+END
+
+
+
+6-6  Incluindo a venda
+
+
+Transcrição
+
+[00:00] Então, eu já tenho, nesse momento, a função que me dá o cliente aleatório. E também já tenho aqui. Deixa eu dar aqui um "REFRESH" nas minhas funções. Eu também já tenho aqui a função que me dá o produto de forma aleatória e o vendedor de forma aleatória. Essas duas funções estão no exercício do vídeo anterior, cujo objetivo foi que vocês construam a função que obtém o produto aleatório, e a que obtém o vendedor aleatório.
+
+[00:38] Então, o objetivo é que vocês tentem construir sozinhos essas duas funções. Caso vocês não consigam, vocês podem ou ver na resposta do exercício essas funções e aí, criar no seu ambiente. Ou, então, lá no mão na massa, eu mostro como se cria essas duas funções. Mas para a gente poder seguir aqui no vídeo daqui para frente, você precisa ter essas duas funções já dentro do seu MySQL funcionando.
+
+[01:09] Eu vou supor, então, que todo mundo já tem a função que obtém o cliente de forma aleatória, o produto e o vendedor. Então, eu posso, até aqui por exemplo, fazer um teste. Se eu rodar esse select aqui: "F.PRODUTO_ALEATÓRIO". E se eu rodar "F.VENDEDOR_ALEATÓRIO". Se eu rodar um select rodando as três funções ao mesmo tempo, eu obtenho lá um cliente aleatório, um produto aleatório e um vendedor aleatório.
+
+[01:52] Se eu rodar de novo, eu tenho sempre o programa buscando de forma aleatória três entidades ao mesmo tempo. Vamos, então, agora fazer a nossa stored procedure para que eu possa incluir os dados de uma venda fictícia. Então, é stored procedure. Então, eu vou vir aqui stored procedure, direita do mouse, stored procedure.
+
+[02:18] O nome dessa procedure, eu vou colocar assim "P_INSERIR_VENDA". Eu vou passar como parâmetro a data, que vai ser do tipo "DATE", o número no máximo de itens. Máximo de itens que vai ser um inteiro. quer dizer, quantos itens, no máximo, uma nota fiscal deve ter? E qual é a quantidade máxima que um cliente pode comprar. Também vou botar um número inteiro.
+
+[02:58] Deixa eu dar um "Enter" aqui para a gente poder olhar o código da stored procedures toda dentro da tela. Vamos começar. É uma stored procedure. Primeira coisa que eu vou precisar ter, é claro, são variáveis que vão me retornar o cliente aleatório, o produto aleatório e o vendedor aleatório. Então, eu vou já é "DECLARE V_CLIENTE varchar", vamos relembrar aqui.
+
+[03:26] Tabela de clientes. CPF. "varchar (11)". "DECLARE V_PRODUTO varchar". Vamos ver aqui produto, eu tenho a coluna matrícula. Está aqui. É um "varchar (5)". Vamos pegar vendedor. "VENDEDOR varchar (5)". Na verdade, eu olhei errado. Produto é aqui. Tabela de produtos. Produto é "varchar (10)". Então, aqui é 10. Vendedor que é "varchar (5)".
+
+[04:30] Que outras variáveis, eu vou precisar? Eu vou precisar também de uma variação que vai ter a quantidade de um item. Então, vai ser um inteiro. Vou precisar também de uma variável que vai me dar o preço do item. "DECLARE VPRECO", vai ser um "FLOAT". Porque preço pode ser um número decimal. Eu tenho, também, uma variável que vai me dar o número de itens que a nota fiscal vai ter, que também vai ser número inteiro.
+
+[05:11] Então, eu vou botar aqui "DECLARE VITENS" é inteiro. Vamos lá. Por enquanto, é isso daqui. Talvez eu precise declarar mais variáveis. Vamos continuar a fazer a rotina. Ah, já vou até começar outra aqui também. Quando eu vou criar uma venda nova, eu preciso saber o número da nota fiscal. O número da nota fiscal é um número sequencial. Então, se eu tenho 200 notas, quando eu for criar a próxima nota vai ser 201.
+
+[05:52] Ou seja, vai ser sempre o maior número de nota mais um. Então, eu vou também ter que ter uma variável "DECLARE VNÚMERO_NOTA" que vai ser o número nota. Vamos ver aqui como é que ela é. Eu tenho o número nota aqui na tabela de notas fiscais. Esse campo "INT(11)", então é um inteiro. Vamos começar pela nota. Eu vou criar uma nova nota fiscal. Eu preciso saber qual é o próximo número de nota fiscal.
+
+[06:30] Como é que eu obtenho isso? Vamos vir aqui. Se eu chegar aqui e fizer isso daqui: "SELECT NÚMERO FROM NOTAS_FISCAIS". Eu vou ver a lista dos números das notas fiscais que eu tenho na tabela. Olha lá: 100, 103. Qual seria o próximo número? Se eu tiver o "MAX" desse número, eu vou ver o maior número, o maior "ID" de nota fiscal que eu tenho no meu cadastro.
+
+[07:10] Então, o maior "ID" que eu tenho é "87996". Como eu tenho que criar uma nota fiscal nova, como é que eu faço? Vai ser esse número mais um. Normalmente, os sistemas que emitem nota fiscal, eles têm, internamente, um contador que vai criando aleatoriamente. Aleatoriamente não. Na sequência o número da nota fiscal. Então, esse cara aqui, se eu pegar o "MAX" e mais um, ele é o número da nota fiscal nova.
+
+[07:41] Um novo número de nota fiscal. Então, eu vou copiar esse select aqui e vou colocar aqui. Só que eu vou jogar esse "MAX" aqui: "INTO VNÚMERO_NOTA". Então, o número da nota, eu já tenho. Vamos agora obter um vendedor e um cliente de forma aleatória. Porque quando eu for inserir dados no cabeçalho da nota, eu preciso só de um cliente, de um vendedor. Isso eu vou obter através de um número aleatório.
+
+[08:25] A data é um parâmetro que está vindo da stored procedures. O novo número da nota, eu já mostrei para vocês. Vai ser o "MAX" do número mais 1. E o imposto. Esse cara aqui, eu vou colocar uma constante dentro da stored procedures. Não vou entrar muito em detalhes. Poderia, também, o imposto ser uma coisa que também poderia ser um parâmetro.
+
+[08:50] Porque pode ser que, em um determinado mês, o imposto sobre vendas dos produtos da empresa de suco de frutas possa aumentar ou diminuir. Mas, por enquanto, eu vou deixar constante. Então, já tenho mais ou menos esses cinco elementos. Quer dizer, eu não tenho ainda o número aleatório do cliente ou do vendedor. Mas isso eu vou fazer agora. Então, vamos fazer aqui.
+
+[09:18] "SET VCLIENTE = F_CLIENTE_ALEATÓRIO". E o vendedor aleatório vai ser: "F_VENDEDOR_ALEATÓRIO". Então, eu já tenho o imposto, vai ser constante. Data, eu já tenho aqui. Número da nota, já tenho aqui. Cliente, já tenho aqui. Vendedor, já tenho aqui. Então, o quê eu vou fazer? "INSERT INTO NOTAS_FISCAIS". E aí, vamos colocar o CPF, matrícula. Estou colocando aqui os campos da tabela.
+
+[10:22] Matrícula. Data. Venda. Número. Imposto. Valores. Vamos colocar as variáveis. Então, CPF vai vir de "VCLIENTE". Matrícula vai vir de "VVENDEDOR". Data da venda vem do parâmetro aqui de cima. Número vai vir do número da nota que está aqui. E imposto, vou colocar aqui "0.18", por exemplo. Esse número de imposto foi uma constante. bom? Então, nesse ponto aqui, eu já tenho incluído o cabeçalho da nota.
+
+[11:17] Agora, eu preciso inserir os itens. Os itens da nota fiscal estão aqui. Eu tenho que incluir um número que eu já tenho. Um produto aleatório. A quantidade e o preço. Mas, vamos lá. Quantos itens a nota fiscal vai ter? Pela minha especificação, isso vai ser um número aleatório entre 1 e o quê? E o número máximo de itens que é passado como parâmetro para a minha stored procedures.
+
+[11:54] Então, aqui eu tenho essa variável "VITENS", que eu justamente declarei para ter o número máximo de itens. Então, eu vou agora vir aqui e dizer o seguinte: "SET VITENS = F_NÚMERO_ALEATÓRIO" entre 1 e quem? E o número máximo de itens que eu passei aqui. Agora, o quê que eu vou precisar ter? Eu tenho o número de itens: 5, 6, 10, 12. Não importa.
+
+[12:35] Eu agora preciso fazer um "LOOPING" para inserir 12 itens, ou 15 itens, ou 3 itens, dependendo do que deu esse número aleatório. A gente viu isso quando a gente viu o "WHILE". Então, a gente vai fazer o seguinte. A gente vai precisar de um contador que vai ter que contar o número de interações que esse "LOOPING" vai ter até chegar ao número de itens, que foi determinado aqui pelo número aleatório.
+
+[13:04] Então, nova variável aqui, que eu vou chamar ela de "VCONTADOR". Que vai ser inteiro e esse contador já pode ser inicializado com o número 1. Porque eu vou começar a contar pelo 1. Então, eu vou contar do 1 até o número de itens que deu aqui. Então, vamos fazer aqui agora o nosso "LOOPING". "DO". "WHILE". E aqui no final, a gente vai. Na verdade, é ao contrário. "WHILE". "DO". "END WHILE". No "WHILE", eu vou fazer a condição.
+
+[13:46] Qual é a condição que vai me fazer estar dentro do "LOOPING"? Sempre quando o "VCONTADOR" for menor ou igual ao "VITENS". Tem que botar o ponto e vírgula aqui. Vamos lá. Então, eu estou lá pegando o primeiro item. O que eu preciso fazer para cada item? Primeiro: buscar um produto aleatório.
+
+[14:17] "SET VPRODUTO = F_PRODUTO_ALEATÓRIO". Então, eu peguei um produto aleatório para aquele item. Cada nota fiscal pode ter vários itens. Cada item, eu tenho que buscar um produto aleatório. Próximo. Eu preciso pegar uma quantidade. Quantidade eu já tenho aqui. A variável já está aqui, a quantidade. Vai ser o quê? Um número aleatório entre, vamos lá.
+
+[14:55] A quantidade mínima, por exemplo, é 10 unidades e a quantidade máxima, eu passei como parâmetro aqui. "MAX_QUANTIDADE". Então, já tenho, desse item, o produto e a quantidade. Eu preciso do preço. O preço, eu disse que o preço é o preço de lista do produto. Então qual é a consulta que obtém o preço de lista? Olha lá. Se eu vier aqui e fizer isso daqui: "SELECT PRECO", vamos olhar aqui a tabela de produtos.
+
+[15:38] É "PRECO_DE_LISTA FROM TABELA_DE_PRODUTOS WHERE CÓDIGO_DO_PRODUTO =", eu não sei aqui. Deixa eu ver aqui. Vamos pegar um produto qualquer. Pegar esse produto aqui 1000889. Então, se eu rodar essa consulta aqui: "PRECO_DE_LISTA FROM" aquele produto específico, eu vou ter o preço de lista. Então, esta consulta aqui, eu vou copiar. Vou colar aqui. Vamos dar um "Enter" só para ficar visível essa linha.
+
+[16:33] Só que aqui, eu vou jogar o quê? "INTO", qual é a variável que recebe o preço? Está aqui. É a "VPRECO". Só que esse "WHERE" aqui, eu tenho que editar. Quem é que vai estar aqui? É o produto aleatório que eu obtive rodando essa linha aqui. Então, nesse ponto, eu já tenho tudo que eu preciso. O número da nota está aqui em cima. Está aqui o número da nota. Foi obtida aqui. O número do produto está aqui. A quantidade, aqui.
+
+[17:13] E o preço aqui. Então, eu vou colocar o "INSERT INTO", o nome da tabela é "ITENS_NOTAS_FISCAIS". Aí, vamos colocar os campos. Vamos abrir aqui para olhar os campos. É número. Código do produto. Quantidade. Vou dar "Enter" aqui. "PRECO". "VALUES". Vamos lá. "VNÚMERO" é o número da nota. O código do produto é "VPRODUTO". A quantidade tá em "VQUANTIDADE". E o preço está em "VPRECO".
+
+[18:16] Vamos fazer assim. Eu vou dar "Enter" aqui. Vamos puxar daqui para cá. Você consegue ver tudo aqui. Terminou? Não. Porque se eu não fizer nada, esse contador vai ficar sempre igual a 1, que é o ponto inicial, e vai ficar nesse "LOOPING" infinito. Então, eu preciso "SET VCONTADOR = VCONTADOR + 1". Então, pronto. Nesse ponto aqui, quando eu sair aqui, eu vou ter os itens de notas fiscais criados.
+
+[18:59] Eu vou colocar aqui, vou clicar em "APPLY". "APPLY" de novo. Deu certo. Vamos ver se não vai dar erro. Eu venho aqui, Vou rodar a minha "P_INSERIR_VENDA", opa. É "CALL P_INSERIR_VENDA". Vou colocar aqui, como parâmetro, uma data. Vou pegar o dia de hoje aqui 20190517. Entro com o quê? Segundo parâmetro. Entro com o número máximo de itens. Eu vou colocar aqui 3. E o número máximo de quantidade 100.
+
+[19:58] Vamos rodar. Opa. Tive um erro aqui. "F_ALEATORIO" não existe. Eu devo ter errado aqui porque a função não é "F_ALEATORIO". A função que nós temos aqui é "F_NUMERO_ALEATORIO". Então, eu faço seguinte. Minha stored procedures está aqui. "INSERIR VENDA". Botão direito do mouse. "ALTER STORED PROCEDURES". Então, em algum momento aqui, eu usei aqui. É aqui. É "F_NUMERO_ALEATORIO".
+
+[20:44] Em algum outro lugar. Eu uso aqui e uso aqui. Então, eu acho que agora eu consertei o problema. vamos dar um "APPLY". "APPLY". "FINISH". Vou voltar aqui para o comando que eu tentei rodar. Vou rodar de novo. Outro número. Coluna "V_NUMERO" não existente. Vamos olhar de novo aqui onde é que eu errei. Botão direito do mouse. "ALTER STORED PROCEDURES". "V_NUMERO_NOTA". Eu botei "V_NUMERO".
+
+[21:26] Então, aqui "NUMERO_NOTA" é aqui. "V NUMERONOTA". Também meu erro foi aqui. Eu tinha cometido um erro aqui, que eu chamei a função de forma errada. E a variável eu coloquei "V_NUMERO", mas o certo seria "V_NUMERO_NOTA". Novamente, só um parênteses assim para explicar para vocês. Eu gosto de... Eu poderia ter essa stored procedures toda prontinha e está copiando a mesma.
+
+[21:58] Mas, não. Eu gosto de fazer, pensar no problema e fazer na hora. E mostrar às vezes o erro porque a gente é humano, a gente sempre erra. É bom a gente ver o erro acontecendo e saber como corrigi-los. Claro que o código final dessa rotina aqui vai estar lá no passo a passo já corrigida funcionando. Eu, normalmente, coloco no passo a passo o resultado desse script que eu faço durante a aula.
+
+[22:25] Mas vamos seguindo. Será que tem mais algum erro? Não sei. Vamos rodar de novo e vamos ver. "APPLY". "APPLY" de novo. Então, vamos voltar aqui para... E eu vou executar. Agora deu certo. Rodou. Vamos conferir se deu tudo certo mesmo. E se ainda não tem mais alguma coisa de errado que pode acontecer nessa rotina, mas no próximo vídeo, para não deixar esse vídeo aqui muito extenso. Então, está bom. Espero vocês no próximo vídeo.
+
+
+
+
+6-7  Resolvendo o problema de PK
+
+
+Transcrição
+
+[00:00] Vamos agora, dar uma conferida para saber se a nossa stored procedures está rodando direitinho. Eu vou fazer o seguinte. Aqui embaixo, eu vou fazer uma consulta que vai fazer o faturamento por nota fiscal dentro de uma data, para a gente saber se as notas fiscais estão sendo incluídas com sucesso. E se está sendo feita de forma corretamente correta.
+
+[00:24] Vamos lá. Eu vou fazer isso aqui. "SELECT A.NÚMERO, B.QUANTIDADE, B.PRECO" só que, na verdade, eu vou dar um "SUM" de quantidade vezes preço. É, faturado. "FROM". Nós vamos pegar, então, da tabela de "NOTAS_FISCAIS" que vai ser a tabela A. "INNER JOIN". A tabela de "ITENS_NOTAS_FISCAIS", que vai ser a tabela B. "ON A.NÚMERO = B.NÚMERO WHERE DATA_DA_VENDA", que está na tabela A, na tabela de notas.
+
+[01:31] Igual a "20190517". Como eu estou usando "SUM", "GROUP BY" e o número. Então, eu estou fazendo aqui um select que está buscando da tabela A, que é a tabela de notas fiscais, o número. Da tabela B, a quantidade vezes o preço. E está somando isso. E eu estou pegando isso só para a data da venda no dia de hoje, que é o dia que eu estou incluindo aqui, onde eu vou começar a incluir novas vendas.
+
+[02:13] A gente pode até colocar isso daqui: "COUNT NÚMERO ITENS" para a gente saber quantos itens têm. Vamos ver se está legal esse select. Vou rodar e está lá. Eu vou inserir a nota fiscal "8799". Foram dois itens. Eu tenho que pegar um número aleatório entre 1 e 3. Deu 2. E o total faturado deu isso daqui. Se eu rodar de novo esse cara, ele vai criar uma nova venda. Rodou.
+
+[02:49] Se eu rodar o select, ele já criou aqui uma nova venda. Aqui, ele escolheu um item só e colocou o valor faturado. Então, aparentemente, parece que está incluindo. Agora, olha só uma coisa. Eu vou colocar aqui 10 itens. Posso ter nota fiscal com um montão de item. Vou rodar aqui. Deu certo. Estou rodando. E a gente vai ver aqui o nosso select que está funcionando.
+
+[03:26] Só que, note, teve um erro aqui. Quando eu rodei esse cara aqui, ele deu um erro. "DUPLICATE ENTRY". O que deve ser esse erro? Olha só. Ou seja, se eu começar a rodar essa stored procedure várias vezes, olha lá. Eu não sei em quanto tempo vocês vão achar o erro. Mas eu vou... Vamos lá. Rodei uma, deu certo. Certo. Certo. Certo. Tem uma que deu errado. Mas se eu continuar, está rodando certo.
+
+[04:04] Mas chega uma hora que dá errado. Quer ver uma coisa? Se ao invés de 10 itens, eu colocar 100 itens. Já vai dar erro de cara. Todos vão dar erro. Ou seja, tem algum problema aqui nos itens dos produtos. O quê que pode ser? Vamos analisar? Vou abrir a stored procedure de novo. Deixa eu diminuir um pouquinho aqui. O que acontece é o seguinte.
+
+[04:46] Imagina uma coisa. Eu tenho aqui meu número de itens. Digamos que eu tenha cinco itens. Ele vai chegar aqui, vai achar um produto aleatório e vai inserir. Depois, no segundo item, ele vai pegar outro produto aleatório e vai ser o inserir. No terceiro item, vai pegar outro produto aleatório e inserir. Até aí tudo bem. Era isso que eu queria. Mas, note uma coisa.
+
+[05:12] O número da nota fiscal é o mesmo, porque o número é determinado lá quando eu crio o cabeçalho. O quê vai variando são os produtos. Cada item vai ter um produto diferente. Porque a chave da tabela de notas fiscais, quem não se lembra, é número e código. Agora, olha só. Eu acabei de afirmar os produtos devem ser diferentes. Será que são mesmo diferentes? Porque a cada interação, eu pego um produto de forma aleatória.
+
+[05:51] Se eu digo que eu posso ter, no máximo, três itens, a probabilidade de eu pegar dois produtos iguais é pequena. Porque, vamos ver aqui. Deixa eu criar um outro script aqui do lado "SELECT COUNT FROM TABELA_DE_PRODUTOS". Eu tenho 36 produtos. Se eu tento buscar três produtos aleatórios dentro de 36, a probabilidade de eu escolher um mesmo produto duas vezes é pequena.
+
+[06:37] Agora, se eu digo para você que o número máximo de itens é 20, dentre 36 produtos, qual é a probabilidade de eu escolher o mesmo produto duas, três vezes? Aí já fica grande. E aí, quando ele for tentar inserir o item na Nota Fiscal, eu vou acabar tentando inserir na mesma nota o mesmo produto duas vezes. E aí, eu vou ter um problema de chave primária dessa tabela aqui.
+
+[07:14] Por isso que o erro que ele mostra aqui é um erro de "DUPLICATE KEY" na chave primária. Então, o que eu preciso fazer é, na minha stored procedure, eu preciso ter um tipo de controle para não deixar eu criar, determinar, na hora que eu for buscar o produto de forma aleatória, um produto que já exista na Nota Fiscal. Eu preciso fazer isso. Então, vamos lá. Vamos melhorar essa parte, agora, aqui.
+
+[07:57] Eu vou, então, editar a minha stored procedure e vou aqui criar uma variável que vai me dizer quantos itens eu já tenho na nota fiscal de um determinado produto. "ITENS_NOTA" vai ser um inteiro. E como é que eu acho isso? Olha só. Nesse momento aqui, eu tenho o meu produto. Eu já tenho o número da minha nota fiscal aqui. Antes de incluir esse produto, eu vou ver se já existe algum item deste mesmo produto na mesma Nota Fiscal.
+
+[08:46] Se tiver, eu tenho que achar outro produto aleatório. É porque eu acabei achando um produto aleatório igual a outro que eu achei numa interação anterior. E como é que eu acho esse valor? Eu vou jogar isso nessa variável aqui: "NUMÉRO_ITENS_NOTA". Então, eu vou colocar aqui "SELECT COUNT INTO", esse cara. "FROM ITENS_NOTAS_FISCAIS". É isso mesmo o nome da tabela?
+
+[09:27] É isso mesmo. "WHERE", para que nota? A nota é o número da nota que está nessa variável. "AND CÓDIGO_DO_PRODUTO =", deixa eu só conferir aqui o nome das colunas da tabela. É isso aí. "CÓDIGO_DO_PRODUTO = VPRODUTO". Então, eu digo. Olha, quantos itens esta nota fiscal tem deste produto que eu acabei de escolher, de forma aleatória?
+
+[10:09] Se esse vier zero significa que não existe, para essa nota fiscal, nenhum produto com esse código. Então, eu posso inserir o produto que eu não vou ter problemas de chave primária. Então, eu faço aqui um "IF VNUM_ITENS_NOTA". Se for igual a zero, "THEN". Eu vou executar todos esses comandos aqui. Vou até inventar um pouco aqui para diferenciar. E eu vou colocar o "END IF".
+
+[10:58] Uma dúvida. Esse contador tem que estar fora ou dentro do "IF". Depende. Se você quiser manter o número de itens originais, ou seja, eu posso ter no máximo cinco itens. O sistema achou 3. Então, eu vou ter que ter três itens. Mas quando eu for pegar o segundo, eu escolhi como um produto aleatório o mesmo do primeiro. Se o contador estiver fora, eu vou desprezar esse segundo item.
+
+[11:32] E o contador vai subir de 1. Então, eu não vou conseguir ter três itens. Eu vou ter pelo menos 2. Se o contador estiver dentro do "IF", se o segundo elemento vier. Então, fazer isso daqui. Se o segundo elemento, eu já escolhi. Ele vai tentar pegar outro aleatório. E se for o mesmo, vai tentar pegar outro. E vai pegar outro até achar um que nunca tenha sido escolhido.
+
+[12:05] O perigo de colocar o contador dentro do "IF" é que se eu tiver o número máximo de itens muito próximo do número de produtos, ou seja, olha, uma nota fiscal pode ter 20 itens, no máximo, e eu tenho... Deixa eu ver aqui quantos produtos eu realmente tenho. Eu tenho 36. Vai ter uma hora que eu vou começar a escolher produto, e esse produto já existe, e eu vou ficar tentando, tentando.
+
+[12:33] Pode ser que o programa demore muito a terminar. Então, eu vou considerar a seguinte coisa. Eu vou considerar o contador fora daqui. Do tipo, cara, se eu escolher um produto que já existe, ok. Desisto daquele. Passo para o próximo e aí, eu perdi o item. Minha nota fiscal ao invés de três, vai ter dois itens só, por exemplo. Vou deixar assim. Eu acho que isso resolve o problema.
+
+[13:02] Vou dar "APPLY". "APPLY" de novo. "FINISH". Então, eu agora vou rodar aqui. Vamos rodar de novo aqui o "CALL B_INSERE". Eu já tenho até o script aqui pronto. Deixa eu pegar daqui essas duas linhas. Está lá no final. Vou colar aqui. Então, vou rodar aqui mais uma e vou ver a quantidade. Está lá. Inseri mais uma nota fiscal nova aqui. Houve erro de stored procedure? Não houve erro.
+
+[13:59] Vamos colocar aqui o número máximo de produtos. Por exemplo 20. Vou rodar. Rodei. Rodei. Note que eu estou rodando e não está dando mais erro de "PRIMARY" aqui. Mesmo que eu rode ele várias vezes. Ou seja, aquela minha rotina resolveu o problema. Se o produto aleatório que eu escolhi já foi escolhido antes, em uma interação anterior, eu pulo e vou para o próximo.
+
+[14:33] E aí, vou. Se eu escolhi de novo. Opa, esse cara eu também já escolhi o próximo. Se eu escolher um produto, não esse cara não faz parte da minha nota fiscal, aí eu incluo o item da Nota Fiscal. Então, essa pequena modificação resolveu meu problema.
+
+
+
+
+6-8  Melhorando Triggers
+
+
+Transcrição
+
+    Você pode baixar o arquivo SQL de criação de Triggers clicando aqui
+https://caelum-online-public.s3.amazonaws.com/1223-mysqlproceduresefuncions/06/criando-triggers.zip
+
+
+[00:00] Vamos clicar no link que está aqui embaixo desse vídeo, e abrir o arquivo .SQL" que já está aqui. Eu já baixei, aqui, na minha máquina. É esse aqui: "CRIANDO TRIGGERS". Vamos abrir ele no editor de texto. Já está aberto aqui. Ele é o seguinte. Eu crio aqui uma tabela temporária e, depois, eu tenho três triggers. Uma que é executada após o insert, outra após o update. E outra após o delete.
+
+[00:39] Quem não se recorda, essas três triggers, eu criei no curso manipulação de dados usando MySQL, o curso anterior a este treinamento. E, durante os vídeos daquele curso, eu enfatizei que no MySQL ou eu tenho uma trigger de insert, ou uma de update ou uma de delete. Eu não posso ter, por exemplo, uma trigger que seja executada após o insert, o update e o delete ao mesmo tempo.
+
+[01:12] Eu tenho que criar três triggers separadas. Ok. Até aí tudo bem. A gente pode criar. Não vejo nenhum problema nisso. O problema está, que, o código de cada trigger dessa é o mesmo. Isso significa que se eu tiver que fazer uma manutenção numa dessas triggers. Ah, esse comando aqui eu tenho que mudar, a forma como eu executo ele. Eu tenho que lembrar de ir na de update e ir na de delete e fazer a mesma coisa.
+
+[01:45] E aí, eu posso esquecer. Posso modificar a regra de negócio no insert, mas não fazer nem no update, nem no delete. E aí, o negócio vai ficar meio que desbalanceado. Só que, felizmente, nesse treinamento, a gente aprendeu o stored procedures. Então, qual é a solução técnica? Eu devo pegar esses comandos que se repetem e criar uma stored procedures para eles.
+
+[02:09] E aí, a trigger vai chamar a stored procedure e não, os comandos diretamente. Aí, se eu tiver que modificar uma regra de negócio, basta eu modificar a stored procedure que, automaticamente, todas as triggers vão estar modificadas. Então, é esse tipo de exercício que nós vamos fazer agora. Porém, como essa base aqui é diferente da que foi usada no treinamento anterior.
+
+[02:37] Vamos primeiro criar a tabela temporária e as triggers. Então, eu vou primeiro aqui no meu "WORKBENCH". Vou criar, aqui, um novo script "SQL". Vou copiar o comando que cria a tabela temporária. Tabela temporária não. A tabela auxiliar. Esse é o melhor termo. Aqui, no meu caso, eu já tenho essa tabela. Então, deixa eu dropar ela. Vocês não vão ter essa tabela no banco de vocês.
+
+[03:16] Isso só foi no meu porque eu já estava fazendo alguns testes aqui antes de gravar o vídeo e esqueci de dropar essa tabela. Agora sim. Criei a tabela. E eu vou criar, aqui, as três triggers. Criei. Então, por exemplo, se eu executar aqui aquela stored procedures que nós criamos no vídeo anterior. "CALL P_INSERIR_VENDA", eu passo como parâmetro a data" 20190517".
+
+[04:03] O número máximo de itens e a maior quantidade de venda. Se eu rodar essa stored procedures. Rodei. E aí, agora, se eu vier aqui e der um "SELECT* FROM TAB_FATURAMENTO WHERE". Como é que é o nome do campo de data? É data venda?Não sei. Vamos ver aqui o nome do campo. A tabela é a "TAB_FATURAMENTO" está aqui. A coluna é "DATA_VENDA". Isso mesmo.
+
+[04:44] " WHERE DATA_VENDA = 20190517". Se eu rodo esse cara, eu tenho lá o total de venda que está aqui 190.671. Se eu rodar de novo, novamente essa stored procedures. se eu rodar agora o select, a venda aumentou um pouquinho, ou seja, essa tabela mostra para mim o valor total por dia já pré-calculado. Por que? Porque quando eu rodo essa stored procedures, eu faço o insert na tabela de itens.
+
+[05:24] Ao fazer o insert, ele executa a stored procedures e executa esse comando, aqui, para recalcular o valor total na tabela auxiliar. Está tudo funcionando, mas eu vou melhorar. Então, eu vou fazer o seguinte. Esses dois comandos, aqui, que eu executo, eu vou copiar eles e eu vou, aqui, criar uma stored procedures. Eu vou chamar ela de "P_CÁLCULO_FATURAMENTO"
+
+[06:00] Não vou passar parâmetro. E aqui dentro, eu colo, justamente, os comandos que eu tenho que executar quando eu executar a trigger. Vou dar um "APPLY". "APPLY". "FINISH". Então, esse é o nome da stored procedures. Agora, eu vou vir aqui. Onde está? Onde está, aqui, a lista de triggers. Dentro da minha tabela tem as notas fiscais. Então, está aqui. Eu tenho aqui as triggers.
+
+[06:39] Vou clicar na primeira. Na verdade, eu não tenho como alterar visualmente, mas eu tenho aqui o código que cria elas, que é o mesmo código que está aqui. Que eu copiei. Então, eu vou fazer o seguinte. Eu vou antes aqui dar um "DROP TRIGGER TG_CALCULA_FATURAMENTE_INSERT".
+
+[07:17] Depois, eu vou dropar a trigger, eu vou copiar duas vezes. Eu vou dropar a "TRIGGER UPDATE" e vou dropar a "TRIGGER DELETE". Vamos lá. Vamos rodar? Se eu vier aqui nas triggers e dar um "REFRESH", não tenho mais nada. Aí, eu vou criar as triggers novamente. Só que, aqui, no lugar desses comandos, eu vou executar o "CALL", o nome da stored procedure está aqui do lado.
+
+[07:52] Deixa eu abrir um pouquinho mais aqui. É a "P_CÁLCULO_FATURAMENTO". Então, "CALL P_CÁLCULO_FATURAMENTO". E eu vou fazer isso, também, aqui na update, e aqui na como delete. Então, vou executar agora a criação de novo das triggers. Criei. Então, agora, se eu rodar de novo aqui, a minha criação de novas notas fiscais. Rodou. Se eu olhar o faturamento, está lá. Ele aumentou já um pouquinho mais.
+
+[08:43] Então, agora, se amanhã eu precisar alterar o código da regra de negócio que roda dentro da trigger, eu não preciso mais editar a trigger. Eu venho aqui. Procuro a stored procedures que é a "P_CÁLCULO_FATURAMENTO". Dou um "ALTER STORED PROCEDURE". E, aqui, eu edito e salvo. E aí, a TRIGGER vai estar, automaticamente, modificada.
+
+
+
+
+6-9  Aplicando Stored Procedures a Triggers
+
+Por que é mais vantajoso usar Stored Procedure nas Triggers?
+
+Porque é a única maneira de usar Triggers.
+  Alternativa Errada! Não é obrigatório usar SPs dentro das Triggers.
+
+Porque facilita a manutenção.
+  Alternativa Correta! Se mudarmos a regra de negócio, basta mudá-la no código da SP sem a necessidade de abrir e editar a Trigger.
+
+Porque melhora a performance.
+  Alternativa Errada! Não há diferença em usar Triggers com ou sem SPs, para medir performance.
+
+
+
+
+6-10  Conclusão
+
+
+Transcrição
+
+[00:01] Parabéns. Se você chegou até aqui, é porque você completou o treinamento de procedures e funções usando o MySQL. A gente construiu vários exemplos de procedures e funções. Olha só a lista como é que ficou grande. E sempre cobrindo um determinado problema. Mas releembrando o quê nós fizemos neste treinamento. A gente começou, claro, recuperando o ambiente.
+
+[00:27] Porque eu precisava ter essa base para a gente poder fazer os nossos exemplos. E aí depois, a gente viu os conceitos básicos de como adquirir uma stored procedure. Vimos através de comandos. E vimos que clicando com o botão direito do mouse e vindo aqui dentro do próprio cliente, escolhendo "CREATE STORED PROCEDURE", eu posso, aqui dentro, editar a minha procedure e criá-la.
+
+[00:49] Aí, nós começamos a criar procedures, inicialmente, básicas onde eu apenas exibia na saída da stored procedure um determinado valor. E a gente começou, claro, a ver variáveis. Onde, eu posso declarar variáveis dentro da stored procedure, atribuir valores a elas através do comando "SET". E, usando essas variáveis, exibindo uma saída um pouco diferente.
+
+[01:16] Aí depois, a gente começou a ver sobre como é que eu posso passar parâmetros para a stored procedure. Normalmente, esses parâmetros são valores de variáveis que eu crio fora da stored procedure e essas variáveis, claro, serão úteis dentro do código da "SP". Depois que a gente viu a criação de variáveis, a gente viu uma coisa importante: como tratar erros.
+
+[01:42] Se eu tenho um problema, um erro dentro da stored procedure, ela para de ser executada se esse erro acontece. Mas eu posso tratar esse erro. Tentar identificar antes os erros que podem acontecer. E aí, dar um retorno um pouco mais amigável para a stored procedure, caso aconteça. Ao invés de, por exemplo, o próprio MySQL me mostrar que o conjunto rodou de forma errada.
+
+[02:10] Depois, a gente começou a trabalhar com controle de fluxos. Nós vimos vários tipos de controle de fluxos usando "IF", usando "CASE" e também, por exemplo, usando aqui, no caso estou abrindo aqui, usando "LOOPINGS". Onde, através do "WHILE", do "END_WHILE", eu consigo fazer comandos repetitivos respeitando alguma regra. Vimos, então, depois o "CURSOR".
+
+[02:41] O "CURSOR" é uma estrutura muito usada na stored procedures. É como se fosse uma variável onde, ao invés de atribuir um valor, eu atribuo um vetor, que pode ter uma ou n colunas. E aí, eu percorro esse vetor utilizando, normalmente, "LOOPINGS" para, mediante cada valor desse vetor, eu faço alguma coisa. Depois, a gente falou sobre funções.
+
+[03:06] As funções têm uma diferença muito grande em relação às stored procedures porque a função me retorna um valor. Enquanto que a stored procedure apenas executa alguns comandos. Criamos vários exemplos de funções. Inclusive, quando a gente viu o nosso exemplo prático, onde a gente criou uma stored procedure para criar uma venda aleatória, nós criamos várias funções que depois foram chamados por essa stored procedure.
+
+[03:36] E aí, esse treinamento, eu terminei falando sobre um problema que nós vimos lá no curso de consultas avançadas em MySQL, que foi no momento em que nós criamos triggers. E que essas triggers tinham um código que se repetia nas triggers de insert, update e delete. E que essa repetição era problemática caso eu quisesse fazer uma manutenção nesse código.
+
+[04:01] Porque eu teria que lembrar de fazer a manutenção igual em todas as três triggers. E a gente viu que usando stored procedure, o problema da manutenção é resolvido. Esse foi o último curso da parte de análise do MySQL. Ele começou desde o curso de introdução. Nós vimos o curso de consultas. Vimos o curso de manipulação de dados. E, finalmente, o de stored procedures.
+
+[04:31] Então, se você fez todos os cursos, eu espero que todos esses treinamentos tenham dado a você uma melhor base. Uma base de conhecimento muito boa para você começar a trabalhar e lidar com o banco de dados MySQL. Seja, você lidar com esse banco diretamente como um analista de banco de dados, ou até mesmo, caso você for para uma linguagem de programação, onde você vai querer desenvolver algum tipo de programa que vai ter algum tipo de interface com o banco de dados MySQL.
+
+[05:09] Então, gente. Muito obrigado pela atenção e espero vocês nos próximos cursos. Tchau, tchau.
+
+
+
+
+6-11  Consolidando o seu conhecimento
+
+Chegou a hora de você seguir todos os passos realizados por mim durante esta aula. Caso já tenha feito, excelente. Se ainda não, é importante que você execute o que foi visto nos vídeos para poder continuar com os próximos cursos que tenham este como pré-requisito.
+
+1) Vamos colocar nossos conhecimentos em prática. Iremos criar uma SP que irá criar uma venda aleatória.
+
+2) Iniciamos com uma função que retorna um número aleatório entre dois valores. Para isso crie a função abaixo:
+
+USE sucos_vendas;
+
+DROP function IF EXISTS f_numero_aleatorio;
+
+
+DELIMITER $$
+
+USE sucos_vendas$$
+
+CREATE FUNCTION f_numero_aleatorio(min INT, max INT) RETURNS int(11)
+
+BEGIN
+
+   DECLARE vRetorno INT;
+
+   SELECT  FLOOR((RAND() * (max-min+1)) + min) INTO vRetorno;
+
+RETURN vRetorno;
+
+END$$
+
+
+DELIMITER ;
+
+3) Teste a função várias vezes para verificar que os números aleatórios são criados:
+
+SELECT f_numero_aleatorio(1, 10);
+
+1.png
+
+4) Usaremos a função abaixo para escolher um cliente de forma aleatória da tabela de clientes. Iremos escolher uma posição entre 1 e o número de registros da tabela e retornar o cliente escolhido conforme o número aleatório determinado. Digite e execute:
+
+USE sucos_vendas;
+
+DROP function IF EXISTS f_cliente_aleatorio;
+
+
+DELIMITER $$
+
+USE sucos_vendas$$
+
+CREATE  FUNCTION f_cliente_aleatorio() RETURNS varchar(11) CHARSET utf8mb4
+
+BEGIN
+
+    DECLARE vRetorno VARCHAR(11);
+
+    DECLARE num_max_tabela INT;
+
+    DECLARE num_aleatorio INT;
+
+    SELECT COUNT(*) INTO num_max_tabela FROM tabela_de_clientes;
+
+    SET num_aleatorio = f_numero_aleatorio(1, num_max_tabela);
+
+    SET num_aleatorio = num_aleatorio - 1;
+
+    SELECT CPF INTO vRetorno FROM tabela_de_clientes
+
+    LIMIT num_aleatorio, 1;
+
+RETURN vRetorno;
+
+END$$
+
+
+DELIMITER ;
+
+5) Teste a função para determinar um cliente aleatoriamente:
+
+SELECT f_cliente_aleatorio();
+
+2.png
+
+6) Nos exercícios associados a esta aula criamos a função para buscar, de forma aleatória, um produto e um vendedor. Mas caso não tenha sido feito o exercício proceda criando as duas funções conforme o código abaixo:
+
+DELIMITER $$
+
+USE `sucos_vendas`$$
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `f_produto_aleatorio`() RETURNS varchar(10) CHARSET utf8mb4
+
+BEGIN
+
+    DECLARE vRetorno VARCHAR(10);
+
+    DECLARE num_max_tabela INT;
+
+    DECLARE num_aleatorio INT;
+
+    SELECT COUNT(*) INTO num_max_tabela FROM tabela_de_produtos;
+
+    SET num_aleatorio = f_numero_aleatorio(1, num_max_tabela);
+
+    SET num_aleatorio = num_aleatorio - 1;
+
+    SELECT CODIGO_DO_PRODUTO INTO vRetorno FROM tabela_de_produtos
+
+    LIMIT num_aleatorio, 1;
+
+RETURN vRetorno;
+
+END$$
+
+
+DELIMITER ;
+
+;
+
+
+DELIMITER $$
+
+USE sucos_vendas$$
+
+CREATE DEFINER=root@localhost FUNCTION f_vendedor_aleatorio() RETURNS varchar(5) CHARSET utf8mb4
+
+BEGIN
+
+    DECLARE vRetorno VARCHAR(5);
+
+    DECLARE num_max_tabela INT;
+
+    DECLARE num_aleatorio INT;
+
+    SELECT COUNT(*) INTO num_max_tabela FROM tabela_de_vendedores;
+
+    SET num_aleatorio = f_numero_aleatorio(1, num_max_tabela);
+
+    SET num_aleatorio = num_aleatorio - 1;
+
+    SELECT MATRICULA INTO vRetorno FROM tabela_de_vendedores
+
+    LIMIT num_aleatorio, 1;
+
+RETURN vRetorno;
+
+END$$
+
+
+DELIMITER ;
+
+;
+
+7) Podemos testar as funções num único SELECT:
+
+SELECT f_cliente_aleatorio(), f_produto_aleatorio(), f_vendedor_aleatorio();
+
+3.png
+
+8) Vamos, finalmente, criar a SP para incluir uma venda de forma aleatória. Digite e execute a criação da SP abaixo:
+
+USE sucos_vendas;
+
+DROP procedure IF EXISTS p_inserir_venda;
+
+
+DELIMITER $$
+
+USE sucos_vendas$$
+
+CREATE PROCEDURE p_inserir_venda(vData DATE, max_itens INT,
+
+max_quantidade INT)
+
+BEGIN
+
+DECLARE vCliente VARCHAR(11);
+
+DECLARE vProduto VARCHAR(10);
+
+DECLARE vVendedor VARCHAR(5);
+
+DECLARE vQuantidade INT;
+
+DECLARE vPreco FLOAT;
+
+DECLARE vItens INT;
+
+DECLARE vNumeroNota INT;
+
+DECLARE vContador INT DEFAULT 1;
+
+SELECT MAX(numero) + 1 INTO vNumeroNota from notas_fiscais;
+
+SET vCliente = f_cliente_aleatorio();
+
+SET vVendedor = f_vendedor_aleatorio();
+
+INSERT INTO notas_fiscais (CPF, MATRICULA, DATA_VENDA, NUMERO, IMPOSTO)
+
+VALUES (vCliente, vVendedor, vData, vNumeroNota, 0.18);
+
+SET vItens = f_numero_aleatorio(1, max_itens);
+
+WHILE vContador <= vItens
+
+DO
+
+   SET vProduto = f_produto_aleatorio();
+
+   SET vQuantidade = f_numero_aleatorio(10, max_quantidade);
+
+   SELECT PRECO_DE_LISTA INTO vPreco FROM tabela_de_produtos
+
+   WHERE CODIGO_DO_PRODUTO = vProduto;
+
+   INSERT INTO itens_notas_fiscais (NUMERO, CODIGO_DO_PRODUTO,
+
+   QUANTIDADE, PRECO) VALUES (vNumeroNota, vProduto, vQuantidade, vPreco);
+
+   SET vContador = vContador + 1;
+
+END WHILE;
+
+END$$
+
+DELIMITER ;
+
+9) Execute a SP para criar uma venda:
+
+Call p_inserir_venda('20190517', 3, 100);
+
+10) Se executarmos várias vezes a criação da venda teremos, num determinado momento, erro de PK.
+
+4.png
+
+11) Para resolver este problema precisamos testar se o produto aleatório determinado pela função já existe na tabela de vendas. Modifique a SP com o código abaixo:
+
+USE sucos_vendas;
+
+DROP procedure IF EXISTS p_inserir_venda;
+
+
+DELIMITER $$
+
+USE sucos_vendas$$
+
+CREATE DEFINER=root@localhost PROCEDURE p_inserir_venda(vData DATE, max_itens INT,
+
+max_quantidade INT)
+
+BEGIN
+
+DECLARE vCliente VARCHAR(11);
+
+DECLARE vProduto VARCHAR(10);
+
+DECLARE vVendedor VARCHAR(5);
+
+DECLARE vQuantidade INT;
+
+DECLARE vPreco FLOAT;
+
+DECLARE vItens INT;
+
+DECLARE vNumeroNota INT;
+
+DECLARE vContador INT DEFAULT 1;
+
+DECLARE vNumItensNota INT;
+
+SELECT MAX(numero) + 1 INTO vNumeroNota from notas_fiscais;
+
+SET vCliente = f_cliente_aleatorio();
+
+SET vVendedor = f_vendedor_aleatorio();
+
+INSERT INTO notas_fiscais (CPF, MATRICULA, DATA_VENDA, NUMERO, IMPOSTO)
+
+VALUES (vCliente, vVendedor, vData, vNumeroNota, 0.18);
+
+SET vItens = f_numero_aleatorio(1, max_itens);
+
+WHILE vContador <= vItens
+
+DO
+
+   SET vProduto = f_produto_aleatorio();
+
+   SELECT COUNT(*) INTO vNumItensNota FROM itens_notas_fiscais
+
+   WHERE NUMERO = vNumeroNota AND CODIGO_DO_PRODUTO = vProduto;
+
+   IF vNumItensNota = 0 THEN
+
+      SET vQuantidade = f_numero_aleatorio(10, max_quantidade);
+
+      SELECT PRECO_DE_LISTA INTO vPreco FROM tabela_de_produtos
+
+      WHERE CODIGO_DO_PRODUTO = vProduto;
+
+      INSERT INTO itens_notas_fiscais (NUMERO, CODIGO_DO_PRODUTO,
+
+      QUANTIDADE, PRECO) VALUES (vNumeroNota, vProduto, vQuantidade, vPreco);
+
+   END IF;
+
+   SET vContador = vContador + 1;
+
+END WHILE;
+
+END$$
+
+
+DELIMITER ;
+
+12) No curso de manipulação de dados vimos, quando aprendemos TRIGGERs, que devemos criar uma para inclusão, uma para alteração e outra para exclusão. Se, dentro delas, tivemos que executar os mesmos comandos a manutenção será problemática porque qualquer mudança na regra de negócio deverá ser feita nas três TRIGGERs. Mas, se usarmos SP, as mudanças deverão ser feita apenas na SP e não em cada uma das TRIGGERs.
+
+13) Criando a SP:
+
+USE sucos_vendas;
+
+DROP procedure IF EXISTS p_calculo_faturamento;
+
+
+DELIMITER $$
+
+USE sucos_vendas$$
+
+CREATE PROCEDURE p_calculo_faturamento()
+
+BEGIN
+
+  DELETE FROM TAB_FATURAMENTO;
+
+  INSERT INTO TAB_FATURAMENTO
+
+  SELECT A.DATA_VENDA, SUM(B.QUANTIDADE * B.PRECO) AS TOTAL_VENDA FROM
+
+  NOTAS_FISCAIS A INNER JOIN ITENS_NOTAS_FISCAIS B
+
+  ON A.NUMERO = B.NUMERO
+
+  GROUP BY A.DATA_VENDA;
+
+END$$
+
+
+DELIMITER ;
+
+14) Criando as TRIGGERs usando a SP:
+
+CREATE TABLE TAB_FATURAMENTO
+
+(DATA_VENDA DATE NULL, TOTAL_VENDA FLOAT);
+
+
+DELIMITER //
+
+CREATE TRIGGER TG_CALCULA_FATURAMENTO_INSERT AFTER INSERT ON ITENS_NOTAS_FISCAIS
+
+FOR EACH ROW BEGIN
+
+  Call p_calculo_faturamento;
+
+END//
+
+
+DELIMITER //
+
+CREATE TRIGGER TG_CALCULA_FATURAMENTO_UPDATE AFTER UPDATE ON ITENS_NOTAS_FISCAIS
+
+FOR EACH ROW BEGIN
+
+  Call p_calculo_faturamento;
+
+END//
+
+
+DELIMITER //
+
+CREATE TRIGGER TG_CALCULA_FATURAMENTO_DELETE AFTER DELETE ON ITENS_NOTAS_FISCAIS
+
+FOR EACH ROW BEGIN
+
+  Call p_calculo_faturamento;
+
+END//
+
+
+
+Opinião do instrutor
+
+Continue com os seus estudos, e se houver dúvidas, não hesite em recorrer ao nosso fórum!
+
+
+
+6-12  O que aprendemos?
+
+  Usamos nosso conhecimento prático para criação de uma SP que cria uma venda aleatória;
+  
+  Vimos como a SP pode melhorar o gerenciamento de TRIGGERs.
+
+

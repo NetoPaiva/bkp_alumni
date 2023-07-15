@@ -1,0 +1,79 @@
+https://cursos.alura.com.br/extra/alura-mais/como-instalar-o-mysql-no-linux-c1158
+
+Data Science > Cursos de SQL e Banco de Dados
+
+Alura+
+Como instalar o MySQL no Linux
+
+  Publicado em Data Science / SQL e Banco de Dados
+
+  por Maria Gabriela Oliva
+
+  tempo de vídeo: 08min
+
+Aprenda neste Alura+ como instalar o MySQL Community no sistema operacional Linux.
+
+Segue o artigo mencionado no video: Conectando o Workbench ao MySQL no Linux
+
+https://www.alura.com.br/artigos/conectando-workbench-mysql-linux
+
+
+Instalar via terminal
+
+  - habilitar root (sudo su)
+  - atualizar pacotes/repositórios do Linux (apt update)
+    - evita problemas de dependências
+
+  - instalar servidor do MySQL
+    - apt install mysql-server
+
+  - configurações adicionais de segurança
+  
+    - mysql_secure_installation
+
+
+[ rever comandos e ajustar falhas de sintaxe ]
+
+
+    - aviso sobre validação de senha
+      - responder Yes para visualizar especificação da senha
+        - low (8 caracteres)
+        - medium (8 caracteres, letras, números, especiais, Ab)
+        - forte (8 caracteres, números, letras, especiais, Ab, dicionário)
+    
+    - a senha padrão (em branco)
+      - trocar senha
+      - confirmar nova senha
+
+    - não remover usuários anônimos
+      - cria por padrão na instalação
+
+    - manter conexão remota por padrão
+
+    - manter bancos de dados de teste instalados por padrão
+
+    - manter privilégios padrão dos usuários
+
+    - final da instalação
+
+
+Verificar se serviço está ativo
+
+  - service mysql status
+    - exibe servidor ativo
+    - tempo decorrido
+
+
+Iniciar servidor
+
+  - service mysql start
+    - pede senha
+
+
+Verificando instalação
+  
+  - mysql -u usuário -p
+
+
+final do vídeo.
+procurar documentação para solucionar problemas

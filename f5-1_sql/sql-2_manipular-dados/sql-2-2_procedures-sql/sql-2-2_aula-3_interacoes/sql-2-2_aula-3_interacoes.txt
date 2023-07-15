@@ -1,0 +1,432 @@
+https://cursos.alura.com.br/course/mysql-procedures
+
+Data Science
+Cursos de SQL e Banco de Dados
+
+Curso de
+Procedures SQL: executando código no MySQL
+
+
+
+Aula 3. Interações com o banco de dados | 0 / 10 | 34min
+
+  3-1  Manipulando banco de dados
+  3-2  Atualizando a idade
+  3-3  Parametros
+  3-4  Atualizando a comissão
+  3-5  Controle de erros
+  3-6  Comando para tratar erros
+  3-7  Atribuição de valor usando SELECT
+  3-8  Usando SELECT para atribuir valores
+  3-9  Consolidando o seu conhecimento
+  3-10  O que aprendemos?
+
+
+3-1  Manipulando banco de dados
+
+
+Transcrição
+
+[00:00] Claro que o objetivo de a gente usar uma stored procedures é fazer uma manipulação no banco de dados. Então, vamos pegar agora aqui um pequeno exemplo onde a gente vai manipular a tabela de produtos aqui do nosso banco de dados "SUCO_VENDAS". A gente vai incluir alguns produtos, modificar eles e depois apagá-los.
+
+[00:21] Primeiro, eu vou fazer esses comandos sem usar a stored procedures. Antes, baixe aqui o arquivo chamado "COMANDO.SQL". Eu vou abrir aqui ele com o editor de texto. E a gente tem aqui um insert onde eu insiro vários produtos do tipo Sabor da Serra. Depois, eu dou um update modificando o preço de lista dele que, originalmente, é 7.5 para 8.
+
+Link para baixar arquivo:
+https://caelum-online-public.s3.amazonaws.com/1223-mysqlproceduresefuncions/03/Comandos.sql
+
+
+
+[00:55] Depois, eu apago seus produtos. E a cada passo, eu faço um select aqui para poder ver o "STATUS" da tabela. Então, eu vou copiar esses comandos todos. Vou vir para o "WORKBENCH". E vou criar um script novo e vou colar eles aqui. Então, vamos lá. Eu, primeiro, vou rodar esse insert grandão aqui. Inserir dos registros. Se eu agora rodar o select, eu vejo aqui os doze registros incluídos.
+
+[01:30] Depois, eu vou fazer o update modificando o preço de lista de 7.5 para 8. Modifiquei. Posso rodar o select de novo. Note que o preço de lista está 8 agora para todos os produtos do tipo Sabor da Serra. Depois, eu vou apagar esses produtos novamente. E se eu der um select para vê-los, eu não tenho mais nada. Apaguei da minha tabela. é apenas um exercício que não tem muita prática.
+
+[02:04] Eu insiro alguns produtos, modifico e depois apago. mas é só como uma ilustração para a gente ver como é que a gente pode usar isso dentro do stored procedures. Então, eu vou copiar esses comandos e vou deixar na memória do meu clipboard. Vou vir aqui em stored procedures. "CREATE STORED PROCEDURES". E vou criar uma procedure chamada "MANIPULAÇÃO_DADOS".
+
+[02:30] E, simplesmente, entre o "BEGIN" e o "END", eu vou colocar aqueles comandos todos. Vou dar um insert, vou dar o select, o update, o select, o delete, e o select novamente. Dou o "APPLY". Tem lá o código da stored procedures final. Dou, de novo, o "APPLY" e o "FINISH". Tenho, então, aqui a minha stored procedures criada "MANIPULAÇÃO_DADOS".
+
+[03:04] Volto aqui para o meu script principal que eu executei as coisas e, aqui embaixo, eu vou dar um "CALL MANIPULAÇÃO_DADOS". Então, ao chamar essa stored procedures, eu vou executar todos aqueles comandos de uma vez só. Note que eu rodei e ele, na verdade, quando ele faz oinsert, o update ou o delete, ele não tem uma saída, ele não me mostra nada na saída.
+
+[03:36] O que a stored procedures vai me mostrar são os select. E eu tenho três selects lá. Após o insert, após o update e após o delete. Então, o primeiro insert está aqui. Ele me listou todos os produtos do tipo Sabor da Serra que foram incluídos. O segundo select muda o preço de lista que era 7,50 para 8. E o último select apaga a lista.
+
+[04:07] A gente pode fazer a coisa de uma maneira um pouco mais, assim, um pouco mais prática. Quer ver? Olha o que eu vou fazer. Deixa eu pegar esse insert aqui incial. Copia essas duas linhas aqui. Então, eu vou colocar aqui uma "CREATE STORED PROCEDURE" e eu vou colocar uma stored procedure tipo assim: "INCLUI_NOVO_PRODUTO".
+
+[04:44] E aí, eu vou colocar aqui o meu insert. Eu vou fazer assim para ficar mais organizado o insert. E eu vou colocar, claro, ponto e vírgula. Só que eu vou fazer o seguinte, eu vou dar um "DECLARE". Por exemplo, "VCÓDIGO varchar (50) DEFAULT 3000001". Eu vou copiar esse código. Vou colocar aqui "VNOME".
+
+[05:13] E eu vou colocar aqui um "SABOR_DO_MAR". Por exemplo, "700 ML MANGA". "DECLARE VSABOR varchar(50) DEFAULT MANGA. Então, eu estou inicializando as variáveis e colocando valor para elas. Então, vamos lá. Eu vou criar uma outra variável chamada "TAMANHO" e eu vou colocar aqui o "700 ML". A outra variável vai ser "EMBALAGEM". Vou colocar aqui "GARRAFA".
+
+[06:53] E a última variável que é o preço, eu vou escrever assim "PRECO", vai ser um "DECIMAL", eu não sei. Vou colocar aqui dez de dois. "DEFAULT", eu vou colocar um preço aqui: 9.25. E aí, dentro do insert, ao invés de usar "VALUES" aqui, eu vou usar "VCÓDIGO", aqui eu vou colocar o "VNOME". Depois, eu vou colocar aqui o... Qual é o terceiro? "VSABOR". Depois, eu coloco aqui o "VTAMANHO".
+
+[07:49] "VEMBALAGEM" e, finalmente, aqui no final, o "VPRECO". Vamos dar um enter aqui. Então, ficou assim. Declaro as variáveis, inicializo os valores delas e dou um insert. Aqui dentro do insert, notem que eu estou usando, diretamente, as variáveis. O nome vai ser "INCLUIR_NOVO_PRODUTO". Eu vou dar um "APPLY". "APPLY". "FINISH". Vamos voltar para cá.
+
+[08:25] Aquele nosso produto, se eu der aqui um "SELECT* FROM TABELA_DE_PRODUTOS WHERE SABOR_DO_MAR". Se eu executar esse select, note que não veio nada. Porque eu ainda não inclui nenhum produto com o nome "SABOR_DO_MAR". Deixa eu botar aqui o m maiúsculo para ficar coerente com o select que eu estou usando lá para testar.
+
+[08:59] Eu, agora, então, vou colocar aqui "CALL INCLUI_NOVO_PRODUTO". Vamos executar. Executou. Agora, se eu rodar o select, note que agora apareceu o novo produto. Ou seja, eu incluí o produto chamando uma stored procedure chamada "INCLUIR_NOVO_PRODUTO". E lá dentro tem as declarações. Claro que essa stored procedure, ela não é muito útil porque eu estou dentro da stored procedure editando o que eu quero inserir.
+
+[09:47] Se eu quiser inserir um novo produto, eu vou ter que alterar essa stored procedure, modificar na mão os valores que serão incluídos, salvar e aí, depois, rodar novamente. Mas aí, vamos por partes. A gente está aprendendo aos pouquinhos o uso do stored procedures. Então, por enquanto, eu quis fazer esses dois exemplos que, talvez não sejam muito práticos, mas apenas para a gente sentir como é que é a manipulação de banco de dados através de stored procedures.
+
+
+
+3-2  Atualizando a idade
+
+Crie uma Stored procedure que atualize a idade dos clientes. Lembrando que o comando para calcular a idade, na tabela Tabela_de_Clientes é:
+
+TIMESTAMPDIFF(YEAR, c.data_de_nascimento, CURDATE()) as idade 
+
+Nome da Stored Procedure: Calcula_Idade.
+
+
+Opinião do instrutor
+
+CREATE PROCEDURE `Calcula_Idade`()
+BEGIN
+UPDATE tabela_de_clientes set idade =  TIMESTAMPDIFF(YEAR, data_de_nascimento, CURDATE());
+END
+
+
+3-3  Parametros
+
+
+Transcrição
+
+[00:00] Lembra quando a gente mostrou a vocês a estrutura do comando do stored procedures?. Existia uma coisa aqui chamada "PARAMETROS", que, por enquanto, a gente não mexeu. Com os parâmetros, a gente pode melhorar aquela última stored procedures que inseria um produto novo, fazia uma inserção de um produto novo dentro de uma tabela de produtos.
+
+[00:26] Ao invés de eu declarar as variáveis e ir lá dentro colocar o que eu quero inserir, eu vou colocar como parâmetro o valor que vai ser inserido dentro da tabela de produtos. Então, olha só. Vamos voltar aqui para o "WORKBENCH" e vamos fazer o seguinte. A gente tem aqui a... Se a gente olhar aqui, eu tenho aqui "INCLUIR NOVO PRODUTO". Eu vou clicar com o botão da direita do mouse sobre ela.
+
+[00:59] Vou dar um "ALTER_STORED_PROCEDURES". Eu tenho ela aqui só para a gente não perder o conteúdo da stored procedures, eu vou copiar desde o "DECLARE" que está aqui até o final. Não vou copiar o "END". Eu vou dar um "COPY". Vou jogar no Notepad aqui o conteúdo desse comando e vou deixar aqui salvo. Eu, agora, vou criar uma stored procedures chamada "INCLUI_NOVO_PRODUTO_PARAMETRO".
+
+[01:43] E aqui, eu vou colar aqueles comandos. Só que notem: ao invés de eu ter as variáveis, que vão fazer parte do insert no "DECLARE", eu vou colocar aqui dentro do parênteses. Eu vou colocar isso daqui. Cole somente o nome e o seu tipo. Então, vou colocar aqui código "varchar (50)" vírgula. Nome "varchar (50)" vírgula. Sabor também 50, vírgula. Tamanho também 50. Vou dar um "Enter" aqui.
+
+[02:41] Embalagem. E o preço vai ser decimal 10 de 2. E aí, claro, esses comandos de "DECLARE" eu vou apagar. Então, ficou assim. "INCLUI_NOVO_PRODUTO_PAR METRO". Aqui, todos os parâmetros sendo declarados, todas as variáveis que eu vou usar no insert declaradas como parâmetros. E depois aqui, o insert com um "VALUES" aqui, as variáveis.
+
+[03:20] Vou dar um "APPLY". "APPLY" de novo. E "FINISH". Agora, eu vou criar aqui um script novo. Vamos fazer o seguinte. Eu vou pegar um insert desse aqui qualquer, onde está o meu script novo. Está aqui. Eu vou jogar aqui só para ter um guia. Então, olha lá. Eu vou chamar a rotina "CALL INCLUI_NOVO_PRODUTO_PAR METRO". Abre parênteses. Aí, eu tenho que colocar, agora, o valor das variáveis.
+
+[04:13] Então, digamos que primeiro eu vou colocar aqui o valor do código "4000001". Depois, eu coloco o nome. "SABOR_DO_PANTANAL" é o nome do produto. Um litro. Vou botar aqui "SABOR_MELANCIA" que é o nome do produto. Vírgula. Depois, eu coloco o sabor. "MELANCIA". Depois, eu coloco como parâmetro o tamanho. 1 litro. O próximo parâmetro que eu tenho que colocar é a embalagem.
+
+[05:07] "PET". E depois, finalmente, o preço de lista. "4.67". Então, um, dois, três, quatro, cinco, seis. Um, dois, três, quatro, cinco. Isso aí mesmo. Então, na verdade, aqui eu vou apagar agora, eu tenho isso daqui. Note que a minha stored procedure, eu estou passando como parâmetro tudo que tem que ser incluído dentro da tabela de produto, mas eu não estou rodando nenhum comando insert.
+
+[05:40] Eu não preciso saber nem o nome dos campos da tabela. Eu sei que eu tenho que passar essa lista. Antes de rodar esse cara aqui, vamos fazer um teste. Se eu der aqui um SELECT*FROM TABELA_DE_PRODUTOS WHERE CÓDIGO_DO_PRODUTO = 4000001. Vamos ver aqui a tabela. Se eu rodar esse comando select, ele não me traz nada. Aí, eu agora vou rodar essa procedure. Rodei.
+
+[06:29] Se eu, agora, rodar o select, note que agora eu tenho o produto incluído. Então, veja que eu fiz uma rotina para incluir dados dentro da tabela de produtos, e o comando até ficou muito mais simples. Eu chamo a rotina e só passo os valores. Eu não preciso saber como é que usa o comando insert, eu não preciso saber o nome das colunas. Eu não preciso me referenciar à tabela.
+
+[06:59] Eu tenho uma rotina que chamada incluir um novo produto parâmetro. Só isso. Claro que você não vai fazer uma stored procedure para rodar apenas um comando. Mas, pode ser que eu tenha que executar coisas que vão fazer várias "INSERT UPDATES" e sequenciais que apresentam uma transação, negócio. Digamos que ao efetuar uma compra, você tem que dar um insert de um "contas a receber".
+
+[07:36] Ao mesmo tempo, dar uma entrada de "estoque". Então, digamos que um tipo de informação vai gerar, vai disparar no seu banco de dados diversas manipulações e tabelas diferentes. Aí, você cria a sua stored procedure para fazer isso, passa o parâmetro que tem que ser passado. E, dentro da stored procedures, tem a regra de negócio. Esse foi um exemplo simples de passagem de parâmetro para a stored procedures que faz a manipulação de dados.
+
+
+
+3-4  Atualizando a comissão
+
+
+Crie uma Stored procedure para reajustar o % de comissão dos vendedores. Inclua como parâmetro da SP o %, expresso em valor (Ex: 0,90).
+
+Nome da Stored Procedure: Reajuste_Comissao.
+
+
+Opinião do instrutor
+
+CREATE PROCEDURE `Reajuste_Comissao` (vPercent FLOAT)
+BEGIN
+UPDATE tabela_de_vendedores SET percentual_comissao = percentual_comissao * (1 + vPercent);
+END
+
+
+
+
+3-5  Controle de erros
+
+
+Transcrição
+
+[00:00] No último vídeo, a gente construiu uma stored procedure que fazia a inclusão de dados na tabela de produtos. Eu até executei, aqui, esse comando aqui de cima chamando a stored procedure e, passando os dados para serem incluídos na tabela de produto. A vantagem é que eu não preciso me preocupar com comando insert, eu não preciso saber o nome dos campos, da tabela e assim por diante.
+
+[00:26] Só que se a gente observar o formato da tabela, por exemplo, eu tenho aqui a tabela de produtos e eu tenho esse ícone aqui com a letra "I" de informação. Se eu clicar sobre ele, eu abro aqui uma caixa de informações onde, seu eu vier aqui na aba "INDEX", eu vou ver que é chave primária o campo "CÓDIGO DO PRODUTO". O que isso significa? Eu não posso ter mais de um produto com o mesmo código.
+
+[01:00] Porque o código do produto é a chave primária. Sabendo disso, vou fechar aqui, o quê acontece se eu repetir esse comando? Eu já tenho aqui, se eu rodar o select que está aqui em cima, eu já tenho o produto "4000001". Eu já tenho esse produto. Se eu rodar o comando de novo, o quê que vai acontecer? Aqui. Vai acontecer um erro. Já esperava que esse erro ia acontecer. Eu tenho um erro de chave primária duplicada.
+
+[01:40] Eu estou tentando colocar um outro produto com o mesmo código. E aí, o próprio comando "SQL" me deu um erro. Será que é possível não ver esse erro? Ou apresentar uma mensagem mais amigável dizendo: "Olha, o seu produto foi incluído com sucesso ou não foi incluído porque a chave primária já existe"? Alguma coisa que não seja erro, que não me retorne do banco de dados esse status de erro aqui.
+
+[02:12] É possível sim, através do "ERROR HANDLER". Eu vou mostrar para vocês como é que isso funciona. Eu vou, então, aqui clicar na nossa procedure, "INCLUIR_NOVO_PRODUTO_PARAMETRO". Clico com o botão direito do mouse e eu vou alterar a procedure. O quê eu vou fazer? Eu vou, aqui, declarar uma variável que eu vou chamar de mensagem. Ela vai ser um "VACHAR (30)", por exemplo.
+
+[02:49] E aí, claro, aqui no final, eu vou fazer o seguinte "SET MENSAGEM = PRODUTO INCLUÍDO COM SUCESSO!!!". E aqui eu vou dar um "SELECT MESSAGE", ou mensagem. "SELECT MENSAGEM". Aqui tem que ter um ponto e vírgula. Então, pronto. Criei apenas uma variável do tipo mensagem, altero o valor depois do insert e mando exibir essa mensagem. Então, eu vou dar um "APPLY".
+
+[03:40] Salvei a rotina. Eu vou vir aqui no meu "SQLFILE", vou, por exemplo, agora tentar incluir o produto "4000002". "4000002" não existe. Então, teoricamente, vai ter que funcionar. Eu vou rodar. "DATA TOO LONG FOR COLUMN MENSAGEM". Eu declarei a variável Messenger com tamanho muito pequeno. Vou alterar aqui. Botei 30 e a mensagem aqui, claro, contém mais de 30. Um, dois, três, quatro, cinco. Vamos contar aqui.
+
+[04:28] De novo aqui, por causa das duas exclamações. Então, eu vou colocar mensagem aqui 40. Agora acho que vai funcionar direitinho. Não vou poder incluir o produto "4000002" de novo. Vou botar o 3. Vou executar a rotina. E aí, pronto. Ele me deu a mensagem: "PRODUTO INCLUÍDO COM SUCESSO". Mas, se eu rodo de novo o comando, continuo tendo o erro "1062", uma chave duplicada.
+
+[05:10] Então, eu mostrei a mensagem quando o produto é incluído com sucesso, mas eu queria, agora, mandar uma mensagem através aqui desse retorno, do select. Uma mensagem dizendo: "PRODUTO COM PROBLEMA". Vamos, então, voltar lá para a rotina para fazer isso. "ALTER STORED PROCEDURE". E aí, aqui embaixo eu vou escrever o seguinte comando: "DECLARE EXIT".
+
+[05:41] Ou seja, eu vou fazer o que eu vou escrever daqui para frente quando houver um erro. Então, eu vou sair do programa. "DECLARE EXIT HANDLER FOR". E aí, eu vou colocar agora o número do erro que eu quero tratar que é o "1062", que é esse número que está aqui. E aí, aqui, eu vou botar um "BEGIN" e um "END". Ponto e vírgula, novo "END". E aqui dentro, eu vou copiar essas duas linhas aqui onde eu configuro a variável "MENSAGEM".
+
+[06:30] Eu vou primeiro colocar a mensagem "PROBLEMA DE CHAVE PRIMÁRIA" e vou exibir a mensagem. O quê que vai acontecer? Quando eu executar essa stored procedure, ele vai executar essa primeira linha para criar a variável. Vai executar essa segunda linha, mas nada vai acontecer. Ele só vai guardar em memória dizendo: "se houver o erro "1062", você saia do programa, mas antes de sair do programa, execute essas duas linhas.
+
+[07:10] Mas, isso vai ficar guardadinho lá. Aí, ele vai inserir essa terceira linha que é o insert. E aí, essa linha vai dar problema. Ele vai descobrir que tem um problema, o quê que ele vai fazer? Ele não executa. Não executa essas linhas. Ele para aqui. Sai do programa, mas na hora de sair programa, ele executa esses dois comandos. Vamos ver se isso vai acontecer mesmo?
+
+[07:35] Vou dar uma praia. Vamos voltar para cá, eu vou incluir o produto com final "004" agora. Não tenho esse produto. Está lá "PRODUTO INCLUÍDO COM SUCESSO". Eu, agora, vou repetir o comando novamente. Note, ele não me deu erro. Ou seja, a rotina rodou um sucesso. E ele escreveu a mensagem:"PROBLEMA DE CHAVE PRIMÁRIA". Claro, não foi incluído porque ele não pode incluir.
+
+[08:19] Já existe o código final "004", mas o MySQL não retornou para mim erro. E ainda me mostrou uma mensagem mais amigável que eu tratei. Então é isso que eu queria mostrar a vocês sobre "ERROR HANDLER". É uma forma de eu tratar, de forma amigável, vários possíveis erros que podem acontecer com a minha rotina. Então, tá gente. Era isso que eu queria falar com vocês sobre esse assunto.
+
+
+
+
+3-6  Comando para tratar erros
+
+
+Qual é o comando para tratar erros?
+
+
+Opinião do instrutor
+
+DECLARE EXIT HANDLER FOR
+
+
+
+
+3-7  Atribuição de valor usando SELECT
+
+
+Transcrição
+
+[00:00] Vamos continuar estudando? Quando tem uma variável e eu quero atribuir um valor a ela, eu utilizo o comando "SET" para fazer isso. Aqui nessa última rotina que nós trabalhamos para tratar o erro, a gente faz isso aqui: eu dou "SET", o nome da variável e eu digo um valor. Agora, o que aconteceria se o valor que eu quero atribuir a uma variável, eu não sei se valor? Ele, na verdade, está vindo de uma tabela. Está vindo de uma consulta.
+
+[00:33] Como é que eu faço essa atribuição de variável? É o que nós vamos ver agora. E nós vamos ver isso construindo uma nova stored procedure. Mas antes de ver isso, para a gente poder editar bem esse exemplo. Eu vou fechar essa janela aqui. Essa e essa. Vou deixar aqui nenhuma janela de stored procedure aberta por enquanto, só vou deixar os scripts.
+
+[01:00] E aí, eu quero construir uma stored procedure que me retorna o sabor de um produto. Então, se eu for dar esse select aqui, "SELECT SABOR", "FROM TABELA_DE_PRODUTOS", "WHERE CÓDIGO_DO_PRODUTO" "=". Vou pegar esse 4001 como exemplo. Se eu rodar essa rotina. Na verdade, é tabela de produtos. Pronto. Eu tenho aqui o sabor do produto.
+
+[01:47] Então, eu vou querer executar essa rotina, e jogar o valor que ia esse select está trazendo para dentro de uma variável. É o que eu vou fazer nesse exemplo aqui dessa nova stored procedure. Vou clicar com o botão direito do mouse aqui. Clicar em "CREATE STORED PROCEDURE". E vou criar uma stored procedure chamada "ACHA_SABOR_PRODUTO".
+
+[02:11] Vou passar como parâmetro uma variável que eu vou chamar de "VER_PRODUTO" que é um "varchar (50)". Vou declarar aqui a variável "VSABOR". "varchar (50)". E ai, vou fazer um exemplo bem simples aqui. Se eu chegar aqui "SET VSABOR = MELANCIA" e der um "SELECT VSABOR". Claro que esse exemplo que está aqui, eu não usei "VPRODUTO" para nada, mas eu estou construindo aos poucos a rotina para vocês entenderem a diferença.
+
+[03:01] Se eu, claro, der "APPLY" e "FINISH" aqui; se eu executar essa rotina "CALL ACHA_SABOR_PRODUTO". E se eu passar como parâmetro o "4234001", claro que eu vou ter o resultado melancia. Mas é um resultado constante. Independente do produto que eu colocar aqui, ele sempre vai dar esse valor. Só que agora, eu quero que o quê eu vou ver na saída seja o resultado desta consulta aqui.
+
+[03:43] Então, eu vou copiar essa consulta. Vou clicar com o botão direito do mouse de novo em "ACHA_SABOR_PRODUTO". E vou dar um "ALTER STORED PROCEDURE". Então olha, aqui nesse ponto eu vou executar o select. Só que é claro que o código do produto que eu vou estar utilizando vai ser o conteúdo da variável que eu passei como parâmetro. Agora, como é que eu jogo o valor que isso retornou para esta variável? Esse que é o grande pulo do gato.
+
+[04:19] Você faz assim. Eu vou apagar essa linha, e eu escrevo "SABOR INTO VSABOR". Ao fazer isso. Vamos organizar aqui o código. Ao fazer isso, eu estou jogando, o que estiver retornando desse campo através do select, para a variável. E aí, depois eu dou o select para exibir o resultado. E eu vejo no resultado da stored procedure, o sabor do produto que eu passei como parâmetro.
+
+[04:57] Vou dar um "APPLY". "APPLY" de novo. E "FINISH". Então, se eu chegar aqui agora e rodar, ele não me retornou porque, na verdade, o parâmetro correto é isso aqui. É o "400000". Vamos rodar de novo. Está lá, melancia. Vamos pegar um outro produto qualquer. Primeiro, deixa eu pegar aqui códigos quaisquer. Vou dar um select genérico aqui da tabela. Vamos pegar esse aqui. Esse produto: "1013793".
+
+[05:46] Se a gente olhar aqui, o sabor é "CEREJA/MAÇÃ". Então, se eu copiar esse código aqui e jogar no resultado da stored procedure, se eu rodar está lá "CEREJA/MAÇÃ". Então, essa atribuição. A atribuição para uma variável de um valor que é resultado de um select, eu utilizo através do comando "INTO" porque aí, eu faço a associação. Era isso que eu queria falar com vocês sobre esse assunto.
+
+
+
+
+3-8  Usando SELECT para atribuir valores
+
+Crie uma variável chamada NUMNOTAS e atribua a ela o número de notas fiscais do dia 01/01/2017. Mostre na saída do script o valor da variável. (Chame esta Stored Procedure de Quantidade_Notas).
+
+
+Opinião do instrutor
+
+CREATE PROCEDURE `Quantidade_Notas`()
+BEGIN
+DECLARE NUMNOTAS INT;
+SELECT COUNT(*) INTO NUMNOTAS  FROM NOTAS_FISCAIS WHERE DATA_VENDA = '20170101';
+SELECT NUMNOTAS;
+END
+
+
+
+
+3-9  Consolidando o seu conhecimento
+
+Chegou a hora de você seguir todos os passos realizados por mim durante esta aula. Caso já tenha feito, excelente. Se ainda não, é importante que você execute o que foi visto nos vídeos para poder continuar com a próxima aula.
+
+1) Abra um novo script MYSQL.
+
+2) Digite e execute:
+
+USE `sucos_vendas`;
+DROP procedure IF EXISTS `manipulacao_dados`;
+DELIMITER $$
+
+USE `sucos_vendas`$$
+CREATE PROCEDURE `manipulacao_dados` ()
+BEGIN
+INSERT INTO tabela_de_produtos (CODIGO_DO_PRODUTO,NOME_DO_PRODUTO,SABOR,TAMANHO,EMBALAGEM,PRECO_DE_LISTA)
+     VALUES ('2001001','Sabor da Serra 700 ml - Manga','Manga','700 ml','Garrafa',7.50),
+         ('2001000','Sabor da Serra  700 ml - Melão','Melão','700 ml','Garrafa',7.50),
+         ('2001002','Sabor da Serra  700 ml - Graviola','Graviola','700 ml','Garrafa',7.50),
+         ('2001003','Sabor da Serra  700 ml - Tangerina','Tangerina','700 ml','Garrafa',7.50),
+         ('2001004','Sabor da Serra  700 ml - Abacate','Abacate','700 ml','Garrafa',7.50),
+         ('2001005','Sabor da Serra  700 ml - Açai','Açai','700 ml','Garrafa',7.50),
+         ('2001006','Sabor da Serra  1 Litro - Manga','Manga','1 Litro','Garrafa',7.50),
+         ('2001007','Sabor da Serra  1 Litro - Melão','Melão','1 Litro','Garrafa',7.50),
+         ('2001008','Sabor da Serra  1 Litro - Graviola','Graviola','1 Litro','Garrafa',7.50),
+         ('2001009','Sabor da Serra  1 Litro - Tangerina','Tangerina','1 Litro','Garrafa',7.50),
+         ('2001010','Sabor da Serra  1 Litro - Abacate','Abacate','1 Litro','Garrafa',7.50),
+         ('2001011','Sabor da Serra  1 Litro - Açai','Açai','1 Litro','Garrafa',7.50);
+
+         SELECT * FROM tabela_de_produtos WHERE NOME_DO_PRODUTO LIKE 'Sabor da Serra%';
+         UPDATE tabela_de_produtos SET PRECO_DE_LISTA = 8 WHERE NOME_DO_PRODUTO LIKE 'Sabor da Serra%';
+
+         SELECT * FROM tabela_de_produtos WHERE NOME_DO_PRODUTO LIKE 'Sabor da Serra%';
+         DELETE FROM tabela_de_produtos WHERE NOME_DO_PRODUTO LIKE 'Sabor da Serra%';
+
+         SELECT * FROM tabela_de_produtos WHERE NOME_DO_PRODUTO LIKE 'Sabor da Serra%';
+END$$
+DELIMITER ;
+
+3) Execute:
+
+Call manipulacao_dados;
+
+4) A SP acima manipula uma série de comandos no banco de dados MYSQL.
+
+Observação: Se você observar o seguinte erro:
+
+0.png
+
+É porque você deve efetuar uma modificação na configuração do seu MYSQL.
+
+Vá, no menu, em Edit / Preference e na seção SQL EDITOR vá até o final do formulário e desmarque a opção Safe Updates (Reject UPDATEs and DELETEs with no restrictions).
+
+1.png
+
+5) Podemos também usar a SP para inserir dados na tabela usando variáveis. Digite e execute:
+
+USE `sucos_vendas`;
+DROP procedure IF EXISTS `inclui_novo_produto`;
+DELIMITER $$
+
+USE `sucos_vendas`$$
+CREATE PROCEDURE `inclui_novo_produto` ()
+BEGIN
+DECLARE vCodigo varchar(50) DEFAULT '3000001';
+DECLARE vNome varchar(50) DEFAULT 'Sabor do Mar 700 ml - Manga';
+DECLARE vSabor varchar(50) DEFAULT 'Manga';
+DECLARE vTamanho varchar(50) DEFAULT '700 ml';
+DECLARE vEmbalagem varchar(50) DEFAULT 'Garrafa';
+DECLARE vPreco DECIMAL(10,2) DEFAULT 9.25;
+INSERT INTO tabela_de_produtos
+(CODIGO_DO_PRODUTO,NOME_DO_PRODUTO,SABOR,TAMANHO,EMBALAGEM,PRECO_DE_LISTA)
+     VALUES (vCodigo,
+     vNome,
+     vSabor,
+     vTamanho,
+     vEmbalagem,
+     vPreco);
+END$$
+DELIMITER ;
+
+6) Execute:
+
+Call inclui_novo_produto;
+
+7) Veja que usamos referência direta as variáveis no comando INSERT, dentro da SP.
+
+8) Podemos usar parâmetros para passar para a SP os dados que serão usados no comando de INSERT. Para isso digite e execute:
+
+USE `sucos_vendas`;
+DROP procedure IF EXISTS `inclui_novo_produto_parametro`;
+DELIMITER $$
+
+USE `sucos_vendas`$$
+CREATE PROCEDURE `inclui_novo_produto_parametro`(vCodigo varchar(50),
+vNome varchar(50), vSabor varchar(50), vTamanho varchar(50),
+vEmbalagem varchar(50), vPreco DECIMAL(10,2))
+BEGIN
+INSERT INTO tabela_de_produtos
+(CODIGO_DO_PRODUTO,NOME_DO_PRODUTO,SABOR,TAMANHO,EMBALAGEM,PRECO_DE_LISTA)
+     VALUES (vCodigo,
+     vNome,
+     vSabor,
+     vTamanho,
+     vEmbalagem,
+     vPreco);
+END$$
+DELIMITER ;
+
+9) Execute a SP:
+
+Call inclui_novo_produto_parametro('4000001', 'Sabor do Pantanal 1 Litro - Melancia',
+'Melancia', '1 Litro', 'PET', 4.76);
+
+10) Veja que o comando acima passa os dados que serão incluídos dentro da tabela através dos parâmetros.
+
+11) Repita a execução do comando novamente:
+
+Call inclui_novo_produto_parametro('4000004', 'Sabor do Pantanal 1 Litro - Melancia',
+'Melancia', '1 Litro', 'PET', 4.76);
+
+12) Note que houve um erro de chave primária porque o produto 4000004 já existe na tabela:
+
+2.png
+
+13) Podemos tratar este erro para que ele apresente uma mensagem amigável quando ocorrer. Execute e digite:
+
+USE `sucos_vendas`;
+DROP procedure IF EXISTS `inclui_novo_produto_parametro_2`;
+DELIMITER $$
+
+USE `sucos_vendas`$$
+CREATE PROCEDURE `inclui_novo_produto_parametro_2`(vCodigo varchar(50),
+vNome varchar(50), vSabor varchar(50), vTamanho varchar(50),
+vEmbalagem varchar(50), vPreco DECIMAL(10,2))
+BEGIN
+DECLARE mensagem VARCHAR(40);
+DECLARE EXIT HANDLER FOR 1062
+BEGIN
+   SET mensagem = 'Problema de Chave Primária !!!';
+   SELECT mensagem;
+END;
+
+INSERT INTO tabela_de_produtos
+(CODIGO_DO_PRODUTO,NOME_DO_PRODUTO,SABOR,TAMANHO,EMBALAGEM,PRECO_DE_LISTA)
+     VALUES (vCodigo,
+     vNome,
+     vSabor,
+     vTamanho,
+     vEmbalagem,
+     vPreco);
+SET mensagem = 'Produto incluido com sucesso !!!';
+SELECT mensagem;
+END$$
+DELIMITER ;
+
+14) Execute e digite:
+
+Call inclui_novo_produto_parametro_2('4000004', 'Sabor do Pantanal 1 Litro - Melancia',
+'Melancia', '1 Litro', 'PET', 4.76);
+
+3.png
+
+15) Repita o comando. Teremos:
+
+4.png
+
+16) Vimos que o comando SET é usado para atribuir valores as variáveis. Más podemos atribuir valores a ela usando comandos SELECT através do SELECT INTO. Execute e digite:
+
+USE `sucos_vendas`;
+DROP procedure IF EXISTS `acha_sabor_produto`;
+DELIMITER $$
+
+USE `sucos_vendas`$$
+CREATE PROCEDURE `acha_sabor_produto`(vProduto VARCHAR(50))
+BEGIN
+   DECLARE vSabor VARCHAR(50);
+   SELECT SABOR INTO vSabor FROM tabela_de_produtos WHERE codigo_do_produto = vProduto;
+   SELECT vSabor;
+END$$
+DELIMITER ;
+
+17) Execute:
+
+Call acha_sabor_produto('1013793');
+
+18) Teremos como resposta o sabor do produto passado como parâmetro.
+
+5.png
+Opinião do instrutor
+
+Continue com os seus estudos, e se houver dúvidas, não hesite em recorrer ao nosso fórum!
+
+
+
+3-10  O que aprendemos?
+
+  Como manipular comandos SQL dentro da SP;
+  
+  Como passar parâmetros para uma SP;
+  
+  Como tratamos erros;
+  
+  A atribuição de variáveis através de um comando SELECT.

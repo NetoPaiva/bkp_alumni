@@ -1,0 +1,548 @@
+https://cursos.alura.com.br/course/mysql-procedures
+
+Data Science
+Cursos de SQL e Banco de Dados
+
+Curso de
+Procedures SQL: executando código no MySQL
+
+
+
+Aula 2. Stored Procedures Básico | 0 / 10 | 42min
+
+  2-1  Conceitos Básicos
+  2-2  Mudança de delimitador
+  2-3  Criando primeiras Stored Procedures
+  2-4  Estrutura para criação da Stored Procedure
+  2-5  Alterando e excluindo Stored Procedures
+  2-6  Comando para alterar uma Stored Procedure.
+  2-7  Declarando variáveis
+  2-8  Estrutura de comando para criação de uma Stored Procedure
+  2-9  Consolidando o seu conhecimento
+  2-10  O que aprendemos?
+
+
+
+2-1  Conceitos Básicos
+
+
+Transcrição
+
+[00:00] Quem já viu os outros cursos de "SQL" com MySQL, viu que a linguagem "SQL", ela não é uma linguagem estruturada. Ela não possui, por exemplo, comando de repetição, "IF" "THE", "ELSE". Geralmente, é uma sequência de comandos, onde eu posso colocar "SELECTS", "INSERTS", "UPDATES", "DELETES", "CREATE", "DROP, e assim por diante." Isso é uma fraqueza da linguagem "SQL".
+
+[00:32] Então, o quê que os fabricantes de bancos de dados fizeram? Eles associaram, aos seus bancos de dados, uma linguagem estruturada. Onde, nessa linguagem estruturada, você pode usar comandos "SECOS", mas tem as suas regras básicas que valem para cada banco. E aí, essa linguagem estruturada interna, essa sim não segue um padrão "ANSI", como toda linguagem "SQL".
+
+[01:03] Foi uma forma de a gente poder compensar essa fraqueza, que existe na linguagem "SQL", colocando comandos de repetição, comandos de decisão, "FOR", "WHILE", "IF" dentro da linguagem "SQL". Logo, a linguagem estruturada de cada banco de dados tem a sua própria regra. Você vai fazer a linguagem estruturada do MySQL, que vai ser diferente do "SQL SERVER", que vai ser diferente do Oracle e assim por diante.
+
+[01:37] O que é padronizado é linguagem "SQL", mas a linguagem de stored procedure, onde você vai construir os seus programas, essa sim é um pouco diferente. Um profissional tem que se especializar em cada banco. Então, claro, a primeira coisa que eu tenho que aprender é a criar um programa, criar uma stored procedure dentro do meu banco de dados. E o comando para fazer isso tá mencionado aqui em cima.
+
+[02:07] Eu tirei, claro, uma imagem do manual do MySQL, onde a gente tem todas as possibilidades para a criação de uma stored procedure. Mas, o mais importante é a gente aprender esse tipo de regra. Basicamente, o comando é "CREATE PROCEDURE", o nome da procedure e, entre parênteses, nós podemos colocar os parâmetros. E aí, nós temos um "BEGIN" e "END".
+
+[02:38] Depois do "BEGIN", um "DECLARE", que é um comando que faz uma declaração de variáveis. E aí, temos as nossas linhas de comando. Vamos então, agora lá no "SQL", "MySQL WORKBENCH" e fazer a criação de uma stored procedure. Então, eu estou aqui no "WORKBENCH". Temos aqui o nosso banco de dados "SUCOS_VENDAS" e, aqui embaixo, nós temos uma opção stored procedures.
+
+[03:09] É ali que eu vou fazer a criação dos meus programas. Então, vamos lá. Eu vou clicar com o botão direito do mouse. Eu tenho aqui a opção "CLIENT START PROCEDURES". E eu tenho essa caixa de diálogo aqui, onde eu tenho o comando "CREATE PROCEDURE", o nome da procedure que eu vou criar, "BEGIN" e "END". Então, eu vou colocar aqui, onde está "CREATE PROCEDURE", vou escrever "NÃO_FAZ_NADA".
+
+[03:44] É o nome da nossa procedure. "NÃO_FAZ_NADA". Essa procedure não vai fazer nada, na verdade. Eu só vou criar ela sem comando nenhum. Só estou mostrando para vocês como a gente cria uma stored procedures. Eu vou clicar aqui em "APPLY". E aí eu tenho, na verdade, este comando aqui completo. Vamos aproveitar e falar um pouquinho sobre o que eu estou vendo aqui.
+
+[04:09] Na primeira linha, eu forço a conexão com a base "SUCOS_VENDAS". Afinal, eu estou criando a stored procedure na base de dados "SUCOS_VENDAS". Depois, eu tenho um comando que diz o seguinte: se a procedure já existir, você apaga ela. Porque se eu estou rodando esse comando, eu vou executar a criação da stored procedure novamente.
+
+[04:36] A cláusula "IF EXISTS", ela é muito legal porque é o seguinte: se for a primeira vez que eu estiver criando a stored procedure, esse comando não vai dar erro. Eu só vou "DROPAR" a procedure se ela existir. Uma coisa muito importante, é esse comando aqui "DELIMITER". A gente viu até agora que, quando a gente tem vários comandos "SECO" dentro do MySQL, a gente utiliza como separador de linha o ponto e vírgula.
+
+[05:10] Se eu coloco vários "INSERTS", vários "SELECTS", etc. é o ponto e vírgula. Quando eu estou criando uma procedure, aqui dentro entre o "BEGIN" e o "END", eu vou ter uma série de linhas. E essas linhas internas, entre o "BEGIN" e o "END", eles vão estar separados com ponto e vírgula. Só que, quando eu rodar esses comandos todos, o quê vai acontecer?
+
+[05:38] Ele vai confundir o ponto e vírgula do comando de criação da procedure, com o ponto e vírgula que vai estar aqui dentro das linhas da procedure. Então, quando eu digo: esse comando delimita, eu estou dizendo o seguinte. Daqui para baixo, o delimitador passa a ser "$$" (dólar, dólar). Toda a separação de linha, daqui para baixo, eu vou usar o "$$".
+
+[06:17] Tanto é que esse comando "USE SUCOS_VENDAS", note aqui: eu estou usando como o fim de linha o "$$". Porque a partir da linha 4, o que vale é "$$". Dentro da stored procedure, sSidney. Se eu colocar entre o "BEGIN" e o "END" um ponto e vírgula, o interpretador do MySQL vai dizer: ponto e vírgula? Mas ponto e vírgula não é separador de linha. Quem é o separador de linha é o "$$". Então, não tem problema.
+
+[06:47] Você pode deixar o ponto e vírgula. Então, ele vai interpretar o comando "CREATE" até esse "END" aqui, que também tem um "$$", como um comando único. O ponto e vírgula que vai estar aqui dentro, entre o "BEGIN" e o "END", não será separador de linha. O separador de linha é o "$$". E a,í depois que eu termino tudo, eu rodo de novo o comando "DELIMITER" para dizer: criei a stored procedure? Agora, MySQL, o delimitador passa a ser o ponto e vírgula de novo.
+
+[07:19] Então, é o que está escrito aqui nesses comandos de criação da stored procedure. Então, ok. Eu vou vir aqui. Eu vou clicar em "APPLY". Eu vou ter a mensagem "EXECUTADO COM SUCESSO". Então, se eu vier aqui, ok? Eu posso, aqui, apagar essa caixa de diálogo que ficou. Note que aqui, eu tenho uma procedure chamada "NÃO_FAZ_NADA". Ela está criada dentro da minha base. Então, é isso que eu queria mostrar a vocês. Como é que a gente cria uma stored procedure.
+
+
+
+2-2  Mudança de delimitador
+
+Por que há mudança no delimitador para um ou mais caracteres (como o $$) quando criamos a Stored Procedure?
+
+Porque é obrigatório usarmos o símbolo $$
+  Alternativa Errada! Podemos afirmar que seja obrigatório mudar o delimitador, mas não é obrigatório usarmos o $$.
+
+Apenas um comando usado pelo gerador automático do MYSQL. Não é obrigatório mudarmos o delimitador
+  Alternativa Errada! É obrigatório mudarmos o delimitador.
+
+Porque se continuarmos a usar o ponto e vírgula haverá uma confusão entre o ponto e vírgula dos comandos da Stored Procedure e dos comandos para criá-la
+  Alternativa Correta! Exatamente isto. Temos que mudar o delimitador para que não haja uma confusão entre os comandos da SP (Stored Procedure).
+
+
+
+
+2-3  Criando primeiras Stored Procedures
+
+
+Transcrição
+
+[00:00] Vamos continuar? Falando um pouquinho do nome da stored procedure. Uma stored procedure deve ter apenas letras ou números. A gente pode usar o caracter "$" (dólar) e também o "_" (underscore) para separar, de repente, dois nomes, nomes compostos que, às vezes, a stored procedure pode ter. Em vez de usar o espaço vazio, a gente usa o "UNDERSCORE".
+
+[00:24] O tamanho máximo do nome da stored procedure não pode passar de 64 caracteres. Esse nome deve ser único, ou seja, não posso ter mais de uma stored procedure dentro do mesmo banco com o mesmo nome. E a "CASE SENSITIVE", ou seja, do jeito que eu criar a stored procedure, do jeito que eu escrever no momento da criação é o jeito que eu tenho que me referenciar a ela quando eu usá-la durante as minhas consultas.
+
+[00:52] Vamos fazer alguns exemplos bem simples de stored procedure. Então, eu vou vir aqui. Botão direito do mouse. "CREATE STORED PROCEDURES". Vou criar uma stored procedures, vou chamar aqui, por exemplo, de "HELLO WORLD" - alô mundo. Vamos escrever em português. "ALO_MUNDO". Aqui dentro do comando vou colocar "SELECT "AlO_MUNDO".
+
+[01:22] Coloca o ponto e vírgula aqui para diferenciar o fim dessa linha. Então, eu tenho aqui uma stored procedure muito simples que faz um select. Dou o "APPLY". Tenho lá a minha estrutura básica de criação da stored procedure. Dou "APPLY" de novo e dou "FINISH". Então, eu tenho aqui a minha stored procedure chamada "ALO_MUNDO". Como é que eu uso ela?
+
+[02:00] Eu venho aqui na minha estrutura, coloco "CALL ALO_MUNDO". Ou seja, eu estou chamando stored procedure. E aqui que esse "SENSITIVE" funciona. Do jeito que eu escrevi aqui, eu devo referenciar ela aqui. Então, se eu rodar isso daqui tenho pronto o meu resultado. Vamos mostrar mais alguma coisa. Eu posso, por exemplo, mostrar valores em vez de mostrar textos.
+
+[02:39] Então, se eu vier aqui, por exemplo, criar uma nova stored procedure. Por exemplo: "MOSTRA_NÚMERO". Aí eu faço isso daqui "SELECT (1 + 9) - 5". Coloquei aqui uma expressão numérica qualquer. "(1 + 9) - 5". Dou "APPLY". Dou "APPLY" de novo. Dou "FINISH". Então, tem lá "MOSTRA_NÚMERO". Se eu vier aqui "CALL MOSTRA_NÚMERO ;", só vou executar esse comando. E tem lá o meu resultado que é o resultado da expressão.
+
+[03:32] Agora, note que, tanto aqui em cima quanto aqui embaixo, a coluna da tabela ficou a pressão porque eu não botei um "ALIAS" lá no meu select. Eu posso colocar um apelido para a minha coluna. E a gente usa "ALIAS", normalmente, quando a gente lida com expressões. Então, eu posso vir aqui. Vou criar uma outra stored procedure. "MOSTRA_NÚMERO_ALIAS".
+
+[04:02] Então, eu vou colocar aqui "SELECT (1 + 9) - 5 AS RESULTADO". Eu agora coloquei aqui o meu select com um "ALIAS". "APPLY". "APPLY" de novo. "FINISH". Se eu agora colocar um "CALL MOSTRA_NÚMERO_ALIAS", eu vou ver aquele mesmo resultado só que, claro, o nome da coluna já está um pouco mais, digamos assim, amigável. E aí, eu posso também concatenar coisas.
+
+[04:52] Então, eu posso escrever assim... Usar funções, por exemplo, dentro da stored procedures. Então, eu vou colocar aqui "SP_ COM_FUNÇÕES". Então, olha lá, eu posso colocar aqui "SELECT CONCAT", quem não se lembra "CONCAT", ele concatena textos. Então, eu vou botar aqui "ALO_MUNDO", concatenado, por exemplo, com alguns pontinhos, concatenado com (1 + 9 - 5) "AS ITENS_COMBINADOS".
+
+[05:45] Então, eu coloquei aqui um comando de select um pouquinho mais rebuscado. Vou dar um "APPLY". Vou dar um "APPLY" de novo. "FINISH". Então, se eu agora colocar aqui "CALL SP_COM_FUNÇÕES" e executar, tenho lá o meu resultado combinado aqui."ALO MUNDO", vários pontinhos e o cinco. Uma outra coisa interessante é a de colocar comentários na minha stored procedure.
+
+[06:35] Então, eu vou vir aqui. Vamos criar uma outra. "SP_COM_COMENTÁRIOS". O comentário na stored procedure eu posso fazer da seguinte maneira: ou eu coloco isso daqui barra asterisco. "VAMOS EXIBIR ITENS COMBINADOS". Aí, o que eu escrever embaixo fica valendo o comentário. "ENTRE TEXTOS E NÚMEROS". E aí, para fechar o comentário, asterisco, barra. Está aqui a barra de volta.
+
+[07:21] Se eu quiser colocar o comentário em uma única linha, eu boto "- -". Aí, eu posso escrever também usando a função "CONCAT". E aí, eu posso colocar aqui "SELECT CONCAT ALO MUNDO" concatenado com alguns pontinhos, concatenado com a expressão (1 + 9 - 5) "AS ITENS COMBINADOS". Ponto e vírgula. Aqui é um comentário mais complexo, maior. E aqui é o comentário de uma linha.
+
+[08:18] Posso fazer isso dentro do "BEGIN" e "END" da stored procedure. "APPLY". "APPLY" de novo. "FINISH". Quando eu executar essa nova stored procedure. Vou colocar aqui "CALL SP_COM_COMENTÁRIOS". Se eu rodar, claro que os comentários não vão fazer diferença nenhuma. Eu vou ter o meu resultado aqui, normalmente, mas eu tenho o comentário dentro do programa, da stored procedure porque eu posso ter uma stored procedure bem complexa e depois outra pessoa vir fazer a manutenção.
+
+[09:03] Ele tem comentário para que a pessoa possa ver a minha explicação do código. Fiz alguns exemplos bem simples de stored procedures para vocês entenderem.
+
+
+
+
+2-4  Estrutura para criação da Stored Procedure
+
+Qual é a estrutura do comando para criação da Stored Procedure?
+
+  CREATE PROCEDURE 
+
+  procedure_nome(parameters)
+
+  BEGIN
+
+  DECLARE declaration_statement;
+
+  ...
+  executable_statement;
+  ...
+
+  END;
+
+Alternativa Correta! Esta é a estrutura de criação da uma Stored Procedure.
+
+
+  CREATE PROCEDURE 
+
+  procedure_nome(parameters)
+
+  DECLARE declaration_statement;
+
+  BEGIN
+
+  ...
+  executable_statement;
+  ...
+
+  END;
+
+Alternativa Errada! A declaração das variáveis deve estar entre o BEGIN e END.
+
+  CREATE PROCEDURE 
+
+  procedure_nome
+
+  BEGIN
+
+  DECLARE declaration_statement;
+
+  ...
+  executable_statement;
+  ...
+
+  END;
+
+Alternativa Errada! Não temos na estrutura desta opção a declaração dos parâmetros.
+
+
+
+
+2-5  Alterando e excluindo Stored Procedures
+
+
+Transcrição
+
+[00:00] A gente pode alterar ou até mesmo excluir uma stored procedure. Para a gente não perder aquilo que a gente fez, vamos fazer o seguinte. Eu vou criar aqui uma outra stored procedure. Vou chamar aqui de "ALO_MUNDO_2". E eu vou escrever aqui "SELECT ALO_MUNDO" AS RESULTADO". Vou dar o "APPLY". "APPLY" de novo e "FINISH".
+
+[00:44] Então, tenho aqui o aluno um do dois, mas eu posso clicar sobre ele com o botão direito do mouse. Eu tenho aqui a opção "ALTER STORED PROCEDURE". Se eu clicar aqui , eu tenho a minha caixa de diálogo aqui "ALO_MUNDO". Por exemplo, "TUDO BEM?" Eu alterei, coloquei alguma coisa diferente. E aí, eu vou dar o "APPLY" e, note. Ele tem aqui aquele comando que, na verdade, ele vai dropar a stored procedure que existe e vai criar novamente.
+
+[01:23] Esse "CREATE DEFINER" aqui está especificando, na criação da stored procedure, que quem vai estar criando essa nova rotina vai ser o usuário "ROOT". Mas isso não vai fazer nenhuma diferença aqui para a gente dentro do nosso ambiente. Antes de dar "APPLY", só um instante. Copiem esse texto aqui. Eu vou entrar aqui no notepad. Eu vou colar esse texto aqui.
+
+[01:59] Vou deixar esse texto aqui salvo. Vamos voltar aqui para o nosso "WORKBENCH". Vou dar "APPLY", "FINISH". Então, agora se eu... Vamos voltar aqui para o nosso script. Se eu vier aqui e executar o "CALL ALO_MUNDO_2", eu vou ter aqui o meu resultado "ALO_MUNDO_TUDO BEM". Antes, de continuar alterando, eu poderia fazer a criação ou alteração da stored procedure direto por linha de comando. Basta eu rodar isso daqui.
+
+[02:49] Não preciso colocar esse "DEFINE" aqui. Então, se eu quiser criar uma stored procedure "ALO_MUNDO_3", eu venho aqui. Faço isso "3". "3" de novo. "ALO_MUNDO TUDO BEM?" versão 3. E executo direto, no meu MySQL, esse grupo de comandos. Se eu executar aqui, ele foi executado com sucesso. Aqui, claro, tem que dar um "REFRESH" para olhar a rotina "ALO_MUNDO_3" criado.
+
+[03:26] E apagar? Eu posso apagar uma stored procedure. Basta eu clicar sobre ela com o botão direito do mouse. Eu tenho a opção "DROP STORED PROCEDURE". O que, na verdade, vai acontecer é só rodar esse comando aqui. Sem rodar nenhum comando de cliente depois. Então, botão direito do mouse. Se eu selecionar aqui, ele vai me dar essa caixa de diálogo. Eu digo sim. Pode apagar e a rotina é apagada.
+
+[03:59] Eu posso também, vou copiar esses dois comandos. Eu posso fazer um outro script que faz isso daqui: "DROP PROCEDURE IF EXISTS ALO_MUNDO_2". Se eu rodar isso daqui, rodei com sucesso. Note que a stored procedure já foi apagada. Então, assim, eu estou usando o "WORKBENCH" porque ele já me constrói o código, mais ou menos, para criar, alterar ou excluir a stored procedure.
+
+[04:31] Mas, eu não precisava usar a caixa de diálogo. Basta eu digitar os comandos conforme o "WORKBENCH" me mostra. Se eu tiver usando uma linha de comando direto do MySQL que não tenha uma interface gráfica, só linha de comandos, basta eu fazer isso. Então, quer dizer que a caixa de diálogo do "WORKBENCH" ela só facilita o nosso trabalho, mas o que ela faz, na verdade, é escrever os comandos e executar os comandos no MySQL.
+
+
+
+
+2-6  Comando para alterar uma Stored Procedure.
+
+Qual é o comando para alterar uma Stored Procedure?
+
+  DROP PROCEDURE 
+  CREATE PROCEDURE
+
+Alternativa Correta! Não há um comando para alterar a Stored Procedure, seu corpo e seus parâmetros. Para isso, temos que apagá-la com o comando DROP e criá-la novamente.
+
+
+  ALTER PROCEDURE
+
+Alternativa Errada! Até temos este comando no MYSQL, mas ele em si não altera os parâmetros ou o corpo da procedure, mas sim outras características. Para saber mais: https://dev.mysql.com/doc/refman/8.0/en/alter-procedure.html
+
+
+  MODIFY PROCEDURE
+
+Alternativa Errada! Não temos este comando no MYSQL.
+
+
+
+
+2-7  Declarando variáveis
+
+
+Transcrição
+
+[00:01] Qualquer estrutura de programação tem a variável. A variável é que permite a gente criar o dinamismo do nosso programa. E, é claro, stored procedures em MySQL possui variáveis. As variáveis, elas são declaradas através do comando "DECLARE", o nome da variável, um "DATATYPE", que é um tipo. "DEFAULT" e um valor padrão. Esse "DEFAULT", na verdade, é um valor inicial da variável.
+
+[00:33] O "DATATYPE", ele é obrigatório ter. Toda variável tem que ter um tipo, mas ela, não necessariamente, precisa ter um valor "DEFAULT". O nome da variável deve ser apenas letras, números, o dólar, por exemplo, o underscore, se eu quiser. Esse nome de variável que eu criar, ela sempre tem que ser única dentro da stored procedure e, da mesma maneira que eu disse a respeito do nome da stored procedure, o nome da variável deve ser "CASE SENSITIVE".
+
+[01:09] Toda vez que eu me referenciar à variável, eu tenho que respeitar como eu criei, como eu a criei, respeitando o nome dela. Se eu coloquei o nome maiúsculo, tem que ser maiúsculo. Se eu coloquei o nome minúsculo, tem que ser minúsculo. O tamanho máximo do nome da variável é 255 caracteres. Não tem muito sentido eu criar uma variável com 255 caracteres. Mas é a limitação que o MySQL apresenta.
+
+[01:37] Se eu não tiver um valor "DEFAULT" para a variável, o valor dela será nulo até eu me referenciar a essa variável dentro do meu programa. E dentro de um "DECLARE", eu devo terminar ele com ponto e vírgula. Uma observação que tem aqui, que não tem aqui na apresentação, mas que é importante mencionar, é que dentro do "DECLARE", eu posso declarar várias variáveis, mas desde que com o mesmo tipo.
+
+[02:10] Alguns tipos que nós podemos usar "varchar" ou "CHAR", entre parenteses e o número de caracteres essa variável vai poder ter, não no nome, mas no conteúdo. "INTEGER" é a variável do tipo inteiro. "DECIMAL", eu declaro uma variável que seria um número decimal ou, então, eu coloco como parâmetros um número de dígitos do número e, depois, o segundo parâmetro o número de casas decimais. Aqui representados pelo p e pelo s.
+
+[02:50] "DATE", é uma variável do tipo data. Apenas a data. E quando ela for um "TIMESTAMP", ela representa data e hora. Vamos lá, então, no "MySQL WORKBENCH" e fazer alguns exemplos. Então, ok. Estou aqui no "WORKBENCH". Vamos, então, criar aqui uma stored procedures nova e eu vou chamar essa stored procedures de "EXIBE_VARIÁVEL".
+
+[03:29] Então, eu vou primeiro declarar a minha variável. "DECLARE". Por exemplo, "TEXTO" vai ser o nome da variável. "CHAR (12)". Vai ser uma variável do tipo texto, tamanho máximo de 12 caracteres. "DEFAULT". E eu vou colocar aqui, entre parênteses, o "ALO_MUNDO". Ponto e vírgula porque eu acabei a linha de "DECLARE". E aqui embaixo, eu vou colocar um "SELECT TEXTO" e o ponto e vírgula.
+
+[04:10] Então, vamos lá. Vamos rever. "DECLARE". Nome da variável. O tipo. "DEFAULT". E o valor "DEFAULT". E aqui eu faço uma referência à variável. Sendo que a gente tem que usar a mesma caixa alta ou caixa baixa. Eu escrevi texto tudo em minúsculo, então a referência da variável tem, também, que ser texto em minúsculo. "APPLY". "APPLY". "FINISH". Vou criar aqui um script novo e aqui eu vou escrever o "CALL EXIBE_VARIÁVEL".
+
+[04:58] "DATA TOO LONG FOR COLUMN TEXTO AT ROLE ONE." Vamos olhar aqui onde foi o meu erro. Se eu der um "ALTER PROCEDURE". Vamos lá, 1 2 3 4 5 6 7 8 9 10 11 12. Note que até aqui, eu tive 12 caracteres e o texto, eu inicializei com 14. Eu falei que era 12, então, a inicialização foi maior do que o tamanho do texto. Então, vamos aumentar esse cara aqui para 20, por exemplo.
+
+[05:42] Eu vou dar um "APPLY". "APPLY". "FINISH". Alterei a minha rotina. Agora, vamos lá. Eu vou rodar ela. Agora ela funcionou. Tenho aqui o meu resultado. Vamos fazer mais alguns outros exemplos. Vou criar outra rotina que eu vou chamar de "TIPOS_DE_DADOS". Então, note. Eu posso ter vários "DECLARES" dentro da própria stored procedures.
+
+[06:24] Por exemplo: "DECLARE V varchar (5) DEFAULT TEXTO." "DECLARE I INTEGER DEFAULT (10). Então, declarei uma variável V do tipo texto, uma variável I do tipo inteiro, por exemplo. "DECLARE D DECIMAL (4,2) DEFAULT (56.12)". "DECLARE DT DATE DEFAULT 20190301. Então, note, aqui eu fiz várias declarações usando tipos diferentes. E aí, eu posso colocar um "SELECT V", "SELECT I", "SELECT D", "SELECT DT".
+
+[08:03] Tá bom? Para poder exibir o resultado das quatro variáveis. Dou um "APPLY". "Dou um "APPLY" de novo. "FINISH". Se eu voltar aqui e rodar um "CALL TIPOS_DE_DADOS". Rodar só esta stored procedure, note que eu tenho aqui quatro resultados. Porque eu tive quatro selects. Então, no primeiro, eu tenho "TEXTO", no segundo eu tenho o inteiro, no terceiro tem o número decimal e o quarto, eu tenho a minha data.
+
+[08:46] Vamos ver uma coisinha a respeito da criação de stored procedures e do uso de variáveis. Vou criar uma outra aqui que eu vou botar aqui, por exemplo, "DATA_HORA_LOCAL". Eu quero exibir, por exemplo, a data do computador. Eu posso dar um "DECLARE TS DATETIME DEFAULT", por exemplo, eu posso usar aqui uma função que chama-se "LOCALTIMESTAMP".
+
+[09:28] E eu posso dar um "SELECT TS". Note que por "DEFAULT", eu usei uma função interna do MySQL para inicializar minha variável "TS" que era do tipo "DATETIME". Vou dar aqui um "APPLY". "APPLY" de novo. "FINISH". E aí, voltando aqui à minha rotina. Se eu colocar aqui um "CALL DATA_HORA_LOCAL". Vou exibir. Houve aqui um erro. Vamos olhar onde é que eu errei.
+
+[10:23] "DATA_HORA_LOCAL". Declarei a variável como "LOCALTIMESTAMP" e dei um select. Ah, eu errei o nome aqui. Botei hota, é hora. Eu estou deixando no vídeo, esses erros, justamente para mostrar a vocês que a gente, às vezes, também comete erros. Quando a gente trabalha. Então, não vou nem editar esses problemas. Mas é legal, também... Agora foi. Olha lá. Tem aqui a hora do computador e a data.
+
+[11:01] Mas é legal, também, a gente ter esses erros, para mostrar a vocês que quando a gente um comete um erro, o próprio MySQL te dá uma pista do que está errado. E aí, a gente consegue evoluir e, talvez, consertar. Coisa importante: a variável, ela deve sempre ser declarada. Vamos criar aqui mais uma outra stored procedure. Vou colocar assim "SEM_DECLARAÇÃO". E aí, aqui, eu vou fazer isso aqui: "SELECT TEXTO".
+
+[11:39] Note que eu estou usando uma variável chamada "TEXTO", mas eu não declarei ela. É claro que, quando eu executar essa nova stored procedure, ele vai me reclamar. "SEM_DECLARAÇÃO". Ele vai reclamar porque, olha lá. A coluna texto não existe. Como eu não declarei texto, ele achou que texto fosse o nome da coluna de uma tabela. Eu fiz um select, o nome da variável. Apenas o MySQL interpretou como um problema.
+
+[12:24] Eu falei que, dentro de um "DECLARE", eu posso ter várias variáveis do mesmo tipo. Vamos criar um exemplo para isso. Então, eu vou colocar aqui "MESMO_TIPO_DADOS". O nome da stored procedure. Então, vamos lá. Eu posso botar um "DECLARE DATA_1 DATA_2 DATE DEFAULT 20140913". E aí, eu vou dar um "SELECT DATA_1 DATA_2". Ponto e vírgula aqui. Ponto e vírgula aqui.
+
+[13:28] Então, olha lá. Eu declarei duas datas, coloquei o "DEFAULT" e vou exibir. Pergunta: 13 de setembro de 2014 vai ser "DEFAULT" para a "DATA_2", apenas, ou para a "DATA_2" e "DATA_1"? Se a resposta desse select vier as mesmas datas, nas duas colunas, é que, apesar de ter colocado o "DATE DEFAULT" lá no final, ele valeu para todas as variáveis da linha. Vamos ver o que vai acontecer? Para a gente tirar essa conclusão.
+
+[14:12] Vou dar aqui o "APPLY". "APPLY" de novo. Vamos rodar agora. Está aqui nosso script. "CALL", onde está nossa procedure aqui? O nome dela foi? Avancei demais. "MESMO_TIPO_DADOS". Então, vamos lá. "MESMO_TIPO_DADOS". Então, vamos lá. Se a gente ver o mesmo valor para as duas colunas, é porque o "DECLARE valeu para as duas variáveis na mesma linha.
+
+[15:00] Se a gente ver só na segunda, eu teria que ter colocado "DECLARE" antes. Vamos ver. O valor ficou igual. Isso significa o seguinte. Quando a gente declara duas ou mais variáveis na mesma linha, o que a gente coloca depois como "TIPO" e como "DEFAULT" vale para todo mundo da linha. Então, assim. Se eu tenho duas ou mais variáveis que vão ter "DEFAULT"s diferentes, mesmo sendo do mesmo tipo, eu devo usar duas linhas de "DECLARE" diferentes.
+
+[15:44] Porque se eu colocar o "DEFAULT" para uma, vai valer para a outra. Se elas não tiverem "DEFAULT", eu posso colocar todas as declarações na mesma linha, não importa. A gente pode, também, durante a procedure dar valores diferentes às variáveis diferentes daquelas que foram inicializadas no "DEFAULT". Vamos fazer aqui mais uma stored procedure que é "ATRIBUI_VALOR".
+
+[16:20] Então, olha só. Eu vou dar um "DECLARE". Vou chamar a variável aqui de "TEXTO". Vai ser um "varchar (30), por exemplo. "DEFAULT TEXTO_INICIAL". E aí, eu vou dar aqui um "SELECT TEXTO". Depois, na linha debaixo, eu vou escrever isso daqui "SET TEXTO = TEXTO MODIFICADO". E aí, depois eu vou dar um outro "SELECT TEXTO". Então, vamos lá. Declarei a variável "TEXTO" como "DEFAULT_TEXTO_INICIAL". Aí, eu mostro o conteúdo dela na saída.
+
+[17:26] Depois eu digo: olha, essa variável "TEXTO" vai receber um outro valor "TEXTO MODIFICADO". E aí, eu apresento o resultado de novo. Vamos ver o que vai acontecer. "APPLY. "APPLY" de novo. "FINISH". Vamos procurar lá o nosso script. Ele está aqui. Eu, agora, vou colocar "CALL", agora esse eu não vou esquecer o nome: "ATRIBUI_VALOR". Vamos lá. Então, está lá. Inicialmente, o valor de texto era "TEXTO INICIAL".
+
+[18:07] Depois ficou "TEXTO MODIFICADO". Então, era um pouco isso que eu queria mostrar para vocês sobre declaração de variáveis. Como é que a gente pode.... Quais são as regras que eu tenho que usar na hora de declarar. O que eu posso mudar depois do valor da variável dentro do programa. Enfim, fiz um apanhado superficial. A gente ainda vai ver muita coisa sobre variável no decorrer do curso. Mas, como apresentação, eu acho que esse vídeo ficou legal.
+
+
+
+
+2-8  Estrutura de comando para criação de uma Stored
+Procedure
+
+Crie 4 variáveis com as características abaixo:
+
+Nome: Cliente. 
+Tipo: Caracteres com 10 posições. 
+Valor: João
+
+Nome: Idade. 
+Tipo: Inteiro. 
+Valor: 10
+
+Nome: DataNascimento. 
+Tipo: Data. 
+Valor: 10/01/2007
+
+Nome: Custo. 
+Tipo: Número com casas decimais. 
+Valor: 10,23
+
+Construa um script declarando estas variáveis, atribuindo valores a elas e exibindo na saída do MYSQL.(Dê o nome da procedure de sp_Exerc01).
+Opinião do instrutor
+
+CREATE PROCEDURE `Exerc01`()
+
+BEGIN
+
+DECLARE Cliente VARCHAR(10);
+DECLARE Idade INT;
+DECLARE DataNascimento DATE;
+DECLARE Custo FLOAT;
+
+SET Cliente = 'João';
+SET Idade = 10;
+SET DataNascimento = '20170110';
+SET Custo = 10.23;
+
+SELECT Cliente;
+SELECT Idade;
+SELECT DataNascimento;
+SELECT Custo;
+
+END
+
+
+
+
+2-9  Consolidando o seu conhecimento
+
+Chegou a hora de você seguir todos os passos realizados por mim durante esta aula. Caso já tenha feito, excelente. Se ainda não, é importante que você execute o que foi visto nos vídeos para poder continuar com a próxima aula.
+
+1) Abra o MYSQL Workbench e crie um novo script de comandos sql.
+
+2) Vamos iniciar criando algumas Stored Procedures. Clique com o botão da direita do mouse sobre Stored Procedure, abaixo do banco sucos_vendas.
+
+0.png
+
+3) Digite, após o comando CREATE PROCEDURE, entre as aspas, o nome da Stored Procedure (alo_mundo).
+
+4) Entre o BEGIN END digite:
+
+select 'Alô Mundo !!!!';
+
+5) Clique em Apply. Iremos ver o comando abaixo:
+
+USE `sucos_vendas`;
+DROP procedure IF EXISTS `alo_mundo`;
+DELIMITER $$
+USE `sucos_vendas`$$
+CREATE PROCEDURE `alo_mundo` ()
+BEGIN
+select 'Alô Mundo !!!!';
+END$$
+DELIMITER ;
+
+6) Os comandos acima representam os comandos MYSQL para a criação da Stored Procedure. Se executarmos estes comandos direto no script MYSQL a SP (Stored Procedure) será criada.
+
+7) Clique em Apply e depois Finish.
+
+8) Podemos ver, abaixo do nó Stored Procedure, a mesma criada.
+
+1.png
+
+9) No Script digite e execute:
+
+Call alo_mundo;
+
+10) Temos o resultado:
+
+2.png
+
+11) Digite, no script SQL:
+
+USE `sucos_vendas`;
+DROP procedure IF EXISTS `mostra_numero`;
+DELIMITER $$
+USE `sucos_vendas`$$
+CREATE PROCEDURE `mostra_numero` ()
+BEGIN
+select (1 + 9) - 5;
+END$$
+DELIMITER ;
+
+Observação: Diferente um pouco dos vídeos onde as SPs foram criadas pelo assistente, aqui, no passo a passo, iremos apresentar o código MYSQL para cria a SP.
+
+12) No Script digite e execute:
+
+Call mostra_numero;
+
+3.png
+
+13) Vimos, aqui, uma SP que retorna uma expressão numérica.
+
+14) Digite e execute:
+
+USE `sucos_vendas`;
+DROP procedure IF EXISTS `mostra_numero_alias`;
+DELIMITER $$
+USE `sucos_vendas`$$
+CREATE PROCEDURE `mostra_numero_alias` ()
+BEGIN
+select (1 + 9) - 5 as RESULTADO;
+END$$
+DELIMITER ;
+
+15) No Script digite e execute:
+
+Call mostra_numero_alias;
+
+4.png
+
+Você pode ver que o resultado da SP trouxe o nome da coluna como um Alias.
+
+16) Digite e execute:
+
+USE `sucos_vendas`;
+DROP procedure IF EXISTS `sp_com_funcoes`;
+DELIMITER $$
+USE `sucos_vendas`$$
+CREATE PROCEDURE `sp_com_funcoes` ()
+BEGIN
+SELECT CONCAT('Alô Mundo !!!!', '.....', (1 + 9) - 5) as ITENS_COMBINADOS;
+END$$
+DELIMITER ;
+
+17) No Script digite e execute:
+
+Call sp_com_funcoes;
+
+5.png
+
+Vimos como podemos usar funções MYSQL dentro das SPs.
+
+18) Digite e execute:
+
+USE `sucos_vendas`;
+DROP procedure IF EXISTS `sp_com_funcoes`;
+DELIMITER $$
+
+USE `sucos_vendas`$$
+CREATE PROCEDURE `sp_com_funcoes` ()
+BEGIN
+SELECT CONCAT('Alô Mundo !!!!', '.....', (1 + 9) - 5) as ITENS_COMBINADOS;
+END$$
+DELIMITER ;
+
+19) No Script digite e execute:
+
+Call sp_com_funcoes;
+
+6.png
+
+Vimos como podemos usar funções MYSQL dentro das SPs.
+
+20) Digite e execute:
+
+USE `sucos_vendas`;
+DROP procedure IF EXISTS `sp_com_comentarios`;
+DELIMITER $$
+
+USE `sucos_vendas`$$
+CREATE PROCEDURE `sp_com_comentarios` ()
+BEGIN
+
+/* Vamos exibir itens combinados
+entre textos e números */
+
+-- Usando a função CONCAT
+
+SELECT CONCAT('Alô Mundo !!!!', '.....', (1 + 9) - 5) as ITENS_COMBINADOS;
+END$$
+DELIMITER ;
+
+21) No Script digite e execute:
+
+Call sp_com_comentarios;
+
+7.png
+
+No exemplo acima vimos como usamos comentários dentro do código da SP.
+
+22) Digite e execute:
+
+USE `sucos_vendas`;
+DROP procedure IF EXISTS `alo_mundo_2`;
+DELIMITER $$
+
+USE `sucos_vendas`$$
+CREATE PROCEDURE `alo_mundo_2` ()
+BEGIN
+SELECT 'Alô Mundo !!!!, tudo bem?' as RESULTADO;
+END$$
+DELIMITER ;
+
+23) Vamos alterar uma SP existente. Para isso digite o comando abaixo:
+
+USE `sucos_vendas`;
+DROP procedure IF EXISTS `alo_mundo_3`;
+DELIMITER $$
+
+USE `sucos_vendas`$$
+CREATE PROCEDURE `alo_mundo_3`()
+BEGIN
+SELECT 'Alô Mundo !!!!, tudo bem? Versão 3' as RESULTADO;
+END$$
+DELIMITER ;
+
+Note que o comando apaga a SP através de um DROP e a cria novamente com o novo código. É desta maneira que podemos alterar um SP já existente.
+
+24) Como já mencionado no comando de alteração de uma SP, se quer apenas apagá-la, digite.
+
+USE `sucos_vendas`;
+DROP procedure IF EXISTS `alo_mundo_2`;
+
+25) Podemos usar variáveis para atribuir valores e usar as mesmas nos comandos da SP. Digite e execute o comando abaixo:
+
+USE `sucos_vendas`;
+DROP procedure IF EXISTS `exibe_variavel`;
+DELIMITER $$
+
+USE `sucos_vendas`$$
+CREATE PROCEDURE `exibe_variavel` ()
+BEGIN
+declare texto char(20) default 'Alô Mundo !!!!';
+SELECT texto;
+END$$
+DELIMITER ;
+
+Nesta SP declaramos uma variável (texto), atribuímos um valor inicial padrão e exibimos na saída.
+
+26) Digite e execute:
+
+call exibe_variavel;
+
+8.png
+Opinião do instrutor
+
+Continue com os seus estudos, e se houver dúvidas, não hesite em recorrer ao nosso fórum!
+
+
+
+
+2-10  O que aprendemos?
+
+  A criar uma Stored Procedure (SP) que retorna um texto;
+  
+  Como a SP retorna um valor em sua saída;
+  
+  A usar funções do MYSQL e comentários na SP;
+  
+  Como alterar uma SP já existente;
+  
+  Como excluir uma SP.

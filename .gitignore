@@ -1,3 +1,10 @@
 ignorar
 *.mp4
 **/*.mp4
+
+*.deb
+*.gz
+
+*.pdf
+
+!certificados_alumni/*.pdf

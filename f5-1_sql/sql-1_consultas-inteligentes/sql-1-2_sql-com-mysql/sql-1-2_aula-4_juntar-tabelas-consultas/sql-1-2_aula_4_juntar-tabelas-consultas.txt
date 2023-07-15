@@ -1,0 +1,1022 @@
+https://cursos.alura.com.br/course/mysql-consultas-sql
+
+Data Science > Cursos de SQL e Banco de Dados
+
+Curso de
+Consultas SQL: avançando no SQL com MySQL
+
+
+Formação com esse curso
+SQL com MySQL Server da Oracle
+
+
+Instrutor(a)
+
+    instructor Victorino Vila
+
+    Linkedin
+    https://www.linkedin.com/in/victorino-vila-1a160/
+
+    Victorino é desenvolvedor com foco em .NET e Web Services. Durante mais de 20 anos gerenciou uma empresa de consultoria na área de tecnologia. Criou e desenvolveu projetos de planejamento, Business Intelligence e integração de dados, além de databases de relacionamento com foco em BI, usando SQL Server, MYSQL ou DB2. Suas soluções são usadas em Brasil, nos EUA e na Europa. É consultor sênior certificado em SAP BW.
+
+
+Faça esse curso de SQL e Banco de Dados e:
+
+    Pagine seus dados com LIMIT
+    Filtre consultas com HAVING
+    Entenda a diferença entre o LEFT e RIGHT JOIN
+    Saiba usar Sub-Queries
+    Use funções do MySQL
+    Ordene os seus dados usando o ORDER BY
+    Agrupe dados com GROUP BY
+
+
+
+Aulas
+
+4- Juntando tabelas e consultas | 0 / 14 | 70min
+
+https://cursos.alura.com.br/course/mysql-consultas-sql/section/8144/tasks
+
+  4-1  Usando JOINS
+  4-2  Obtendo o faturamento anual
+  4-3  Exemplos de LEFT e RIGHT JOIN
+  4-4  Selecionando o tipo de JOIN
+  4-5  Exemplos de FULL e CROSS JOIN
+  4-6  Nova seleção do tipo de JOIN
+  4-7  Juntando consultas
+  4-8  Diferenças de UNION e UNION ALL
+  4-9  Subconsultas
+  4-10  Relação entre HAVING e subconsulta
+  4-11  Visão
+  4-12  Características da visão
+  4-13  Consolidando o seu conhecimento
+  4-14  O que aprendemos?
+
+
+
+4-1  Usando JOINS
+
+Transcrição
+
+Aqui você pode fazer o download completo do projeto realizado neste vídeo e continuar seus estudos.
+https://caelum-online-public.s3.amazonaws.com/1221-mysqlconsultasavancadas/04/Consultas%20INNER%20JOIN.sql
+
+
+Nesse vídeo, aprenderemos sobre as estruturas de JOIN, que permitem unir duas ou mais tabelas dentro de uma única consulta SQL. Basta que essas tabelas tenham um campo em comum.
+
+Até agora, somente realizamos seleções de uma tabela por vez, no entanto, haverá ocasiões em que será necessário consultar informações que estão separadas, parte em uma tabela e parte em outra. Nesses contextos, aplicaremos os JOINs.
+
+A seguir, veremos alguns exemplos, usando duas tabelas:
+Nome	Identificador
+João	1
+Maria	3
+Pedro	4
+Cláudia	6
+Identificador	Hobby
+1	Praia
+3	Futebol
+5	Fotografia
+8	Artesanato
+
+Na primeira tabela (à esquerda do vídeo), temos o nome de quatro clientes e seus respectivos números identificadores. Na segunda tabela (à direita), são apresentados os números identificadores de quatro clientes e seus respectivos hobbies. Note que Pedro e Cláudia (números 4 e 6) não têm hobbies correspondentes na segunda tabela. Por outro lado, fotografia e artesanato são atividades atreladas a clientes que não estão cadastrados na primeira tabela (números 5 e 8). De resto, percebemos que João (identificador 1), gosta de ir à praia e que o hobby de Maria (identificador 3) é o futebol.
+
+Então, o primeiro tipo de JOIN que conheceremos é o INNER JOIN:
+
+SELECT A.NOME, B.HOBBY FROM 
+TABELA_ESQUERDA A
+INNER JOIN TABELA_DIREITA B
+ON A.IDENTIFICADOR = B.IDENTIFICADOR;
+
+Nome	Hobby
+João	Praia
+Maria	Futebol
+
+Vamos entender por partes o que cada pedaço dessa consulta significa. Em TABELA_ESQUERDA A, estamos declarando "A" como o alias da primeira tabela, à esquerda. Um processo semelhante é feito em TABELA_DIREITA B. Assim, quando escrevemos SELECT A.NOME, B.HOBBY, vamos selecionar o campo "NOME" da tabela A e o campo "HOBBY" da tabela B. Ao final, temos a expressão ON A.IDENTIFICADOR = B.IDENTIFICADOR, na qual especificamos qual é campo em comum dessas tabelas. E o comando INNER JOIN é responsável por retornar somente os registros que têm correspondência nas duas tabelas. Nesse caso, são apenas João e Maria (identificadores 1 e 3).
+
+Outro tipo de comando JOIN é o LEFT JOIN:
+
+SELECT A.NOME, B.HOBBY FROM 
+TABELA_ESQUERDA A
+LEFT JOIN TABELA_DIREITA B
+ON A.IDENTIFICADOR = B.IDENTIFICADOR;
+
+Left, em inglês, significa "esquerda" e, no nosso contexto, representa a primeira tabela, à esquerda, a que vem antes do comando JOIN. Com essa consulta, o MySQL trará todos os elementos da tabela A e somente os correspondentes da tabela B:
+Nome	Hobby
+João	Praia
+Maria	Futebol
+Pedro	NULL
+Cláudia	NULL
+
+Assim, todos os clientes da primeira tabela estarão no retorno, inclusive aqueles que não têm hobby (Pedro e Cláudia). Nesses casos, a coluna "HOBBY" apresentará valor null (nulo).
+
+Da mesma maneira que existe o LEFT JOIN, temos o RIGHT JOIN, que trará todos os elementos da tabela da direita (ou seja, a que vem depois do comando JOIN) e somente os correspondentes da esquerda:
+
+SELECT A.NOME, B.HOBBY FROM 
+TABELA_ESQUERDA A
+RIGHT JOIN TABELA_DIREITA B
+ON A.IDENTIFICADOR = B.IDENTIFICADOR;
+
+Nome	Hobby
+João	Praia
+Maria	Futebol
+NULL	Fotografia
+NULL	Artesanato
+
+Todos os hobbies da tabela B estarão no retorno, inclusive aqueles cujo identificador de cliente não aparece na outra tabela (fotografia e artesanato). Nesses casos, na coluna "NOME" aparecerá com o valor null.
+
+Além disso, existe também o FULL JOIN:
+
+SELECT A.NOME, B.HOBBY FROM 
+TABELA_ESQUERDA A
+FULL JOIN TABELA_DIREITA B
+ON A.IDENTIFICADOR = B.IDENTIFICADOR;
+
+Com esse comando, todos os elementos tanto de uma quanto da outra tabela aparecerão no resultado. Os registros que não tiverem correspondência, apresentarão a coluna com valor nulo:
+Nome	Hobby
+João	Praia
+Maria	Futebol
+Pedro	NULL
+Cláudia	NULL
+NULL	Fotografia
+NULL	Artesanato
+
+Portanto, a consulta nos informa que João gosta de praia; Maria curte futebol; Pedro e Cláudia não tem hobby; e não há clientes cadastrados que gostem de fotografia ou artesanato.
+
+Por fim, temos o CROSS JOIN (junção cruzada), que retorna o produto cartesiano das duas tabelas. Ele tem uma estrutura ligeiramente diferente das anteriores, sem nenhuma condição de união. Ou seja, quando não especificamos qual é o campo que liga as tabelas, o MySQL fará o CROSS JOIN:
+
+SELECT A.NOME, B.HOBBY FROM
+TABELA_ESQUERDA A, TABELA-DIREITA B;
+
+Nome	Hobby
+João	Praia
+Maria	Praia
+Pedro	Praia
+Cláudia	Praia
+João	Futebol
+Maria	Futebol
+Pedro	Futebol
+Cláudia	Futebol
+...	...
+
+Ou seja, o resultado mostrará todas as combinações possíveis. Como temos quatro clientes na tabela A e quatro hobbies na tabela B, o resultado apresentará 16 combinações.
+
+Agora, vamos fazer alguns exemplos práticos no MySQL Workbench. Criaremos um novo script e iniciaremos consultando a tabela de vendedores e a de notas fiscais:
+
+SELECT * FROM tabela_de_vendedores;
+SELECT * FROM notas_fiscais;
+
+Analisando o retorno, verificamos que a primeira tabela apresenta dados dos vendedores e a segunda mostra informações de notas fiscais. Elas têm um campo em comum: "MATRICULA". Por meio dessa relação, é possível criar uma consulta que junte informações de ambas:
+
+SELECT * FROM tabela_de_vendedores A
+INNER JOIN notas_fiscais B
+ON A.MATRICULA = B.MATRICULA;
+
+    Os campos em comum usados no JOIN não precisam ter o mesmo nome. O importante é que tenham o mesmo conteúdo para que a relação entre tabelas seja viável.
+
+O retorno mostrará todos os campos da tabela A e todos os campos da tabela B, unidos em um só resultado. Será possível ver os dados de cada nota fiscal emitida, junto das informações do vendedor associado a ela.
+
+Com essas duas tabelas, também podemos usar outros comandos com o JOIN, como o GROUP BY. Por exemplo, se nossa meta for descobrir quantas notas fiscais cada vendedor emitiu:
+
+SELECT A.MATRICULA, A.NOME, COUNT(*) FROM
+tabela_de_vendedores A
+INNER JOIN notas_fiscais B
+ON A.MATRICULA = B.MATRICULA
+GROUP BY A.MATRICULA, A.NOME;
+
+O mesmo resultado será obtido se fizéssemos um CROSS JOIN entre essas tabelas e filtrássemos (com WHERE) apenas os registros que têm correspondência no número da matrícula:
+
+SELECT A.MATRICULA, A.NOME, COUNT(*) FROM
+tabela_de_vendedores A, notas_fiscais B
+WHERE A.MATRICULA = B.MATRICULA
+GROUP BY A.MATRICULA, A.NOME;
+
+Entre essas duas opções, recomendo o uso da primeira, porque com o INNER JOIN é mais fácil de compreender as junções (principalmente quando ficam complexas) e também por ser a forma mais moderna. A segunda opção era comum há uns 20 anos, quando estruturas como INNER JOIN, LEFT JOIN e RIGHT JOIN ainda não existiam, e há quem ainda opte por ela, mas eu particularmente prefiro o INNER JOIN.
+
+Assim, nesse vídeo fizemos um apanhado dos tipos de JOINe nos aprofundamos um pouco, na prática, no uso do INNER JOIN.
+
+
+
+
+4-2  Obtendo o faturamento anual
+
+Obtenha o faturamento anual da empresa. Leve em consideração que o valor financeiro das vendas consiste em multiplicar a quantidade pelo preço.
+
+Opinião do instrutor
+
+SELECT YEAR(DATA_VENDA), SUM(QUANTIDADE * PRECO) AS FATURAMENTO
+FROM notas_fiscais NF INNER JOIN itens_notas_fiscais INF 
+ON NF.NUMERO = INF.NUMERO
+GROUP BY YEAR(DATA_VENDA)
+
+
+
+4-3  Exemplos de LEFT e RIGHT JOIN
+
+Transcrição
+
+Aqui você pode fazer o download completo do projeto realizado neste vídeo e continuar seus estudos.
+
+https://caelum-online-public.s3.amazonaws.com/1221-mysqlconsultasavancadas/04/Consultas%20LEFT%20e%20RIGHT%20JOIN.sql
+
+
+Nesse vídeo, vamos nos aprofundar no LEFT JOIN, que é o comando de junção de tabelas que mostrará todos os elementos da tabela à esquerda do JOIN(ou seja, a que vem antes do JOIN) e somente os correspondentes da tabela à direita.
+
+Vamos abrir o MySQL Workbench, criar um novo script e começar com uma seleção que trará a contagem de clientes cadastrados:
+
+SELECT COUNT(*) FROM tabela_de_clientes;
+
+    Lembrete: quando omitimos os campos selecionados e somente usamos uma fórmula, não há necessidade de usar o GROUP BY. É o que acabamos de fazer com a fórmula COUNT.
+
+O retorno revela que existem 15 clientes cadastrados. Em seguida, vamos consultar para quantas pessoas foram emitidas notas fiscais, verificando a quantidade de CPFs diferentes que aparecem na tabela de notas fiscais:
+
+SELECT CPF, COUNT(*) FROM notas_fiscais GROUP BY CPF;
+
+Ao contar os registros, saberemos que apenas 14 clientes receberam nota fiscal. Ou seja, dos 15 cadastrados, 1 deles nunca comprou suco de frutas na nossa empresa.
+
+Para descobrir quem é esse cliente, primeiro vamos rodar uma consulta com INNER JOIN para descobrir quais registros apresentam correspondências no campo "CPF":
+
+SELECT DISTINCT A.CPF, A.NOME, B.CPF FROM tabela_de_clientes A
+INNER JOIN notas_fiscais B ON A.CPF = B.CPF;
+
+Ou seja, o retorno mostrará os CPFs e os nomes dos clientes para os quais foram emitidas notas - são as 14 pessoas que vimos anteriormente. No entanto, substituindo o INNER JOIN pelo LEFT JOIN, o resultado será diferente:
+
+SELECT DISTINCT A.CPF, A.NOME, B.CPF FROM tabela_de_clientes A
+LEFT JOIN notas_fiscais B ON A.CPF = B.CPF;
+
+Agora, veremos todos os elementos da tabela de clientes e apenas os correspondentes da tabela de notas fiscais. Analisando o resultado, encontraremos o cliente Fábio Carvalho que tem um campo nulo, ou seja, que nunca comprou na empresa, então nunca recebeu nota fiscal e, consequentemente, seu CPF não tem consta na tabela de notas fiscais.
+
+Desse modo, se o gerente da empresa de sucos nos pedisse para investigar quais clientes cadastrados nunca realizaram uma compra, uma maneira de encontrar a resposta é filtrar os registros que apresentam o campo B.CPF nulo (no caso, apenas o Fábio):
+
+SELECT DISTINCT A.CPF, A.NOME, B.CPF FROM tabela_de_clientes A
+LEFT JOIN notas_fiscais B ON A.CPF = B.CPF
+WHERE B.CPF IS NULL;
+
+    IS, em inglês, significa "é/está". Logo, no comando WHERE B.CPF IS NULL, buscamos campos que têm valor null.
+
+Lembrando que sempre temos a opção de incrementar nossos filtros. Um exemplo seria refinar a busca pelo ano da data da venda, que é uma informação que encontramos na tabela de notas fiscais:
+
+SELECT DISTINCT A.CPF, A.NOME, B.CPF FROM tabela_de_clientes A
+LEFT JOIN notas_fiscais B ON A.CPF = B.CPF
+WHERE B.CPF IS NULL AND YEAR(B.DATA_VENDA) = 2015;
+
+Nesse caso, utilizamos o operador AND, então nosso retorno será vazio, porque não há registros que atendam às duas condições ao mesmo tempo.
+
+Quanto ao RIGHT JOIN, sabemos que ele tem quase a mesma mecânica do LEFT JOIN, exceto que trará todos os elementos da tabela à direita do comando JOIN e somente os correspondentes da outra tabela. Para fazer uma demonstração, podemos realizar a mesma consulta que fizemos anteriormente, invertendo os nomes das tabelas:
+
+SELECT DISTINCT A.CPF, A.NOME, B.CPF FROM notas_fiscais B
+RIGHT JOIN tabela_de_clientes A ON A.CPF = B.CPF;
+
+Apesar da consulta ligeiramente diferente, como invertemos as tabelas, o resultado é o mesmo que obtivemos com o LEFT JOIN.
+
+
+
+
+4-4  Selecionando o tipo de JOIN
+
+Preencha a sentença em interrogação do comando SQL abaixo: SELECT * FROM TAB1 ???? TAB2 ON TAB1.COD = TAB2.COD
+
+Dica: Queremos ver todos os registros da TAB2 e apenas os que correspondem da TAB1.
+
+RIGHT JOIN
+  Alternativa Correta! O RIGHT JOIN é a opção correta.
+
+INNER JOIN
+  Alternativa Errada! Esta alternativa somente lista os correspondentes.
+
+LEFT JOIN
+  Alternativa Errada!Esta mostra todos os dados da TAB1 e somente os que correspondem para TAB2.
+
+
+
+
+
+4-5  Exemplos de FULL e CROSS JOIN
+
+Transcrição
+
+Aqui você pode fazer o download completo do projeto realizado neste vídeo e continuar seus estudos.
+
+https://caelum-online-public.s3.amazonaws.com/1221-mysqlconsultasavancadas/04/Consultas%20FULL%20e%20CROSS%20JOIN.sql
+
+
+Nesse vídeo, faremos alguns exemplos com CROSS JOIN e FULL JOIN.
+
+Durante a explicação, vamos aproveitar para aprender como realizar essas consultas sem utilizar os aliases para as tabelas. No vídeo anterior, por exemplo, apelidamos a tabela de clientes de "A" e a tabela de notas fiscais de "B" e, para nos referir aos seus respectivos campos, usamos essas letras como prefixos (A.NOMEe B.CPF). Agora, veremos que também é possível usar os próprios nomes das tabelas.
+
+Quanto aos prefixos e sufixos, notaremos que eles são obrigatórios somente quando lidamos com campos em comum nas tabelas. Costumamos usá-los porque, em geral, não sabemos de antemão se os campos se repetem, porém por vezes os prefixos são opcionais e vamos demonstrar isso.
+
+Então, começaremos abrindo um novo script no MySQL Workbench e selecionando a tabela de vendedores:
+
+SELECT * FROM tabela_de_vendedores;
+
+Uma das colunas do resultado é "BAIRRO", referente ao local onde o vendedor possui escritório. Consultando a tabela de clientes, veremos que ela também contém esse campo:
+
+SELECT * FROM tabela_de_clientes;
+
+Sabendo dessa relação entre as tabelas, criaremos uma seleção com JOIN:
+
+SELECT * FROM tabela_de_vendedores INNER JOIN tabela_de_clientes
+ON tabela_de_vendedores.BAIRRO = tabela_de_clientes.BAIRRO;
+
+    Note que nessa seleção não usamos alias! Em vez disso, utilizamos os próprios nomes das tabelas como prefixo, como em tabela_de_vendedores.BAIRRO. Inclusive, quando digitamos o ponto depois do nome da tabela, o MySql Workbench até mostra algumas sugestões de preenchimento para agilizar o processo.
+
+O retorno mostrará os clientes que estão em bairros onde há escritórios da empresa de sucos. Nessa consulta, obtemos somente 7 registros, o que significa que 8 clientes estão em bairros que não têm escritório, pois no vídeo anterior descobrimos que são 15 clientes cadastrados no total.
+
+No momento, essa seleção traz todos os campos das duas tabelas, então vamos melhorar essa organização e trazer somente os quatro campos que nos interessam:
+
+SELECT tabela_de_vendedores.BAIRRO,
+tabela_de_vendedores.NOME,
+tabela_de_clientes.BAIRRO,
+tabela_de_clientes.NOME  FROM tabela_de_vendedores INNER JOIN tabela_de_clientes
+ON tabela_de_vendedores.BAIRRO = tabela_de_clientes.BAIRRO;
+
+Assim, fica mais fácil de visualizar as informações.
+
+Para demonstrar um ponto interessante sobre os prefixos, acrescentaremos também a coluna "DE_FERIAS", da tabela de vendedores:
+
+SELECT tabela_de_vendedores.BAIRRO,
+tabela_de_vendedores.NOME,
+tabela_de_vendedores.DE_FERIAS,
+tabela_de_clientes.BAIRRO,
+/* ... */
+
+A coluna "DE_FERIAS" não existe na tabela de clientes, ela está presente apenas na de vendedores. Isso nos permite omitir o prefixo, pois o MySQL consegue deduzir e localizar sozinho o campo a que nos referimos, já que ele só existe em uma tabela. No caso de "BAIRRO" e "NOME", por exemplo, o prefixo é obrigatório para se fazer a distinção, pois são campos em comum nas duas tabelas que estamos usando:
+
+SELECT tabela_de_vendedores.BAIRRO,
+tabela_de_vendedores.NOME,
+DE_FERIAS,
+/* ... */
+
+A seguir, vamos rodar a consulta com LEFT JOIN:
+
+SELECT tabela_de_vendedores.BAIRRO,
+tabela_de_vendedores.NOME,
+DE_FERIAS,
+tabela_de_clientes.BAIRRO,
+tabela_de_clientes.BAIRRO,
+tabela_de_clientes.NOME  FROM tabela_de_vendedores LEFT JOIN tabela_de_clientes
+ON tabela_de_vendedores.BAIRRO = tabela_de_clientes.BAIRRO;
+
+Essa seleção retornará todos os vendedores e apenas os clientes correspondentes. Encontraremos, por exemplo, o registro da vendedora Roberta Martins, cujo bairro (Copacabana) não tem correspondência na tabela de clientes. Chegamos a essa conclusão porque a terceira e a quarta coluna estão com valor null. Ou seja, o seu escritório não está em um lugar estratégico, pois não há clientes cadastrados que comprem sucos nesse bairro.
+
+Substituindo o comando por RIGHT JOIN, o MySQL trará todos os clientes e apenas os vendedores correspondentes. Com esse resultado, é possível verificar vários compradores que moram em bairros em que não há escritórios da empresa de sucos, como Água Santa e Brás - os três primeiros campos são nulos. Esse tipo de análise seria interessante, por exemplo, para investigar onde há mais demanda para abrir um novo escritório.
+
+Podemos ver todas essas informações ao mesmo tempo usando o FULL JOIN - todos os vendedores, inclusive os que tem escritórios nos bairros onde não há compradores; e todos os clientes, inclusive os que moram em bairros em que não há escritórios da empresa de sucos:
+
+SELECT tabela_de_vendedores.BAIRRO,
+tabela_de_vendedores.NOME,
+DE_FERIAS,
+tabela_de_clientes.BAIRRO,
+tabela_de_clientes.BAIRRO,
+tabela_de_clientes.NOME  FROM tabela_de_vendedores FULL JOIN tabela_de_clientes
+ON tabela_de_vendedores.BAIRRO = tabela_de_clientes.BAIRRO;
+
+Ao executar essa consulta, o programa vai alegar um erro. Como foi explicado no começo do curso, a linguagem SQL segue o padrão ANSI, que respeita uma série de regras, mas nem todo gerenciador de banco de dados realiza 100% do que esse padrão especifica. O FULL JOIN está contido no padrão ANSI, porém o MySQL não suporta esse comando. Ou seja, não conseguiremos fazer o FULL JOIN no MySQL Workbench. Existe, no entanto, uma alternativa para o FULL JOIN que é fazer o LEFT JOIN e o RIGHT JOIN simultaneamente. Nesse momento, ainda não aprendemos como fazer essa união de consultas, então vamos reservar esse erro e, mais adiante, quando estudarmos mais sobre o assunto, voltaremos a ele.
+
+Para finalizar esse vídeo, vamos criar um exemplo com CROSS JOIN, lembrando que esse comando não requer que seja especificado o campo em comum nem que seja escrito o termo CROSS JOIN:
+
+SELECT tabela_de_vendedores.BAIRRO,
+tabela_de_vendedores.NOME, 
+DE_FERIAS,
+tabela_de_clientes.BAIRRO,
+tabela_de_clientes.NOME FROM tabela_de_vendedores, tabela_de_clientes;
+
+Assim, o resultado será uma análise combinatória entre bairros de vendedores e bairros de clientes.
+
+
+
+
+4-6  Nova seleção do tipo de JOIN
+
+Preencha a sentença onde temos pontos de interrogação no comando SQL abaixo:
+
+SELECT * FROM
+TAB1 ???? TAB2 ON TAB1.COD = TAB2.COD
+
+Dica: Queremos ver todos os registros da TAB2 e todos da TAB1.
+
+INNER JOIN
+  Alternativa Errada! Esta alternativa somente lista os correspondentes.
+
+FULL JOIN
+  Alternativa Correta !Esta irá mostrar todos os registros das duas tabelas, correspondendo ou não.
+
+RIGHT JOIN
+  Alternativa Errada! Esta mostra todos os dados da TAB1 e somente os que correspondem para TAB2.
+
+
+
+
+4-7  Juntando consultas (UNION)
+
+Transcrição
+
+Aqui você pode fazer o download completo do projeto realizado neste vídeo e continuar seus estudos.
+
+https://caelum-online-public.s3.amazonaws.com/1221-mysqlconsultasavancadas/04/Consultas%20UNION.sql
+
+
+Nesse vídeo, aprenderemos sobre o comando UNION, que é responsável por juntar duas consultas. Para exemplificar, vamos supor que fizemos duas consultas separadas e cada uma delas retornou uma das seguintes tabelas:
+Identificador	Hobby
+1	Praia
+3	Futebol
+5	Fotografia
+8	Artesanato
+Identificador	Hobby
+12	Cinema
+14	Computador
+15	Ver TV
+18	Tênis
+
+Ao rodar o comando UNION com essas duas consultas, será retornada uma lista única com todos os registros:
+Identificador	Hobby
+1	Praia
+3	Futebol
+5	Fotografia
+8	Artesanato
+12	Cinema
+14	Computador
+15	Ver TV
+18	Tênis
+
+Note que há uma restrição para esse comando: é necessário que as tabelas que serão unidas tenham o mesmo número e tipo de campo. No caso, não tivemos problemas, pois as duas tabelas têm duas colunas e os tipos dos campos correspondem.
+
+    Os nomes das colunas em si não precisam ser iguais para que o UNION funcione. Veremos mais adiante o que acontece quando temos nomes diferentes.
+
+Agora, vamos modificar a segunda tabela para que haja um registro idêntico ao da primeira (praia):
+Identificador	Hobby
+1	Praia
+14	Computador
+15	Ver TV
+18	Tênis
+
+Executando o UNION simples, o DISTINCT automaticamente será aplicado, de forma que os registros iguais também serão unidos. No caso, o registro "praia" será mostrado um única vez:
+Identificador	Hobby
+1	Praia
+3	Futebol
+5	Fotografia
+8	Artesanato
+14	Computador
+15	Ver TV
+18	Tênis
+
+Mas se nosso objetivo seja unir sem aplicar o DISTINCT, então utilizaremos a cláusula UNION ALL:
+Identificador	Hobby
+1	Praia
+3	Futebol
+5	Fotografia
+8	Artesanato
+1	Praia
+14	Computador
+15	Ver TV
+18	Tênis
+
+Observe que agora o registro "praia" aparece duas vezes.
+
+Vamos criar alguns exemplos na nossa base "sucos_vendas". Abriremos o MySQL Workbench, criaremos um novo script e começaremos com duas seleções:
+
+SELECT DISTINCT BAIRRO FROM tabela_de_clientes;
+SELECT DISTINCT BAIRRO FROM tabela_de_vendedores;
+
+Como resultado, teremos duas tabelas - uma apresentará 11 registros referentes aos bairros dos clientes, outra mostrará 4 bairros onde há escritórios dos vendedores. Note que alguns dados se cruzam: Tijuca, por exemplo, é um elemento que aparece em ambas.
+
+A seguir, vamos executar um comando com UNION:
+
+SELECT DISTINCT BAIRRO FROM tabela_de_clientes
+UNION
+SELECT DISTINCT BAIRRO FROM tabela_de_vendedores;
+
+No retorno, note que Tijuca é o terceiro item e não se repete mais na lista. Por ser comum às duas tabelas, esse bairro torna-se um registro só. Em outras palavras, o DISTINCTfoi aplicado. Para mudar esse cenário, teríamos que rodar o UNION ALL:
+
+SELECT DISTINCT BAIRRO FROM tabela_de_clientes
+UNION ALL
+SELECT DISTINCT BAIRRO FROM tabela_de_vendedores;
+
+Nesse caso, Tijuca aparecerá duas vezes.
+
+É interessante notar que o DISTINCT funciona somente se os registros forem idênticos em todos os campos que aparecem na consulta. Para fazer uma demonstração, vamos acrescentar o campo "NOME" na seleção:
+
+SELECT DISTINCT BAIRRO, NOME FROM tabela_de_clientes
+UNION
+SELECT DISTINCT BAIRRO, NOME FROM tabela_de_vendedores;
+
+    Perceba que o campo "NOME" no primeiro SELECT refere-se aos nomes dos clientes, enquanto no segundo é relativo aos vendedores.
+
+Nesse contexto, o DISTINCT só vai agrupar registros caso o bairro E o nome forem iguais.
+
+Podemos continuar incrementando a consulta, colocando mais campos:
+
+SELECT DISTINCT BAIRRO, NOME, 'CLIENTE' as TIPO FROM tabela_de_clientes
+UNION
+SELECT DISTINCT BAIRRO, NOME, 'VENDEDOR' as TIPO FROM tabela_de_vendedores;
+
+Note que as consultas permanecem com o mesmo número de colunas e os tipos das colunas correspondem. Além do mais, usamos o alias "TIPO" nos dois SELECTs para a nova coluna.
+
+Entretando, ao optar por apelidos diferentes em cada SELECT, apenas o primeiro será considerado. Os nomes das colunas correspondem aos da primeira seleção:
+
+SELECT DISTINCT BAIRRO, NOME, 'CLIENTE' as TIPO_CLIENTE FROM tabela_de_clientes
+UNION
+SELECT DISTINCT BAIRRO, NOME, 'VENDEDOR' as TIPO_VENDEDOR FROM tabela_de_vendedores;
+
+No retorno, vê-se que a terceira coluna é "TIPO_CLIENTE", o alias "TIPO_VENDEDOR" foi ignorado. Independentemente do nome, os valores permanecem os mesmos.
+
+A título de exemplo, vamos tentar rodar um UNION com número de colunas diferentes, incluindo o campo "CPF" da tabela de clientes:
+
+SELECT DISTINCT BAIRRO, NOME, 'CLIENTE' as TIPO_CLIENTE, CPF FROM tabela_de_clientes
+UNION
+SELECT DISTINCT BAIRRO, NOME, 'VENDEDOR' as TIPO_VENDEDOR, MATRICULA FROM tabela_de_vendedores;
+
+O MySQL Workbench acusará um problema, como esperado, pois temos 3 colunas no primeiro SELECT e duas no outro. Podemos resolver essa situação adicionando uma coluna ao segundo SELECT. No caso, vamos adicionar a matrícula, que é do mesmo tipo da coluna "CPF":
+
+SELECT DISTINCT BAIRRO, NOME, 'CLIENTE' as TIPO_CLIENTE, CPF FROM tabela_de_clientes
+UNION
+SELECT DISTINCT BAIRRO, NOME, 'VENDEDOR' as TIPO_VENDEDOR, MATRICULA FROM tabela_de_vendedores;
+
+Assim, solucionamos o erro. Perceba, no entanto, que o nome da última coluna será "CPF". Como vimos há pouco, serão considerados apenas os nomes do primeiro SELECT.
+
+Finalmente, vamos retomar aquele problema que tivemos no último vídeo, quando descobrimos que o MySQL não suporta o FULL JOIN. Agora que conhecemos o comando UNION, somos capazes de simular o FULL JOIN ao fazer a união de uma consulta LEFT JOIN com outra RIGHT JOIN:
+
+SELECT tabela_de_vendedores.BAIRRO,
+tabela_de_vendedores.NOME, DE_FERIAS,
+tabela_de_clientes.BAIRRO,
+tabela_de_clientes.NOME  FROM tabela_de_vendedores LEFT JOIN tabela_de_clientes
+ON tabela_de_vendedores.BAIRRO = tabela_de_clientes.BAIRRO
+UNION
+SELECT tabela_de_vendedores.BAIRRO,
+tabela_de_vendedores.NOME, DE_FERIAS,
+tabela_de_clientes.BAIRRO,
+tabela_de_clientes.NOME  FROM tabela_de_vendedores RIGHT JOIN tabela_de_clientes
+ON tabela_de_vendedores.BAIRRO = tabela_de_clientes.BAIRRO;
+
+Os dois SELECTs tem a mesma quantidade de colunas e os tipos dos campos correspondem, então a consulta será bem-sucedida. Enfim, poderemos analisar em uma única consulta quais são os bairros que têm clientes e vendedores (por exemplo, Tijuca); quais possuem vendedores mas não dispõem de compradores cadastrados (Copacabana); e em quais moram clientes porém não têm vendedores (por exemplo, Água Santa). Essas eram exatamanente as informações que esperávamos do FULL JOIN, ou seja, esse comando pode ser simulado com o LEFT JOIN e o RIGHT JOIN com o UNION entre eles.
+
+
+
+
+
+4-8  Diferenças de UNION e UNION ALL
+
+Quando eu quero listar todos os registros de duas ou mais tabelas, listando inclusive os repetidos, qual UNION eu uso?
+
+UNION
+  Alternativa Errada! Esta opção não apresenta os repetidos.
+
+Tanto faz
+  Alternativa Errada! Há diferenças entre os UNIONs.
+
+UNION ALL
+  Alternativa Correta! Esta irá mostrar todos repetindo os valores.
+
+
+
+
+4-9  Subconsultas
+
+Transcrição
+
+Aqui você pode fazer o download completo do projeto realizado neste vídeo e continuar seus estudos.
+
+https://caelum-online-public.s3.amazonaws.com/1221-mysqlconsultasavancadas/04/Consultas%20SUB%20CONSULTAS.sql
+
+
+Nesse vídeo, vamos estudar sobre as subconsultas, que nada mais são do que consultas dentro de outras consultas. Para exemplificar, vamos usar duas tabelas. Na tabela 1, temos o campo "X" que apresenta letras e o campo "Y" que possui valores numéricos. Na tabela 2, temos apenas o campo "Y", também com números:
+X	Y
+A	2
+A	1
+B	2
+B	3
+B	1
+C	1
+C	5
+C	2
+D	3
+Y
+1
+2
+
+Nosso primeiro objetivo será fazer uma consulta que liste todos os registros da tabela 1 cujo Y está presente na tabela 2. Como sabemos que a tabela 2 contém apenas dois valores (1 e 2), uma opção seria usar a cláusula WHERE junto do IN:
+
+SELECT X, Y FROM tab1
+WHERE Y IN (1,2);
+
+A condição WHERE Y IN (1,2) significa que vamos filtrar registros cujo Y esteja dentro do conjunto de valores (1,2):
+X	Y
+A	2
+A	1
+B	2
+B	1
+C	1
+C	2
+
+Assim, a consulta retornará exatamente o que queríamos. Entretanto, se um novo valor for adicionado à tabela 2, seremos obrigados a reescrever o script para que continue funcionando do modo que desejamos. Por exemplo, acrescentando um registro à tabela 2:
+Y
+1
+2
+3
+
+Precisaríamos embutir manualmente o novo valor no script:
+
+SELECT X, Y FROM tab1
+WHERE Y IN (1,2,3);
+
+    Essa prática é um exemplo de hardcoding. Caso ache interessante, você pode pesquisar mais sobre o assunto.
+
+Essa situação se tornará insustentável, se a tabela 2 for modificada constantemente. Uma solução, então, é usar uma subconsulta:
+
+SELECT X, Y FROM tab1
+WHERE Y IN (SELECT Y FROM tab2);
+
+Dessa forma, vamos filtrar registros cujo Y esteja dentro do conjunto de valores resultantes da subconsulta SELECT Y FROM tab2 (que, por sua vez, retorna todos os valores da tabela 2). Teremos uma consulta dentro de outra - ou seja, uma subconsulta. E o resultado seria o seguinte:
+X	Y
+A	2
+A	1
+B	2
+B	3
+B	1
+C	1
+C	2
+D	3
+
+A seguir, criaremos outro exemplo. Vejamos a consulta a seguir e o seu retorno (que chamaremos de tabela 3):
+
+SELECT X, SUM(Y) as NEW_Y FROM tab1 GROUP BY X;
+
+X	NEW_Y
+A	3
+B	6
+C	8
+D	3
+
+Vamos supor que precisamos filtrar os valores da tabela 3 cujo "NEW_Y" seja igual a 3. Usando uma subconsulta, poderíamos fazer o seguinte:
+
+SELECT Z.X, Z.NEW_Y FROM (SELECT X, SUM(Y) as NEW_Y FROM tab1 GROUP BY X) Z WHERE Z.NEW_Y = 3;
+
+No trecho FROM (SELECT X, SUM(Y) as NEW_Y FROM tab1 GROUP BY X) Z, estamos usando como subconsulta o SELECT que fizemos anteriormente (cujo retorno é a tabela 3). Além disso, declaramos "Z" como alias e, por fim, colocamos a condição desejada: WHERE Z.NEW_Y = 3:
+X	NEW_Y
+A	3
+D	3
+
+Para tornar a explicação mais clara, vamos praticar com alguns exemplos no nosso banco de dados "sucos_vendas". Abriremos o MySQL Workbench, criaremos um novo script e começaremos consultando os bairros da tabela de vendedores:
+
+SELECT DISTINCT BAIRRO FROM tabela_de_vendedores;
+
+O retorno mostrará que existem 4 bairros onde há escritórios de vendedores: Tijuca, Jardins, Copacabana e Santo Amaro. Em seguida, vamos selecionar os clientes cujos bairros têm escritórios de vendedores. Uma forma de buscar esses dados é a seguinte:
+
+SELECT * FROM tabela_de_clientes WHERE BAIRRO 
+IN ('Tijuca','Jardins','Copacabana','Santo Amaro');
+
+Com essa consulta, conseguiremos as informações que desejamos, porém digitar os nomes dos bairros um a um não é conveniente, visto que a qualquer momento podem surgir novos escritórios em outros bairros e seremos forçados a reescrever a consulta.
+
+Então, vamos encontrar uma forma melhor de buscar esses dados. Sabemos que a lista Tijuca, Jardins, Copacabana, Santo Amaro é o retorno de SELECT DISTINCT BAIRRO FROM tabela_de_vendedores. Desse modo, podemos usar essa seleção como uma subconsulta:
+
+SELECT * FROM tabela_de_clientes WHERE BAIRRO 
+IN (SELECT DISTINCT BAIRRO FROM tabela_de_vendedores);
+
+Em outras palavras: da tabela de clientes, vamos selecionar clientes cujo bairro esteja dentro de que conjunto? Do resultado de SELECT DISTINCT BAIRRO FROM tabela_de_vendedores. Assim, obtemos o mesmo retorno, porém de uma forma mais sustentável - se os bairros dos vendedores mudarem, a consulta continua funcionando.
+
+Vamos fazer outro exemplo, dessa vez consultando o maior preço de cada tipo de embalagem:
+
+SELECT EMBALAGEM, MAX(PRECO_DE_LISTA) as PRECO_MAXIMO FROM tabela_de_produtos
+GROUP BY EMBALAGEM;
+
+Assim, descobrimos que a garrafa mais cara custa R$13,31; o PET mais caro é R$38,01; e a lata, R$4,56. Então, faremos uma seleção das embalagens cujo preço mais caro é maior ou igual que R$10. Utilizaremos nossa última consulta como uma subconsulta com apelido "X":
+
+SELECT X.EMBALAGEM, X.PRECO_MAXIMO FROM 
+(SELECT EMBALAGEM, MAX(PRECO_DE_LISTA) AS PRECO_MAXIMO FROM tabela_de_produtos
+GROUP BY EMBALAGEM) X WHERE X.PRECO_MAXIMO >= 10;
+
+Assim, o MySQL está interpretando a subconsulta como se fosse uma tabela com alias "X", então X.EMBALAGEM e X.PRECO_MAXIMO referem-se à seleção dos campos dessa tabela "X". Ao final, temos a cláusula WHERE que filtra apenas os preços maiores ou iguais a R$10. O resultado dessa consulta mostra que apenas embalagens PET e garrafas têm o preço máximo maior que R$10.
+
+Com esse exemplo, constatamos que uma consulta pode assumir o papel de uma tabela - foi o que ocorreu com a subconsulta apelidada de "X". Inclusive, seria possível até usar JOIN e outros comandos nesses casos.
+
+
+
+
+4-10  Relação entre HAVING e subconsulta
+
+Qual seria a consulta usando subconsulta que seria equivalente a:
+
+  SELECT CPF, COUNT(*) FROM notas_fiscais
+  WHERE YEAR(DATA_VENDA) = 2016
+  GROUP BY CPF
+  HAVING COUNT(*) > 2000
+
+Opinião do instrutor
+
+SELECT X.CPF, X.CONTADOR FROM 
+(SELECT CPF, COUNT(*) AS CONTADOR FROM notas_fiscais
+WHERE YEAR(DATA_VENDA) = 2016
+GROUP BY CPF) X WHERE X.CONTADOR > 2000
+
+
+
+
+4-11  Visão (VIEW)
+
+Transcrição
+
+Aqui você pode fazer o download completo do projeto realizado neste vídeo e continuar seus estudos.
+
+https://caelum-online-public.s3.amazonaws.com/1221-mysqlconsultasavancadas/04/visao.sql
+
+
+Falaremos, a seguir, de uma estrutura importante no MySQL chamada visão, que é uma tabela lógica, resultado de uma consulta. Ao realizar uma query (seja simples ou complexa) podemos salvá-la com um nome (por exemplo, "V") e mais tarde referenciar essa visão como se fosse uma tabela (SELECT * FROM V).
+
+As visões (ou views) são bastante úteis quando precisamos disponibilizar parte do nosso banco de dados para uma pessoa externa, pois criamos uma tabela lógica com limites que garantam a segurança das informações e concedemos acesso somente a essa visão.
+
+Como a view é uma consulta, ela tem um custo. Toda vez que referenciamos uma visão, pelos bastidores do banco de dados estamos executando uma seleção. Assim sendo, se a visão for um SELECT muito complexo, ao acessá-la o desempenho pode ser prejudicado.
+
+Como exemplo, usaremos uma tabela que tem o campo "X" com letras e o campo "Y" com números:
+X	Y
+A	2
+A	1
+B	2
+B	3
+B	1
+C	1
+C	5
+C	2
+D	4
+
+Vamos supor que fizemos a seguinte seleção, que agupa os valores iguais de "X" e traz a soma dos respectivos "Y":
+
+SELECT X, SUM(Y) as NEW_Y FROM tab1 GROUP BY X;
+
+E obtemos um retorno que chamaremos de tabela 2:
+X	NEW_Y
+A	3
+B	6
+C	8
+D	4
+
+Daremos um nome a esse SELECT que executamos, criando uma visão chamada "VW_VIEW". Então, se rodarmos SELECT * FROM VW_VIEW, teremos como retorno o resultado de SELECT X, SUM(Y) as NEW_Y FROM tab1 GROUP BY X (a tabela 2). Ou seja, é como se essa view fosse uma subconsulta.
+
+Com essa visão podemos, por exemplo, fazer um JOIN com outra tabela ou até com outras visões. Testaremos esse conceito usando a seguinte tabela (que chamaremos de tabela 3):
+W	Y
+F	3
+G	6
+H	8
+I	8
+J	3
+K	6
+L	3
+M	3
+N	4
+
+Vamos fazer a seguinte consulta com INNER JOIN:
+
+SELECT VW_VIEW.X, TAB3.W FROM VW_VIEW
+INNER JOIN TAB3 ON VW_VIEW.NEW_Y = TAB3.Y;
+
+E o retorno será o seguinte:
+X	W
+A	F
+B	G
+C	H
+C	I
+A	J
+B	K
+A	L
+A	M
+D	N
+
+Vamos ao MySQL Workbench para praticar no nosso banco de dados. Criaremos um novo script e repetiremos a consulta que fizemos no vídeo passado, selecionando os maiores preços de acordo com as embalagens:
+
+SELECT EMBALAGEM, MAX(PRECO_DE_LISTA) AS MAIOR_PRECO FROM tabela_de_produtos
+GROUP BY EMBALAGEM;
+
+E, novamente, usaremos esse SELECT como uma subconsulta para ver apenas os preços máximos que são maiores ou iguais a 10:
+
+SELECT X.EMBALAGEM, X.MAIOR_PRECO FROM
+(SELECT EMBALAGEM, MAX(PRECO_DE_LISTA) AS MAIOR_PRECO FROM tabela_de_produtos
+GROUP BY EMBALAGEM) X WHERE X.MAIOR_PRECO >= 10;
+
+Até este ponto é o que fizemos no vídeo anterior. Agora, criaremos uma view com o conteúdo dessa subconsulta. No painel à esquerda do programa, dentro da base "sucos_vendas" que está em negrito, vamos clicar em "Views", com o botão direito do mouse. Em seguida, selecionaremos "Create View..." e uma nova aba será aberta. Nela, vamos digitar o seguinte código:
+
+CREATE VIEW 'VW_MAIORES_EMBALAGENS' AS
+SELECT EMBALAGEM, MAX(PRECO_DE_LISTA) AS MAIOR_PRECO FROM tabela_de_produtos
+GROUP BY EMBALAGEM
+
+Dessa forma, estamos criando uma visão com nome "VW_MAIORES_EMBALAGENS".
+
+    É padrão usar as letras "VW" no início dos nomes das views, essa prática facilita a identificação das visões na hora de programar.
+
+A seguir, clicaremos em "Apply", depois em "OK". Uma caixa de diálogos será aberta, mostrando o script que o programa vai executar. Note que o código está ligeiramente diferente, em vez do CREATE VIEW que digitamos, temos CREATE OR REPLACE VIEW. Essa mudança significa que o MySQL vai criar a visão ou subtituí-la, caso já exista. Vamos pressionar "Apply" mais uma vez e, então, "Finish".
+
+Agora, no painel à esquerda, é possível expandir o subgrupo Views e, dentro dele, temos a visão que acabamos de criar. Analisando o conteúdo de "vw_maiores_embalagens", veremos as colunas "EMBALAGEM" e "MAIOR_PRECO". Ou seja, a visão tem um comportamento igual ao de uma tabela.
+
+Voltando ao nosso script, agora que criamos a visão podemos refazer a última seleção de um jeito alternativo, substituindo a subconsulta pela nova view:
+
+SELECT X.EMBALAGEM, X.MAIOR_PRECO FROM
+vw_maiores_embalagens X WHERE X.MAIOR_PRECO >= 10;
+
+Também temos a opção de fazer, por exemplo, um JOIN com informações da tabela de produtos e dados da visão:
+
+SELECT A.NOME_DO_PRODUTO, A.EMBALAGEM, A.PRECO_DE_LISTA, X.MAIOR_PRECO
+FROM tabela_de_produtos A INNER JOIN vw_maiores_embalagens X
+ON A.EMBALAGEM = X.EMBALAGEM;
+
+Trata-se de um INNER JOIN entre uma tabela e a view que criamos que, nos bastidores, está executando o agrupamento dos maiores preços de cada tipo de embalagem.
+
+Com essa seleção, verificamos no primeiro registro, por exemplo, que o suco "Sabor da Montanha - 700 ml - Uva" em garrafa custa R$6,30 e o produto mais caro vendido em garrafa é R$13,31. Para descobrir qual é o item em garrafa mais caro, basta encontrar o registro em que a embalagem é garrafa e o preço de lista também é R$13,31 - é o "Festival de Sabores - 2 Litros - Açaí".
+
+Podemos, inclusive, criar um indicador de porcentagem para saber o quão mais barato está cada produto, comparado ao valor da coluna "MAIOR_PRECO":
+
+SELECT A.NOME_DO_PRODUTO, A.EMBALAGEM, A.PRECO_DE_LISTA, X.MAIOR_PRECO,
+((A.PRECO_DE_LISTA / X.MAIOR_PRECO) -1) * 100 AS PERCENTUAL
+FROM tabela_de_produtos A INNER JOIN vw_maiores_embalagens X
+ON A.EMBALAGEM = X.EMBALAGEM;
+
+Dessa forma, concluímos que "Sabor da Montanha - 700 ml - Uva" vendido em garrafa é 52% mais barato que a garrafa mais cara. Já "Festival de Sabores - 2 Litros - Açaí" é 0% mais barato, pois é justamente a garrafa mais cara.
+
+Conhecendo visões, portanto, já começamos a fazer alguns relatórios, até mesmo calculando indicadores como percentual de preços. Juntando vários conceitos de SQL, estamos adquirindo noções de como construir relatórios para os clientes a partir da análise de informações dos bancos de dados.
+
+
+
+
+4-12  Características da visão
+
+Marque a opção falsa:
+
+Podemos criar uma visão de qualquer comando SQL
+  Alternativa Errada! Esta alternativa é verdadeira.
+
+Não podemos criar uma visão de uma outra visão
+  Alternativa Correta! Esta é a opção falsa. Podemos sim criar uma visão de uma visão.
+
+Podemos criar uma visão usando comandos ou um assistente do Workbench.
+  Alternativa Errada! Esta alternativa é verdadeira.
+
+
+
+
+4-13  Consolidando o seu conhecimento
+
+Chegou a hora de você seguir todos os passos realizados por mim durante esta aula. Caso já tenha feito, excelente. Se ainda não, é importante que você execute o que foi visto nos vídeos para poder continuar com a próxima aula.
+
+1) Aqui veremos como conectar as consultas de tabelas diferentes. Chamamos esta união de JOIN.
+
+2) Veja o conteúdo de duas tabelas digitando os comandos abaixo:
+
+SELECT * FROM tabela_de_vendedores;
+
+1.png
+
+SELECT * FROM notas_fiscais;
+
+2.png
+
+3) Podemos conectar essas duas tabelas pelo campo em comum (MATRICULA). Digite:
+
+SELECT * FROM tabela_de_vendedores A
+INNER JOIN notas_fiscais B
+ON A.MATRICULA = B.MATRICULA;
+
+3.png
+
+4) Podemos aplicar agrupamentos ao resultado da consulta que conecta uma ou mais tabelas:
+
+SELECT A.MATRICULA, A.NOME, COUNT(*) FROM
+tabela_de_vendedores A
+INNER JOIN notas_fiscais B
+ON A.MATRICULA = B.MATRICULA
+GROUP BY A.MATRICULA, A.NOME;
+
+4.png
+
+5) Nem sempre todas as linhas podem ser conectadas. Existem outros tipos de JOINs que nos permite identificar quem não pode ser conectado. Veja a consulta abaixo:
+
+SELECT COUNT(*) FROM tabela_de_clientes;
+
+5.png
+
+Ela mostra que temos 15 clientes.
+
+6) Vamos fazer um JOIN com a tabela de notas fiscais e ver quantos clientes possuem notas emitidas. Digite:
+
+6.png
+
+Se você contar verá que, na consulta acima, temos 14 linhas. Existe um cliente que está no cadastro mas não teve nota fiscal emitida.
+
+7) Podemos usar o LEFT JOIN. Digite:
+
+SELECT DISTINCT A.CPF, A.NOME, B.CPF FROM tabela_de_clientes A
+LEFT JOIN notas_fiscais B ON A.CPF = B.CPF
+
+7.png
+
+O cliente que possui o CPF vindo da tabela de notas com o valor nulo, é o cliente que nunca emitiu nota fiscal.
+
+8) A seleção correta seria:
+
+SELECT DISTINCT A.CPF, A.NOME, B.CPF FROM tabela_de_clientes A
+LEFT JOIN notas_fiscais B ON A.CPF = B.CPF
+WHERE B.CPF IS NULL;
+
+8.png
+
+9) Podemos juntar duas ou mais consultas, Desde que os campos selecionados sejam os mesmos. Digite:
+
+SELECT DISTINCT BAIRRO FROM tabela_de_clientes
+UNION
+SELECT DISTINCT BAIRRO FROM tabela_de_vendedores;
+
+9.png
+
+10) O UNION ALL não faz a seleção com um DISTINCT. As linhas se repetem se existirem em ambas as tabelas. Digite:
+
+SELECT DISTINCT BAIRRO FROM tabela_de_clientes
+UNION ALL
+SELECT DISTINCT BAIRRO FROM tabela_de_vendedores;
+
+10.png
+
+Veja que Santo Amaro aparece duas vezes. Uma vindo da tabela de clientes e outra da tabela de produtos.
+
+11) Podemos simular o FULL JOIN, que não é suportado pelo MYSQL, usando o LEFT JOIN e RIGHT JOIN com UNION. Digite:
+
+SELECT tabela_de_vendedores.BAIRRO,
+tabela_de_vendedores.NOME, DE_FERIAS,
+tabela_de_clientes.BAIRRO,
+tabela_de_clientes.NOME  FROM tabela_de_vendedores LEFT JOIN tabela_de_clientes
+ON tabela_de_vendedores.BAIRRO = tabela_de_clientes.BAIRRO
+UNION
+SELECT tabela_de_vendedores.BAIRRO,
+tabela_de_vendedores.NOME, DE_FERIAS,
+tabela_de_clientes.BAIRRO,
+tabela_de_clientes.NOME  FROM tabela_de_vendedores RIGHT JOIN tabela_de_clientes
+ON tabela_de_vendedores.BAIRRO = tabela_de_clientes.BAIRRO;
+
+11.png
+
+12) As sub-consultas permitem que possa ser feita seleções usando como critérios outras seleções. Digite:
+
+SELECT * FROM tabela_de_clientes WHERE BAIRRO 
+IN (SELECT DISTINCT BAIRRO FROM tabela_de_vendedores);
+
+12.png
+
+13) Podemos aplicar uma consulta, em vez de sobre uma tabela, sobre outra consulta. Digite:
+
+SELECT X.EMBALAGEM, X.PRECO_MAXIMO FROM 
+(SELECT EMBALAGEM, MAX(PRECO_DE_LISTA) AS PRECO_MAXIMO FROM tabela_de_produtos
+GROUP BY EMBALAGEM) X WHERE X.PRECO_MAXIMO >= 10;
+
+13.png
+
+14) Podemos transformar uma consulta numa visão (View) que depois pode ser usada em outras consultas como uma tabela. Crie a visão. Para isso, expanda na árvore do canto esquerdo, onde temos o nome do banco, e vá em Views.
+
+14.png
+
+15) Botão da direita do mouse sobre Views e crie uma nova visão.
+
+15.png
+
+16) Digite o seguinte comando:
+
+CREATE VIEW `VW_MAIORES_EMBALAGENS` AS
+SELECT EMBALAGEM, MAX(PRECO_DE_LISTA) AS PRECO_MAXIMO FROM tabela_de_produtos
+GROUP BY EMBALAGEM
+
+17) Clique em Apply e siga os passos até a criação da visão.
+
+18) Podemos manipular a visão como uma tabela. Digite:
+
+SELECT * FROM VW_MAIORES_EMBALAGENS;
+
+16.png
+
+19) Logo a consulta:
+
+SELECT X.EMBALAGEM, X.PRECO_MAXIMO FROM 
+(SELECT EMBALAGEM, MAX(PRECO_DE_LISTA) AS PRECO_MAXIMO FROM tabela_de_produtos
+GROUP BY EMBALAGEM) X WHERE X.PRECO_MAXIMO >= 10;
+
+17.png
+
+Pode ser substituída por:
+
+SELECT X.EMBALAGEM, X.PRECO_MAXIMO FROM 
+VW_MAIORES_EMBALAGENS X WHERE X.PRECO_MAXIMO >= 10;
+
+18.png
+Opinião do instrutor
+
+Continue com os seus estudos, e se houver dúvidas, não hesite em recorrer ao nosso fórum!
+
+
+
+4-14  O que aprendemos?
+
+  Como conectar duas ou mais tabelas através de JOINs;
+  
+  Os tipos de JOINs existentes e quais são suportados pelo MYSQL;
+  
+  Os comandos UNION e UNION ALL, para juntar duas ou mais seleções desde que tenham os mesmos campos selecionados;
+  
+  Usar uma consulta como critério de filtro de outra consulta;
+  
+  Como usar uma consulta dentro de outra consulta;
+  
+  Criar e usar visões (Views);

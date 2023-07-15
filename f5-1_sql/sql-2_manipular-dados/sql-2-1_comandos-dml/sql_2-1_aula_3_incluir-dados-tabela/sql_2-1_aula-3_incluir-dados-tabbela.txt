@@ -1,0 +1,556 @@
+https://cursos.alura.com.br/course/mysql-dml-manipulacao-de-dados/section/8171/tasks
+
+Data Science | Cursos de SQL e Banco de Dados
+
+Curso de
+Comandos DML: manipulação de dados com MySQL
+
+Aula 3- Incluindo dados nas tabelas | 0 / 10 | 45min
+
+  3-1  Arquivos necessários para a aula
+  3-2  Incluindo dados
+  3-3  Inclusão de registros na tabela
+  3-4  Incluindo múltiplos registros
+  3-5  Incluindo registros a partir de outra tabela
+  3-6  Incluindo através do assistente
+  3-7  Usando importação de dados de arquivos externos
+  3-8  Campos
+  3-9  Consolidando o seu conhecimento
+  3-10  O que aprendemos?
+
+
+
+3-1  Arquivos necessários para a aula
+
+Ao longo dos vídeos, o instrutor irá utilizar alguns arquivos específicos, que são necessários para o decorrer desta aula e do treinamento. Você pode baixar um ZIP com esse conteúdo aqui.
+
+https://caelum-online-public.s3.amazonaws.com/1222-mysqlmanipulacaodedados/03/aula-3-arquivos.zip
+
+
+3-2  Incluindo dados
+
+
+Transcrição
+
+[0:00] Vamos continuar? Aqui eu tenho retirado do manual do MySQL a sintaxe do comando INSERT. O comando INSERT é aquele que insere dados dentro de uma tabela. Tem aí várias formas de usar o comando INSERT, também não vou entrar muito em detalhe do que está escrito aqui em cima, mas na medida em que a gente for trabalhando a gente vai vendo algumas formas mais ágeis de inserir dados dentro da tabela.
+
+[0:30] O que a gente pode mais ou menos estar trabalhando é que basicamente eu uso INSERT + INTO, o nome da tabela e aí eu coloco entre parêntesis os campos da tabela, depois eu coloco values e os valores que eu vou inserir dentro da tabela. Em values se os campos forem textos eles têm que estar entre aspas simples, se forem números não precisa das aspas. E a gente pode também colocar o INSERT + INTO com o nome da tabela com os campos, values e aí vários conjuntos de campos separados por vírgula.
+
+[1:15] Vamos fazer alguns exemplos bem simples para poder entender como é que funciona esses INSERTS + INTOS. Então eu vou entrar aqui no Workbench, vou criar um novo script e aí a gente vai entrar aqui no banco vendas sucos e aí eu vou colocar lá INSERT + INTO, o nome da tabela, por exemplo produtos, aí eu abro parêntesis e eu coloco o nome dos campos. Então vamos olhar aqui o nome dos campos da tabela de produtos eu tenho eles aqui. Então é CÓDIGO, DESCRITOR, SABOR, TAMANHO, EMBALAGEM, PRECOLISTA. Depois eu coloco VALUES e os valores que vão ser inseridos, então aqui, por exemplo, eu vou colocar aqui alguns valores, 1040107 é o código de um produto, o descritor do produto por exemplo é Light 350 ml, Melancia é o nome do produto. O sabor é Melancia, o tamanho é 350 ml, a embalagem desse produto é lata e o preço de lista dele é 4.56, ponto e vírgula.
+
+[3:09] Atenção, note todos os campos strings com aspas simples entre eles e o campo numérico sem aspas, e a casa decimal sempre ponto, independentemente se você usa o seu sistema operacional e português ou inglês, sempre usar o ponto. Vou selecionar aqui esse conjunto de dados, na verdade eu vou selecionar tudo e vou rodar. Pronto, inseri um campo.
+
+[3:43] Para a gente conferir se inseriu, nós temos o comando SELECT, asterisco FROM PRODUTO, para a gente poder ver conteúdo da tabela produto se tem esse campo que eu acabei de inserir. Você vai rodar esse comando. É PRODUTOS, desculpe, PRODUTOS, vamos lá de novo. Pronto. Às vezes a gente digita umas coisas, comete uns erros simples que a gente fica meio sem saber o que fazer. Eu digitei produto, executei o comando, vi que deu erro e dei aquela travada de três segundos para poder saber onde é que eu estou errando. O nome da tabela está errado, é PRODUTOS com S. Mas está lá o registro que eu inseri.
+
+[4:43] A gente pode colocar um segundo, então eu vou copiar aqui o comando, vamos colocar um segundo produto, por exemplo 1040108, esse vai ser Light 350 só que esse é Graviola, o sabor é Graviola, o tamanho é 350, lata, só que o preço de lista desse cara é 4. Então se eu rodar agora esse comando, mais uma inclusão. Se eu rodar o SELECT eu agora tenho dois produtos.
+
+[5:26] E aí eu posso dar comando INSERT, INSERT, INSERT, eu vou dando INSERT para cada comando. Mas olha só, eu posso também fazer o seguinte, eu posso omitir esses nomes dos campos, por exemplo e eu vou colocar aqui por exemplo o 1040109, esse vai ser Açaí, o sabor é Açaí, também é 350, lata, só que o preço desse cara é 5.60.
+
+[6:09] Qual é a diferença desse comando para o de cima? Bem, a diferença visual é porque o comando de baixo não tem a lista de campos. Então por que que eu coloco a lista de campos em cima? Bem, o comando sem a lista de campos você só pode usar quando a ordem dos values respeita a ordem dos campos da tabela. Então note que aqui a tabela tem uma ordem natural, então como o primeiro campo é código aqui pode ser código, quando o primeiro campo é descritor aqui pode ser descritor, o terceiro campo é sabor, aqui é sabor. Mas vou rodar aqui, ele entrou.
+
+[7:02] Agora, eu poderia ter o seguinte, se eu fizesse isso aqui, eu troquei a ordem, o sabor está vindo na frente do nome. Se eu rodar isso aqui vai dar problema, porque ele vai colocar no nome do produto o sabor e no nome do sabor o nome do produto. Aí neste caso aqui de baixo eu teria que colocar o nome dos campos só que o campo sabor teria que vir na frente do campo descritor para poder ter a correspondência correta. Eu não vou nem rodar esse comando aqui para não dar problema nos dados, mas deixa eu só antes fechar esse raciocínio.
+
+[8:00] Nome dos campos depois do nome da tabela só devo colocar quando a ordem dos campos em values vier diferente da ordem natural da tabela. Então por padrão a gente sempre coloca, porque aí a gente sabe, colocando o nome do campo a gente vai saber a posição de cada um e vai saber se realmente está cometendo erro ou não. Bem, então esse daqui eu vou apagar porque eu não vou rodar ele.
+
+[8:33] Agora, eu poderia também fazer o seguinte, deixa eu copiar aqui de novo esse comando e eu vou colocar aqui, por exemplo... Não, espera aí. Estava assim, não é? É o 9 que eu coloquei, é o sabor Açaí, 350, o preço, isso aqui, esse aqui já coloquei. Eu vou então fazer o seguinte, eu vou colocar aqui o 110, que agora o 110 o sabor é Jaca. Não, minto, vamos lá, deixa eu voltar aqui que eu troquei, não é? Pronto, o comando é assim, primeiro vem o descritor do produto depois o sabor, foi como eu deixei o script antes de mostrar a vocês o comando da troca, então eu vou agora copiar ele, 110, só que agora o sabor é Jaca e o preço é 6 unidades monetárias.
+
+[10:01] Só que aí eu posso também colocar uma vírgula aqui e repetir o values para outro valor, por exemplo 111. 111 é Manga, então o sabor é Manga, o preço aqui é 3.50 e aqui no final eu boto ponto e vírgula. Então aqui, por exemplo, eu estou inserindo duas linhas ao mesmo tempo, não estou colocando o nome dos campos porque eu estou garantindo que a ordem com que os campos estão vindo esteja igual ao que eu tenho lá depois de produtos. Quer dizer, está vindo igual ao que eu tenho na tabela. E aí quando eu uso o values com vários elementos, eu tenho que manter um critério, ou seja, cada coluna dessa aqui tem que estar igual, correspondente ao mesmo tipo para que eu possa rodar o INSERT com mais de uma linha e aí eu posso ter 10, 20, 15, 30, 60 linhas, posso ter bastante linhas aqui. Com um único comando eu insiro em lotes várias linhas. Vamos rodar aqui? Pronto, inseri os dados dentro da tabela de produtos, então se eu rodar aqui agora o meu SELECT eu tenho lá o 107,108, 109, 100 e 111. Estou com meus dados inseridos dentro da tabela de produtos. É isso aí, gente, valeu.
+
+
+
+3-3  Inclusão de registros na tabela
+
+
+
+Inclua os seguintes registros na tabela de clientes:
+
+CPF:1471156710 NOME:Érica Carvalho ENDEREÇO:R. IriquitiaBAIRRO:Jardins CIDADE:São Paulo ESTADO:SP CEP:80012212 DATA DE NASCIMENTO:01/09/1990 IDADE:27 SEXO: F LIMITE DE CRÉDITO:170000 VOLUME DE COMPRA:24500 PRIMEIRA COMPRA: Não
+
+CPF:19290992743 NOME:Fernando Cavalcante ENDEREÇO:R. Dois de Fevereiro BAIRRO:Água Santa CIDADE:Rio de Janeiro ESTADO:RJ CEP:22000000 DATA DE NASCIMENTO:12/02/2000 IDADE:18 SEXO:M LIMITE DE CRÉDITO:100000 VOLUME DE COMPRA:20000 PRIMEIRA COMPRA:Sim
+
+CPF: 2600586709NOME: César Teixeira ENDEREÇO: Rua Conde de Bonfim BAIRRO: Tijuca CIDADE: Rio de Janeiro ESTADO: RJ CEP: 22020001 DATA DE NASCIMENTO: 12/03/2000 IDADE: 18 SEXO: M LIMITE DE CREDITO: 120000 VOLUME DE COMPRA: 22000 PRIMEIRA COMPRA: Não
+Opinião do instrutor
+
+INSERT INTO clientes
+(CPF,NOME,ENDERECO,BAIRRO,CIDADE,ESTADO,CEP,DATA_NASCIMENTO,IDADE,SEXO,LIMITE_CREDITO,VOLUME_COMPRA,PRIMEIRA_COMPRA)
+VALUES 
+('1471156710','Érica Carvalho','R. Iriquitia','Jardins','São Paulo','SP','80012212','19900901',27,'F',170000,24500,0),
+('19290992743','Fernando Cavalcante','R. Dois de Fevereiro','Água Santa','Rio de Janeiro','RJ','22000000','20000212',18,'M',100000,20000,1),
+('2600586709','César Teixeira','Rua Conde de Bonfim','Tijuca','Rio de Janeiro','RJ','22020001','20000312',18,'M',120000,22000,0)
+
+
+3-4  Incluindo múltiplos registros
+
+
+Transcrição
+
+[0:00] Agora eu vou fazer o seguinte, nós vamos fazer uma importação de dados para tabela de produtos em lote baseado em uma outra tabela de um outro banco de dados.
+
+[0:17] Não se assustem se a resolução do vídeo que vocês estão vendo agora está um pouco menor, as letrinhas ficaram um pouco menores, por que? Porque eu vou mostrar agora como é que eu consigo importar dados de um backup externo para o mysql, e aí eu preciso ter uma tela maior porque na resolução que eu normalmente uso para gravar o vídeo eu não consigo acessar os botões de Ok, de Apply para que o processo de recuperação de base possa funcionar. Por isso antes de gravar esse vídeo eu aumentei um pouco a resolução do meu computador para que eu possa ter acesso a esse botão. Talvez vocês estejam vendo as letrinhas menores, mas depois que eu fizer o processo eu volto ao tamanho normal.
+
+[1:14] Bem, então uma coisa, se vocês já fizeram o curso de Consultas Avançadas de slq usando o mysql e estão usando o mesmo computador para fazer esse treinamento vocês já devem ter na máquina de vocês a base sucos vendas. Se vocês estão usando uma outra máquina para fazer esse treinamento ou começaram a ver mysql através desse curso de primeira vocês não devem ter esse banco sucos vendas disponível.
+
+[1:58] Bem, eu vou precisar desse banco para poder fazer a inclusão em lote. Então vamos fazer o seguinte, se você já tem o banco não precisa fazer nada, se você não tem siga os passos que eu vou fazer agora. Então só para eu poder também não ter eu vou clicar no meu banco e vou apagar ele. Então agora eu não tenho o banco e aí eu vou fazer o seguinte, agora o que eu fizer daqui para frente se você não tem um banco por favor faça.
+
+[2:35] Primeiro lugar, vou dar o botão direito do mouse sobre a área vazia, vou criar em Create Schema e vou criar um banco chamado sucos vendas, atenção tem que ser esse nome senão não vai dar certo, sucos vendas. Coloquei o nome, clico lá embaixo no botão apply, apply de novo, finish e aí eu tenho já o meu banco sucos vendas criado, porém vazio, sem tabela, sem nada.
+
+[3:15] Próximo passo é fazer o download do arquivo Recuperação Ambiente.zip. Caso você não tenha feito o download na primeira atividade dessa aula, clique aqui. Descompacte esse arquivo e aí vocês vão ter uma série de dados como mostrados aqui em cima, mas o mais importante por enquanto é esse diretório aqui, Dump Sucos Vendas.
+
+[3:50] O que nós vamos fazer agora? Voltando ao Workbench vocês vão clicar em Administration aqui embaixo e depois vão clicar em Data Import Restore. E aí eu vou escolher aqui um nome de um diretório dessa opção aqui Import from Dump Project Folder. Eu vou escolher um diretório que é aquele diretório que eu destaquei a vocês que veio do arquivo que eu fiz download depois descompactar esse arquivo. Então eu vou clicar aqui nesses três pontinhos e vou selecionar lá o diretório onde eu salvei o arquivo zipado, o arquivo compactado. Está aqui, selecionei aqui o diretório, dou ok. E aí eu vou clicar nesse botão Start Import.
+
+[4:59] Esse botão Start Import que está aqui embaixo que se eu estivesse com a resolução normal do vídeo para que vocês, a que eu uso normalmente para gravar os treinamentos, eu não conseguiria ver se eu estivesse com a resolução normal, mas como eu diminuí a resolução ou aumentei, não sei como é que fala, eu estou vendo mais pixels. A tela está com a letra menor, mas está com uma expansão maior, aí eu consigo ver o botão start import. Eu vou clicar nele e aí eu estou recuperando a base sucos vendas.
+
+[5:42] Bem, a importação terminou. Já que a importação terminou eu agora vou voltar a usar aqui a resolução que eu uso normalmente para gravar os vídeos dos treinamentos que é o 1280 por 720, agora eu volto aqui para o tamanho normal para poder continuar com o trabalho aqui desse vídeo.
+
+[6:10] Se eu voltar aqui em Schemas, dei aqui um Refresh, eu vou ter a base sucos vendas com as tabelas aqui carregadas. Esse banco na verdade é praticamente um espelho do banco que nós criamos, só que tem nome de campos talvez diferentes, nomes de tabelas diferentes, não importa, é até bom que sejam diferentes.
+
+[6:37] Nós vamos fazer o seguinte, eu vou colocar dados na tabela de produtos baseado nos dados existentes nesta tabela de produtos, ou seja, esse banco que eu restaurei vai ser fonte para eu colocar dados no banco que eu estou trabalhando. Isso dentro de uma empresa é muito normal, às vezes eu estou criando um banco de dados e eu quero importar estes dados de um outro lugar. Aqui no caso eu vou importar de um outro banco mysql. Então a gente vai ver como é que a gente faz isso.
+
+[7:18] Vou fazer o seguinte então, eu vou criar aqui um novo script vamos sempre indo para o vendas sucos. Atenção, não vamos confundir agora os nomes, tem um banco que se chama vendas sucos e o outro que se chama sucos vendas. Na verdade o vendas sucos, ou seja, vendas na frente é o banco que nós estamos trabalhando nesse treinamento, e o sucos vendas vai ser o banco fonte.
+
+[7:50] Então eu fui para o banco que nós estamos trabalhando, o vendas sucos. Dentro dele eu posso fazer um SELECT para olhar o conteúdo de uma tabela de um outro banco sem sair do banco que eu estou. Eu faço assim, SELECT asterisco FROM o nome da outra base é sucos vendas, então eu coloco aqui sucos vendas ponto e aí eu tenho a tabela de produtos do banco origem, tabela de produtos. Se eu fizer isso aqui eu estou rodando lá os dados, e note que eu tenho na tabela da fonte, código, descritor, embalagem, o nome dos campos é que não está muito igual.
+
+[8:51] Se a gente olhar aqui na tabela de produtos, a gente vai ver, por exemplo, as seguintes diferenças, na nossa tabela código lá na fonte é código do produto. O descritor na nossa tabela é nome do produto, lá na tabela fonte, embalagem, tamanho e sabor está igual, só preço lista que está aqui preço lista que na tabela fonte chama-se preço de lista.
+
+[9:30] Então eu vou fazer o seguinte, como eu já sei como a maioria dos alunos já fez o curso de Consultas Avançadas eu posso fazer uma consulta se SELECT colocando ALIAS, lembra o que que é o ALIAS? É um apelido que eu dou para o campo original, e eu vou dar como ALIAS, como apelido, os nomes dos campos da minha tabela destino, ou seja, dessa tabela onde eu quero gravar os dados.
+
+[9:59] Então vai ser assim, SELECT CODIGO DO PRODUTO AS CODIGO. Ou seja, originalmente é código do produto, mas eu quero que se chame código, então fiz isso daqui, vírgula NOME DO PRODUTO AS DESCRITOR, vírgula, EMBALAGEM não muda, TAMANHO também não precisa de ALIAS porque o nome do campo está igual, SABOR idem, agora PREÇO DE LISTA vai ter como ALIAS PRECO LISTA FROM aí vou repetir aqui o nome da tabela com o nome do database na frente porque lembra, o meu foco nesse script é o meu banco de dados destino. Então se eu rodar aqui eu tenho os meus dados já com os nomes aqui dos ALIAS igualzinho como eu vou ter na tabela final.
+
+[11:22] Para a gente evitar problema de não incluir caras que já existam, se eu der aqui um SELECT FROM a tabela VENDAS SUCOS, lembrando, agora essa tabela aqui é a tabela do meu banco que eu estou trabalhando. Note que eu tenho aqui, vamos lá de novo, o que houve aqui? Não, é produtos, desculpe. É produtos, VENDAS SUCOS é o nome do banco. Produtos. Quando eu me refiro à outra tabela tem que colocar o nome do banco na frente porque o meu foco está sendo na base vendas sucos, então dei um vacilo aqui, vocês me desculpem, vamos lá.
+
+[12:23] Então eu tenho lá cinco produtos. Eu não quero que na seleção daqui já venha produtos que eu já tenha a tabela aqui, então eu posso colocar isso daqui, WHERE, isso aqui inclusive a gente viu lá no curso de Consultas Avançadas, WHERE CODIGO DO PRODUTO NOT IN, e aqui dentro eu coloco SELECT CODIGO FROM produtos. Então olha o que eu fiz aqui, eu fiz até aqui a seleção da tabela da base fonte já colocando os ALIAS e eu só estou pegando o pessoal que está vindo lá do fonte que não exista na tabela produtos que a tabela que eu vou gravar. Então se eu já tiver um cara lá na tabela fonte que já foi gravada na minha tabela destino ele não vai aparecer nessa consulta. Vamos rodar ela aqui. Eu garanto que nessa lista aqui eu só tenha produtos novos, produtos que não foram incluídos na tabela de produtos do meu banco.
+
+[13:51] Aí agora eu vou fazer isso daqui, agora vamos fazer o INSERT finalmente. INSERT INTO produtos, e aí depois do INSERT INTO eu coloco esse SELECT. Antes de rodar, atenção, lembra que eu falei para vocês, eu estou omitindo aqui o nome dos campos, eu não estou colocando aqui o nome dos campos, então para isso funcionar direito a ordem com que os campos estão aparecendo no SELECT tem que ser a mesma ordem que estão na tabela. Então olha lá, tem um problema. O terceiro campo da tabela é SABOR, o quarto é TAMANHO e o quinto é EMBALAGEM.
+
+[14:47] Então eu vou fazer o seguinte, na verdade SABOR tem que vir na frente, depois TAMANHO e aí por último embalagem. Então agora sim, CODIGO, DESCRITOR, depois SABOR, TAMANHO, EMBALAGEM, PREÇO LISTA. Os ALIAS iguaizinhos ao nome das colunas da tabela destino, a ordem igualzinha a ordem que eu tenho na tabela destino. CODIGO CODIGO, DESCRITOR DESCRITOR, SABOR SABOR, TAMANHO TAMANHO, EMBALAGEM EMBALAGEM, PREÇO LISTA PREÇO LISTA. Agora sim, eu vou selecionar tudo isso e vou rodar. Ele executou.
+
+[15:53] E agora vamos fazer o seguinte, eu vou dar um SELECT asterisco FROM PRODUTOS. Vamos ver agora quantos produtos eu tenho? Tenho vários produtos inseridos na minha tabela.
+
+[16:15] Então assim, esse trabalho todo foi para mostrar a vocês que eu posso inserir dados dentro de uma tabela baseado em uma consulta que eu esteja fazendo. Pode ser no mesmo banco, pode ser em um banco diferente. Aqui no caso, eu fiz vindo de um banco diferente.
+
+[16:37] Bem gente, esse vídeo deve ter sido um pouquinho complicado, mas eu tentei explicar de maneira bem pausada como é que a gente faz esses INSERTS. Se tiverem dúvidas consultem o passo a passo onde eu vou explicar melhor isso ou então vocês revejam mais uma vez o vídeo que eu gravei para poder entender como é que a gente faz esse INSERT usando o SELECT e os cuidados que a gente tem que tomar. Valeu gente, um abraço.
+
+
+
+3-5  Incluindo registros a partir de outra tabela
+
+Inclua todos os clientes na tabela CLIENTES baseados nos registros da tabela TABELA_DE_CLIENTES da base SUCOS_VENDAS.
+
+Cuidado com o nome dos campos e lembre-se que já incluímos 3 clientes na nossa tabela, pelo exercício anterior.
+Opinião do instrutor
+
+INSERT INTO clientes
+(CPF,NOME,ENDERECO,BAIRRO,CIDADE,ESTADO,CEP,DATA_NASCIMENTO,IDADE,SEXO,LIMITE_CREDITO,VOLUME_COMPRA,PRIMEIRA_COMPRA)
+
+SELECT CPF, NOME, ENDERECO_1 AS ENDERECO, BAIRRO, CIDADE, ESTADO, CEP,DATA_DE_NASCIMENTO AS  DATA_NASCIMENTO, IDADE, SEXO,LIMITE_DE_CREDITO AS LIMITE_CREDITO, VOLUME_DE_COMPRA AS VOLUME_COMPRA,PRIMEIRA_COMPRA 
+ FROM sucos_vendas.tabela_de_clientes 
+ WHERE CPF NOT IN (SELECT CPF FROM clientes);
+
+
+3-6  Incluindo através do assistente
+
+
+Transcrição
+
+[0:00] O workbench do MySQL também oferece uma interface de edição direto dos dados da tabela.
+
+[0:10] Quer ver?
+
+[0:11] Vamos fazer o seguinte.
+
+[0:13] Vou criar aqui um novo script, vou me certificar que eu estou na tabela, no banco vendas sucos, e eu vou dar aqui select asterisco from cliente.
+
+[0:32] Eu tenho a tabela vazia, porque a tabela de clientes não tem dado nenhum, e aqui do lado eu tenho essa opção aqui: form edictor.
+
+[0:44] Ao clicar em form edictor, eu vou até aumentar um pouquinho aqui a área, eu tenho aqui um formulário onde eu posso entrar manualmente com dado.
+
+[0:56] Então, por exemplo, vou botar aqui o CPF de um cliente.
+
+[0:59] 1471156710, nome, por exemplo, Érica Carvalho, o endereço da Érica é a rua, vou botar aqui rua Iriquiti, o bairro Jardins, a cidade São Paulo, o estado SP, o CEP 80012212, data de nascimento 1999-09-01, note, como eu estou editando direto com a tabela, eu tenho que digitar a data de nascimento no formato que o MySQL entende.
+
+[2:11] E para eu inserir dados do MySQL eu tenho que colocar ano, traço, o mês, traço, o dia, com o mês e o dia com dois dígitos, do jeito que está aqui.
+
+[2:26] A idade 27, sexo F, vamos lá. O limite de crédito dela é 170 mil, o volume de compra mensal que ela pode fazer é 245000 litros, e fez a primeira compra 0, porque é falso.
+
+[2:56] Ou seja, o que eu estou colocando nesse formulário seria o que estaria dentro do values do insert.
+
+[3:08] Não tem muita praticidade, claro, a gente colocar esse, como eu posso dizer, usar esse formulário para inserir muitos dados.
+
+[3:20] É melhor você fazer um sistema específico para isso, mas para, por exemplo, pontualmente fazer a inclusão de um cliente específico é muito bom.
+
+[3:32] Eu vou clicar o apply, aí note, ao clicar apply ele me escreveu o comando.
+
+[3:42] O comando insert.
+
+[3:45] Vou dar um apply, finish.
+
+[3:50] Se eu clicar agora de novo em result grid, note que ele já até me escreveu o campo aqui.
+
+[4:03] Então eu tenho no workbench uma maneira de estar incluindo dados de maneira manual.
+
+[4:13] Como a gente precisa popular as tabelas do nosso banco com dados, nós vamos repetir o que fizemos no vídeo passado, agora com a tabela de clientes.
+
+[4:23] É até uma forma de a gente poder fixar bem o que a gente fez, que é a inclusão em lote.
+
+[4:30] Então, relembrando, a gente vai agora pegar aqui na tabela sucos vendas, vou vir aqui select, asterisco from sucos vendas ponto tabela de clientes.
+
+[4:51] Vamos ver como é que está o nome dos campos.
+
+[4:56] Está CPF, nome, endereço traço um, endereço traço um vazio, bairro, cidade, os campos estão assim.
+
+[5:05] Então vamos agora olhar os campos da tabela destino, que agora é a tabela de clientes e ir fazendo passo a passo.
+
+[5:13] É select, CPF, é CPF mesmo.
+
+[5:21] Nome, nome mesmo.
+
+[5:23] O endereço traço um vai virar endereço.
+
+[5:36] Bairro é bairro.
+
+[5:39] Cidade também não muda.
+
+[5:41] Estado também não, vamos lá.
+
+[5:47] CEP igual.
+
+[5:52] Data, olha só, na nossa tabela é data nascimento, na tabela lá de origem é data de nascimento, então a gente vai colocar data de nascimento AS data nascimento.
+
+[6:14] Idade não muda, sexo também não, limite crédito é na tabela destine, limite de crédito é na tabela origem.
+
+[6:25] Então limite de crédito AS limite crédito.
+
+[6:33] Vamos continuar, volume de compra é a mesma coisa.
+
+[6:37] Volume de compra é na origem, volume compra é no destino.
+
+[6:42] Volume de compra AS volume compra.
+
+[6:51] Primeira compra está igual, primeira compra, primeira compra.
+
+[7:01] From a tabela origem.
+
+[7:08] Vamos só rodar para ver se não tem erro.
+
+[7:09] Está lá, veio com o nome das colunas iguaizinhas à tabela destino.
+
+[7:16] Lembrando que a gente já inclui um cara na nossa tabela de clientes, que é esse CPF aqui, então eu vou colocar aqui where CPF note in select CPF from cliente.
+
+[7:41] Vamos ver se funciona, rodou.
+
+[7:46] Então esse select todo aqui eu vou botar insert into clientes, e aí eu coloco o select completo.
+
+[7:59] Vamos rodar.
+
+[8:01] Eu estou na base vendas sucos, ok?
+
+[8:05] Eu estou na base vendas sucos.
+
+[8:10] Até para garantir vamos botar nesse script aqui isso daqui, use vendas sucos, apesar que eu não vou usar, eu não vou rodar esse comando mais.
+
+[8:22] Já vou rodar esse aqui direto porque eu já sei que eu já estou no vendas sucos.
+
+[8:33] Ok, rodei, agora se eu vier aqui e der um select asterisco from clientes, tenho já todos os clientes inseridos na minha tabela.
+
+[8:48] Então nesse vídeo eu quis mostrar para vocês o formulário só para dizer que realmente tem um jeito de você colocar o dado de maneira mais amigável direto através do workbench, só que eu pessoalmente não considero muito prático.
+
+[9:02] E aí, para a gente poder continuar com os próximos exemplos, a gente teve que fazer um insert em lote pegando lá da tabela fonte os dados de clientes e jogando para o nosso banco, tá legal?
+
+[9:17] Então é isso aí, gente, valeu.
+
+
+
+3-7  Usando importação de dados de arquivos externos
+
+
+Transcrição
+
+[0:00] Vamos continuar estudando?
+
+[0:02] Então agora nós vamos ler dados para uma tabela do MySQL através de um arquivo externo.
+
+[0:11] Então primeiro nós vamos baixar o arquivo externo que nós vamos baixar como fonte. Caso você não tenha feito o download na primeira atividade dessa aula, clique aqui.
+
+https://caelum-online-public.s3.amazonaws.com/1222-mysqlmanipulacaodedados/03/aula-3-arquivos.zip
+salvo como aula-3-2-arquivos.zip
+
+[0:20] Baixa esse arquivo, descompacta na máquina local de vocês, e vocês vão encontrar esses dois arquivos aqui.
+
+[0:28] Nós vamos inicialmente trabalhar com arquivos vendedores.csv.
+
+[0:35] Vamos abrir esse arquivo com um editor de texto.
+
+[0:42] Então eu vou usar aqui o bloco de notas, e aí eu tenho aqui uma primeira linha, onde eu tenho o nome das colunas separados por ponto e vírgula. Tenho aqui uma informação importante, os valores decimais, um ponto com separador de decimal, e as datas, elas estão sendo representadas desta maneira: ano, traço mês, traço dia, e a hora, eu coloquei zero zero, zero zero, zero zero, significa uma hora neutra.
+
+[1:21] Ou seja, está dizendo que o timestamp desse campo, a hora é meia noite.
+
+[1:26] Mas aí quando a gente coloca zero zero, zero zero, zero zero, normalmente nós estamos considerando uma hora neutra.
+
+[1:34] O nome desses campos aqui, serão depois mapeados com os nomes dos campos das tabelas, e é claro que se no meu arquivo CSV o nome do campo já tiver uma coincidência com o nome dos campos das tabelas, fica mais fácil o nosso mapeamento.
+
+[1:54] Então ok, analisamos o conteúdo do nosso arquivo, e vou voltar aqui para o Workbench, e vou clicar aqui sobre a tabela vendedores.
+
+[2:04] É esta a tabela que nós vamos popular com dados vindos do arquivo csv.
+
+[2:11] Eu ou dar botão direito do mouse sobre a tabela vendedores, e vou selecionar a opção table data import wizard.
+
+[2:27] Ao fazer isso, eu vou clicar aqui em Browse, e vou selecionar aquele meu arquivo, que eu baixei.
+
+[2:36] Então eu clico aqui em vendedores, vou em abrir, e dou um next.
+
+[2:42] Agora ele vai me dizer, eu vou criar isso, eu vou popular esses dados numa nova tabela, ou numa tabela já existente? No caso, eu já vou usar uma tabela existente, que é a de vendedores, que está no banco de dados vendas underscore sucos.
+
+[3:00] E essa opção truncate, significa o seguinte: se eu quero apagar tudo o que eu tenho na tabela antes de incluir dados.
+
+[3:09] No nosso caso, nós não vamos apagar, então essa opção não estará selecionada.
+
+[3:17] Aqui ele me mostra o mapeamento. Se eventualmente você tiver problemas na hora de abrir essa tela, vocês selecionem o encode utf-8, que é o encode compatível com o arquivo que vocês baixaram.
+
+[3:35] Mesmo assim, se ainda houver problema, tente algumas outras dessas opções existentes aqui dentro do Workbench, até você conseguir olhar os campos.
+
+[3:48] Então eu tenho aqui embaixo um preview do que vai ser lido, um mapeamento, então aqui eu tenho o nome das colunas que vieram do csv, e aqui do lado, o nome dos campos que eu tenho na tabela.
+
+[4:06] Como os nomes já eram coincidentes, ele já fez o mapeamento automático, mas eu poderia vir aqui, e ir selecionando quem é que corresponde a cada coluna.
+
+[4:22] Parece que não, mas aqui embaixo, tem ainda o bairro, tem um pouquinho escondido.
+
+[4:28] Vamos fazer outra coisa, porque isso vai ser importante para os exercícios posteriores. Vamos desmarcar o campo férias. Ou seja, eu não vou ler este campo.
+
+[4:43] Desmarquei o campo férias, eu vou dar um next, dou um next novamente, e dou novamente o next.
+
+[4:53] Então pronto, eu tenho a mensagem de que quatro registros foram importados com sucesso.
+
+[5:01] Se eu der um finish, eu agora venho aqui na tabela de vendedores, se eu der um select asterisco from vendedores, e executar esse comando, note que eu tenho aqui os meus quatro vendedores que vieram do arquivo externo.
+
+[5:23] A única diferença é que o campo férias veio todo vazio, porque esse campo férias eu vou colocar as informações dos vendedores depois posteriormente, quando a gente for evoluindo com os vídeos desse treinamento.
+
+[5:40] Então eu mostrei para vocês como é que a gente faz uma carga de dados através de um arquivo externo, tá bom? Valeu, um abraço.
+
+
+
+3-8  Campos
+
+Veja a figura abaixo: 0.png
+
+O que representam os campos destacados em vermelho?
+
+As colunas da tabela
+  Alternativa Errada! As colunas das tabelas são as colunas que não estão destacadas.
+
+As colunas do arquivo CSV
+  Alternativa Correta! Primeiro apresentamos as colunas do arquivo CSV
+
+Nenhuma das respostas acima
+  Alternativa Errada! Uma das respostas acima representa a opção correta.
+
+
+
+3-9  Consolidando o seu conhecimento
+
+Chegou a hora de você seguir todos os passos realizados por mim durante esta aula. Caso já tenha feito, excelente. Se ainda não, é importante que você execute o que foi visto nos vídeos para poder continuar com a próxima aula.
+
+1) Vamos criar um novo script SQL no Workbench.
+
+2) Iremos inserir um novo produto. Digite:
+
+USE vendas_sucos;
+
+
+INSERT INTO PRODUTOS (CODIGO, DESCRITOR, SABOR, TAMANHO, EMBALAGEM, PRECO_LISTA)
+
+VALUES ('1040107', 'Light - 350 ml - Melância', 'Melância', '350 ml', 'Lata', 4.56);
+
+3) Vamos conferir se o produto foi realmente incluido na tabela. Digite e execute:
+
+SELECT * FROM PRODUTOS;
+
+1.png
+
+4) No script podemos incluir mais de um comando. Digite e execute:
+
+INSERT INTO PRODUTOS (CODIGO, DESCRITOR, SABOR, TAMANHO, EMBALAGEM, PRECO_LISTA)
+
+VALUES ('1040108', 'Light - 350 ml - Graviola', 'Graviola', '350 ml', 'Lata', 4.00);
+
+INSERT INTO PRODUTOS
+
+VALUES ('1040109', 'Light - 350 ml - Açai', 'Açai', '350 ml', 'Lata', 5.60);
+
+5) Também podemos incluir, num mesmo comando, a inclusão de mais de um registro. Digite e execute:
+
+INSERT INTO PRODUTOS
+
+VALUES ('1040110', 'Light - 350 ml - Jaca', 'Jaca', '350 ml', 'Lata', 6.00),
+
+       ('1040111', 'Light - 350 ml - Manga', 'Manga', '350 ml', 'Lata', 3.50);
+
+6) Faça Download do arquivo RecuperacaoAmbiente.zip.
+
+7) Descompacte o arquivo.
+
+8) Selecione, na área Navigator, em Administration.
+
+9) Selecione o link Data Import/Restore.
+
+10) Na opção Import From Dump Project Folder escolha o diretório DumpSucosVendas.
+
+11) Selecione Start Import.
+
+12) Verifique na base Sucos_Vendas se as tabelas foram criadas.
+
+13) Podemos, da base Vendas_Sucos, acessar tabelas da base Sucos_Vendas.
+
+USE vendas_sucos;
+
+SELECT * FROM sucos_vendas.tabela_de_produtos;
+
+2.png
+
+14) A consulta, a seguir, mostra a lista de produtos, na tabela tabela_de_produtos, da base sucos_vendas que ainda não foram incluídas na tabela produtos, da base vendas_sucos:
+
+SELECT CODIGO_DO_PRODUTO AS CODIGO, NOME_DO_PRODUTO AS DESCRITOR,
+
+EMBALAGEM, TAMANHO, SABOR, PRECO_DE_LISTA AS PRECO_LISTA
+
+FROM sucos_vendas.tabela_de_produtos
+
+WHERE CODIGO_DO_PRODUTO NOT IN (SELECT CODIGO FROM produtos);
+
+3.png
+
+15) No comando INSERT podemos incluir os produtos na tabela sucos_vendas.tabela_de_produtos na tabela vendas_sucos.produtos. Digite e execute:
+
+INSERT INTO produtos
+
+SELECT CODIGO_DO_PRODUTO AS CODIGO, NOME_DO_PRODUTO AS DESCRITOR,
+
+SABOR, TAMANHO, EMBALAGEM,  PRECO_DE_LISTA AS PRECO_LISTA
+
+FROM sucos_vendas.tabela_de_produtos
+
+WHERE CODIGO_DO_PRODUTO NOT IN (SELECT CODIGO FROM produtos);
+
+16) Vamos conferir a tabela de produtos. Digite e execute:
+
+SELECT * FROM produtos;
+
+4.png
+
+17) Mostraremos como incluir dados na tabela de cliente. Digite e execute:
+
+SELECT * FROM clientes;
+
+5.png
+
+18) Ao lado temos o botão Form Editor:
+
+6.png
+
+Teremos uma caixa de diálogo para editar a tabela de Clientes.
+
+7.png
+
+19) Inclua um novo cliente:
+
+    CPF: 1471156710;
+    NOME: Érica Carvalho;
+    ENDERECO: R. Iriquiti;
+    BAIRRO: Jardins;
+    CIDADE: São Paulo;
+    ESTADO: SP;
+    CEP: 80012212;
+    DATA_NASCIMENTO: 1999-09-01;
+    IDADE: 27;
+    SEXO: F;
+    LIMITE_CREDITO: 170000;
+    VOLUME_COMPRA: 24500;
+    PRIMEIRA_COMPRA: 0;
+
+20) Confirme a inclusão. O comando será apresentado e confirme a execução.
+
+21) Execute a consulta novamente. Digite e execute:
+
+SELECT * FROM clientes;
+
+8.png
+
+O cliente foi incluido.
+
+22) Vamos incluir os clientes usando como fonte o outro banco de dados. Digite e execute:
+
+INSERT INTO CLIENTES
+
+SELECT CPF, NOME, ENDERECO_1 AS ENDERECO, BAIRRO, CIDADE, ESTADO, CEP,
+
+DATA_DE_NASCIMENTO AS DATA_NASCIMENTO, IDADE, SEXO, LIMITE_DE_CREDITO AS LIMITE_CREDITO,
+
+VOLUME_DE_COMPRA AS VOLUME_COMPRA, PRIMEIRA_COMPRA
+
+FROM sucos_vendas.tabela_de_clientes WHERE CPF
+
+NOT IN (SELECT CPF FROM CLIENTES);
+
+23) Teste o conteúdo da tabela de clientes:
+
+SELECT * FROM CLIENTES;
+
+9.png
+
+24) Vamos mostrar agora como incluir dados na tabela de vendedores através de arquivos externos. Descompacte o arquivo contido no link desta aula e iremos usar a tabela Vendedores.csv. como fonte.
+
+25) Botão da direita do mouse sobre a tabela Vendedores e escolha a opção Table Data Import Wizard.
+
+10.png
+
+26) Em File Path selecione o arquivo Vendedores.csv.
+
+27) Mantenha os dados padrões como mostrado abaixo:
+
+11.png
+
+28) Observação: Se você visualizar um erro como mostrado abaixo:
+
+12.png
+
+Há erro na interpretação da tabela através da lista de caracteres. Para isso faça:
+
+    Abra o arquivo com Notepad clássico;
+    Clique arquivo / Salvar como.
+    Escolha o padrão ANSI:
+
+13.png
+
+Volte a caixa de diálogo e escolha:
+
+14.png
+
+Pode existir problemas entre computadores e entre os arquivos baixados. Você deve ver a combinação correta entre o formato do arquivo (Que pode ser modificado no NOTEPAD clássico) e na caixa de diálogo de importação de dados.
+
+15.png
+
+29) Desmarque a opção FERIAS:
+
+16.png
+
+30) Clique em Next várias vezes até os dados serem incluídos na tabela de vendedores.
+
+31) Verifique o conteúdo da tabela de vendedores.
+
+SELECT * FROM VENDEDORES;
+
+17.png
+Opinião do instrutor
+
+Continue com os seus estudos, e se houver dúvidas, não hesite em recorrer ao nosso fórum!
+
+
+
+3-10  O que aprendemos?
+
+  Aprendemos a incluir dados em uma tabela, através de comando;
+  
+  Vimos a inclusão de vários registros em um único comando;
+  
+  Foi mostrado como incluir dados na tabela através de um assistente;
+  
+  Mostramos como incluir dados usando um arquivo externo.

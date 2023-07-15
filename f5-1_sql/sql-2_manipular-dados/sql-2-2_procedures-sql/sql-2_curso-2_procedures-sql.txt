@@ -1,0 +1,101 @@
+https://cursos.alura.com.br/course/mysql-procedures
+
+Data Science
+Cursos de SQL e Banco de Dados
+
+Curso de
+Procedures SQL: executando código no MySQL
+
+
+
+Instrutor(a)
+
+  Victorino Vila
+
+  Linkedin
+
+  Victorino é desenvolvedor com foco em .NET e Web Services. Durante mais de 20 anos gerenciou uma empresa de consultoria na área de tecnologia. Criou e desenvolveu projetos de planejamento, Business Intelligence e integração de dados, além de databases de relacionamento com foco em BI, usando SQL Server, MYSQL ou DB2. Suas soluções são usadas em Brasil, nos EUA e na Europa. É consultor sênior certificado em SAP BW.
+
+
+
+Aulas
+
+1. Preparando ambiente | 0 / 5 | 30min
+
+  1-1  Introdução
+  1-2  Preparando o ambiente Instalando o MYSQL
+  1-3  Recuperando a base de dados
+  1-4  Consolidando o seu conhecimento
+  1-5  O que aprendemos?
+
+2. Stored Procedures Básico | 0 / 10 | 42min
+
+  2-1  Conceitos Básicos
+  2-2  Mudança de delimitador
+  2-3  Criando primeiras Stored Procedures
+  2-4  Estrutura para criação da Stored Procedure
+  2-5  Alterando e excluindo Stored Procedures
+  2-6  Comando para alterar uma Stored Procedure.
+  2-7  Declarando variáveis
+  2-8  Estrutura de comando para criação de uma Stored Procedure
+  2-9  Consolidando o seu conhecimento
+  2-10  O que aprendemos?
+
+3. Interações com o banco de dados | 0 / 10 | 34min
+
+  3-1  Manipulando banco de dados
+  3-2  Atualizando a idade
+  3-3  Parametros
+  3-4  Atualizando a comissão
+  3-5  Controle de erros
+  3-6  Comando para tratar erros
+  3-7  Atribuição de valor usando SELECT
+  3-8  Usando SELECT para atribuir valores
+  3-9  Consolidando o seu conhecimento
+  3-10  O que aprendemos?
+
+4. Controle de Fluxo | 0 / 12 | 48min
+
+  4-1  IF THEN ELSE
+  4-2  Testando o número de notas fiscais
+  4-3  IF THEN ELSEIF
+  4-4  Faturamento anual
+  4-5  CASE END CASE
+  4-6  CASE NOT FOUND
+  4-7  CASE Condicional
+  4-8  Faturamento anual usando CASE CONDICIONAL
+  4-9  Looping
+  4-10  Número de notas para diversos dias
+  4-11  Consolidando o seu conhecimento
+  4-12  O que aprendemos?
+
+5. Cursor e Função | 0 / 11 | 46min
+
+  5-1  Problema do Select Into
+  5-2  Limitação do SELECT INTO.
+  5-3  Definição de Cursor
+  5-4  Looping com Cursor
+  5-5  Achando o valor total do crédito.
+  5-6  Cursor acessando mais de um campo
+  5-7  Calculando o valor total do faturamento
+  5-8  Entendendo Função
+  5-9  Função para obter o número
+  5-10  Consolidando o seu conhecimento
+  5-11  O que aprendemos?
+
+6. Problema prático | 0 / 12 | 78min
+
+  6-1  Criando números aleatórios
+  6-2  Tabela com números aleatórios
+  6-3  Obtendo cliente aleatorio
+  6-4  Fazendo função para produto aleatório
+  6-5  Fazendo função para vendedor aleatório
+  6-6  Incluindo a venda
+  6-7  Resolvendo o problema de PK
+  6-8  Melhorando Triggers
+  6-9  Aplicando Stored Procedures a Triggers
+  6-10  Conclusão
+  6-11  Consolidando o seu conhecimento
+  6-12  O que aprendemos?
+
+

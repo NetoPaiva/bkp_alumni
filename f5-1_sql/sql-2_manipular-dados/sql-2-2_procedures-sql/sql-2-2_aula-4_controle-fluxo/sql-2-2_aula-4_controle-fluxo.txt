@@ -1,0 +1,574 @@
+https://cursos.alura.com.br/course/mysql-procedures
+
+Data Science
+Cursos de SQL e Banco de Dados
+
+Curso de
+Procedures SQL: executando código no MySQL
+
+
+
+Aula 4. Controle de Fluxo | 0 / 12 | 48min
+
+  4-1  IF THEN ELSE
+  4-2  Testando o número de notas fiscais
+  4-3  IF THEN ELSEIF
+  4-4  Faturamento anual
+  4-5  CASE END CASE
+  4-6  CASE NOT FOUND
+  4-7  CASE Condicional
+  4-8  Faturamento anual usando CASE CONDICIONAL
+  4-9  Looping
+  4-10  Número de notas para diversos dias
+  4-11  Consolidando o seu conhecimento
+  4-12  O que aprendemos?
+
+
+4-1  IF THEN ELSE
+
+
+Transcrição
+
+[00:00] Quando eu falei para vocês sobre a linguagem "SEQUEL" que é um padrão de banco de dados, e quando a gente começou a ver os cursos de consulta e manipulação de dados; nós vimos que a linguagem "SEQUEL" é uma linguagem sequencial. Tem comandos insert, update, delete, select, "CREATE", "DROP".
+
+[00:20] Mas se eu tenho um conjunto de comandos "SEQUEL" dentro do meu script, eu não consigo, por exemplo, fazer um desvio de fluxo, do tipo se alguma coisa acontecer faça isso, se não faça aquilo. As linguagens extras que cada banco resolveu criar através das stored procedures é uma maneira da gente melhorar, um pouco, a linguagem "SEQUEL".
+
+[00:57] Por isso que cada construtor de banco de dados fez a sua linguagem própria de stored procedures. E aí, claro, o grande diferencial é que nas stored procedures nós temos o que nós chamamos de "CONTROLE DE FLUXO". Onde eu posso controlar o fluxo do programa. E aí, o primeiro controle de fluxo que nós vamos trabalhar é o "IF/THEN/ELSE".
+
+[01:24] Que basicamente funciona como está sendo mostrado aqui. Eu coloco "IF", uma condição, "THEN", eu faço alguma coisa, "ELSE", eu faço outra e eu dou um "END IF". Vamos fazer um exemplo do "IF/THEN/ELSE/END IF" lá NO MySQL, um exemplo prático. Então, eu vou voltar aqui para o meu "WORKBENCH". Vou criar aqui uma outra rotina, e vou fazer o seguinte. Vamos dar um "SELECT* FROM TABELA_DE_CLIENTES".
+
+[02:07] Então, eu tenho lá a lista dos meus clientes e eu tenho aqui um campo que a gente chama de "DATA DE NASCIMENTO". Eu vou fazer a seguinte stored procedure: eu vou dar um CPF de um cliente e, se ele nasceu depois do ano 2000, ele é um cliente jovem. Se ele nasceu antes do ano 2000, ele é um cliente velho. Um exemplo muito simples. Então, vamos construir aqui a nossa stored procedure.
+
+[02:59] Clico com o botão direito do mouse, stored procedure. Criei a stored procedure. E aí, eu vou chamar essa stored procedure de "CLIENTE_NOVO_VELHO". E, é claro, vou passar como parâmetro o CPF. Vou botar o Varchar aqui de 20. Não tem esse "AS" não, só "varchar (20). A gente, às vezes, confunde as linguagens de programação em uma coloca a sintaxe da outra.
+
+[03:41] É uma bagunça. Vamos lá. Eu vou declarar uma variável. Vou chamar de "RESULTADO" que vai ser um "varchar (20)" também. Uma outra variável, essa variável vai ser "VDATANASCIMENTO". Ela vai ser uma variável do tipo "DATE". Aí, eu vou voltar aqui para o script de "SQL" sem fechar essa rotina que eu ainda estou editando. E eu vou fazer isso daqui.
+
+[04:28] "SELECT DATA_DE_NASCIMENTO FROM TABELA_DE_CLIENTES WHERE CPF =". Vou escolher um CPF qualquer só para tomar como exemplo. Esse CPF aqui. Então, essa consulta, ela me retorna a data de nascimento. Então, como eu aprendi no outro vídeo, eu vou copiar. Vou colar esse select aqui. Só que aí, na condição, eu vou ter o "VCPF" porque eu vou fazer a consulta para o CPF que eu passei como parâmetro.
+
+[05:23] E aqui, na data de nascimento, eu vou escrever "INTO VDATANASCIMENTO". Eu posso até ir aqui e dar um enter. Não tem nenhum problema porque é o ponto e vírgula que diz que a linha acabou. Então, não tem problema ter um enter aqui. Eu disse que se o cliente nasceu do ano 2000, de primeiro de Janeiro do ano 2000 para frente, ele é jovem. Se for para trás, ele é velho.
+
+[05:58] Então, eu vou escrever isso daqui "IF VDATANASCIMENTO < 20000101 THEN". Vou ter um "ELSE" e vou ter o "END IF". Dentro do "IF", ou seja, se ele nasceu menos do que o ano 2000, ele é um cliente velho. Então, aqui eu vou dizer que "SET RESULTADO = CLIENTE_VELHO". Vamos colocar o "ELSE"? "ELSE SET RESULTADO CLIENTE_NOVO". Vou colocar o ponto e vírgula aqui. Vou colocar o ponto e vírgula aqui.
+
+[07:10] E aqui, no final, eu vou dar um "SELECT VER_RESULTADO" para poder ver a resposta, ver a saída. Se o cliente é velho ou se o cliente é novo. Vamos lá. O nome da rotina está legal. "CLIENTE_NOVO_VELHO". Vou dar um "APPLY". Vou dar outro "APPLY". Vou dar um "FINISH". Então, eu tenho a minha rotina salva. Vamos lá no script agora? "CALL CLIENTE_NOVO_VELHO", e aí como parâmetro eu vou passar o CPF.
+
+[08:02] Passei o CPF e vamos executar. Opa. Esse cliente é um cliente velho. Vamos pegar outros clientes. Deixa eu ver aqui os clientes. Acima do ano 2000 eu tenho poucos, né? Fui muito infeliz nesse teste. Vamos pegar esse aqui que nasceu em 12 de Fevereiro de 2000. Esse é o CPF dele. O resultado da stored procedures tem que dar "CLIENTE NOVO". Vamos ver. "CLIENTE NOVO".
+
+[08:45] Então, eu consegui fazer uma stored procedure que, dado um determinado resultado de um select, se acontecer uma coisa retorna de um jeito. Se acontecer outra, retorna de outro jeito. Então, esse foi um exemplo para eu mostrar para vocês como é que funciona o "IF/THEN/ELSE/END IF" dentro do MySQL.
+
+
+
+
+4-2  Testando o número de notas fiscais
+
+
+Crie uma Stored Procedure que, baseado em uma data, contamos o número de notas fiscais. Se houverem mais que 70 notas exibimos a mensagem: ‘Muita nota’. Ou então exibimos a mensagem ‘Pouca nota’. Também exibir o número de notas. Chame esta Stored Procedure de Testa_Numero_Notas.
+
+A data a ser usada para testar a nota será um parâmetro da Stored Procedure.
+Opinião do instrutor
+
+CREATE PROCEDURE `Testa_Numero_Notas` (DATANOTA date)
+BEGIN
+    DECLARE NUMNOTAS INT;
+    SELECT COUNT(*) INTO NUMNOTAS FROM NOTAS_FISCAIS WHERE DATA_VENDA = DATANOTA;
+    IF NUMNOTAS > 70 THEN
+        SELECT 'Muita Nota', NUMNOTAS;
+    ELSE
+        SELECT 'Pouca Nota', NUMNOTAS;
+    END IF;
+END
+
+
+
+
+4-3  IF THEN ELSEIF
+
+
+Transcrição
+
+[00:00] A gente encontra no MySQL outro controle de fluxo "IF", só que ele tem o nome um pouquinho diferente. Ele é o "IF/THEN/ ELSEIF". O "ELSEIF" permite que a gente construa diversas condições. É como se fosse um "CASE". E aí, depois, finalmente, eu tenho o último "ELSE" que é como se fosse o "OVERWRITE", ou seja, se nada acontecer das condições acima, então faça isso.
+
+[00:29] Aqui tem mais ou menos a ordem com que esse comando é construído. Tem lá "IF" é a condição. "THEN", coloco o que tem que fazer. "ELSEIF", aí eu coloco outra condição. Inclusive, a transparência está, aqui o slide está até errado. Vou até corrigir aqui online para vocês. Na verdade, a coisa teria que ser assim. Agora sim podemos apresentar. "IF" condição, "THEN" o que eu faço no "IF".
+
+[01:02] "ELSEIF" outra condição, o que eu faço no "ELSEIF". "ELSEIF", outra condição. E aí, por diante. E aí, no último "ELSE" é se nada que eu tiver acima conseguir ser atendido. Vamos fazer um exemplo prático então. Vamos lá no nosso "MySQL WORKBENCH". E eu vou aqui, deixa eu fechar essa caixa de diálogo aqui. Vou criar aqui um outro script. E eu vou fazer aqui um "SELECT* FROM TABELA_DE_PRODUTOS".
+
+[01:41] E eu tenho, aqui, o preço de lista dos produtos. Tem produto que custa que 6, outro que custa 8, outro custa 24, outro que custa 38. E aí, eu tenho a seguinte classificação. Vou até colocar comentário aqui. Se o produto for mais caro que 12 reais, ele é um produto muito caro. E, se ele tiver entre 7 reais e 12 reais, ele é um produto, digamos assim, em conta.
+
+[02:24] E, se ele for um produto menor do que 7 reais, o preço de lista. Ele é um produto barato. Então, eu vou fazer uma stored procedures em que, eu vou passar o código do produto. Eu vou ver quem é o preço de lista daquele produto e saber dizer se ele é caro, em conta ou barato. E jogar a resposta na tela depois que eu executar a stored procedure.
+
+[02:50] Então, a gente já vai de cara aqui rodar, qual é o comando select para retornar ao preço de lista? "SELECT PREÇO_DE_LISTA FROM TABELA_DE_PRODUTOS WHERE CÓDIGO_DO_PRODUTO" igual a um código específico. Só para a gente manter, aqui, a quare funcionando, eu vou pegar esse primeiro produto aqui. Selecionei a linha, rodei. Então, está lá o preço de lista.
+
+[03:29] Vamos lá. CLico com o botão direito do mouse. stored procedure. "CREATE STORED PROCEDURE". Então, eu vou colocar aqui o nome: "ACHA_STATUS_PREÇO". Entro como parâmetro "VPRODUTO" é um "varchar (50)". Vou ter um "DECLARE", uma variável que vai pegar o preço de lista. "VPREÇO". Ela é um tipo "FLOAT". E eu vou ter uma outra mensagem. Vai ser um "varchar (30)".
+
+[04:33] Aí eu, agora, vou pegar o preço de lista e jogar para a variável "VPREÇO". Então, eu vou rodar esta consulta aqui. Vou dar um enter aqui só para a gente poder ver o código da stored procedure toda na tela. "VPRODUTO" vai ser passado como um parâmetro e o valor do preço de lista, a gente vai jogar aqui no "INTO VPREÇO". Aí, nós vamos fazer agora os "IF"s. "IF VPREÇO > = 12 THEN".
+
+[05:19] Vou dar um "SET VMENSAGEM = PRODUTO CARO". Ponto e vírgula. Aí, agora, eu boto "ELSEIF VPREÇO > = SET AND VPREÇO < 12 THEN". Vamos colocar a mensagem que o produto é em conta. "PRODUTO EM CONTA". E aí, eu tenho, eu poderia ter outro "ELSEIF", mas outro "ELSEIF". Mas no final, eu dou um "ELSE". E aí, o último "ELSE" eu não preciso especificar uma condição. Eu digo que o produto é barato.
+
+[06:28] E aí termina aqui, no final, com "END IF". E, finalmente, aqui eu vou dar um "SELECT VMENSAGEM" para terminar o processo de consulta. Vamos olhar aqui. Note que ele está dando erros porque, na verdade, eu tenho que ter o ponto e vírgula terminando o último "END IF" para mostrar para o MySQL que isso tudo aqui é uma linha de comando.
+
+[07:08] Não tenho nenhum erro. Ok. Vou dar o "APPLY". "APPLY". "FINISH". E aí, vamos lá. "CALL ACHA_STATUS_PRECO", e aí, eu passo aqui o código do produto. Então, ponto e vírgula aqui e aqui. Vamos rodar. "PRODUTO BARATO". Vamos pegar outros produtos. Só que ao invés de preço de lista, eu vou pegar aqui o asterisco, só para a gente poder pegar outros produtos.
+
+[07:54] Vamos pegar esse aqui que tem como preço 11. Então, está entre 7 e 12. Vamos ver o que ele vai trazer aqui. "PRODUTO EM CONTA". Porque está entre 7 e 11. E agora, a gente vai pegar um produto caro. Vou pegar esse aqui 16,51. Esse é o código. Jogo aqui para a stored procedure executo. "PRODUTO CARO". Ok. Então, esse foi um exemplo simples do uso do "IF" e do "ELSE IF".
+
+
+
+
+4-4  Faturamento anual
+
+Desafio! Veja a consulta abaixo:
+
+SELECT SUM(B.QUANTIDADE * B.PRECO) AS TOTAL_VENDA FROM 
+NOTAS_FISCAIS A INNER JOIN ITENS_NOTAS_FISCAIS B
+ON A.NUMERO = B.NUMERO
+WHERE A.DATA_VENDA = '20170301'
+
+Ela retorna o valor do faturamento em uma determinada data.
+
+Construa uma Stored Procedure chamada Comparativo_Vendas que compara as vendas em duas datas (Estas duas datas serão parâmetros da SP). Se a variação percentual destas vendas for maior que 10% a resposta deve ser "Verde". Se for entre -10% e 10% deve retornar "Amarela". Se o retorno form menor que -10% deve retornar "Vermelho".
+Opinião do instrutor
+
+CREATE PROCEDURE `Comparativo_Vendas`(DataInicial DATE, DataFinal DATE)
+BEGIN
+DECLARE FaturamentoInicial FLOAT;
+DECLARE FaturamentoFinal FLOAT;
+DECLARE Variacao float;
+SELECT SUM(B.QUANTIDADE * B.PRECO) INTO FaturamentoInicial FROM 
+NOTAS_FISCAIS A INNER JOIN ITENS_NOTAS_FISCAIS B
+ON A.NUMERO = B.NUMERO
+WHERE A.DATA_VENDA = DataInicial;
+SELECT SUM(B.QUANTIDADE * B.PRECO) INTO FaturamentoFinal FROM 
+NOTAS_FISCAIS A INNER JOIN ITENS_NOTAS_FISCAIS B
+ON A.NUMERO = B.NUMERO
+WHERE A.DATA_VENDA = DataFinal ;
+SET Variacao = ((FaturamentoFinal / FaturamentoInicial) -1) * 100;
+IF Variacao > 10 THEN
+SELECT 'Verde';
+ELSEIF Variacao >= -10 AND Variacao <= 10 THEN
+SELECT 'Amarelo';
+ELSE
+SELECT 'Vermelho';
+END IF;   
+
+END
+
+
+
+
+4-5  CASE END CASE
+
+
+Transcrição
+
+[00:00] Vamos falar agora do "CASE". O "CASE" funciona da seguinte maneira: eu vou ter um uma variável que vai ser inicializada por um "DECLARE" e vai receber um valor. E eu comparo ela com uma lista de opções. Então, por exemplo, se essa variável for um número, eu falo se esse número for igual a 1, eu faço alguma coisa. Se ele for igual a dois, e faço outra.
+
+[00:27] Posso, também, estar usando aqui dentro do "CASE" uma variável do tipo "varchar". E aí, eu vou comparar com determinados "STRINGS". E aí, dependendo desse valor, eu faço alguma coisa e caso nenhuma condição satisfaça, que é o "ELSE", eu faço uma ação final. Vamos fazer um exemplo prático. Antes disso, eu vou voltar aqui para o meu "MySQL WORKBENCH". Vou me certificar de que a base "SUCOS_VENDAS" está selecionada.
+
+[01:03] E vou criar aqui um novo script. Deixa eu ver, aqui, quais são os tipos de sabores que eu tenho disponíveis na minha tabela de produtos. Para eu ver todos os sabores, eu coloco aqui um "DISTINT" e eu vou executar. Então, note. Eu tenho aqui esses sabores todos. Eu não sou um especializado muito em fruta não. Mas, se eu cometer algum erro agora, vocês não levem em consideração isso.
+
+[01:41] Mas eu vou considerar desses sabores existentes que "LIMA/LIMÃO", eu vou considerar ele como um cítrico. Mas não só o "LIMA/LIMÃO". Eu vou colocar, por exemplo, o "LARANJA" também, eu vou considerar um cítrico. "MORANGO/LIMÃO" não. "MORANGO"? "LIMÃO" pode até ser cítrico, mas "MORANGO" não, ou é? Não sei. Vou considerar que seja. Eu posso estar meio enganado aqui.
+
+[02:30] Cítrico. "LARANJA" também é cítrico. E vamos considerar agora, os produtos "UVA" e o produto, por exemplo, "MORANGO". Só o "MORANGO" como sendo, por exemplo, "NEUTROS". Não importa se eu estou fazendo uma classificação que tenha sentido. Eu estou pegando um grupo de produtos, de sabores, e dizendo que se forem esses três tipos aqui, eu vou chamar de cítrico.
+
+[03:23] Se forem esses dois, eu vou chamar de "NEUTROS". E os outros, eu vou chamar de "Ácidos". Ok. Deixa eu copiar isso daqui, tirar fora aqui do script do "SQL" para não dar problema. Vou jogar aqui. Vou fazer, então, uma procedure, uma stored procedure que vai fazer um "CASE" e vai testar um sabor de um produto. Se esse sabor for "LIMA/LIMÃO", "LARANJA" e "MORANGO/LIMÃO", eu vou chamar de "CÍTRICO".
+
+[04:09] "UVA" e "MORANGO", eu vou chamar de "NEUTRO". E, se nenhuma das condições forem satisfeitas, eu vou chamar de"ÁCIDOS". Eu poderia fazer isso pelo "IF/AND/ELSEIF", como a gente viu é no vídeo anterior. Mas eu vou usar a estrutura de "CASE" só para a gente poder ver a diferença do uso de uma outra estrutura de controle de fluxo. Então, eu vou voltar aqui para o meu "WORKBENCH", e se eu mantiver essa consulta aqui "WHERE CÓDIGO_DO_PRODUTO =". Vamos pegar aqui alguns produtos.
+
+[05:03] Então, se eu pegar esse produto daqui, só para fazer um teste. É assim. Código_doproduto. Se eu rodar isso daqui, terá o sabor uva. Então, deixa eu rodar isso daqui epara a gente não perder ela. E vamos lá. Vou, agora, criar aqui uma stored procedure. Eu vou chamar esse cara de "ACHA_TIPO_SABOR". Vou entrar como um parâmetro "VPRODUTO". Vai ser um "varchar (50)".
+
+[05:57] Vou dar um "DECLARE". Uma variável "VSABOR". E vai ser um "varchar (50). Aí agora, eu vou fazer um select para buscar o sabor do produto que foi passado como parâmetro, e jogar esse resultado para a variável "SABOR". Então, tu vou rodar essa consulta aqui que eu já separei. Só que eu coloco aqui "INTO VSABOR FROM TABELA WHERE CÓDIGO_DO_PRODUTO = VPRODUTO". Ponto e vírgula.
+
+[06:47] Agora, eu vou começar minha estrutura de "CASE". Então, eu vou colocar "CASE". Qual é a variável que eu vou estar usando no "CASE"? É a variável "VSABOR". Eu vou colocar "WHEN". Então, vamos buscar aqui. Eu vou até já copiar esse bloco aqui. Vou colar aqui embaixo e vou usar lá. "WHEN LIMA/LIMÃO THEN SELECT CÍTRICO". Ponto e vírgula. Vou repetir esse cara duas vezes porque se for "LARANJA" também vai ser "CÍTRICO".
+
+[07:53] Se for"MORANGO/LIMÃO" também vai ser "CÍTRICO". Eu vou ter outras duas condições aqui. Uma para "UVA". Outra para "MORANGO". Vou chamar esse aqui de "NEUTRO". E aí, quando nenhuma das cinco condições anteriores foram satisfeitas, eu coloco um "ELSE SELECT ÁCIDOS". E aí, eu fecho com um "END CASE". Na verdade, tem que fechar aqui esse "STRING". Já posso apagar esse rascunho aqui e eu fecho a minha stored procedure.
+
+[09:03] Vamos dar uma olhada nela. Então, tem aqui. Declarei a variável. Joguei o valor do sabor, que veio desse parâmetro que é usado aqui embaixo. Jogo para a variável "VSABOR". Depois, eu testo. Se caso ela for "LIMA/LIMÃO", vai ser "CÍTRICO". Caso "LARANJA", vai ser "CÍTRICO". Caso "MORANGO/LIMÃO", vai ser "CÍTRICO". Caso "UVA", "NEUTRO. Caso "MORANGO", "NEUTRO".
+
+[09:37] E se nada disso aqui for verdade, ele será "ÁCIDO". Vamos dar um "APPLY". "APPLY" de novo. "FINISH". Então, vamos lá. Esse produto aqui, ele é sabor "UVA". Então, eu posso vir aqui, dar um "CALL ACHA_SABOR_PRODUTO". Vou passar como parâmetro isso daqui. Essa é uma outra rotina, que a gente, quando roda, acha "UVA". Posso, agora, rodar a "ACHA_TIPO_SABOR" que é "UVA".
+
+[10:34] Então, "UVA" pelo nosso teste, dá "NEUTRO". Então, se eu rodar agora esta rotina, eu vou ter como resposta o "NEUTRO". Então, eu mostrei para vocês um caso simples do uso do "CASE" em cima de uma determinada variável que recebe valor. E aí, eu tenho algumas opções e digo se aquelas opções satisfizerem, eu tenho o meu resultado final.
+
+
+
+
+4-6  CASE NOT FOUND
+
+
+Transcrição
+
+[00:00] Vamos pegar aquela rotina que nós desenvolvemos agora, no vídeo anterior, usando o "CASE", e eu vou forçar um erro que pode acontecer quando a gente está trabalhando com a estrutura "CASE" dentro do nosso código. Então, eu vou pegar aqui a "ACHA_TIPO_SABOR", que foi a rotina que nós desenvolvemos. Clico com o botão direito do mouse "ALTER STORED PROCEDURE". E aí, eu vou fazer o seguinte.
+
+[00:33] Eu vou tirar o "ELSE" e vai ficar assim. Não vai ter o "ELSE" dentro do "CASE". Então, se for "LIMA/LIMÃO", tem o "CÍTRICO", "LARANJA", "MORANGO", "LIMÃO", "UVA", agora se for alguma coisa diferente disso, eu não tenho dentro do "CASE" o que fazer. Eu vou então, chamar esse cara aqui de "ERRO". Vou dar um "APPLY". Ele me dá esse código aqui. O negócio é que se eu rodo aqui, ele vai apagar a minha stored procedure antiga e vai criar uma nova.
+
+[01:18] Eu vou fazer o seguinte. Eu vou copiar esse código todo aqui, eu não dou o "APPLY", não clico na "APPLY". Vou dar um "CANCEL". E aí, eu vou criar aqui uma nova estrutura de script. Vou colar isso daqui. E eu vou tirar esse "DROP" daqui. Pronto. Vou executar. Ele rodou. Então, aqui se eu der um "REFRESH", eu tenho a original, que eu não perdi. E tenho a nova.
+
+[01:53] Então, eu vou rodar agora aqui e ao invés de ser a "ACHA_TIPO_SABOR", vai ser a "ACHA_TIPO_SABOR_ERRO". Trouxe o neutro. Não tive nenhum problema. Agora, se a gente olhar aqui a lista de sabores, deixa eu colocar aqui também o código do produto e os sabores de cada produto. Eu vou pegar aqui, por exemplo, esse produto aqui: o "1004327", ele é "MELANCIA", E melancia não está contida naquelas opções do "CASE".
+
+[02:41] Então, eu vou pegar esse número aqui e vou rodar esse processo, passando o número do produto cujo resultado é "MELANCIA". Note: eu vou ter um erro. Esse erro é o erro do número "1339", que está me dizendo que a condição que eu achei não está no "CASE". Ou seja, eu preciso, no "CASE", sempre montar um "ELSE" porque eu preciso dar todas as opções para a consulta "CASE" me devolver resultados.
+
+[03:25] Se eu passar para o "CASE" uma opção que não me traga nenhum resultado, ele traz o erro "1339". Mas tem como a gente passar esse erro, tratando o erro da mesma maneira que nós tratamos quando a gente mostrou para vocês alguns vídeos passados. Aquele capítulo específico do erro "HANDLER". Quer ver? Eu vou pegar então, esse "ACHA_TIPO_SABOR_ERRO", clico com o botão direito do mouse. Vou dar o "ALTER_STORED_PROCEDURE".
+
+[03:58] E aí, aqui, eu vou escrever isso aqui antes. Aqui no "DECLARE". "DECLARE HANDLER_MSG", na verdade é a mensagem. Vou chamar isso aqui de "MSG_ERRO". Vai ser um Varchar de 30. Ponto e vírgula. E aí, depois, eu vou dar um "DECLARE CONTINUE HANDLER FOR". E aí, o número do erro que eu vou tratar é o "1339". E eu vou setar a variável "msgERRO".
+
+[04:51] Vai ser igual a, por exemplo, o "CASE não está completo". Ponto e vírgula no final. E aí, aqui no final do "CASE", eu vou dar um select. Vou dar um select nessa variável, que é a mensagem de erro. Vamos lá. Vou dar um "APPLY". APPLY" de novo. "FINISH". Aí, eu agora, vou onde está isto aqui. Vou rodar de novo aquela minha rotina, passando como parâmetro aquele produto cujo sabor é "MELANCIA.
+
+[05:47] A gente sabe que "MELANCIA" não está na opção do "CASE". Rodei. Olha lá. O "CASE NÃO ESTÁ COMPLETO". Ou seja, eu não tenho erro aqui embaixo. Ele rodou com sucesso. Não me retornou erro, mas me retornou a mensagem de que o "CASE" não está completo. Então, isso é uma forma, também, de a gente evitar que o processo tenha um erro quando a gente esquecer de colocar todas as opções do "CASE".
+
+
+
+
+4-7  CASE Condicional
+
+
+Transcrição
+
+[00:00] Tem um jeito da gente usar o "CASE" de uma forma muito semelhante ao "IF/ELSE IF". Vamos fazer, então, o seguinte. Eu vou procurar essa rotina aqui "ACHA_STATUS_PRECO", que foi uma rotina que nós desenvolvemos lá quando nós vimos o "IF/ELSE IF". Clico com o botão direito do mouse sobre ela, "ALTER STORED PROCEDURE". Então, temos lá: se o produto fosse, relembrandoa rotina, se o produto fosse mais do que 12, seria um produto caro.
+
+[00:38] Entre 7 e 12, seria um produto em conta. Se não, seria um produto barato. Eu vou chamar essa rotina, vou mudar o nome dela de "ACHA_STATUS_PREÇO". Vou escrever aqui usando "CASE". Vou dar um "APPLY", mas não vou confirmar essa mudança. Eu vou, simplesmente, copiar esse bloco aqui. Eu não preciso copiar o "DROP" da rotina. Vou copiar apenas o bloco de "DELIMITER" para baixo.
+
+[01:12] Vou dar um "CANCEL". E aí, vou criar um script novo e vou dar um colar aqui. E aí, antes de rodar, eu vou editar a rotina que está aqui dentro. Essa estrutura, então, aqui onde eu usei o "IF/ELSE IF", eu vou mudar para o "CASE". E como é que eu uso? Dessa maneira. Por enquanto, eu não vou apagar não. Vou deixar as duas para eu poder fazer uma por cima da outra. Depois eu apago a estrutura "IF".
+
+[01:45] Eu vou dar aqui um "CASE". Só que ao dar o "CASE", eu não especifico nenhum indicador que eu vou testar. E aí, eu venho aqui com o meu "WHEN". Aí, eu coloco "PREÇO > 12 THEN". Eu vou colocar essa mensagem. "WHEN". Quando houver esta condição aqui "THEN", vou colocar essa mensagem. E aí, eu vou estar colocando também aqui "WHEN", por exemplo, "VPRECO < 7 THEN O PRODUTO É BARATO."
+
+[02:48] E aí, no final, eu dou um "END CASE". Então, a estrutura ficou assim. Vou fazer a mesma coisa do "IF/ELSE IF". Qual é a diferença em termos de processamento? Quando eu tenho o "IF/ELSE IF", o processo vai fazer os testes; ele testa a primeira, vai para segunda, vai para a terceira, vai para quarta. E aí, quando ele acha quem tem a condição, ele roda. No "CASE" não. No "CASE" , ele já tem previamente definida a opção.
+
+[03:28] E ao entrar aqui, ele já vai diretamente para a opção que vai ser selecionada para estar executando isso. Ou seja, o "CASE" acaba sendo um pouco mais eficiente. Mas nós estamos falando de microssegundos de processamento, que não fazem muita diferença. Mas é uma outra estrutura de fluxo que você pode está utilizando. Vou rodar, então, a criação dessa stored procedure: "ACHA_STATUS_PREÇO_CASE". Deixa eu rodar.
+
+[04:02] Executei. E aí agora, eu vou aqui de novo. Na chamada, eu vou chamar agora o "CALL". Vamos dar um "REFRESH" aqui antes. Então, a gente tem aqui as duas. A de cima, eu uso "IF". A de baixo, eu uso "CASE". Então, eu vou colocar aqui: "ACHA_STATUS_PRECO_CASE" e vou passar como parâmetro. Vou escolher esse produto aqui. Vamos executar. Produto barato. Esse segundo aqui , vamos executar. Produto caro. Então, eu mostrei para vocês como é que eu posso usar o "CASE" substituindo o "IF/ELSE IF". Valeu.
+
+
+
+
+4-8  Faturamento anual usando CASE CONDICIONAL
+
+
+
+Implemente a Stored Procedure do exercício do vídeo 2, agora usando CASE CONDICIONAL. Chame de Comparativo_Vendas_Case_Cond.
+Opinião do instrutor
+
+CREATE PROCEDURE `Comparativo_Vendas_Case_Cond`(DataInicial DATE, DataFinal DATE)
+BEGIN
+DECLARE FaturamentoInicial FLOAT;
+DECLARE FaturamentoFinal FLOAT;
+DECLARE Variacao float;
+SELECT SUM(B.QUANTIDADE * B.PRECO) INTO FaturamentoInicial FROM 
+NOTAS_FISCAIS A INNER JOIN ITENS_NOTAS_FISCAIS B
+ON A.NUMERO = B.NUMERO
+WHERE A.DATA_VENDA = DataInicial;
+SELECT SUM(B.QUANTIDADE * B.PRECO) INTO FaturamentoFinal FROM 
+NOTAS_FISCAIS A INNER JOIN ITENS_NOTAS_FISCAIS B
+ON A.NUMERO = B.NUMERO
+WHERE A.DATA_VENDA = DataFinal ;
+SET Variacao = ((FaturamentoFinal / FaturamentoInicial) -1) * 100; 
+CASE
+WHEN Variacao > 10 THEN SELECT 'Verde';
+WHEN Variacao > -10 AND Variacao < 10 THEN  SELECT 'Amarelo';
+WHEN Variacao <= -10 THEN SELECT 'Vermelho';
+END CASE;
+END
+
+
+
+4-9  Looping
+
+
+Transcrição
+
+[00:00] A gente, até agora, viu controle de fluxo onde, dependendo de uma condição, eu faço alguma coisa e continuo a execução da minha stored procedure. Eu agora vou falar de "LOOPS". "LOOPS" são repetições, ou seja, comandos que vão ser feitos de forma repetida até que uma condição seja satisfeita. Aí, eu saio desse bloco de repetição. Esse bloco de repetição a gente chama de "LOOP".
+
+[00:28] E aí, a gente usa, dentro do MySQL: "WHILE", "DO" e "END WHILE". Onde a gente usa dessa forma que está aqui em cima. "WHILE", uma condição. Caso a condição satisfaça, eu coloco o comando "DO", e eu coloco as linhas do que eu quero executar e termino o bloco com um "END WHILE". Vamos lá para o "WORBENCH" fazer um exemplo prático disso.
+
+[00:56] Eu vou criar aqui um novo script e eu vou fazer o seguinte. Eu vou criar aqui uma tabela chamada "TAB_LOOPING", que vai ter só um campo "ID" que vai ser do tipo inteiro. Criar essa tabela aqui. Pronto. A tabela foi criada. Como é que vai ser minha rotina? Eu vou passar dois parâmetros: um número inicial e um número final. E aí, eu vou fazer um contador onde eu vou contar a partir do número inicial, com intervalos de 1 a 1, até o número final.
+
+[01:44] E aí, cada interação dessa, eu incluo o valor da sequência dentro dessa tabela "LOOP". É isso que nós vamos fazer e a gente vai usar o "WHILE" para fazer esse "LOOPING" interativo. Vamos botar a mão na massa. Eu vou vir aqui. Clico com o botão direito do mouse. "CREATE STORED PROCEDURE". E eu vou chamar essa stored procedure de, vou colocar aqui "LOOPING_WHILE".
+
+[02:19] Vou passar como parâmetro um número inicial que vai ser inteiro e um outro número que vai ser o número final, que também vai ser inteiro. Aqui dentro, eu vou declarar uma variável que vai ser um contador. Que vai ser inteira e aí, antes de começar a interação, a minha tabela "TAB_LOOPING" pode ter dados que foram gravados mediante a execução dessa stored procedure em um outro momento.
+
+[03:00] Então, vou fazer o seguinte. Antes de começar a executar tudo, eu vou apagar os dados da tabela "TAB_LOOPING". Então, a "TAB_LOOPING" vai estar vazia. Vou inicializar o contador com, então média 7, o valor inicial. Inicializei o contador com o número inicial. Aí, eu vou escrever "WHILE VCONTADOR MENOR OU IGUAL A VNUM FINAL". Enquanto essa condição for verdadeira, eu vou estar dentro do "LOOP".
+
+[03:57] E esse "LOOP" começa com um "DO" e termina com um "END". Então, aqui dentro é que eu vou estar executando. Aqui dentro que eu vou estar executando a repetição dos comandos. E aqui dentro, eu vou fazer assim. Eu vou dar um insert. "INTO", uma tabela de "LOOPING". O campo é "ID". E vou inserir como o valor dessa tabela o contador.
+
+[04:37] Aqui, na verdade, não é "END" só. É "END_WHILE". Aqui, a gente fecha o "LOOP" com "END_WHILE". Por isso que estava dando um erro. Depois que inserir o valor do contador dentro da tabela, eu vou somar de 1. Aí, a variável "VCONTADOR" vai somar de 1. Aí, eu volto aqui para cima e vejo se a condição ainda satisfaz. Se ainda contador for menor ou igual ao número final, eu faço um novo insert e aumento o contador de um.
+
+[05:23] Vamos ver se vai funcionar. Mas antes, depois que eu terminar tudo isso, eu exibo o conteúdo da tabela "TAB_LOOPING" para poder ver os computadores gravados dentro da tabela. Vou dar um "APPLY". O nome da procedure não está aqui, não. "LOOPING_WHILE" está legal. Vou dar o "APPLY". E "FINISH". Então, vamos lá. Vou chamar a "LOOPING_WHILE".
+
+[06:01] E eu vou passar como parâmetro o número 1 vírgula e o número 10. Vou executar. Está lá: um, dos, três até 10. Se eu colocar aqui 1000, você vai ver que ele demora até um pouquinho mais para executar. Mas agora, ele gerou aqui uma tabela que vai de um até mil. Era isso que eu queria mostrar para vocês sobre a estrutura de "LOOPING" dentro da stored procedures.
+
+
+
+
+4-10  Número de notas para diversos dias
+
+
+
+Sabendo que a função abaixo soma de 1 dia uma data:
+
+SELECT ADDDATE(DATA_VENDA, INTERVAL 1 DAY);
+
+Faça uma Stored Procedure que, a partir do dia 01/01/2017, iremos contar o número de notas fiscais até o dia 10/01/2017. Devemos imprimir a data e o número de notas fiscais. Chame esta Stored Procedure de Soma_Dias_Notas.
+
+Dicas:
+
+Declare variáveis do tipo DATE: Data inicial e final; Faça um loop testando se Data inicial < Data final; Imprima na saída do MYSQL a data e o número de notas. Não esquecer de converter as variáveis para VARCHAR; Some a data em 1 dia.
+Opinião do instrutor
+
+CREATE PROCEDURE `Soma_Dias_Notas`()
+BEGIN
+DECLARE DATAINICIAL DATE;
+DECLARE DATAFINAL DATE;
+DECLARE NUMNOTAS INT;
+SET DATAINICIAL = '20170101';
+SET DATAFINAL = '20170110';
+WHILE DATAINICIAL <= DATAFINAL
+DO
+SELECT COUNT(*) INTO NUMNOTAS  FROM notas_fiscais WHERE DATA_VENDA = DATAINICIAL;
+SELECT concat(DATE_FORMAT(DATAINICIAL, '%d/%m/%Y'), '-' , CAST(NUMNOTAS as CHAR(50)));
+SELECT ADDDATE(DATAINICIAL, INTERVAL 1 DAY) INTO DATAINICIAL;
+END WHILE;
+
+END
+
+
+
+4-11  Consolidando o seu conhecimento
+
+Chegou a hora de você seguir todos os passos realizados por mim durante esta aula. Caso já tenha feito, excelente. Se ainda não, é importante que você execute o que foi visto nos vídeos para poder continuar com a próxima aula.
+
+1) Abra um novo script MYSQL.
+
+2) Digite e execute:
+
+USE `sucos_vendas`;
+DROP procedure IF EXISTS `cliente_novo_velho`;
+DELIMITER $$
+
+USE `sucos_vendas`$$
+CREATE PROCEDURE `cliente_novo_velho`(vCPF VARCHAR(20))
+BEGIN
+   DECLARE vResultado VARCHAR(20);
+   DECLARE vDataNascimento DATE;
+   SELECT DATA_DE_NASCIMENTO INTO vDataNascimento FROM
+   tabela_de_clientes WHERE CPF = vCPF;
+   IF vDataNascimento < '20000101' THEN
+      SET vResultado = 'CLIENTE VELHO';
+   ELSE
+      SET vResultado = 'CLIENTE NOVO';
+   END IF;
+   SELECT vResultado;
+END$$
+DELIMITER ;
+
+2) Execute a SP.
+
+Call cliente_novo_velho ('19290992743');
+
+0.png
+
+3) Esta SP usa a estrutura IF-THEN-ELSE para classificar um cliente como sendo novo ou velho, baseado em sua idade.
+
+4) Vamos ver outra estrutura de controle de fluxo. Digite e execute:
+
+USE `sucos_vendas`;
+DROP procedure IF EXISTS `acha_status_preco_2`;
+DELIMITER $$
+
+USE `sucos_vendas`$$
+CREATE PROCEDURE `acha_status_preco_2` (vProduto VARCHAR(50))
+BEGIN
+   DECLARE vPreco FLOAT;
+   DECLARE vMensagem VARCHAR(30);
+   SELECT PRECO_DE_LISTA INTO vPreco FROM tabela_de_produtos
+   WHERE codigo_do_produto = vProduto;
+   IF vPreco >= 12 THEN
+      SET vMensagem = 'PRODUTO CARO.';
+   ELSEIF vPreco >= 7  AND vPreco < 12 THEN
+      SET vMensagem = 'PRODUTO EM CONTA.';
+   ELSE
+      SET vMensagem = 'PRODUTO BARATO.';
+   END IF;
+   SELECT vMensagem;
+END$$
+DELIMITER ;
+
+5) Digite e execute:
+
+Call acha_status_preco_2 ('1000889');
+
+6) Observe que a estrutura IF-THEN-ELSEIF permite encadear diversos testes.
+
+7) O encadeamento de condições pode ser expresso, também, usando o comando CASE-END-CASE. Para isso digite e execute:
+
+USE `sucos_vendas`;
+DROP procedure IF EXISTS `acha_tipo_sabor`;
+DELIMITER $$
+
+USE `sucos_vendas`$$
+CREATE PROCEDURE `acha_tipo_sabor`(vProduto VARCHAR(50))
+BEGIN
+  DECLARE vSabor VARCHAR(50);
+  SELECT SABOR INTO vSabor FROM tabela_de_Produtos
+  WHERE codigo_do_produto = vProduto;
+  CASE vSabor
+  WHEN 'Lima/Limão' THEN SELECT 'Cítrico';
+  WHEN 'Laranja' THEN SELECT 'Cítrico';
+  WHEN 'Morango/Limão' THEN SELECT 'Cítrico';
+  WHEN 'Uva' THEN SELECT 'Neutro';
+  WHEN 'Morango' THEN SELECT 'Neutro';
+  ELSE SELECT 'Ácidos';
+  END CASE;
+END$$
+DELIMITER ;
+
+8) Digite e execute:
+
+CALL acha_tipo_sabor('1000889');
+
+9) Uma estrutura derivada da mostrada é o CASE-NOT-FOUND. Para isso vamos criar a SP Acha_Tipo_Sabor_Erro. Digite e execute:
+
+USE `sucos_vendas`;
+DROP procedure IF EXISTS `acha_tipo_sabor_erro`;
+DELIMITER $$
+
+USE `sucos_vendas`$$
+CREATE  PROCEDURE `acha_tipo_sabor_erro`(vProduto VARCHAR(50))
+BEGIN
+  DECLARE vSabor VARCHAR(50);
+  SELECT SABOR INTO vSabor FROM tabela_de_Produtos
+  WHERE codigo_do_produto = vProduto;
+  CASE vSabor
+  WHEN 'Lima/Limão' THEN SELECT 'Cítrico';
+  WHEN 'Laranja' THEN SELECT 'Cítrico';
+  WHEN 'Morango/Limão' THEN SELECT 'Cítrico';
+  WHEN 'Uva' THEN SELECT 'Neutro';
+  WHEN 'Morango' THEN SELECT 'Neutro';
+  END CASE;
+END$$
+DELIMITER ;
+
+10) Esta SP difere da anterior apenas porque foi retirada a linha abaixo.
+
+ELSE SELECT 'Ácidos';
+
+Estamos criando uma situação onde nenhuma das condições podem ser satisfeitas.
+
+11) Execute a SP:
+
+CALL acha_tipo_sabor_erro('1004327');
+
+12) Temos o erro:
+
+1.png
+
+13) Para evitar de não incluirmos opções no CASE que contemplem todas as situações podemos acrescentar o tratamento de erro. Altere a SP executando:
+
+USE `sucos_vendas`;
+DROP procedure IF EXISTS `acha_tipo_sabor_erro`;
+DELIMITER $$
+
+USE `sucos_vendas`$$
+CREATE  PROCEDURE `acha_tipo_sabor_erro`(vProduto VARCHAR(50))
+BEGIN
+  DECLARE vSabor VARCHAR(50);
+  DECLARE msgErro VARCHAR(30);
+  DECLARE CONTINUE HANDLER FOR 1339 SET msgErro = 'O case não está completo';
+  SELECT SABOR INTO vSabor FROM tabela_de_Produtos
+  WHERE codigo_do_produto = vProduto;
+  CASE vSabor
+  WHEN 'Lima/Limão' THEN SELECT 'Cítrico';
+  WHEN 'Laranja' THEN SELECT 'Cítrico';
+  WHEN 'Morango/Limão' THEN SELECT 'Cítrico';
+  WHEN 'Uva' THEN SELECT 'Neutro';
+  WHEN 'Morango' THEN SELECT 'Neutro';
+  END CASE;
+  SELECT msgErro;
+END$$
+DELIMITER ;
+
+14) Execute a SP:
+
+CALL acha_tipo_sabor_erro('1004327');
+
+Teremos o erro tratado.
+
+2.png
+
+15) O Case Condicional utiliza uma estrutura de Case semelhante a usada quando executamos um comando SELECT. Digite e execute:
+
+USE `sucos_vendas`;
+DROP procedure IF EXISTS `acha_status_preco_case`;
+DELIMITER $$
+
+USE `sucos_vendas`$$
+CREATE PROCEDURE `acha_status_preco_case`(vProduto VARCHAR(50))
+BEGIN
+    DECLARE vPreco FLOAT;
+    DECLARE vMensagem VARCHAR(30);
+    SELECT PRECO_DE_LISTA INTO vPreco FROM tabela_de_produtos
+    WHERE codigo_do_produto = vProduto;
+    CASE
+    WHEN vPreco >= 12 THEN SET vMensagem = 'PRODUTO CARO.';
+    WHEN vPreco >= 7 AND vPreco < 12 THEN  SET vMensagem = 'PRODUTO EM CONTA.';
+    WHEN vPreco < 7 THEN SET vMensagem = 'PRODUTO BARATO';
+    END CASE;
+    SELECT vMensagem;
+END$$
+DELIMITER ;
+
+16) Digite e execute:
+
+CALL acha_status_preco_case('1004327');
+
+17) A estrutura de Loop permite repetir um conjunto de comandos até que determinada condição aconteça. Digite e execute:
+
+CREATE TABLE TAB_LOOPING (ID INT);
+
+18) Após a criação de uma tabela auxiliar digite e execute
+
+USE `sucos_vendas`;
+DROP procedure IF EXISTS `looping_while`;
+DELIMITER $$
+
+USE `sucos_vendas`$$
+CREATE PROCEDURE `looping_while`(vNumInicial INT, vNumFinal INT)
+BEGIN
+   DECLARE vContador INT;
+   DELETE FROM TAB_LOOPING;
+   SET vContador = vNumInicial;
+   WHILE vContador <= vNumFinal
+   DO
+      INSERT INTO TAB_LOOPING (ID) VALUES (vContador);
+      SET vContador = vContador + 1;
+   END WHILE;
+   SELECT * FROM TAB_LOOPING;
+END$$
+DELIMITER ;
+
+19) Vamos executar a SP passando como parâmetro um número inicial e um número final para criação de uma sequência numérica na tabela temporária. Digite e execute:
+
+call looping_while (1, 1000);
+
+3.png
+
+Teremos uma sequência numérica que vai de 1 a 1000.
+
+
+
+Opinião do instrutor
+
+Continue com os seus estudos, e se houver dúvidas, não hesite em recorrer ao nosso fórum!
+
+
+
+
+4-12  O que aprendemos?
+
+  O control de fluxo IF-THEN-ELSE.
+  
+  Uma variação do controle anterior chamado IF-THEN-ELSEIF.
+  
+  A estrutura CASE;
+  
+  Como tratar erros no CASE quando nem todas as opções são contempladas;
+  
+  o CASE condicional, semelhante ao usado nos comandos SQL;
+  
+  O uso de Loops para repetir um conjunto de comandos até uma condição ser satisfeita.
+

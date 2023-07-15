@@ -1,0 +1,682 @@
+https://cursos.alura.com.br/course/mysql-dba-administracao/section/8467/tasks
+
+Curso de
+  Administração do MySQL: segurança e otimização do banco
+
+Instrutor
+
+  Victorino Vila
+
+    Linkedin
+    https://www.linkedin.com/in/victorino-vila-1a160/
+
+
+Aula 3- Backup e recuperação de dados | 0 / 17 | 69min
+
+  3-1  Arquivos necessários para a aula
+  3-2  Criando a base de dados
+  3-3  Comando para a criação da base de dados
+  3-4  Mudando a localização da base
+  3-5  Diretório de criação das bases de dados
+  3-6  Apagando a base de dados
+  3-7  Comando para apagar a base de dados
+  3-8  Realizando o backup com o mysqldump
+  3-9  Backup de uma base de dados
+  3-10  Usando o Workbench para backup
+  3-11  Diretório com o backup das tabelas
+  3-12  Backup de arquivos
+  3-13  Passos para o backup
+  3-14  Recuperando os backups
+  3-15  Programa para recuperar o arquivo
+  3-16  Consolidando o seu conhecimento
+  3-17  O que aprendemos?
+
+
+
+3-1  Arquivos necessários para a aula
+
+Ao longo dos vídeos, o instrutor irá utilizar alguns arquivos específicos, que são necessários para o decorrer desta aula e do treinamento. Você pode baixar um ZIP com esse conteúdo aqui.
+
+https://caelum-online-public.s3.amazonaws.com/1224-mysql-adminstracao/03/arquivos-aula-3.zip
+
+
+
+
+3-2  Criando a base de dados
+
+
+Transcrição
+
+[00:00] Vamos continuar estudando, vamos falar agora sobre base de dados, o MySQL, ele se organiza numa estrutura que nos chamamos de base de dados. Dentro dessa base de dados, nós vamos ter todos os elementos que compõem um banco, tabelas, índices, history procedures, triggers e assim por diante.
+
+[00:23] Todas aquelas entidades que compõem um banco de dados vai estar dentro da base, se a gente olhar o nosso Workbench, note que do lado esquerdo nós temos a lista das bases, então eu tenho algumas bases aqui, não necessariamente no exemplo de vocês, vocês vão ter todas essas bases aí.
+
+[00:45] E cada ícone desse aqui, significa uma base de dados, quando eu estou olhando um componente de uma base de dados, não significa que eu não consiga ver ele, estando em outra base de dados.
+
+[01:04] Ou seja, eu posso, por exemplo, na base de dados “A”, fazer um select na base de dados... numa tabela que esteja na base de dados “B”, por exemplo, desde que a segurança permita isso. Como é que eu crio uma base de dados? Tem um comando muito simples, eu vou mostrar a vocês.
+
+[01:30] Eu vou criar aqui um novo script e vou digitar, por exemplo, “Create Database Library”, um comando bem simples, ou seja, create database, eu estou criando a base de dados e library é o nome dessa base de dados.
+
+[01:53] Se eu por acaso executar esse comando, o comando foi criado com sucesso e do lado esquerdo, se eu der botão direito do mouse e dar um Refresh, eu tenho a minha library criada.
+
+[02:11] Eu poderia estar criando a base de dados também, usando a caixa de diálogo interna do Workbench, se eu der botão direito mouse sobre essa área vazia, eu tenho aqui uma opção chamada: Create Schema, ou seja, quando eu falar database ou Schema, eu estou falando a mesma coisa.
+
+[02:35] Tanto é que existe o comando Create Schema, mas o comando Create Schema e Create Database faze a mesmíssima coisa. Então vamos lá, Create Schema, eu posso colocar aqui um nome, eu vou botar aqui library 2 e eu tenho dois parâmetros que podem ser escolhidos na criação da base de dados.
+
+[03:01] Esses parâmetros, esses collations estão baseados na tabela (ASCII) interna que eu vou estar usando para armazenar principalmente campos textos, dentro dessa base de dados.
+
+[03:16] Para quem não está muito familiarizado do que que é uma tabela (ASCII), para falar de uma forma bem reduzida, internamente o computador tem uma tabela numeral, que representa cada letra do teclado, ou seja, o “A” maiúsculo tem um número, o “A” minúsculo tem outro número e assim por diante.
+
+[03:37] Quando, no começo da computação essa tabela (ASCII) tinham somente os caracteres que estão compatíveis com a língua inglesa, ou seja, “ç”, acento, “A” com acento, “A” com tio, isso não havia na tabela (ASCII) original.
+
+[04:00] Então, começou-se a criar com o tempo tabelas (ASCII) estendidas, onde caracteres que originalmente não se encontram na língua inglesa, passaram a ser representados por um número e aí, você tem várias tabelas (ASCII) diferentes.
+
+[04:19] Inclusive, umas que atendem outros idiomas, sem ser os latidos, idioma russo, grego, idioma árabe, ideograma chinês, japonês e assim por diante. Quando você está criando um banco de dados no MySQL, você pode definir qual é a tabela (ASCII) que você vai usar, ou seja, a língua que você vai estar representando os dados texto no seu banco de dados.
+
+[04:54] Se você vier aqui, você pode escolher uma série de tabelas (ASCII) previamente definias, cada tabela dessa tem a sua representação de símbolos e aí, você pode... invés... se você não falar nada, você vai estar usando a Collation, ou seja, a tabela (ASCII) default do seu sistema operacional.
+
+[05:26] Continuando, coloquei aqui o nome do banco de dados, eu clico no botão apply e aí, ele me representa aqui o comando que ele vai executar. Note, ele escreveu aqui “Create Schema” e o nome do banco que eu coloquei, mas Create Schema e Create database são as mesmas coisas.
+
+[05:50] Então, se eu clicar aqui em apply, dou um finish e aí, pronto, eu tenho aqui o bando de dados library 2 criado. Então era sobre isso que eu queria falar um pouquinho para vocês, sobre criação de base. Valeu.
+
+
+
+
+3-3  Comando para a criação da base de dados
+
+Qual é o comando para criação da base de dados?
+
+CREATE
+  Alternativa correta! Este é o comando principal para a criação de uma base de dados.
+
+NEW
+  Alternativa errada! Este comando não existe no MySQL.
+
+INSERT
+  Alternativa errada! Este comando até existe, mas não é para criar uma base de dados.
+
+
+
+
+3-4  Mudando a localização da base
+
+
+Transcrição
+
+[00:00] Agora uma pergunta, eu criei base de dados, agora, aonde elas foram criadas dentro da minha máquina? Em que diretório? Vamos fazer o seguinte, deixa eu fechar essa aba aqui e eu vou criar um novo script.
+
+[00:17] E é o seguinte, eu vou colocar, eu vou executar um comando para mostrar algumas variáveis de ambiente, que tenham a palavra “dir” no meio delas, então vou botar aqui “Show Variables Where Variable_Name Like” e eu vou procurar por: %dir.
+
+[00:50] Note, eu tenho aqui vários diretórios, mas o diretório importante que eu gostaria de passar para vocês é esse aqui, datadir, o datadir é o diretório que diz aonde as minhas bases serão criadas fisicamente dentro do meu disco. Se a gente copiar aqui esse caminho e eu abrir aqui o meu explorando do Windows, eu vou colar aqui e vou dar um “Enter”.
+
+[01:24] Então note, eu tenho esse diretório aqui, é um diretório onde eu tenho uma pasta para cada banco de dados criado e dentro de cada pasta, eu tenho os arquivos que compõem o banco de dados. Agora, e se eu quiser mudar o caminho desse banco?
+
+[01:49] Por padrão, ele está colocando no mesmo diretório onde está instalado o MySQL, o diretório chamado programdata, mas pode ser que esse diretório C, ele esteja muito cheio, tenha pouco espaço, eu preciso fazer com que o diretório padrão do MySQL seja um diretório diferente do que está localizado no mesmo disco onde o software está instalado.
+
+[02:18] Então, vamos fazer essa mudança, essa variável aqui, datadir, ela está localizada naquele arquivo my.ini, lembrando-se, o my.ini é o arquivo de inicialização de variáveis. Vamos olhar esse arquivo, o my.ini, ele normalmente fica no programdata, MySQL, MySQL Server 8.0.
+
+[02:57] Então eu tenho lá o arquivo my.ini. Se eu abrir ele com um Notepad, um editor de texto qualquer, vou procurar essa variável aqui, ela deve estar aqui, datadir, note que pelo o padrão, o datadir é aquele diretório onde a base se encontra.
+
+[03:20] Vamos fazer o seguinte, vamos mudar o valor dessa variável e aí, criar os nossos dados em outro diretório diferente do diretório padrão que é esse que está aqui destacado aqui em cima. Então, para eu não perder essa configuração, eu vou botar aqui um jogo da velha na frente do comando, que representa um comentário.
+
+[03:48] E vou colocar aqui datadir = ... eu vou escolher aqui um diretório meu aqui, deixa eu ir aqui em outra pasta, eu vou ver aqui no meu C, Tempo, que eu já tenho até um diretório Data aqui, deixa eu apagar esse diretório. Então, na verdade, dentro do meu C Tempo, eu não tenho nada.
+
+[04:17] Então eu vou criar aqui uma pasta chamada Data, dentro dessa pasta, eu não tenho nada e aí, claro, o meu diretório padrão vai ser esse daqui, então eu estou dizendo que a partir do momento que eu inicializar de novo o MySQL, o diretório dedos será o C, Tempo, Data.
+
+[04:42] Para que essa variável tenha valor, eu tenho que parar o serviço e subir ele de novo, então eu vou fazer o seguinte, vou fechar aqui o Workbench, vou vir aqui em serviços do Windows.
+
+[05:03] Então, eu tenho aqui os meus serviços da máquina e se eu for aqui na letra M, eu tenho aqui o MySQL, botão direito do mouse, vou clicar em parar, vamos esperar um pouquinho, o MySQL foi parado. Eu agora vou subir ele de novo, para que as variáveis de ambientes sejam lidas.
+
+[05:31] As variáveis de ambiente subiram novamente. Eu cometi um erro aqui, deixa eu parar aqui. Eu não salvei o arquivo, o meu Notepad Plus, que é o Plus que eu uso, eu não salvei o arquivo, vou salvar agora o my.ini. Agora, o my.ini está salvo.
+
+[05:59] Antes... eu acabei parando o serviço e subindo, carregando esse valor aqui antigo, mas agora está salvo. Então vamos lá, de novo aqui serviço, que está parado, eu vou inicializar. Agora sim, eu já... claro, eu já treinei esse exercício, eu já sabia que esse tipo que nós fizemos ia dar esse erro.
+
+[06:24] O que que significa esse erro? Significa o seguinte, que o diretório Data está totalmente vazio, não tem nada, ele tem algumas tabelas internas de controle, que precisam estar no diretório Data para que o MySQL suba corretamente.
+
+[06:42] Então eu vou fazer o seguinte, vou cancelar aqui, não vou subir o serviço, eu vou no diretório Data original, que é esse daqui, que é o programdata, MySQL, MySQL 8.0, Data, vou pegar essa pasta, vou copiar ela, copiem para a gente não perder a configuração original e vou colar lá no meu Tempo e substituir sobre a pasta Dara que eu tinha criado.
+
+[07:21] Então agora na C, Tempo, Data, eu tenho aquela estrutura toda do banco MySQL. Agora vamos tentar subir o serviço de novo. Pronto, agora o serviço subiu, sem erros, olhando como diretório de dados o meu C, Tempo, Data e não mais aquele padrão que é especificado quando a gente instala o MySQL.
+
+[07:55] Vamos então voltar, abrir o Workbench, abri, estou olhando tudo direitinho, se eu rodar de novo aquele comando do Show Variable, note que o datadir é C, Tempo, Data e se eu criar aqui uma outra base de dados, “Create Database Library3”, eu vou executar esse comando.
+
+[08:39] O comando foi executando, dou um Refresh, na minha lista eu tenho lá Library3 criada e aí, claro, se eu vier no C, Tempo, no C, Tempo, Data, que é o meu novo diretório, eu tenho aqui o Library3 criado. Então agora o meu MySQL está olhando um outro diretório.
+
+[09:05] Isso foi só um exemplo que eu quis mostrar a vocês, como é que a gente consegue estar manipulando dados num disco diferente do padrão, mas é claro que para a continuidade dos nossos exercícios aqui para frente, eu vou voltar essa configuração para o diretório original.
+
+[09:29] Então, antes disso, eu vou fazer o seguinte, como no meu diretório aqui, eu tenho esse Library3 criado, só que ele não existe no programdata, porque eu criei ele, o Library3, quando o diretório padrão era o meu C, Tempo, Data, para não dar problema, eu vou fazer isso daqui: eu agora estou voltando para o que estava antes.
+
+[09:58] Então, eu vou pegar esse diretório Library3, eu vou copiar ele e vou no C, programdata, MySQL, onde ele está? MySQL, MySQL 8.0, vou entrar aqui no Data e vou colar essa pasta aqui. Eu vou fechar o eu Workbench, vou parar o meu serviço, vou aqui no Notepad e voltar a configuração original, vou salvar, voltei para o serviços e vou iniciar.
+
+[11:04] Iniciou corretamente, volto de novo ao Workbench. Aí, você vai perguntar: “Mas cadê o Lybary3?”, ele não apareceu, apesar de ter copiado o banco de dados fisicamente, era para aparecer aqui. É porque, na verdade, eu só copiei a data, mas o cadastro de dados do MySQL não foi copiado.
+
+[11:45] O certo seria eu ter copiado toda a pasta Data de novo, porque aí, eu garanto que tudo está voltando a configuração original, quer ver? Então eu vou fazer isso, vou parar, vou parar o serviço de novo, vou no meu C, Tempo, Data, aqui, vou copiar e vou para o diretório programdata, MySQL, MySQL Server 8.0 e copiar a pasta Data.
+
+[12:21] Claro que ele vai substituir quase todos os arquivos, eu vou dizer que “Ok”, substituiu, vamos subir o serviços. Subiu o serviços, abrimos o Workbench, eu agora estou vendo a minha Library3 aqui.
+
+[12:49] Então isso é um cuidado que deve-se tomar, sempre transportando tudo o que está no diretório Dara, quando eu quero mudar de um disco para o outro. Isso aí, gente. Valeu.
+
+
+
+
+
+3-5  Diretório de criação das bases de dados
+
+Qual é a variável de ambiente que determina a localização de onde a base de dados será criada?
+
+datadir
+  Alternativa correta! Esta é a variável que determina a localização da base de dados.
+
+basedir
+  Alternativa errada! Esta variável apresenta o diretório base do MySQL.
+
+innodb_data_home_dir
+  Alternativa errada! Este diretório apenas especifica onde serão criadas tabelas auxiliares do mecanismo de armazenamento InnoDB.
+
+
+
+
+3-6  Apagando a base de dados
+
+
+Transcrição
+
+[00:00] Claro que quem consegue criar base, pode também apagar base e atenção, esse processo de apagar base, ele é um processo muito radical, é importante que somente administradores do ambiente possam apagar bases e mesmo assim, depois que elas são apagadas, se você não fez um backup ou uma cópia dessa base antes, você acaba perdendo tudo.
+
+[00:26] Então, eu posso apagar base de duas maneiras ou eu clico sobre a base, então eu cliquei aqui sobre a base Library3, botão direito do mouse, eu tenho a opção “Drop Schema”. Então, cliquei em “Drop Schema”, confirmo que vou apagar essa base e aí, ela é apagada.
+
+[00:55] A outra maneira é através de linha de comando, eu clico aqui em novo script e eu posso escrever: “Drop Database Library2”, seleciono aqui o comando e executo.
+
+[01:13] A base também já foi apagada. Se a gente for lá no diretório Data, no programdata, MySQL, MySQL 8.0, Data, porque agora eu voltei ao normal, não estou mais olhando no diretório Tempo, como eu fiz no vídeo anterior, notem que o diretório Library e Library2 foram excluídos aqui do diretório de bases do MySQL.
+
+[01:41] Era isso que eu queria falar com vocês sobre apagar base.
+
+
+
+
+
+3-7  Comando para apagar a base de dados
+
+Qual é o comando para apagar a base de dados?
+
+DROP
+  Alternativa correta! Este é o comando para apagar a base de dados
+
+TRUNCATE
+  Alternativa errada! Este comando até existe, mas não é para apagar a base de dados.
+
+DELETE
+  Alternativa errada! Este comando até existe, mas não é para apagar a base de dados.
+
+
+
+3-8  Realizando o backup com o mysqldump
+
+
+Transcrição
+
+[00:00] Vamos falar um pouquinho de uma coisa muito importante, quando a gente fala de administração de um banco de dados que é o backup.
+
+[00:09] O backup nada mais é do que uma cópia do meu banco de dados, que eu faço periodicamente para poder depois recuperar num momento futuro, caso, por exemplo, eu tenha algum problema na minha base de dados ou algum processo que faz... acaba destruindo, por exemplo, a base de dados, algum processo errado que o analista executou.
+
+[00:40] Então eu preciso voltar o estado do banco a um determinado momento, então a gente pega o backup que foi tirado periodicamente, digamos assim, toda a meia noite eu tiro um backup e aí, eu pego e ele recupero. E aí, eu tenho duas maneiras principais de se fazer um backup.
+
+[01:05] Uma é o que nós chamamos do backup lógico, o backup lógico, ele exporta todas as estruturas, tabelas, dados, rotinas que estão armazenadas num banco de dados, para um script de instruções SQL, que depois, esse script pode ser executado para recriar o estado do banco de dados.
+
+[01:36] O backup lógico, ele tem a vantagem que pode ser manipulado externamente, antes de eu recuperar as informações, ou seja, eu posso abrir aquele script.sql e editar os comandos. Já o backup lógico tem uma desvantagem, ele acaba sendo muito lento, já que eu tenho que executar comando a comando para poder recuperar o meu backup.
+
+[02:05] O outro tipo de backup é o backup físico, o backup físico é uma cópia que contém todos os arquivos de sistema, que o banco de dados usa para armazenar as suas entidades, ele representa o backup dos arquivos binários do disco, os arquivos que representam o banco de dados, que estão armazenados no HD do servidor.
+
+[02:32] Para tirar o backup físico é muito rápido, basta fazer uma cópia desses arquivos e a sua recuperação também, ela é mais rápida. Embora os arquivos do backup físico não sejam muito bem compactados, já que os arquivos binários originalmente, eu não consigo compactar muito essa informação.
+
+[02:58] Normalmente, o tamanho do backup físico é menor do que o tamanho do backup lógico, já que no backup lógico, eu tenho todos os comandos dentro de um script, enquanto que o backup físico, eu tenho o arquivo onde a informação está armazenado.
+
+[03:18] Normalmente a gente chama também os backup físicos de backup bruto. O MySQL tem um aplicativo chamado: Mysqldump, ela é a ferramenta que nós usamos para executar os backups lógicos.
+
+[03:41] Ele oferece uma variedade de opções para a gente incluir ou excluir banco de dados, selecionar dados específicos para o backup, fazer backup, por exemplo, somente do esquema, somente da estrutura ou somente dos dados, fazer backup de uma tabela específica, enfim.
+
+[04:05] Eu posso selecionar pelo Mysqldump tudo aquilo que eu quero utilizar para salvar dentro do meu backup. Então isso é um pouquinho da teoria que eu gostaria de falar para vocês sobre backup. Vamos fazer agora alguns exercícios práticos, tirando o backup, através do backup lógico, usando o mysqldump.
+
+[04:33] Então eu vou fazer o seguinte, vou lá no Workbench, tenho o meu Workbench aqui aberto e eu vou olhar esse banco de dados aqui, o sucos_vendas, que é um banco de dados que a gente recuperou no início desse treinamento, que nós vamos usar como banco de exemplo, para a gente fazer os nossos exercícios.
+
+[04:55] Eu vou fazer um backup desse banco, usando o Mysqldump. Eu vou vir aqui e vou abrir aqui uma linha de comando e eu vou para o diretório onde o Mysqldump está instalado, então ele está em Program Files, MySQL Server 8.0, bin.
+
+[05:28] E se eu digitar aqui Mysqldump, eu tenho o arquivo, claro que eu preciso colocar alguns parâmetros. Eu quero tirar o backup do banco de dados completo sucos_vendas.
+
+[05:45] Então eu coloco: Mysqldump -uroot, eu coloco bem junto mesmo do “-u” usuário, “-p” e dou um espaço, eu não coloco a senha, porque a senha vai ser requisitada quando eu rodar o comando, menos, menos, dois menos, databases e eu colocar o nome o database que eu quero tirar o backup, sucos_vendas.
+
+[06:19] E aí, eu coloco o sinal de maior e aonde eu vou salvar o arquivo de backup? Eu previamente, já criei aqui no meu computador um diretório chamado: C:\mysqladmin, esse nome pode ser como qualquer um.
+
+[06:39] Crie um diretório vazio na máquina de vocês, onde dentro desse diretório, a gente vai salvar tudo aquilo que a gente for fazer que exigir arquivos externos. Eu criei aqui no meu “C”, um diretório mysqladmin, mas vocês podem criar aonde vocês quiserem, com o nome que vocês quiserem, desde que utilize esse nome dentro dos comandos.
+
+[07:04] Então, voltando aqui, eu vou salvar o backup no C:\mysqladmin\ e vou colocar o nome de um arquivo, sucos_vendas_full.sql. Então está aqui, mysqldump, -uroot, -p vazio, a cláusula menos, menos databases, o nome da base, o sinal de maior e o arquivo externo.
+
+[07:44] O nome do arquivo pode ser qualquer um, não precisa ser obrigatoriamente extensão “.sql”, só que esse arquivo vai ser um arquivo texto, que depois, eu vou poder rodá-lo com um script e aí, (igual) a todos os scripts de linguagem sql., a gente coloca como “.sql”.
+
+[08:05] Vou executar. Vou dar “Enter”, ele vai me pedir a senha, coloquei aqui Root e aí, pronto, executou. Vamos olhar lá no diretório, então eu tenho aqui no diretório Mysqladmin, eu tenho esse arquivo sucos_vendas_full, sucos, underscore vendas, underscore full, “.sql”, vamos abrir esse arquivo com o editor de texto.
+
+[08:35] Então eu vou abri-lo aqui, então eu tenho aqui uma série de comandos, onde eu tenho o create database, onde eu crio aqui a base de dados sucos_vendas, eu dropo a tabela itens_notas_fiscais, depois eu crio a tabela. Aí, eu loco a tabela, ou seja, deixo a tabela fechada para escrita.
+
+[09:08] E aí, eu faço os comandos de insert, esses comandos de insert estão um do lado do outro, tem vários comandos de insert aqui. Esses comandos aqui, eu estou inserindo os dados que estavam na base de dados quando eu tirei o backup.
+
+[09:25] Então vocês imaginam, se eu tiver uma tabela de milhões, 10 milhões, 20 milhões de registros, ele vai escrever 20 milhões de linhas de insert. Claro que são inserts agrupados, mas isso vai ocupar espaço, esse arquivo “.sql”, vai ser um arquivo muito grande, que as vezes, nem com editor de texto, a gente consegue abrir.
+
+[09:52] Aí, eu tenho alguns comandos internos para setar variáveis internas, depois eu tenho a segunda tabela, notas fiscais, também tenho o comando create, tenho lá os inserts e assim por diante, ou seja, isso aqui foi criado automaticamente pelo meu processo de... por ter executado o Mysqldump.
+
+[10:23] Vamos voltar então aqui para o ambiente de prompt, eu falei para vocês que a gente pode pelo Mysqldump, poder especificar que tipo de entidade a gente quer fazer o backup.
+
+[10:40] Então, por exemplo, no comando que eu acabei de rodar, eu executei o backup, digamos assim, da base de dados toda, mas a gente pode executar um comando para fazer, por exemplo, o backup de apenas uma tabela. Então seria assim, mysqldump -uroot -p --, aí a cláusula é tables.
+
+[11:13] Não, na verdade, desculpa, primeiro eu especifico a base, databases sucos_vendas, aí, agora sim, --tables, coloco o nome da tabela, então eu vou escolher a tabela de notas fiscais.
+
+[11:34] E aí, eu coloco o sinal de menor e a saída, mysqladmin/sucos_vendas_ tab_notas_fiscais.sql, coloco aqui o root. Pronto, executei. Se eu olhar aqui, eu agora tenho um outro arquivo, note que esse arquivo é um pouco menor, porque claro, só tem informações de uma tabela e se eu abrir aqui ele com um editor de texto, eu só tenho aqui as informações de notas fiscais.
+
+[12:21] Eu posso, por exemplo, gerar de todo mundo, menos de uma tabela específica, então aqui, mysqldump -uroot -p –databases sucos_vendas. Aí, eu uso, por exemplo, o comando ingnore table. E aí, eu vou colocar aqui, por exemplo, sucos_vendas.notas_fiscais.
+
+[13:01] Quando eu estou me referenciando a uma tabela que eu vou ignorar, eu tenho que colocar o nome do banco, ponto, o nome da tabela, diferente quando eu quero somente aquela tabela. Quando eu quero só a tabela, eu coloquei aqui só o nome da tabela.
+
+[13:17] Quando eu quero ignorar, eu coloco o nome da base, ponto o nome da tabela. Vamos salvar no diretório mysqladmin\sucos_vendas_ig (ignore)tabnotas_fiscais.sql, root. Escrevi errado notas fiscais aqui, mas não importa, a gente vai salvar um arquivo externo.
+
+[13:55] Pronto, vamos voltar lá para o diretório, tem lá já um terceiro arquivo, só vou aqui renomear e colocar aqui: fiscais, para ficar certinho. E eu posso, por exemplo, se eu quiser, eu posso salvar apenas as informações de, por exemplo, de dados, quero ignorar, por exemplo, toda a informação a respeito da estrutura da tabela.
+
+[14:37] Então eu posso botar aqui mysqldump -uroot -p –databases sucos_vendas – no-create-db. Aí, ele já vai salvar um backup, lógico, que não criar base, -- no-create-info, não vai colocar as informações da base e por exemplo: --complete-insert, vou inserir todos os inserts das tabelas.
+
+[15:23] E aí, vou salvar isso no c:\mysqladmin\sucos_vendas_somente_inserts .sql, root. Foi. Se eu olhar o arquivo, tenho mais um quarto arquivo que... somente inserts, se eu olhar, note que eu não tenho comando de create, eu simplesmente entro na base e insiro as informações de todas as tabelas.
+
+[16:08] Eu poderia ficar aqui horas mostrando para vocês uma série de comandos que eu tenha para poder usar o Mysqldump numa série de parâmetros, mas a documentação do MySQL que eu tenho na internet, ela é bem detalhada e bem vasta, eu vou até mostrar aqui para vocês.
+
+[16:31] Se eu colocar aqui: https://dev.mysql.com/doc/refman – que é manual de referência – barra a versão, vou pegar aqui o inglês, mysqldump.html, eu acho que essa que é a URL. Eu tenho aqui todas as informações sobre o comando mysqldump.
+
+[17:19] Se a gente arrastar aqui para baixo, olha só, eu tenho lá um montão de parâmetros, olha, “--add-drop-database”, adiciona o drop database antes de criar o database; “--add-locks”, coloca o comando lock tables. Se eu passar aqui o mouse, tem uma gama de parâmetros para o comando Mysqldump.
+
+[17:50] E é claro, a gente vai consultar a documentação, quando a gente quiser fazer alguma coisa específica, “Poxa, eu quero fazer um backup que somente tenha dados, mas também (lock) tabelas”, então eu vou vir aqui e procurar uma combinação de parâmetros que me aquilo que eu estou interessado.
+
+
+
+
+3-9  Backup de uma base de dados
+
+Tenho um banco chamado BANCODB, com as seguintes tabelas:
+
+    TABELA1
+    TABELA2
+    TABELA3
+
+Queremos executar um backup apenas da TABELA1 e TABELA2. Qual seria o comando para isso?
+
+mysqldump -uroot -p --databases BANCODB --ignore-table BANCODB.TABELA3 
+  Alternativa correta! Este é o comando para realizar o backup apenas da TABELA1 e da TABELA2.
+
+mysqldump -uroot -p --databases BANCODB --table TABELA1, TABELA2
+  Alternativa errada! Este comando possui uma sintaxe inválida.
+
+mysqldump -uroot -p --databases BANCODB --ignore-table TABELA3 
+  Alternativa errada! Quando nos referimos à tabela a ser ignorada, temos que selecionar a base de dados, seguido do ponto e do nome da tabela.
+
+
+
+
+
+3-10  Usando o Workbench para backup
+
+
+Transcrição
+
+[00:00] Quando a gente tira o backup, pode ser que durante o processo de cópia, o banco de dados esteja sofrendo alguma atualização, seja por um sistema, por um processo e path ou qualquer outro meio. Tem gente acessando o banco, incluindo, alterando ou excluindo registros.
+
+[00:23] Então é interessante que eu faça alguma coisa para que o banco fique congelado, antes de eu fazer o meu backup e depois liberar ele de novo para uso. Eu tenho um comando para congelar o banco e outro comando para liberar o banco novamente.
+
+[00:45] Eu vou aqui no meu Workbench, eu tenho o banco então sucos_vendas selecionado e aí, eu tenho esse comando aqui, “Lock Intance For BackuP”, ao executar esse comando, o meu banco está fora, eu não consigo mais fazer coisa nele, eu deixei a minha instância trancada, inclusive lock significa trancar.
+
+[01:24] E aí, eu posso fazer o meu backup nesse momento, seja pelo Mysqldump, seja pelo Workbench e para destrancar o banco, eu executo, “Unlock Intance”. Aí, eu destranco o banco. Mas vamos mostrar agora para vocês, como é que eu tiro o backup lógico, agora usando o Workbench.
+
+[02:00] Claro que pelo Workbench, eu consigo executar coisas sem precisar digitar comandos, a vantagem do Mysqldump é que eu posso construir um arquivo (.bet) de comandos, para poder ser executado a noite, eu posso usar o próprio (scadole) para que aquele comando rode, por exemplo, todo o dia a 1h da manhã ou outro horário qualquer.
+
+[02:29] E aí, eu posso criar uma rotina de backup automática. Tirar o backup pelo Workbench é uma coisa mais pontual, é até mais fácil, porque é tudo visual, mas é uma coisa que eu não consigo depois (esquedular) isso para rodar num determinado momento, mas aí, vamos ver como é que eu faço usando o Workbench.
+
+[02:57] Eu vou trancar aqui o banco, então o banco está trancado, está lock e aí, eu vou aqui nessa aba aqui, administração. Clicando nessa aba, eu tenho aqui uma opção que é Data Export, eu vou clicar nela.
+
+[03:19] E aí, eu tenho aqui a caixa de diálogo de exportação de dados, por causa da minha resolução da tela, porque para gravar os vídeos, eu preciso ter uma resolução baixa, para que a qualidade do vídeo fique boa, eu quase que não consigo ver a caixa de diálogos toda, porque esse botão de iniciar a exportação fica praticamente escondido.
+
+[03:48] Mas se eu conseguir minimizar bem essa janela aqui de baixo, que é a janela de output, se eu puxar ela bem para baixo, eu consigo aqui ainda mexer no comando. Talvez no caso de vocês, vocês não precisem fazer isso.
+
+[04:11] Então, eu tenho do lado esquerdo, todos os bancos de dados e eu vou escolher o banco que eu quero gerar o meu backup, então eu vou gerar aqui do sucos_vendas e aqui embaixo, eu vou escolher essa opção aqui, Export do Self-Contained File.
+
+[04:36] E aí, eu posso dizer se eu quero incluir a criação do esquema, se eu quero inserir novos comandos, por enquanto eu vou manter isso aqui desabilitado e aqui eu vou botar o diretório C:\mysqladmin\sucos_vendas_full_ work, para dizer que eu estou gerando pelo Workbench, “.sql”.
+
+[05:10] E vou clicar aqui o botão Start Export e aí, ele me gera a exportação do arquivo, se eu olhar aqui, não é aqui... Não, está aqui no C, mysqladmin, eu tenho o arquivo sucos_vendas_full_work.sql, se eu abrir com o editor de texto, eu vou ver o conteúdo praticamente semelhante ao que é gerado quando eu uso o mysqladmin... Desculpe, o mysqldump, o mysqladmin é o nome do diretório que eu criei, mysqldump.
+
+[06:00] Então, eu tenho um arquivo semelhando ao gerado quando eu uso a linha de comando mysqldump. Só que ele também, o Workbench permite um outro tipo de backup, em que eu crio uma pasta e dentro dessa pasta, eu tenho vários arquivos para cada objeto do banco de dados.
+
+[06:27] Então vamos fazer isso, eu vou de novo clicar em Data Export, vou selecionar o sucos_vendas, mas agora eu vou escolher essa opção: Export to Dump Project Folder e eu vou aqui no C:\mysqladmin\ e aí, aqui eu não vou colocar o nome de um arquivo, eu vou colocar o nome de um folder, eu vou botar aqui bkp_sucos_vendas.
+
+[07:03] Clico em Start Export. Note que ele, na verdade, executou um processo para cada tabela, se a gente olhar aqui no diretório, eu agora tenho um subdiretório chamado bkp_sucos_vendas e aqui dentro, eu tenho como se fosse os scripts para estar criando cada tabela separadamente.
+
+[07:34] Se eu abrir esse daqui, eu tenho aqui o script de criação, drop create da também insert dos dados, se eu abrir aqui o tab_faturamento, tem também ela, ou seja, eu tenho um sql para cada tabela, é como se eu tivesse rodado o Mysqldump, quando a gente coloca aquele parâmetro –tables.
+
+[08:04] E aí, eu crio como se estivesse rodando um para cada tabela, essa opção do Workbench já cria uma pasta com todos os pontos sqls criados lá dentro. Claro que finalmente, depois que a gente termina de gerar o backup, eu destranco a instância.
+
+[08:33] Vou rodar aqui. Rodou com sucesso aqui em baixo. Então, pronto, o meu banco já está pronto para ser consultado novamente, o meu backup está salvo. Então é isso aí, eu quis mostrar para vocês, além do uso do Mysqldump, como eu posso tirar o backup lógico através do Workbench. Isso aí. Valeu.
+
+
+
+
+
+3-11  Diretório com o backup das tabelas
+
+Qual a opção que permite com que o Workbench crie um subdiretório e inclua um arquivo de comandos SQL para cada tabela?
+
+Export to Self-Contained Folder
+  Alternativa errada! Esta opção não existe.
+
+Export to Self-Contained File
+  Alternativa errada! Esta opção gera um arquivo único para toda a seleção.
+
+Export do Dump Project Folder
+  Alternativa correta! Aqui é criado um subdiretório e, dentro dele, um arquivo SQL para recuperar cada tabela.
+
+
+
+
+3-12  Backup de arquivos
+
+
+Transcrição
+
+[00:00] A maneira mais simples de fazer backup dos dados do banco de dados é simplesmente copiar os arquivos, os quais os dados são armazenados no meu HD ou em outro local. Em muitos casos, essa é uma das maneiras mais eficazes de executar o backup.
+
+[00:25] Eu vou escrever a seguir os passos para a gente estar fazendo essa cópia de dados da base, de um lugar, que é onde o MySQL está olhando, para um lugar a parte, para que no futuro eu possa estar recuperando o meu backup.
+
+[00:46] Esse backup copy all, a gente precisa, claro, desligar a instância usando lock, para garantir que todas as conexões não estão acessando o banco. Nesse caso da cópia da base, meio que o lock instance é um procedimento obrigatório, quando a gente uma o Mysqldump, não necessariamente é obrigatório eu usar o lock.
+
+[01:17] Claro que é desejável a gente usar o lock, para que a gente não permita que pessoas façam modificações na base durante o backup, mas se eu esquecer o lock e rodar o Mysqldump, ele vai executar normalmente, mesmo que pessoas estejam acessando a base.
+
+[01:40] No caso da cópia completa, eu preciso fechar todas as instancias e além disso, eu preciso identificar dentro do MySQL, quais são os arquivos onde estão os meus dados e os arquivos de configuração do MySQL também são importantes de serem copiados junto com a base e os arquivos de espaço das tabelas InnoDB, que é uma área de arquivos temporários que as tabelas tipo InnoDB utilizam.
+
+[02:20] Então, vamos começar a fazer agora um exemplo prático da cópia de dados de um diretório para outro. Então, o primeiro passo é fazer um lock no banco. Eu vou rodar aqui o comando lock, tranquei, ninguém mais está acessando o meu banco.
+
+[02:43] Eu agora vou naquele diretório onde eu estou fazendo os meus backups, o meu mysqladmin e vou criar um novo diretório aqui, chamado Dados, aqui dentro é onde eu vou estar salvando o meu backup. Então, a primeira coisa que eu vou fazer é copiar o arquivo de inicialização do MySQL.
+
+[03:10] Vou abrir aqui uma outra janela e esses dados estão no C:\programdata, MySQL, MySQL Server 8.0 e eu tenho aqui a informação do arquivo de configuração, lembrando que esse diretório padrão é definido lá na inicialização, a gente até mostrou nesse mesmo curso, como é que a gente muda esse diretório.
+
+[03:51] Então, eu vou pegar aqui esse arquivo my.ini, eu vou copiar e vou colar no diretório aqui dentro de dados, coloquei ele aqui, então foi a minha primeira cópia. Agora, eu preciso copiar os arquivos de dados e os arquivos de dados, a gente sabe é o diretório Data.
+
+[04:22] Então aqui dentro, eu tenho uma série de arquivos temporários que ele utiliza e dentro cada subdiretório aqui, eu tenho as minhas bases de dados, então aqui, por exemplo, eu tenho a base suco_vendas e eu tenho aqui, por exemplo, a área das tabelas InnoDB.
+
+[04:45] Para garantir a integridade, eu sempre faço uma cópia do diretório Data todo, então eu vou copiar e aí, a gente volta aqui para o... para onde eu vou salvar o meu backup e vou colar aqui. Então pronto, o meu diretório Data, ele foi copiado todo.
+
+[05:13] Agora, claro, eu desbloqueio a instancia, libero o meu banco para acesso, mas eu já tenho uma cópia aqui salva. Tem a forma com que eu tirei o backup agora, nesse momento, copiando todos os dados.
+
+[05:33] Normalmente, oferece um desempenho muito bom de tempo para tirar o backup e com uma certa previsibilidade de duração, principalmente quando a gente quer restaurar o banco, porque as vezes, quando a gente restaura o banco usando o script, a gente não sabe muito bem quanto tempo vai durar, enquanto que a cópia de arquivo é uma coisa mais previsível.
+
+[06:01] Porém, essa forma de armazenagem do backup torna o backup mais vulnerável, porque existe grande possibilidade de que se você não faz uma manutenção coerente nos discos onde o backup está salvo, a probabilidade de você acabar corrompendo algum determinado arquivo de dados é grande.
+
+[06:32] Não significa que vai acontecer, mas toda a vez que a gente utiliza então, salvar os dados de forma binária dentro do disco, eu posso, por algum motivo, perder esse dado por motivo físico da informação que está gravada.
+
+[06:54] Se um arquivo binários daqueles for corrompido, pode ser que uma das tabelas do meu backup, eu não consiga mais acessa-la e eu, quando recuperar o backup, eu não vou conseguir ver o erro, eu vou simplesmente copiar os arquivos, subir o banco e para mim, aparentemente vai estar tudo legal.
+
+[07:16] Só quando a gente for acessar o objeto onde ele está de forma binária, salvo no arquivo que foi corrompido, é que eu vou descobrir o problema e aí, então, vem a seguinte questão. Então, qual é o melhor backup? É o lógico ou o físico?
+
+[07:37] A minha resposta é a seguinte, façam os dois. Sempre você tenha o backup físico e também o lógico, de tal maneira que se ao recuperar o físico, você tiver algum problema numa tabela, você tem como ir no lógico e rodar o script para trazer os dados, nem que você apague aquela tabela dentro do Workbench e aí, leia o script somente para ela.
+
+[08:09] Você consegue abrir o “.sql” e editar o script que você quer rodar, então assim, por mais que seja... você vai gastar dois espaços em disco, talvez o tempo seja mais longo, mas eu aconselho a gente estar sempre gerando os dois tipos de backup, para poder garantir que a recuperação dos dados vai ser feita de forma correta.
+
+[08:37] Então é isso aí. Valeu.
+
+
+
+
+3-13  Passos para o backup
+
+Para fazer o backup por arquivos, efetuei os seguintes passos:
+
+    Parei o serviço do MySQL
+    Criei o diretório no computador
+    Copiei todo o diretório Data para o novo diretório criado anteriormente
+    Subi o serviço do MySQL
+
+Após estes passos, foram feitas mudanças na base, criadas novas bases, apagadas outras, e, quando recuperamos o backup para desfazer toda a alteração, não obtivemos sucesso.
+
+Onde foi o erro?
+
+Houve problema de privilégios
+  Alternativa errada! Esta opção não tem sentido neste processo.
+
+Não foi copiado o arquivo my.ini
+  Alternativa correta! O arquivo de configuração my.ini deve ser copiado para o backup e substituído quando o mesmo for recuperado.
+
+Não foi copiado o diretório InnoDB
+  Alternativa errada! Não é preciso copiar o diretório dos arquivos de trabalho do InnoDB.
+
+
+
+3-14  Recuperando os backups
+
+
+Transcrição
+
+[00:00] Então, a gente já aprendeu a fazer backup usando o Mysqldump, usando o Workbench e copiando os arquivos fisicamente. Agora, a gente vai aprender a recuperar o backup, a gente vai primeiro recuperar o backup a partir do arquivo que foi gerado pelo Mysqldump.
+
+[00:22] Então, novamente, se eu abrir aqui aquele meu diretório, onde eu estou salvando todos os backup, eu vou estar utilizando... vamos ordenar aqui por data, esse cara aqui, o sucos_vendas_full.slq, que foi o arquivo que eu criei usando o Mysqldump, quando eu usei aquela propriedade –databases, ou seja, salvei toda a estrutura do banco.
+
+[00:57] Eu vou então aqui no Workbench, aqui em Schemas, vamos criar aqui um script novo e aí, eu vou apagar a minha base: “Drop Databases sucos_vendas, vamos matar ela. Na verdade, é “Database”, Databases é o parâmetro que a gente usa lá no Mysqldump, é –databases, no plural, no Drop é database.
+
+[01:39] Isso é normal, eu... as vezes a gente acaba confundindo os parâmetros, mas vamos lá, “Drop Database sucos_vendas”, então se eu vier aqui, eu não tenho mais um sucos_vendas, eu agora vou criar um novo, vou criar aqui o banco sucos_vendas.
+
+[02:08] Então, pronto, eu tenho o meu sucos_vendas criado, porém vazio, sem nada. Então vamos lá, voltando aqui ao comando prompt, para eu recuperar os dados, eu vou rodar aquele script “.sql”, que tem todos os comandos para recuperar a informação.
+
+[02:30] Então é como se eu tivesse feito um script manual e fosse executar ele através do MySQL, eu poderia, inclusive... é porque ele é muito grande, eu poderia inclusive, se quisesse, copiar, digamos assim, esse script aqui, copiar e não sei... vir aqui no Workbench e colar e rodar ele aqui.
+
+[03:01] Se eu rodar ele aqui, eu vou fazer todo o processo, só que claro, esse arquivo “.sql”, como tem toda a informação da base, ele é muito grande e aí, rodar os scripts de dentro do Workbench, pelo editor de scripts, não é muito legal fazer isso, quando eu tenho milhões de linhas.
+
+[03:22] Então, eu vou apagar aqui, eu não vou fazer por aqui, não. Eu vou fazer por linha de comando, como é que eu faço isso? Através do comando MySQL, se eu clicar aqui MySQL, vou botar -uroot -p e colocar aqui a senha do root, eu estou aqui dentro do MySQL.
+
+[03:49] Se eu der aqui use sakita, é sakita mesmo o nome do banco? É sakila, use sakila, entrei na base sakila, se eu quiser aqui, vamos pegar uma tabela do sakila, actor, eu posso vir aqui e rodar: select * from actor. Está vendo? Eu estou dentro da interface do MySQL, através somente de linha de comando.
+
+[04:23] Muita gente está mais acostumada a administrar o MySQL pelo MySQL linha de comando, do que propriamente dentro do Workbench.
+
+[04:33] Eu prefiro o Workbench porque ele é gráfico, eu consigo ver os comandos, selecionar o comando que eu quero, quando eu gero resultado, eu gero dentro de um grid, eu tenho algumas ferramentas de produtividade que me facilitam o desenvolvimento, o trabalho.
+
+[04:51] Linha de comando é mais para o pessoal das antigas, old school, que o pessoal está acostumado a trabalhar. Por esse MySQL que eu vou executar um script grande, que pode ter muitas linhas.
+
+[05:05] Então, eu vou dar um exit aqui, o exit sai do MySQL e vou chamar o MySQL de novo, mas vou fazer a seguinte coisa, eu vou chamar o MySQL passando o usuário e a senha e executando aquele script que foi salvo. Então é mysql -uroot -p, espaço e aí, agora, eu uso o comando menor.
+
+[05:34] Eu usei o comando maior, o símbolo maior quando eu quero jogar para fora do MySQL os dados para um script, o menor, eu estou jogando para dentro, então é como se... a direção da seta está mostrando, eu estou vindo de fora para dentro e aí, aqui eu vou colocar o nome daquele arquivo mysqladmin, vamos conferir lá o nome do arquivo, é sucos_vendas _full.sql.
+
+[06:16] Então ficou assim. MySQL, o usuário, a senha, a seta indicando o sentido em que os dados vão estar sendo transferidos e aí, o nome do arquivo: extensão MySQL. Cliquei, eu vou colocar a senha root, note que eu estou esperando um tempo e ele está, na verdade, executando todos os comandos. Acabou.
+
+[06:50] Eu agora, se eu vier aqui no Workbench, der aqui um Refresh no sucos_vendas, inicialmente... já até apareceu as tabelas, eu não precisava nem dar o Refresh, mesmo assim, eu vou dar u Refresh de novo e eu agora tenho aqui as informações recuperadas.
+
+[07:12] Então é assim que eu consigo recuperar os dados, através do comando MySQL, quando a minha origem é um arquivo lógico. Agora, vamos recuperar o backup, não de um arquivo “.sql” que foi gerado pelo Mysqldump e sim através daqueles dados que eu salvei naquele subdiretório que eu chamei até de Dados, esse diretório aqui.
+
+[07:38] Desculpe, eu chamei de backup sucos_vendas, onde eu tenho a estrutura completa dos dados, eu vou fazer isso então. A primeira coisa que eu vou fazer é parar, fazer um lock na base de dados, mas quando eu faço essa cópia, eu gosto de fazer uma coisa mais radical, eu gosto de derrubar o serviço do MySQL.
+
+[08:06] Eu vou deixar o MySQL desligado, então eu vou fazer o seguinte, vamos fazer o seguinte exemplo, antes de continuar, eu vou dar o botão direito do mouse e vou dar um drop na base sucos_vendas. Então, note, a minha base sucos_vendas, ela não existe mais.
+
+[08:28] Eu fecha o Workbench e eu vou aqui no serviço do Windows e vou procurar o serviço do MySQL, aqui, MySQL 8.0, vou parar esse serviço. Então aí, realmente ninguém mais vai entrar no MySQL nesse momento.
+
+[08:57] E aí, eu vou fazer o seguinte, aqui, dentro daquele meu diretório Dados, eu vou pegar o my.ini, eu vou copiar, vou lá naquele diretório C, Program Data, MySQL, MySQL Server 8.0, que é o diretório onde o MySQL espera encontrar a base de dados, eu vou colar e vou fazer a mesma coisa com o diretório Data, vou copiar e vou colar.
+
+[09:37] Ele talvez diga que vai substituir alguns arquivos, tudo bem, vamos substituir. Já fiz a cópia dos arquivos fisicamente, então eu volto lá para o meu serviço, vou em inicializar e agora, vamos abrir o Workbench de novo. Vou entrar na minha conexão, vou colocar aqui a senha do usuário root, vou salvar ele, para não precisar mais.
+
+[10:16] Note, eu entrei agora e a base sucos_vendas apareceu novamente, que eu tinha apago antes de copiar o backup, então eu tenho a minha base aqui recuperada. Então, essa é uma forma, é a segunda forma de eu poder recuperar o backup, quando eu quero copiar fisicamente os arquivos que foram salvos também, através de uma cópia física.
+
+[10:42] É esse tipo de cópia que quando eu faço, ela aparentemente vai funcionar, mas pode ser que quando eu acessar alguma tabela dessa aqui, eu vá encontrar algum problema de algum dado corrompido, mas só vou descobrir isso quando ou eu for acessar uma coluna ou quando eu vou, por exemplo, acessar aqui... vamos pegar aqui um Select, quando eu for... Vamos lá de novo.
+
+[11:17] Send to, aqui, quando eu for, por exemplo, executar um Select. Então, só nesse momento é que eu vou descobrir que há um problema de dado corrompido. Aí, eu uso o arquivo script “.sql”, que eu salvei pelo Mysqldump, para complementar a recuperação do backup, através da cópia dos arquivos.
+
+[11:41] Ficou claro para vocês? Então é isso aí. Valeu.
+
+
+
+
+3-15  Programa para recuperar o arquivo
+
+Qual é a ferramenta que usamos para recuperar uma base de dados através da linha de comando?
+
+mysqlslap
+  Alternativa errada! O mysqlslap não é usado para isso.
+
+mysql
+  Alternativa correta! Na verdade não existe uma ferramenta específica para recuperar o backup. Nós executamos o MySQL e rodamos o script com extensão SQL que foi gerado pelo processo de backup.
+
+mysqldump
+  Alternativa errada! Usamos o mysqldump para realizar backups.
+
+
+
+3-16  Consolidando o seu conhecimento
+
+Chegou a hora de você pôr em prática o que foi visto na aula. Para isso, execute os passos listados abaixo.
+
+1) Os componentes de uma base ficam armazenados em um banco de dados. Você pode criar um banco de dados novo com o seguinte comando (no caso, será criado com nome o library):
+
+CREATE DATABASE LIBRARY;
+
+2) A base de dados pode ser criada, também, pelo assistente do Workbench. Para isso, clique com o botão direito do mouse sobre a área vazia da lista de componentes, à esquerda do Workbench, e escolha a opção Create Schema:
+
+3) Crie uma nova base chamada library2, mas utilizando o assistente. Para isso, digite o seu nome na opção Name:
+
+4) Quando você criou estas bases, o MySQL escreveu no seu disco rígido os arquivos físicos que as representam. Para saber em que diretório estes arquivos foram criados, você pode ver o valor da variável de ambiente Variable_Name:
+
+SHOW VARIABLES WHERE Variable_Name LIKE '%dir';
+
+Você verá todas as variáveis que possuem dir no nome. A variável que com o diretório dos arquivos é a datadir.
+
+5) Indo no diretório mencionado acima, você verá:
+
+Há um subdiretório para cada base.
+
+6) A inicialização desta variável datadir está no my.ini:
+
+7) Para apagar uma base, basta executar o comando:
+
+DROP DATABASE library2;
+
+8) Ou pelo assistente do Workbench. Para isso, clique com o botão direito do mouse sobre a base de dados a ser excluída e escolha a opção Drop Schema:
+
+9) Crie um diretório chamado mysqladmin, na raiz do drive C:\.
+
+10) Na linha de comando do Windows, digite os seguintes comandos:
+
+cd\
+cd "Program Files"
+cd "MySQL"
+cd "MySQL 8.0"
+cd Bin
+
+11) Para realizar um backup da base sucos_vendas, digite:
+
+mysqldump -uroot -p --databases sucos_vendas > c:\mysqladmin\sucos_vendas_full.sql
+
+A senha do usuário root será necessária para a execução do comando.
+
+12) Dentro do arquivo C:\mysqladmin\sucos_vendas_full.sql, você terá os comandos para recuperar a base sucos_vendas.
+
+13) Para realizar um backup somente da tabela notas_fiscais, da base sucos_vendas, execute o seguinte comando:
+
+mysqldump -uroot -p --databases sucos_vendas --tables notas_fiscais > c:\mysqladmin\sucos_vendas_tab_notas_fiscais.sql
+
+14) Para realizar um backup de todas as tabelas da base sucos_vendas, exceto a tabela notas_vendas, execute o seguinte comando:
+
+mysqldump -uroot -p --databases sucos_vendas --ignore-table sucos_vendas.notas_fiscais > c:\mysqladmin\sucos_vendas_ig_tab_notas_fiscias.sql
+
+15) Para realizar um backup somente dos comandos de INSERT de todas as tabelas da base sucos_vendas, execute o seguinte comando:
+
+mysqldump -uroot -p --databases sucos_vendas --no-create-db --no-create-info --complete-insert > c:\mysqladmin\sucos_vendas_somente_inserts.sql
+
+16) Na página https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html, você pode ver todas as propriedades suportadas pelo mysqldump.
+
+17) Você pode realizar um backup através do Workbench. Para isso, abra-o.
+
+18) Antes do processo, você precisa "desligar" o banco, para fazer o processo de criação do backup. Para isso, dê um duplo clique sobre o banco sucos_vendas, digite e execute:
+
+LOCK INSTANCE FOR BACKUP;
+
+19) Clique na aba Administration:
+
+20) E depois em Data Export.
+
+21) Selecione a base sucos_vendas.
+
+22) Marque a opção Export to Self-Contained File.
+
+23) Ao lado, inclua o nome do arquivo a ser salvo (C:\mysqladmin\sucos_vendas_full_work.sql).
+
+24) Clique em Start Export.
+
+25) Veja que, no diretório de saída (C:\mysqladmin\), um arquivo novo foi criado, com o mesmo conteúdo do arquivo criado pelo mysqldump.
+
+26) Você pode exportar cada componente do banco (no caso, as tabelas) em um arquivo, separadamente. Para isso, novamente clique em Data Export.
+
+27) Selecione a base sucos_vendas.
+
+28) Escolha a opção Export to Dump Project Folder.
+
+29) Ao lado, inclua o nome do diretório onde os arquivos serão salvos (C:\mysqladmin\bkp_sucos_vendas).
+
+30) Clique em Start Export.
+
+31) Veja que, no diretório de saída (C:\mysqladmin\), haverá uma pasta e dentro dela haverá diversos arquivos representando as diferentes tabelas.
+
+32) Outra forma de fazer o backup é copiando toda a estrutura do banco. Mas antes, no diretório C:\mysqladmin\bkp_sucos_vendas\, crie um diretório chamado Dados.
+
+33) Vá em C:\ProgramData\MySQL\MySQL Server 8.0 e copie o arquivo my.ini para o diretório C:\mysqladmin\bkp_sucos_vendas\Dados\.
+
+34) Depois, copie o diretório (e também o seu conteúdo) C:\ProgramData\MySQL\MySQL Server 8.0\Data para dentro de C:\mysqladmin\bkp_sucos_vendas\Dados\.
+
+35) O que você tem salvo em C:\mysqladmin\bkp_sucos_vendas\Dados é todo o ambiente de dados, preservado em um outro disco.
+
+36) Após o fim do processo, libere a instância do banco de dados, digitando o seguinte comando:
+
+UNLOCK INSTANCE
+
+37) Para recuperar o backup, primeiramente, no Workbench, apague a base sucos_vendas, digitando:
+
+drop database sucos_vendas;
+
+38) O backup desta base está salvo em C:\mysqladmin\sucos_vendas_full.sql. Então, abra uma janela de linha de comando do Windows e digite:
+
+cd\
+cd "Program Files"
+cd "MySQL"
+cd "MySQL 8.0"
+cd Bin
+
+39) E execute:
+
+mysql -uroot -p < c:\mysqladmin\sucos_vendas_full.sql
+
+40) A base será criada e seus dados incluídos novamente.
+
+41) Você também pode recuperar a base através do arquivo físico. Para isso, no Workbench, apague novamente a base:
+
+drop database sucos_vendas;
+
+42) Saia do Workbench e pare o serviço do MySQL.
+
+43) Vá em C:\mysqladmin\bkp_sucos_vendas\Dados\ e copie o arquivo my.ini para dentro de C:\ProgramData\MySQL\MySQL Server 8.0\.
+
+44) Copie o diretório (e também o seu conteúdo) C:\mysqladmin\bkp_sucos_vendas\Dados\Data para C:\ProgramData\MySQL\MySQL Server 8.0\Data.
+
+45) Suba o serviço do MySQL.
+
+46) Entre no Workbench e veja que a base sucos_vendas voltou a estar disponível.
+
+
+
+Opinião do instrutor
+
+Continue com os seus estudos, e se houver dúvidas, não hesite em recorrer ao nosso fórum!
+
+
+
+
+3-17  O que aprendemos?
+
+  A criar e apagar bases de dados;
+  
+  Como realizar o backup através do mysqldump;
+  
+  A fazer o backup copiando toda a estrutura de dados para outro diretório;
+  
+  A recuperar o backup usando o a linha de comando do MySQL ou copiando de volta a estrutura de arquivos.

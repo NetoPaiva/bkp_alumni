@@ -1,0 +1,531 @@
+https://cursos.alura.com.br/course/mysql-manipule-dados-com-sql/section/8032/tasks
+
+Curso de SQL com MySQL: manipule e consulte dados
+
+Aula 1 | 44min
+
+  Instalando e configurando o MYSQL
+
+  1-1 Introdução
+  1-2 Slides do curso
+  1-3 História do SQL
+  1-4 História do MySQL
+  1-5 Instalando o MySQL Server
+  1-6 Consolidando o seu conhecimento
+  1-7 O que aprendemos?
+
+
+
+1-1 Introdução
+
+Resumo da apresentação:
+
+  - Instalação MySQL
+  - História banco dados
+  - MySQL Workbench (ambiente de desenvolvimento integrado)
+  - Conceitos da linguagem SQL
+  - Criação de tabelas, campos, categorias, linhas
+  - Inserir, substituir, apagar dados
+  - Consultar e selecionar dados, limitar seleção
+  
+
+
+Transcrição
+
+Boas-vindas! Me chamo Victorino Vila e serei o instrutor do curso de SQL com MySQL: manipule e consulte dados.
+
+Para alinharmos as suas expectativas referente a esse treinamento, o nosso principal objetivo é apresentar o SQL para quem nunca teve contato antes. Por isso, abordaremos vários conceitos, mas sem nos aprofundar muito em cada um deles.
+
+Isso por termos como propósito apresentar, para quem nunca viu banco de dados ou usou SQL, o primeiro contato com a ferramenta e também com o conceito da linguagem.
+
+Aqui na plataforma Alura temos outro curso chamado SQL Server: introdução ao SQL com Microsoft SQL Server 2017 (link abaixo), que possui o mesmo treinamento que o curso que vamos realizar, com a diferença que este é para o banco MySQL.
+
+Vamos iniciar esse treinamento efetuando o download e a instalação do MySQL. Vou contar um pouco também sobre o histórico do banco de dados, como surgiu, quais as principais características e vantagens, entre outros assuntos.
+
+Iremos instalar os programas necessários e, para nos comunicar com o banco de dados, utilizaremos uma IDE, do inglês Integrated Development Environment (ambiente de desenvolvimento integrado), que é uma interface gráfica da própria MySQL chamada MySQL Workbench.
+
+Dentro dessa interface, iremos aprender diversos conceitos da linguagem SQL, começando com como criar tabelas, compreendendo, por exemplo, o que é um campo, quais as categorias de campos que o MySQL suporta e o que é uma linha. Em seguida, vamos aprender como inserir, substituir e apagar os dados nas tabelas já criadas.
+
+Após conhecermos todos esses processos de inclusão, alteração e exclusão de dados em tabelas, iremos aprender como consultá-los. A partir disso, vamos realizar uma carga de dados nas tabelas que estamos usando nesse curso e elaborar algumas seleções, sendo que essas podem ser simples ou de todos os campos. Também aprenderemos, por exemplo, a limitar essa seleção utilizando a cláusula WHERE.
+
+Caso já conheça a linguagem SQL e gostaria de relembrar alguns conceitos, esse curso também é indicado. Mas se quiser se aprofundar mais, o recomendado é partir para os próximos cursos sobre esse tema, já que é deles em diante que vamos nos investigar mais sobre a manipulação, a consulta, como fazer programação e administrar o ambiente.
+
+Link do curso:
+https://cursos.alura.com.br/course/sql-com-sql-server-2017
+
+
+1-2 Slides do curso
+
+
+Boas-vindas!
+
+Tudo pronto para começar o curso SQL com MySQL: manipule e consulte dados da Alura?
+
+Para melhor acompanhamento dos vídeos, atividades e poder retomar o aprendizado adquirido após conquistar o certificado de conclusão da Alura ao final deste curso, no link a seguir você pode fazer download dos slides do curso.
+
+Bons estudos!
+
+Link slides:
+https://caelum-online-public.s3.amazonaws.com/1220-mysqlintroducaoaosql/01/Apresentacao_INTROD_MYSQL.pptx
+
+
+
+1-3 História do SQL
+
+Resumo da aula:
+
+  - História
+  - Características
+  - Vantagens / Desvantagens
+  - Comandos da linguagem
+
+  - Motivos / surgimento / histórico
+  
+    - Linguagem SQL
+    - anos 1970 / São José-California
+    - Projeto System R da IBM
+    - porposto pelo estudioso Codd
+      - comprovar viabilidade implementação de modelo relacional
+      - forma estruturada de consultar banco de dados relacionais
+
+  - Banco de Dados Relacionais ou DBS
+    (Data Base Management System)
+    (Sistema de Gerenciamento de Banco de Dados)
+    - surgimento dos DBS nos anos 1970
+    - proposta do Cood
+      - criar linguagem para
+        - facilitar extração/manipulação de dados
+        - manipular estruturas do banco aproveitando características de relacionamento entre eles
+
+  - anos 1980
+    - Oracle e outras empresas
+    - também buscam facilitar manipulação dessas novas estruturas
+
+  - anos 1980/1990
+    - ANSI (American National Standard Institute)
+    - órgão de normatização
+    - estabelece padrões para consultas dos bancos relacionais
+    
+    - criada linguagem SQL
+      (Structured English Query Language)
+      (Linguagem de consulta estruturada)
+      - pronuncia "síqual" e não "esse-que-ele"
+
+  - Principal objetivo da linguagem SQL
+  
+    - padronizar como os registros são consultados
+    - padrão SQL atual vai além das consultas
+      - criar/ alterar / estruturar / manipular DBS
+      - interação segura entre DBS
+
+  - Vantagens do Banco de Dados Relacionais (DBS)
+  
+    - aprendizado
+      facilita aprendizado / adaptação a diferentes ferramentas SQL (Oracle/Microsoft...).
+      
+    - portabilidade
+      simplifica migração de sistemas SQL Standard para outros tipos de SQL.
+      
+    - longevidade
+      relatórios/processos adaptados ao padrão ANSI funcionam por longo período, suportando upgrades do DB mantendo serviço no ar.
+      
+    - comunicação
+      por ser o padrão mais utilizado, facilita a comunicação entre sistemas, por serem compatíveis.
+
+    - liberdade de escolha
+      linguagem padrão permite critérios de escolha para implementação com base na performance, hardware, custo...
+
+  - Desvantagens
+
+    - criatividade
+      SQL pode apresentar limitações às novas demandas, carência nas coletas de dados na internet
+        - redes sociais
+        - big data
+        
+    - Surgimento de novos padrões (NoSQL)
+        - estrutura diferente ao padrão ANSI
+        - aprendizado específico
+        - linguagem mais eficiente ao big data
+
+    - escassez estrutural do SQL
+      não possui comandos comuns como
+        - if
+        - for
+        - when
+      foram criadas linguagens internas próprias (MySQL) que realizam os comandos, fugindo do padrão ANSI
+
+  - Padrão ANSI
+
+    - possui 3 grupos de comandos
+      - DDLs
+      - DML
+      - DCL
+
+    - DDLs (Data Definition Language)
+      Linguagem de Definição de Dados
+      - comandos que envolvem a estrutura do DBS
+        - permite manipular estrutura do banco de dados (DB)
+        - cria e apaga bancos / tabelas / índices
+        - altera política de crescimento de índice
+
+    - DML (Data Manipulation Language)
+      Linguagem de Manipulação de Dados
+        - comandos que gerenciam os dados
+        - incluir / alterar / excluir
+        - consultar / buscar / exibir
+
+    - DCL (Data Control Language)
+      Linguagem de Controle de Dados
+      - comandos para administrar o banco de dados
+        - acesso / gerenciamento / permissões
+        - armazenamento / crescimento
+        - identificar/quantificar processos
+        - controlar logs
+
+
+
+Transcrição
+
+Vamos iniciar contando a história da linguagem SQL, para compreendermos quais foram os motivos, como surgiu e o seu histórico.
+
+A linguagem SQL foi desenvolvida no começo dos anos 70, na cidade de São José, Califórnia, em um projeto chamado System R da IBM, do inglês International Business Machines, cujo objetivo era comprovar a viabilidade da implementação de um modelo relacional, que um estudioso chamado Codd estava propondo.
+
+Esse estudioso elaborou uma forma estruturada de realizar consultas nos bancos de dados que estavam surgindo, chamados “bancos de dados relacionais”.
+
+Naquela época, os bancos de dados ainda não possuíam relacionamento entre as tabelas nas quais os dados eram armazenados. Era a categoria de banco de dados mais antigo, a sequencial, que efetuava a consulta dos registros de maneira sequencial, ou seja, um após o outro.
+
+Com o surgimento dos bancos de dados relacionais (ou DBMS, do inglês, Data Base Management System, “Sistema de Gerenciamento de Banco de Dados"), Codd considerou criar uma linguagem que facilitasse a extração e manipulação de dados, além da manipulação das estruturas desse banco aproveitando a característica de relacionamento entre eles.
+
+Porém, não era apenas a IBM que estava trabalhando com os novos bancos de dados relacionais. Por volta dos anos 80, a Oracle, dentre outras empresas, também estava buscando maneiras mais fáceis de manipular essas novas estruturas.
+
+Mais para o final dos anos 80 e início dos 90, o órgão americano, o ANSI (da sigla American National Standard Institute), estabeleceu alguns padrões para as consultas dos bancos de dados relacionais.
+
+Então, foi criada a linguagem SQL, do inglês Structured English Query Language, que traduzindo seria algo como “linguagem de consulta estruturada em inglês”. No inglês, geralmente, é pronunciado SEQUEL e não SQL, soletrando as letras - diferentemente do português, em que normalmente lemos como “ésse quê éle”.
+
+O principal objetivo da linguagem SQL é padronizar a maneira como os registros são consultados nos bancos de dados relacionais. Atualmente, os bancos relacionais aderem ao padrão SQL, que vai além das consultas: é usado também, na criação, alteração, estruturação e manipulação do banco de dados, além da maneira como banco de dados interage com a segurança, entre outros usos.
+
+Entre as vantagens do banco de dados relacional, a primeira é que essa padronização utilizando a linguagem SQL tem um custo reduzido do aprendizado. Por exemplo, o profissional com conhecimento sobre o SQL da Oracle conseguirá manipular facilmente o MySQL ou SQL Server da Microsoft. Por mais que existam diferenças - principalmente na parte de funções -, a adaptação do profissional não é uma questão complicada.
+
+Outra vantagem, é a portabilidade. Por exemplo, é mais simples migrar sistemas que usam Oracle para SQL Server ou para MySQL, ou vice-versa. Lembrando que quanto mais for utilizado o SQL Standard definido pelo ANSI, mais fácil será essa portabilidade no futuro. Então, é útil evitar as funções específicas do banco de dados e permitir que o programa realize essa tarefa.
+
+Já a longevidade é a garantia de que os seus relatórios ou processos utilizando o SQL irão funcionar por um longo período, já que estarão sempre adaptados ao padrão ANSI. Ou seja, ao efetuar um upgrade de banco de dados o seu sistema não ficará fora de serviço.
+
+Outro benefício é a comunicação. O fato da maioria utilizar SQL permite a facilidade de comunicação entre os sistemas. Como, por exemplo, processos de ETL, (extract, transform and load), ou de integração entre sistemas que ficam mais simples de serem desenvolvidos, já que ambos utilizam o SQL padrão.
+
+Por último temos a liberdade de escolha. Por existir um padrão de linguagem, se a empresa for optar pelo uso de um banco de dados relacional não ficará presa à linguagem de comunicação, por exemplo, já que são bem semelhantes. Ao tomar essa decisão, a corporação irá utilizar outros critérios de escolha, como performance, hardware, custo, entre outros.
+
+Contudo, essa padronização não possui apenas vantagens, há algumas desvantagens - ainda que poucas. A primeira é a privação da criatividade. O SQL possui limitações que podem não atender às novas demandas no mercado na linguagem SQL, principalmente com o surgimento das redes sociais e dos enormes volumes de dados, o chamado big data. Ou seja, há uma carência nas coletas de dados que estão trafegando na internet.
+
+Para tal, estão surgindo outros bancos que usam padrões diferentes dos bancos de dados relacionais, o chamado NoSQL. Estes atendem de forma mais eficiente as demandas de tabelas de big data , como no caso das redes sociais. Lembrando que estamos nos referindo a estruturas que escapam do padrão ANSI e que, por isso, exigem um aprendizado mais específico.
+
+Outro ponto é a escassez de estruturação da linguagem SQL, já que ela não possui if, for e when, isto é, comandos condicionais como as demais linguagens de programação.
+
+Para conseguir suprir essa carência da estruturação, os bancos de dados relacionais da Oracle, SQL e MySQL criaram suas linguagens próprias internas que realizam esse conjunto de estruturação usando a linguagem SQL, mas que acaba se afastando um pouco do padrão ANSI.
+
+Falando um pouco sobre o padrão ANSI, este possui três grupos de comandos. O primeiro, é o DDLs, ou Data Definition Language (linguagem de definição de dados). Os DDLs são a parte da linguagem SQL que permite a manipulação das estruturas do banco de dados. Como, por exemplo, criar um banco, tabelas, índices, apagar as tabelas e alterar a política de crescimento de índice. Ou seja, os comandos que envolvem a estrutura do banco de dados relacionais são os comandos do tipo DDL.
+
+O segundo grupo de comandos são os chamados DML, ou Data Manipulation Language (linguagem de manipulação de dados). Esse grupo visa gerenciar os dados: incluindo, alterando e excluindo informações nas estruturas do banco, como as tabelas. Além disso, realizam as consultas, buscam as informações das estruturas e exibem para o usuário.
+
+Finalmente, chegamos nos comandos DCL, ou Data Control Language ("linguagem de controle de dados"). Este grupo nos permite administrar o banco de dados como, por exemplo, o controle de acesso, o gerenciamento do usuário, gerenciar o que cada usuário(a) pode ou não visualizar, gerenciar o banco ao nível de estrutura (como a política de crescimento, como e onde será armazenado no disco), administrar os processos, saber quantos processos estão sendo executados, controle de log e assim por diante.
+
+Nesse vídeo quis mostrar uma visão geral para vocês, não somente a história do SQL, mas também as suas características, vantagens, desvantagens e comandos dessa linguagem.
+
+
+
+1-4 História do MySQL
+
+Resumo da aula:
+
+  - Surgimento do MySQL
+    - 3 desenvolvedores
+    - interface SQL compatível com novos bancos de dados
+    - utilizavam APIs de terceiros para efetuar comandos
+    - retorno não satisfatório
+    - desenvolveram API própria em C++
+
+  - Projeto MySQL
+    - software livre (open source)
+    - popularizou
+    - comunidade tem acesso ao código-fonte
+    - alterar / melhorar
+    - banco muito ágil / rápido
+    - mecanismo multitarefa / multiusuário
+    - servidor com boa performance / robusto
+    - suporta missão crítica (operar sem interrupções)
+    - 2008 a Sun Microsystems compra por 1 bilhão dólares
+    - 2009 a Oracle compra a Sun
+    - comunidade open source cria novo banco "MariaDB"
+    - Oracle oferece duas opçôes do banco
+      - open source com licensa GNU (Community)
+      - licensa padrão comercial com certas vantagens
+        - suporte mais rápido
+        - acesso à documentação específica
+
+  - MySQL Community
+    - mantém eficiência e características originais do projeto
+    - 
+
+  - MySQL
+    - banco de dados relacional (DBS)
+    - compatível com a linguagem SQL
+
+  - Características do MySQL
+
+    - robusto
+      servidor com certa capacidade de
+      - multiacesso aos dados/tabelas
+      - integridade de dados
+      - relacionamento entre tabelas
+      - controla transações
+
+    - portátil e interplataforma
+      permite desenvolvimento e migração em diferentes sistemas operacionais
+
+    - oferece diversas APIs
+      compatíveis com a maioria das linguagens de programação
+        - JavaScript
+        - Java
+        - JQuery
+        - Python
+        - PHP
+        - .Net
+
+    - multithreads
+      acesso direto ao Kernel do sistema operacional
+      - aumenta velocidade de transações
+      - facilita integração do programa com a máquina
+      - permite alterar quantidade de CPUs do servidor
+      - maximiza performance do bando de dados
+
+    - armazenamento diferenciado
+      formas que se adaptam às necessidades, priorizando
+        - velocidade
+        - segurança
+        - volume
+        - escalabilidade
+
+    - velocidade
+      aspecto fundamental
+      considerado um dos bancos mais rápidos em serviços web
+        - e-commerce
+        - Amazon / Azure
+
+    - segurança
+      bastante seguros com diversos mecanismos
+        - permissão e segmentação de acesso aos dados
+
+    - volume
+      alta capacidade de armazenamento de dados
+      - 65 mil terabytes
+      - exige mais capacidade de processamento da máquina
+
+    - aplicabilidade
+      pode ser utilizado em diferentes tipos de aplicação com rápido acesso aos dados
+        - web
+        - desktop
+        - corporativo
+        - nuvem
+
+    - gerenciamento de log
+      mantém registro de todas as tarefas realizadas
+      - recuperar dados
+      - replicar servidor (master/slave)
+      - sincronizar dados
+
+    - espelhamento
+      réplicas do servidor em diferentes locais
+      - diversos Centros de Processamento de Dados (CPD)
+      - mantém acesso ao banco se um servidor cair 
+
+
+Transcrição
+
+Agora, iremos entender sobre a história do MySQL e mencionar algumas de suas características.
+
+Já conversamos um pouco sobre a história do SQL, quando os bancos relacionais estavam começando a ser popularizados. À época, três desenvolvedores, o David Axmark, Allan Larsson e Michael Widenius, buscaram elaborar uma interface SQL que fosse compatível com o que estava surgindo no mercado de banco de dados.
+
+No início, eles utilizaram APIs de terceiros para efetuar os comandos SQL que buscavam informações de alguns outros bancos de dados de mercado. Porém, não obtiveram um retorno satisfatório e, por esse motivo, começaram a desenvolver sua própria API de consulta - e não apenas isso, também o seu próprio banco de dados, utilizando a linguagem C++.
+
+Foi a partir disso que se iniciou o projeto MySQL. Ele se tornou bastante popular, primeiramente por ser apresentado como um software livre (open source), isto é, a comunidade teria acesso ao código-fonte para realizar alterações e contribuir com melhorias para o banco de dados. Além disso, se mostrou um banco de dados bastante ágil para a época, mais rápido que os concorrentes, além de apresentar um excelente mecanismo de multitarefas e de multiusuário.
+
+Com isso, o MySQL mostrou que o seu servidor poderia ser usado e suportava bem a escalabilidade robusta em missão crítica, como, por exemplo, em um banco que nunca pode parar a operação dos serviços prestados.
+
+    Missão crítica: todo sistema tecnológico fundamental para que os serviços de uma empresa continuem operando sem interrupções.
+
+Como consequência, o MySQL se popularizou como software livre, inclusive de modo corporativo. No ano de 2008, o MySQL AB, empresa que gerenciava o código desse banco de dados, foi comprada por um bilhão de dólares por uma empresa chamada Sun Microsystems, uma empresa grande que a princípio atuava na área de hardware e depois começou a entrar para o ramo de software. Essa companhia também era responsável pela criação do Java.
+
+Em 2009, após um ano da compra do MySQL, a Sun Microsystems foi comprada pela Oracle, que passou a ter propriedade sobre todos os produtos. Por esse motivo, a Oracle é hoje dona do Java e do MySQL. Houve uma grande movimentação no mercado naquele tempo, já que a Oracle possuía o seu banco de dados relacional robusto e o MySQL estava se mostrando um concorrente à altura.
+
+Quando o MySQL foi vendido, a comunidade open source criou outro banco de dados, o MariaDB, que se tornou o sucessor em código aberto do MySQL.
+
+Devido à sua popularidade, sendo uma opção de baixo custo para as empresas do mercado corporativo e de mercado online (que vinha crescendo bastante a partir dos 2009 e 2010), a Oracle manteve o desenvolvimento do MySQL.
+
+A Oracle permitiu que os usuários pudessem escolher entre usar o programa como produto open source, sob os termos da licença GNU (GNU's Not Unix!) ou comprar a licença padrão comercial do MySQL. Para esse último caso, a Oracle oferecia algumas vantagens para as empresas que comprassem o MySQL de forma corporativa, como suporte mais rápido e acesso à alguma documentação específica.
+
+Porém, a licença oferecida de forma aberta ainda mantém a eficiência e características apresentadas antes do MySQL ser comprado por essas empresas gigantes da área de tecnologia.
+
+Lembrando que o MySQL é um banco de dados relacional e compatível com a linguagem SQL. Por isso, vamos aprender nesse treinamento o SQL utilizando o MySQL.
+
+O servidor do MySQL é robusto até certo ponto, já que deriva de características de multiacesso, integridade de dados, efetua o relacionamento entre tabelas, trabalha a concorrência quando vários usuários tentam acessar o mesmo dado na mesma tabela, realiza o controle de transações, entre outros processos. Essa robustez é uma característica importante no que diz respeito ao servidor do MySQL.
+
+Outro aspecto importante é a portabilidade do banco de dados. O MySQL pode ser transacionado entre diversos sistemas. Isso significa que consigo desenvolver o banco de dados MySQL em Windows e posteriormente utilizar no Linux ou Unix, sendo assim, interplataforma.
+
+Ademais, o banco MySQL provém várias APIs que permitem acessar os dados do MySQL usando .Net, Java, Python, PHP, JavaScript e JQuery, por exemplo. Isto é, as linguagens de programação que são mais usadas no mercado possuem APIs nativas para acesso ao MySQL.
+
+Outro atributo importante é o multithreads. O MySQL usa uma programação de threads utilizando diretamente o Kernel do sistema operacional, permitindo aumentar a velocidade de transações, além de facilitar a integração da ferramenta com hardwares, possibilitando a escalabilidade da performance. Isto quer dizer que, caso tenha um MySQL usando um servidor com determinado número de CPUs, é possível acrescentar mais CPUs que o banco de dados se adapta usando o máximo do hardware disponível.
+
+O banco de dados MySQL atua com diversas formas de armazenamento que se adaptam às características das suas necessidades. Por exemplo, algumas formas priorizam a velocidade, enquanto outras o alto volume de armazenamento, tudo dependendo do objetivo pelo qual você utiliza o MySQL. Discutiremos mais sobre isso em treinamentos futuros, quando abordarmos a parte de administração.
+
+A velocidade é outro aspecto fundamental. O MySQL é considerado um dos bancos mais rápidos do mercado, sobretudo quando são utilizadas funcionalidades ligadas à internet. Como exemplo, podemos citar sites de e-commerce e de aplicações de internet, já que as nuvens da Amazon, do Google e da Microsoft (Azure) disponibilizam instâncias de MySQL com uma alta escalabilidade.
+
+Já sobre segurança, o banco de dados MySQL possui internamente diversos mecanismos de segurança, o que o torna bastante seguro para o mercado. Além disso, permite a segregação dos dados por usuários de acesso, isto é, a pessoa possui acesso somente ao que lhe for permitido.
+
+O MySQL também permite o armazenamento de uma quantidade enorme de dados, tornando a sua capacidade alta, a depender das formas de armazenamento. Se for escolhida uma forma que prioriza o volume de dados, há um limite hoje de até 65 mil terabytes de dados armazenados. Claro, recuperar e manipular esse volume de informação pode ser um pouco difícil e depender de muito hardware. A maioria das aplicações corporativas não precisam desse tamanho todo de armazenamento para trabalharem.
+
+Já referente à aplicabilidade, o MySQL não se aplica somente a utilidades de internet - apesar de ser preferido por desenvolvedores web -, mas também aplicações de desktop ou corporativas, essas chamadas de On Premises, nas quais o banco de dados é instalado no próprio servidor da empresa. Esses bancos possuem o que chamamos ODBCs (Open Database Connectivity, comum em bancos baseados em Windows) ou JDBCs (Java Database Connectivity, comum em bancos baseados em Java), que permitem realizar acessos rápidos ao banco de dados MySQL em aplicações desktop.
+
+Finalmente, falaremos um pouco sobre o log. No MySQL há um forte gerenciamento de log, que registra tudo o que fazemos no banco. Isso é um ponto interessante quando é necessário realizar uma recuperação de dados ou se for preciso fazer o que é chamado réplica de servidores, técnica bastante usada quando temos um servidor chamado master e outro slave, existindo uma sincronização de dados entre eles.
+
+Por esse motivo, é um dos bancos de dados mais usados em nuvem, já que esse tipo de banco possui diversas replicações em diferentes lugares do planeta para que, caso um CPD (Centro de Processamento de Dados) caia, outro continue operando e a aplicação siga tendo alta disponibilidade de acesso.
+
+Isso é um pouco da história e características do banco MySQL, que vamos usar nesse treinamento para mostrar como funciona a linguagem SQL.
+
+
+
+1-5 Instalando o MySQL Server
+
+
+Resumo da aula:
+
+  - Baixar e instalar
+
+    - criar conta Oracle
+
+    - MySQL para Windows
+      - ver instruções para Linux (Alura+)
+
+    - IDE Workbench
+      - interface gráfica para visualizar banco de dados
+    
+
+
+Transcrição
+
+Vamos então fazer a instalação do MySQL. É possível realizar essa instalação tanto no sistema operacional Windows quanto no Linux. No caso, irei utilizar a primeira opção.
+
+Iremos também, instalar a IDE chamada Workbench, um programa que permite a visualização dos objetos do banco de uma maneira mais gráfica. Quando estamos trabalhando com o MySQL, utilizamos linhas de comando. Mas, com uma IDE é possível fazer várias consultas na mesma tela e configurar as tabelas de forma gráfica.
+
+O WorkBench é uma IDE fornecida pelo próprio MySQL, há outras IDEs no mercado, mas para esse curso usaremos a que o banco de dados proporciona. Inclusive, o pacote de instalação já vem com a IDE, e não apenas o servidor MySQL.
+
+Vamos iniciar a instalação. Abriremos no navegador a página SQL Downloads e procuraremos a opção gratuita que é a MySQL Community Edition (GPL) Downloads. Em seguida, selecionamos o botão de download do MySQL Installer ao lado de mysql-intaller-web-community-8.0.15.0.msi que é a versão mais recente no momento da gravação do curso.
+
+Selecionando download, será pedido um login no site da Oracle, sendo uma etapa fundamental para baixarmos e/ou comprarmos produtos da Oracle. Caso ainda não possua cadastro, basta selecionar o botão de "Sign Up", se já tiver é só escolher a opção "Login".
+
+Imagem quadrada com dois botões na parte superior, à esquerda o botão azul login: using my Oracle Web account. à direita, o botão verde Sign Up: for an Oracle Web account. Abaixo uma explicação para que serve cada botão.
+
+No caso, vamos selecionar o botão de "Login", para quem já possui cadastro, inserindo o usuário e senha e selecionando "Iniciar Sessão" e, em seguida, "Download Now".
+
+Esse download é considerado um arquivo pequeno, já que depois tudo que instalarmos, ele fará o download da internet no momento da instalação.
+
+Selecionamos o arquivo baixado. Irá aparecer uma escolha opcional, perguntando se queremos verificar se há upgrade a ser realizado, para fazer a instalação não somente da versão que escolhemos mas também dos upgrades mais atuais. Vamos selecionar o botão "Sim" e aguardar o download do instalador com os upgrades.
+
+Após aguardar o carregamento, iniciaremos a instalação, primeiramente, aceitando os termos da licença selecionando "I accept the lisense terms" e, logo após, "Next". Na tela seguinte, escolheremos a opção "Developer Default", que serve para instalar o servidor e conectores necessários para o funcionamento do MySQL, e mais uma vez clicaremos em "Next"
+
+Na próxima tela nos pergunta se queremos realizar um conector com Python. Por não ser o nosso objetivo, clicaremos em "Next" e, em seguida, no botão "Yes". Na próxima página nos é apresentado tudo o que será baixado, perceba que um dos itens é o Workbench, a IDE do MySQL, selecione "Execute" e, a partir disso, se iniciam os downloads dos módulos que serão utilizados para a instalação.
+
+Após o término do download dos componentes, clicaremos em "Next" para dar continuidade na instalação. Selecionamos "Next" novamente e, nesta página há duas categorias de estrutura de bancos de dados que trabalharemos, vamos usar a "Standalone MySQL Server / Classic MySQL Replication". Mais uma vez clicamos em "Next", note que nesta tela são as configurações de porta e a forma de comunicação entre cliente e servidor, vamos manter as configurações já selecionadas e, outra vez, selecionar "Next".
+
+Já na próxima tela é como vamos usar a autentificação, há dois tipos: a primeira é a senha criptografada e a outra usa a segurança do MySQL mais antigo. Manteremos a primeira opção, Use Strong ´Password Encryption for Authentication, selecionada e mais uma vez pressionamos o botão "Next".
+
+Na próxima página será solicitado a criação de uma senha do usuário root, isto é, o usuário padrão do banco de dados MySQL. Não iremos criar outros usuários, na parte "MySQL User Accounts", já que estaremos utilizando o padrão, vamos usar para acessar o banco MySQL e realizar os exercícios práticos.
+
+Novamente, selecionaremos "Next", nesta página temos o nome do serviço, já que o MySQL é um serviço do Windows e será sempre inicializado quando a máquina for efetuar o boot, isto é, quando a máquina voltar a funcionar o banco de dados retorna junto. Na parte inferior encontramos qual usuário vai gerenciar o serviço, não vamos alterar nada nessa parte. Na próxima tela é tudo o que o banco vai executar durante a instalação, selecionaremos "Execute".
+
+Com isso, ira iniciar a instalação, o banco de dados, o servidor, entre outras instalações. Após o término, selecione "Finish" e em seguida "Next", para o banco efetuar outras configurações, no momento não iremos alterar nada, selecione "Finish" e "Next", novamente.
+
+Na tela seguinte temos a conexão com o servidor, Connect To Server, vamos inserir a senha do usuário root e selecionar "Check", aguarde aparecer a mensagem "All conections succeeded", que significa que a conexão foi realizada com sucesso, selecione "Next" e, logo após, "Execute", para executar a segunda parte da instalação.
+
+Selecione "Finish", para o banco fazer novas configurações.Finalmente, ao selecionarmos o último "Finish", será inicializado o Workbench, sendo a interface da IDE que nos permite manipular o banco de dados MySQL.
+
+Perceba que já foi criado uma conexão local da máquina de forma automática. Em cada máquina há um servidor e um cliente, e o Workbench já vem com essa conexão pré-configurada.
+
+Selecionando a conexão local irá aparecer uma tela solicitando a senha criada para o nosso usuário root, opte por selecionar "Save password in vaul" para salvar a senha e pronto, estamos com o MySQL Workbench configurado e instalado.
+
+Agora que finalizamos, podemos começar o nosso treinamento MySQL.
+
+Links
+
+Download SQL
+https://www.mysql.com/downloads/
+
+Download MySQL para Linux
+https://dev.mysql.com/downloads/mysql/
+
+Download Workbench para Linux
+https://dev.mysql.com/downloads/workbench/
+
+Download do instalador do MySQL para Windows
+https://dev.mysql.com/downloads/installer/
+
+
+
+
+1-6 Consolidando o seu conhecimento
+
+Chegou a hora de você seguir todos os passos realizados por mim durante esta aula. Caso já tenha feito, excelente. Se ainda não, é importante que você execute o que foi visto nos vídeos para poder continuar com a próxima aula.
+
+1) Acesse o seu Browser e busque por MySQL Downloads. Acesse o link http://www.mysql.com/downloads
+
+2) Procure pelo link MySQL Community Edition (GPL) / Community (GPL) downloads.
+
+3) Vá para MySQL on Windows (Installer & Tools) / Downloads.
+
+4) Clique em MySQL Installer.
+
+5) Clique no botão de download ao lado da opção Windows (x86-32 Bits), MSI Installer (mysql-installer-web-community-8.0.15.0.msi).
+
+6) Faça um login no site da Oracle. Se você não possuir um login, faça um cadastro.
+
+7) Após o Login, clique em Download Now.
+
+8) Execute o programa que foi baixado.
+
+9) Clique em I Accept the license terms e depois em Next.
+
+10) Escolha a instalação Developer Default. Clique em Next duas vezes.
+
+11) Clique em Execute para o download e instalação do banco e seus componentes.
+
+12) Clique em Next duas vezes.
+
+13) Mantenha a escolha StandAlone MySQL Server / Classic MySQL Replication.
+
+14) Mantenha as propriedades padrões do serviço e da porta de comunicação. Clique Next.
+
+15) Mantenha a opção Use Strong Encryption for Authentication .... Clique em Next.
+
+16) Inclua a senha do usuário root duas vezes. Clique em Next.
+
+17) Mantenha as propriedades padrões. Clique em Next.
+
+18) Clique Execute para iniciar a instalação.
+
+19) Sempre selecione Next e Finish na medida que outras caixas de diálogo forem sendo exibidas. Se houver a pergunta sobre a senha do usuário root digite a senha configurada anteriormente na instalação.
+
+20) Automaticamente o Workbench será aberto. Clique na conexão que está configurada. Você então acessará o ambiente com o MySQL no ar.
+
+
+Opinião do instrutor
+
+  Continue com os seus estudos, e se houver dúvidas, não hesite em recorrer ao nosso fórum!
+
+
+
+1-7 O que aprendemos?
+
+  - Conhecemos um pouco da história do SQL como linguagem de banco de dados relacional;
+  
+  - Vimos um pouco da história e características do banco de dados MySQL;
+  
+  - Aprendemos a instalar o MySQL e o Workbench.
+

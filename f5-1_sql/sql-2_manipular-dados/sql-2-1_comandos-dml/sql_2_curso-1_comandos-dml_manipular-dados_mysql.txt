@@ -1,0 +1,101 @@
+https://cursos.alura.com.br/course/mysql-dml-manipulacao-de-dados
+
+
+Data Science | Cursos de SQL e Banco de Dados
+
+Curso de
+Comandos DML: manipulação de dados com MySQL
+
+
+Instrutor(a) Victorino Vila
+
+  Victorino é desenvolvedor com foco em .NET e Web Services. Durante mais de 20 anos gerenciou uma empresa de consultoria na área de tecnologia. Criou e desenvolveu projetos de planejamento, Business Intelligence e integração de dados, além de databases de relacionamento com foco em BI, usando SQL Server, MYSQL ou DB2. Suas soluções são usadas em Brasil, nos EUA e na Europa. É consultor sênior certificado em SAP BW.
+
+
+
+Faça esse curso de SQL e Banco de Dados e:
+
+  Aprenda mais sobre a modelagem de um banco relacional
+  Crie tabelas e relacionamentos entre elas
+  Use importação para popular o banco
+  Saiba lidar com COMMIT e ROLLBACK
+  Trabalhe com Triggers e define sequências
+
+
+
+Aulas
+
+1- Modelagem do banco de dados | 0 / 11 | 57min
+
+    Introdução
+    Instalando o MySQL
+    Revisão - Entidades
+    Entidade básica
+    Revisão - Tipos de dados
+    Chave primária
+    Modelagem
+    Requisitos de um banco de dados
+    Passos importantes para construção do modelo conceitual.
+    Consolidando o seu conhecimento
+    O que aprendemos?
+
+
+2- Criando a estrutura do banco de dados | 0 / 13 | 55min
+
+    Criação de banco de dados
+    Parâmetro para criação da base de dados
+    Criação de tabela com PK
+    Criação de tabela pelo assistente
+    Criando tabelas
+    Criação de tabela com FK
+    Mudando o nome da tabela
+    Chave estrangeira
+    Finalizando a criação do banco
+    Diagrama
+    Tabela de itens_notas
+    Consolidando o seu conhecimento
+    O que aprendemos?
+
+3- Incluindo dados nas tabelas | 0 / 10 | 45min
+
+    Arquivos necessários para a aula
+    Incluindo dados
+    Inclusão de registros na tabela
+    Incluindo múltiplos registros
+    Incluindo registros a partir de outra tabela
+    Incluindo através do assistente
+    Usando importação de dados de arquivos externos
+    Campos
+    Consolidando o seu conhecimento
+    O que aprendemos?
+
+4- Alterando e excluindo dados existentes nas tabelas | 0 / 13 |39min
+
+    Alterando dados da tabela
+    Alterando dados da tabela de clientes
+    Usando UPDATE com FROM
+    Mudando o volume de compra dos clientes que possuem vendedores em seus bairros
+    Excluir dados da tabela
+    Excluindo Notas
+    Alterando e apagando toda a tabela
+    Cuidado ao alterar ou excluir dados
+    Apagar todos os dados da tabela
+    COMMIT e ROLLBACK
+    Usando ROLLBACK duas vezes
+    Consolidando o seu conhecimento
+    O que aprendemos?
+
+5- Auto incremento, padrões e Triggers | 0 / 11 | 59min
+
+    Campos autoincremento
+    Valor da sequência
+    Definindo padrões para os campos
+    Comportamento do padrão durante o INSERT
+    TRIGGER
+    BEFORE INSERT
+    TRIGGER UPDATE e DELETE
+    Outras formas de manipulação de dados
+    Consolidando o seu conhecimento
+    O que aprendemos?
+    Conclusão
+

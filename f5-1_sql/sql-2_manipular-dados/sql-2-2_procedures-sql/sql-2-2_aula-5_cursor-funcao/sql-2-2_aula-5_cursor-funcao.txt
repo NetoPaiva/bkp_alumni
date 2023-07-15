@@ -1,0 +1,581 @@
+https://cursos.alura.com.br/course/mysql-procedures
+
+Data Science
+Cursos de SQL e Banco de Dados
+
+Curso de
+Procedures SQL: executando código no MySQL
+
+
+Aula 5. Cursor e Função | 0 / 11 | 46min
+
+  5-1  Problema do Select Into
+  5-2  Limitação do SELECT INTO.
+  5-3  Definição de Cursor
+  5-4  Looping com Cursor
+  5-5  Achando o valor total do crédito.
+  5-6  Cursor acessando mais de um campo
+  5-7  Calculando o valor total do faturamento
+  5-8  Entendendo Função
+  5-9  Função para obter o número
+  5-10  Consolidando o seu conhecimento
+  5-11  O que aprendemos?
+
+
+5-1  Problema do Select Into
+
+
+Transcrição
+
+[00:00] Vou voltar um pouquinho e rever aquele comando que a gente já tem utilizado muito, que é o "SELECT_INTO". Para que a gente possa fazer uma consulta na base de dados, e o resultado dessa consulta atribuir a uma variável que foi definida no "DECLARE". Vou criar aqui uma outra stored procedure que eu vou chamar aqui de "TESTE_SELECT_INTO".
+
+[00:31] Eu vou fazer a seguinte coisa: eu vou declarar uma variável, que eu vou chamar de "VNOME". E ela vai ser um "varchar (50)". Aí, eu vou fazer agora um select na tabela de clientes, para buscar o nome do cliente, e jogar dentro dessa variável "VNOME". "INTO", não, na verdade é "NOME", que é o nome do campo, "INTO_VNOME_FROM_TABELA_DE_CLIENTES".
+
+[01:13] E aí, eu quero ver o resultado disso. Antes de rodar, deixa eu mostrar o quê eu estou fazendo aqui. Eu estou aqui selecionando todos os clientes da tabela de clientes. Eu não tenho aqui nenhum "WHERE". "WHERE_CLIENTE = 1", "WHERE_CLIENTE_SÓ_DO_RIO_DE_JANEIRO". Eu não estou segregando a consulta. Eu estou trazendo todo mundo.
+
+[01:50] Então, o quê vai acontecer? Esse retorno aqui do campo nome não será apenas um valor, será uma consulta inteira. E eu vou atribuir esse vetor a uma variável que é escalar. Só que eu não quero fazer isso. Eu gostaria de jogar o conteúdo de um "ARRAY", de um vetor para uma variável, para eu poder percorrer esse "ARRAY" e fazer alguma coisa com ele.
+
+[02:24] Será que o "SELECT_INTO" desse jeito vai funcionar? Será que ele vai ser inteligente o suficiente para entender que o resultado do meu select é um "ARRAY"? Então, eu, automaticamente, quando usar o "INTO", eu vou jogar isso para a variável, ela vai se transformar numa "ARRAY"? Vamos testar. Vou dar um "APPLY"."APPLY" de novo. "FINISH".
+
+[02:51] E aí, eu vou criar aqui agora um novo script. E eu vou chamar o meu teste "SELECT_INTO". Não tem parâmetro. Vou rodar. Note: ele me trouxe um erro de número "1172". O resultado consiste de mais de uma linha, ou seja, quando eu uso o "SELECT_INTO", eu tenho que garantir que aquele select só retorne uma linha. Aí sim. Aquele valor que está vindo, eu atribuo à variável que está depois do "INTO".
+
+[03:51] Mas e se eu quisesse gravar numa variável um vetor para eu poder percorrer esse ambiente? O "SELECT_INTO" não me resolveria esse problema. Na verdade, o que resolve esse problema é uma outra estrutura que existe no MySQL chamada "CURSOR". Esse sim é uma variável como se fosse uma "ARRAY", onde eu posso dar um select e no resultado do "CURSOR", do select desculpe.
+
+[04:27] Eu jogo para o "CURSOR". Então, eu tenho como se fosse um vetor em memória, em que eu posso trabalhar ele, por exemplo, através de um "LOOPING". E aí cada elemento deste vetor, eu vou usar para um tipo de processamento. Então, o "SELECT_INTO" variável não me resolve quando eu tenho que buscar elementos que sejam mais do que uma linha. Inclusive, o "CURSOR", ele também pode guardar na sua estrutura interna mais de uma coluna. Mas aí, sobre cursores, a gente vai ver mais no próximo vídeo.
+
+
+
+5-2  Limitação do SELECT INTO.
+
+Veja as opções e nos diga qual a limitação do SELECT INTO?
+
+O SELECT INTO somente é aplicado a valores numéricos.
+  Alternativa Errada! O SELECT INTO pode ser aplicado para todos os tipos de variáveis.
+
+O SELECT INTO somente pode ser aplicado quando a consulta retorna uma linha apenas.
+  Alternativa Correta! É sobre esta limitação que estamos tratando nesta aula.
+
+O SELECT INTO só pode ser atribuído a variáveis do mesmo tipo. Quando mencionamos mesmo tipo significa o tipo da variável no código da Stored Procedure deve ser o mesmo que o retornado na consulta.
+  Alternativa Errada! Isso não é considerado uma limitação.
+
+
+
+5-3  Definição de Cursor
+
+
+Transcrição
+
+[00:00] Então, a gente viu, no vídeo anterior, que eu não consigo associar a uma variável quando o resultado do meu select for um vetor. Então, o "SELECT INTO" não funciona nesses casos. E aí, eu disse para vocês que existe uma estrutura chamada "CURSOR" que faz isso. Então, eu vou apresentar um pouquinho. Como é que funciona essa estrutura. Então, o "CURSOR" é uma estrutura que é implementada no MySQL que permite uma interatividade linha a linha através de uma determinada ordem.
+
+[00:33] Essa ordem, claro, é determinada pelo comando select que define o "CURSOR". Temos algumas fases para usar o "CURSOR". Primeiro, eu faço uma declaração. Eu declaro o "CURSOR", digo qual é o nome dele e especifico qual é o comando "SQL" que está associado a esse "CURSOR". Depois, nós abrimos o "CURSOR", ou seja, quando é definido, ele ainda não está disponível para uso.
+
+[01:00] Eu abro o "CURSOR" e aí, eu vou percorrer linha a linha na ordem com que o cursor é organizado. E aí, quando eu chego no final do "CURSOR", eu fecho o mesmo e limpo a memória. Vamos olhar isso de uma forma mais gráfica. Então assim, eu tenho essa tabela aqui do lado e eu defino um "CURSOR" simplesmente fazendo esse select aqui. Eu vou pegar o campo "NOME DA TABELA".
+
+[01:31] E aí, ele vai me dar esse vetor aqui com todos os nomes, apenas, que vão ficar carregados dentro do meu "CURSOR". Depois, eu abro o "CURSOR", então ele fica à minha disposição. Eu posso me referenciar a ele nesse momento. Depois, eu dou um comando "FETCH". O comando "FETCH", ele vai pegar a posição atual que eu estou olhando o "CURSOR" e buscar aquela informação.
+
+[02:02] Então, eu vou buscar a posição atual que eu estou no o "CURSOR" e jogar na variável "NOME". Então, no caso, a primeira posição, porque eu acabei de abrir o "CURSOR", na primeira posição eu tenho o João. Eu vou jogar João para a variável "NOME". Depois, eu vou dando "FETCH" e, na medida em que eu vou dando "FETCH", eu vou avançando dentro do "CURSOR" até o final.
+
+[02:29] Quando chegar no último "FETCH", eu vou ter carregado aqui o nome Lúcia. E aí, finalmente, eu fecho o "CURSOR" e ele é limpo da memória. Vamos agora fazer um pequeno exemplo mostrando a manipulação dos cursores. Então, eu vou aqui cancelar a apresentação. Vir aqui para o "MySQL WORKBENCH" e eu vou criar aqui uma stored procedure. Eu vou chamar ela de "CURSOR_PRIMEIRO_CONTATO".
+
+[03:11] Vou declarar uma variável que vai se chamar "VNOME". Vai ser do tipo "varchar (50)". E aí, agora, vou definir o meu "CURSOR". Vou dar aqui o meu "DECLARE C", vai ser o nome do "CURSOR". Escrevo "CURSOR FOR" e aí, eu faço um comando select. "SELECT NOME FROM TABELA_DE_CLIENTES". Depois desse select, eu vou escrever isso daqui: "LIMIT 4".
+
+[04:14] Para quem não se lembra, quando a gente coloca a cláusula "LIMIT" depois de um select, eu estou limitando a minha saída para 4 linhas. Eu estou fazendo isso só para, realmente, eu saber de antemão que o meu "CURSOR" tem quatro elementos. Feito isso, eu vou abrir o "CURSOR". "OPEN" e eu abro o "CURSOR C". Ao abrir o "CURSOR", eu estou na primeira posição.
+
+[04:46] Então, eu vou pegar o elemento da primeira posição do "CURSOR" e jogar para a variável "VNOME". Então, é "FETCH C INTO VNOME". E aí, eu vou dar um select aqui para eu exibir o conteúdo de "VNOME". Nesse caso aqui, eu estou na primeira posição. Só que se eu der de novo esses dois comandos assim, eu passo para a segunda posição. Então, eu dou um novo "FETCH".
+
+[05:30] Ao fazer isso, eu vou da primeira para a segunda posição, busco o elemento da segunda posição e exibo através do select. E como eu sei que eu tenho quatro posições, eu vou repetir, então, o "FETCH" e o select umas duas vezes. Totalizando quatro. E aí, claro, no final, eu fecho o "CURSOR". Dou um "CLOSE" e o nome do "CURSOR". Então, aqui, eu declarei a variável. Defini o "CURSOR". Abri o "CURSOR". Dei o "FETCH".
+
+[06:12] Busquei no "CURSOR" e joguei na variável e exibi a variável. E eu faço isso quatro vezes. E aí, depois no final, eu fecho o "CURSOR". Vou dar o "APPLY". "APPLY" de novo. "FINISH". E aí, eu vou rodar essa "STORED PROCEDURE CURSOR_PRIMEIRO_CONTATO". Vamos ver o que vai acontecer. Ele me exibiu aqui 4 resultados. Cada resultado foi um select.
+
+[06:54] Então, o primeiro cliente é "Érica Carvalho", segundo "Fernando Cavalcante", terceiro "César Teixeira" e quarto "Marcos Nogueira". Então, se eu vier aqui e fizer isso daqui: "SELECT NOME FROM TABELA_DE_CLIENTES LIMIT 4". Se eu rodar esses dois comandos aqui, eu tenho aqui os quatro primeiros clientes que foram obtidos através desse select, que foi a fonte do "CURSOR".
+
+[07:27] E note que esses quatro estão sendo representados aqui. Só que tem um problema. Eu sabia de antemão que o meu "CURSOR" retornaria, teria quatro posições porque eu forcei, no meu select para trazer quatro. Por isso, eu escrevi o "FETCH" 4 vezes. Mas, em 99,99% dos casos, eu não sei o tamanho do meu "CURSOR". Eu não sei se ele acabou ou não antes de dar um "FETCH", ou seja, ao dar um "FETCH", eu preciso saber se o "CURSOR" tem ainda espaço para isso ou não. Como é que eu faço isso? Você vai ver isso no próximo vídeo.
+
+
+
+
+5-4  Looping com Cursor
+
+
+Transcrição
+
+[00:00] Então, ok. Eu me deparei, então, com o seguinte problema. Eu tenho que saber quando que o "CURSOR" vai acabar. Ou mais precisamente, antes de dar um "FETCH", eu tenho que saber se o"CURSOR" acabou ou não. Olha só isso aqui. Eu vou pegar a stored procedures que nós criamos , a "CURSOR_PRIMEIRO_CONTATO". Vou dar um "ALTER_STORED_PROCEDURES" e, aqui, eu vou dar um outro "FETCH".
+
+[00:33] Ou seja, eu estou dando aqui cinco "FETCH"s. Esse aqui é o quinto. Só que o "CURSOR" só tem quatro posições. O quê que vai acontecer? Eu vou dar um "APPLY". "APPLY" de novo. "FINISH". E aí, eu vou executar de novo o "CURSOR_PRIMEIRO_CONTATO". Note, ele vai fazer os quatro, mas quando eu der o quinto "FETCH", ele vai me apresentar esse erro aqui "1329 NO DATA - ZERO ROWS FETCHED, SELECTED, OR PROCESSED".
+
+[01:11] Ou seja, eu cheguei ao final do "CURSOR". OK, eu forcei o erro. Mas, normalmente, eu não sei quantas linhas eu tenho. Eu não sei quantas posições o "CURSOR" tem. Como é que a gente faz isso? Bem, eu vou fazer uma stored procedures agora, aqui, para vocês, usando o "LOOPING". E na condição de "LOOPING", na condição lá do meu "WHILE" eu vou testar para saber se o "CURSOR" já terminou. Se ele terminou, eu paro.
+
+[01:44] Se ele não terminou, eu continuo dando "FETCH". Vamos, então, fazer isso. Eu vou criar uma nova stored procedure que eu vou chamar de "CURSOR_LOOPING". E aí eu vou repetir as mesmas coisas que eu fiz na outra, eu vou dar um "DECLARE VNOME varchar(5)". Vou declarar o "CURSOR". "DECLARE CCURSOR FOR SELECT NOME FROM TABELA_DE_CLIENTES LIMIT = 4".
+
+[02:38] Agora que vem o lance. Eu preciso ter uma variável, criar uma variável dentro da minha stored procedures, e que ela diga se o "CURSOR" tem ou não elementos. E aí, essa variável vai ser 1 ou 0. Zero significa falso, ou seja, não é fim do "CURSOR". Um significa verdadeiro. Cheguei ao fim. Então, vou criar essa variável aqui em cima, "FIM_DO_CURSOR". Vai ser um "varchar (1).
+
+[03:20] Não, vou colocar "INT". E vai ser um valor "DEFAULT 0", ou seja, o fim do "CURSOR" é falso porque eu vou começar a trabalhar com o "CURSOR". Aí, aqui embaixo, antes de abrir o "CURSOR", eu vou declarar uma "ERROR HANDLER" .Ou seja, caso haja um erro, você vai mudar essa variável de 0 para 1. E aí, tem um erro específico. Que erro é esse específico? Vocês vão ver.
+
+[03:58] Vou, aqui, dar um "DECLARE CONTINUE", ou seja, não para o programa caso tenha erro. "HANDLER FOR NOT FOUND". Ao escrever o "FOR NOT FOUND". Eu estou definindo que, o tipo de erro que eu não quero que 'break' o processamento da minha stored procedure. É um erro do tipo "NOT FOUND". E quando eu dou um "FETCH" numa posição do "CURSOR", onde esta posição do "CURSOR", ela não exista mais elementos é o erro do tipo "FOR NOT FOUND".
+
+[04:50] E aí, eu vou colocar aqui um "SET FIM_DO_CURSOR = 1", ou seja, quando achar o erro de "NOT FOUND", eu passo o "CURSOR" de zero para um. Desculpe, o "CURSOR" não, a variável "FIM_DO_CURSOR" de zero para um. Aí, eu vou dar aqui o meu "OPEN". Vou abrir o "CURSOR C" e aí, eu posso colocar o meu "WHILE FIM_DO_CURSOR". Eu vou fazer esse "LOOPING" sempre enquanto o fim do "CURSOR" for igual a zero.
+
+[05:13] Eu tenho o "DO" e eu tenho o "END WHILE" aqui. E aqui dentro do "DO" e "END WHILE", eu vou dar o meu "FETCH C INTO VNOME" e depois, eu vou dar o meu "SELECT VNOME". Quer dizer, aquela estrutura que eu repetia Nvezes, ela está aqui dentro da estrutura do "WHILE". E aí, no final, eu dou o meu "CLOSE C". Então, o quê que ele vai fazer? Quando eu começar aqui o meu "LOOPING", o fim do curso é zero e eu estou na primeira posição.
+
+[06:26] Vou dar um "FETCH" e vou dar um "SELECT. Volto para o "LOOPING", o fim do "CURSOR" é zero. Vou dar outro "FETCH" e outro select. "FETCH", select. Quando eu fizer a quarta vez, eu vou entrar aqui no "WHILE", o fim do "CURSOR" ainda é zero. E aí, eu vou dar meu quinto "FETCH". Ao dar o meu quinto "FETCH", eu desvio para o "ERROR HANDLER".
+
+[06:55] E como é do tipo "CONTINUE", ele não vai parar o programa. Mas antes de continuar, ele vai dizer que o fim do "CURSOR" é igual a 1. Aí, ele vai escrever de novo "VNOME", talvez seja um probleminha porque aí ele vai acabar tendo que escrever o "VNOME" duas vezes. Tudo bem. Depois a gente melhora isso. E aí, quando ele for para o "WHILE", esse cara vai ser igual a um, eu vou acabar e eu vou dar o "CLOSE".
+
+[07:24] Vou dar o "APPLY". "APPLY". "FINISH". Então, é "CURSOR LOOPING". Então, eu vou executar aqui. Vamos executar? Está lá. Fez o primeiro. Fez o segundo. Fez o terceiro. Fez o quarto e aquele probleminha. Ele acabou fazendo o quinto duas vezes. Na verdade, para a gente corrigir isso. Onde está aqui, vamos dar um "REFRESH" aqui. Eu teria que fazer isso daqui.
+
+[08:12] "IF FIM_DO_CURSOR = 0 THEN". Aí eu rodo o "SELECT NOME" e o "END IF" aqui. Ou seja, eu só vou executar o select se eu ainda não cheguei no fim. Então, quando ele fizer o "FETCH" pela quinta vez, o fim do "CURSOR" vai passar de 0 para 1, eu não faço o select e saio do "LOOPING". Vamos rodar de novo. Agora sim. Ele escreveu quatro vezes como deveria: o primeiro, o segundo, o terceiro e o quarto.
+
+[08:59] A gente pode, inclusive, fazer isso daqui. Esse é o último? É. Por exemplo. Vamos ver aqui. Dar o "ALTER STORED PROCEDURE" mais uma vez. Não. Não é essa. É o "CURSOR LOOPING". Eu vou tirar esse "LIMIT" aqui. Porque agora eu não preciso mais limitar o tamanho do "CURSOR" porque eu botei "LIMIT = 4", porque eu queria fazer quatro "FETCH"s.
+
+[09:32] Agora, eu tenho um "LOOPING". Então, eu não preciso saber de antemão o tamanho do "CURSOR". Vou dar "APPLY". "APPLY" de novo. "FINISH". Então, agora se eu fizer isso daqui, ele vai fazer, ele vai me mostrar todos os clientes. Vamos rodar aqui. Olha lá. Me mostrou vários resultados. Um resultado para cada cliente da tabela e ele foi até o final do "CURSOR".
+
+
+
+
+5-5  Achando o valor total do crédito.
+
+
+
+Crie uma Stored Procedure usando um cursor para achar o valor total de todos os créditos de todos os clientes. Chame esta SP de Limite_Creditos.
+
+Dicas:
+
+Declare duas variáveis: Uma que recebe o limite de crédito do cursor e outra o limite de crédito total; Faça um loop no cursor e vá somando na variável limite de crédito total o valor do limite de cada cliente; Exiba o valor total do limite.
+Opinião do instrutor
+
+CREATE PROCEDURE `Limite_creditos`()
+BEGIN
+DECLARE LIMITECREDITO FLOAT;
+DECLARE LIMITECREDITOACUM FLOAT;
+DECLARE fim_do_cursor INT;
+DECLARE c CURSOR FOR SELECT LIMITE_DE_CREDITO FROM Tabela_de_Clientes;
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET fim_do_cursor = 1;
+SET fim_do_cursor = 0;
+SET LIMITECREDITOACUM = 0;
+SET LIMITECREDITO = 0;
+OPEN c;
+WHILE fim_do_cursor = 0
+DO
+FETCH c INTO LIMITECREDITO;
+    IF fim_do_cursor = 0 THEN
+        SET LIMITECREDITOACUM = LIMITECREDITOACUM + LIMITECREDITO;
+    END IF;
+END WHILE;
+SELECT LIMITECREDITOACUM;
+CLOSE c;
+END
+
+
+
+5-6  Cursor acessando mais de um campo
+
+
+Transcrição
+
+[00:00] Então, eu resolvi o problema do tamanho do "CURSOR". Eu não preciso saber o tamanho do "CURSOR", basta eu colocar aquele "ERROR HANDLER" para mudar o tamanho de uma variável. E fico testando essa variável toda vez que eu vou buscar um novo elemento do "CURSOR". Mas se nós olharmos a rotina que nós desenvolvemos aqui, note que eu associe o "CURSOR" a apenas uma variável.
+
+[00:31] E se eu quiser associar a mais de uma variável? Vamos fazer, então, um exemplo mostrando isso. O meu objetivo vai ser o seguinte. Eu tenho a minha tabela de clientesa aqui. Deixa eu até rodar o select dela novamente. Vou rodar ela aqui. Eu tenho aqui o nome do cliente e o endereço que é a rua, o bairro, a cidade, o estado e o CEP. Digamos que eu queira, então, montar uma saída que seja todos esses campos concatenados.
+
+[01:13] Eu vou jogar para um "CURSOR" todas essas colunas e eu quero exibir esses valores, digamos assim, concatenados. Então, vamos lá. Eu vou criar aqui a stored procedure. Vou chamar de "LOOPING_CURSOR_MÚLTIPLAS_COLUNAS". Então, eu vou começar declarando a variável de fim de "CURSOR", que vai ser uma inteira e vai começar com 0.
+
+[02:05] Eu vou ter que declarar uma variável para cada coluna que eu vou ler do "CURSOR". Então, se eu vou ler endereço, bairro, cidade, estado e CEP, e vou também botar o nome. Então, eu vou criar essas seis variáveis aqui. Como elas vão ser do mesmo tipo, eu posso colocar assim "VNOME", "VENDEREÇO", "VCIDADE", "VESTADO", "VCEP", "varchar (50). Na verdade, para cidade, estado e CEP, que é "varchar (50).
+
+[02:52] Eu vou colocar, aqui, essas aqui como sendo "varchar (150)". Eu já declarei as variáveis que vão receber os valores do "CURSOR" e a variável que controla o fim do "CURSOR". Então, agora, vamos declarar o "CURSOR". "DECLARE CURSOR FOR", vou colocar aqui embaixo. "SELECT NOME, ENDEREÇO_1, CIDADE, ESTADO, CEP FROM TABELA_DE_CLIENTES".
+
+[03:39] Então, eu joguei para o "CURSOR" não um vetor de uma única coluna, mas uma matriz de cinco colunas. Porque no meu "CURSOR", eu vou ter essas cinco colunas. Então, é como se fosse uma tabela em memória com cinco colunas e várias linhas. Só que agora eu vou colocar o "ERROR HANDLER". "DECLARE CONTINUE HANDLER FOR NOT FOUND SET FIM_DO_CURSOR = 1".
+
+[04:33] Vou abrir o "CURSOR" e vou fazer o meu "WHILE". "WHILE FIM_DO_CURSOR = 0". "DO". "END WHILE". E no final, "CLOSE C". Dentro do comando do "DO" e "END WHILE", eu vou fazer um "FETCH C INTO", aí agora, eu vou colocar as variáveis na mesma ordem, atenção, na mesma ordem que eu coloquei na declaração do select. Então, vai vir "VNOME", a primeira. Depois "VENDEREÇO", é a segunda. "VCIDADE, VESTADO, VCEP".
+
+[05:42] Aí, eu vou testar. "FIM_DO_CURSOR = 0". "END IF". E aí, aqui dentro, eu vou dar o meu select. Então, eu vou usar a função "CONCAT" e eu vou concatenar todas as variáveis que receberam valores do "CURSOR". Então, "VNOME" concatenado com a palavra seguinte endereço. Dois pontos. Concatenado com "VENDEREÇO". Concatenado com uma vírgula. Concatenado com "VCIDADE". Concatenado com um traço.
+
+[06:37] "VESTADO". Concatenado com a palavra "CEP", dois pontos. Concatenado com "VCEP". Vou dar um enter aqui para ficar mais claro aqui, para ver o que nós fizemos. Então, eu estou concatenando todas as variáveis em uma única saída. Eu acho que está certo. Vamos ver. "APPLY". "APPLY" de novo. Então, é o "LOOPING_CURSOR_MÚLTIPLAS_COLUNAS".
+
+[07:15] Deixa eu executar então aqui. "CALL LOOPING_CURSOR_MÚLTIPLAS_COLUNAS'. Vamos pegar o nome certo: "LOOPING_CURSOR_MÚLTIPLAS_COLUNAS". Agora foi. Você vê que ele escreveu isso aqui na saída: "Fábio Carvalho Endereço: R. dos Jacarandás da Península, Rio de Janeiro - RJ22002020". Só o CEP que ficou meio junto. Na verdade, depois do estado teria a palavra CEP.
+
+[08:51] E depois CEP. É. Eu vou corrigir aqui. Aqui tem uma vírgula. Aqui eu tinha colocado uma letra mais uma vírgula. Vou dar "APPLY". "APPLY" de novo. "FINISH". Vamos ver se agora funciona. Agora ficou certo. "Fábio Carvalho Endereço: R. dos Jacarandás da Península, Rio de Janeiro - RJ CEP: 22002020". Então, pronto. Mostrei para vocês o exemplo de como é que eu consigo usar, dentro do meu "CURSOR", múltiplas colunas.
+
+
+
+
+5-7  Calculando o valor total do faturamento
+
+Crie uma Stored Procedure usando um cursor para achar o valor total do faturamento para um mês e um ano.
+
+Dicas:
+
+Declare três variáveis: Uma que recebe a quantidade, outra o preço e uma terceira que irá acumular o faturamento; Faça um loop no cursor e vá somando o faturamento de cada nota; Exiba o valor total do limite; Lembrando a consulta que obter o faturamento dentro de um mês e ano.
+
+SELECT INF.QUANTIDADE, INF.PRECO FROM ITENS_NOTAS_FISCAIS INF
+INNER JOIN NOTAS_FISCAIS  NF ON NF.NUMERO = INF.NUMERO
+WHERE MONTH(NF.DATA_VENDA) = 1 AND YEAR(NF.DATA_VENDA) = 2017
+
+Chame esta Stored Procedure de Mais_Um_Campo.
+Opinião do instrutor
+
+CREATE PROCEDURE `mais_um_campo`()
+BEGIN
+DECLARE QUANTIDADE INT;
+DECLARE PRECO FLOAT;
+DECLARE FATURAMENTOACUM FLOAT;
+DECLARE fim_do_cursor INT;
+DECLARE c CURSOR FOR
+SELECT INF.QUANTIDADE, INF.PRECO FROM ITENS_NOTAS_FISCAIS INF
+INNER JOIN NOTAS_FISCAIS  NF ON NF.NUMERO = INF.NUMERO
+WHERE MONTH(NF.DATA_VENDA) = 1 AND YEAR(NF.DATA_VENDA) = 2017;
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET fim_do_cursor = 1;
+OPEN c;
+SET fim_do_cursor = 0;
+SET FATURAMENTOACUM = 0;
+WHILE fim_do_cursor = 0
+DO
+FETCH c INTO QUANTIDADE, PRECO;
+IF fim_do_cursor = 0 THEN
+SET FATURAMENTOACUM = FATURAMENTOACUM + (QUANTIDADE * PRECO);
+END IF;
+END WHILE;
+CLOSE c;
+SELECT FATURAMENTOACUM;
+END
+
+
+
+5-8  Entendendo Função
+
+
+Transcrição
+
+[00:00] Para quem já trabalha com programação, sabe a diferença entre sub-rotina e função. Sub-rotina executa uma série de comandos E aí, pronto. São comandos que são repetitivos. Eu quero executar aquela série de comandos várias vezes, então eu crio uma sub-rotina. Função são comandos que, na verdade, vão ser executados, mas no final vai me resultar num valor.
+
+[00:31] A função me retorna algo para eu poder usar, ou em outras funções, ou em outras sub-rotinas. Por que eu estou falando disso? Porque, na verdade, a nossa stored procedure é como se fosse uma sub-rotina. A stored procedure tem uma série de comandos que eu executo, interage com o banco de dados e pronto. A stored procedure pode rodar com sucesso ou com erro. Mas aí, é um problema interno do comando.
+
+[01:00] A stored procedure não retorna nada para mim. Às vezes, eu posso colocar um select para ver o resultado final. Mas, na verdade, a stored procedures, ela executa bastante comandos de forma repetitiva e acabou. A função não. A função vai executar uma série de comandos no MySQL. Cálculos, contas, não interessa. Só que, no final, ela tem que me retornar alguma coisa.
+
+[01:26] E aí, essa função eu posso usar em outras funções ou dentro de stored procedures ou, até mesmo, dentro de comandos select, update e assim por diante. Aqui em cima, eu mostro para vocês a forma com que eu crio uma função no MySQL. Eu coloco "CREATE FUNCTION", o nome da função, entre parênteses unsparâmetros. E aí, depois, eu entro com essa cláusula "RETURNS DATATYPE".
+
+[01:55] O "DATATYPE" é o tipo de dado que essa função vai retornar. A função pode retornar uma data, pode retornar um número, pode retornar um texto. Então, aqui eu vou dizer o tipo de retorno. Depois, eu tenho um "BEGIN" e um "END". E aqui dentro, eu tenho "DECLARE"s, comandos normais. Os mesmos usados na stored procedure, porém eu sou obrigado, em algum momento desse código, ter esse comando "RETURN".
+
+[02:23] E aqui dentro uma variável, ou valor, ou uma expressão, não interessa. Alguma coisa e esse "STATEMENT" aqui, ele tem que bater com o "DATATYPE". Uma observação: para o seu ambienteMySQL poder criar funções é preciso que você estipule este parâmetro - "LOG_BIN_TRUST_FUNCTION_CREATORS". Normalmente, as instalações MySQL não permitem que você crie funções.
+
+[03:01] Mas se você especificar esse parâmetro, o seu ambiente consegue criar funções. É só uma observação antes de a gente poder fazer alguns exemplos práticos. Então, vamos lá. Entrei aqui para o "WORKBENCH" e eu vou aproveitar uma stored procedure que eu fiz, que é esse "ACHAR_TIPO_SABOR". Essa stored procedure aqui, que nós criamos em algum momento durante esse treinamento.
+
+[03:37] Se eu clicar com o botão direito do mouse e der aqui um "ALTER STORED PROCEDURE". Relembrando, a gente usa aqui, baseado numa variável sabor, o sabor que eu estou retornando do banco. Eu vejo se ele é "CÍTRICO", "NEUTRO" ou "ÁCIDO". Eu vou fazer uma função em que eu vou passar como parâmetro o sabor e, eu quero como retorno se ele é "CÍTRICO", "NEUTRO" ou "ÁCIDO".
+
+[04:09] Eu vou copiar esse código que está aqui. Vou colar aqui no notepad, só para manter ele salvo porque eu vou reaproveitar ele na criação da minha função. Então, deixa eu fechar essa janela aqui. A função, ela é criada aqui in "FUNCTIONS". Eu dou botão direito do mouse sobre "FUNCTIONS". "CREATE FUNCTIONS". Então, aqui eu vou fazer o seguinte. Eu vou criar a função com um f na frente. "F_ACHA_TIPO_SABOR".
+
+[04:52] Esse é o nome da função. E eu vou passar como parâmetro o sabor que é um "varchar (50)". O Retorno vai ser um texto. Então, eu vou botar aqui um "varchar (20)". E aqui dentro, eu já vou dar um "DECLARE". Vou pegar uma variável que eu vou chamar "VRETORNO". Vai ser do tipo "varchar (20). E ela vai ter como "DEFAULT" "VAZIO". Não tem esse igual. É assim.
+
+[05:44] "VSABOR" é o parâmetro da função. Então, eu vou pegar aqui esse código. Vou jogar aqui. Só que ao invés de ter aqui um select, eu vou dizer o seguinte. Eu vou dizer que "SET VRETORNO" recebe a palavra "CÍTRICO. E aí, eu vou copiar isso daqui e colar aqui, aqui, aqui, aqui e aqui. Então, vamos lá. "VSABOR" é um parâmetro. Entrou na função.
+
+[06:31] Se ele for "LIMA/LIMÃO", a variável retorno, que foi declarada aqui, e que por padrão ela é vazia, recebe a palavra "CÍTRICO". Se for "LARANJA", "CÍTRICO". Se for "MORANGO/LIMÃO", "CÍTRICO" e assim por diante até o final. Então, "CASE" aqui. Eu vou sair desse "CASE" com "VRETORNO" com algum valor. E aí, eu preciso, antes de terminar a função, dar um "RETURN" de quem? De "VRETORNO".
+
+[07:10] Vou dar o "APPLY". Vou dar o "APPLY". E vou dar o "FINISH". No meu caso, não deu erro. Talvez, no computador de vocês dê erro se vocês fizerem isso. Então, relembrando. Vocês antes ou antes de salvar a função, vocês executem este comando aqui. Cadê ele? "SET GLOBAL LOG_BIN_TRUST_FUNCTION_CREATORS = 1". Vocês executem esse comando, e aí sim, vocês conseguem depois salvar a sua função.
+
+[07:59] Normalmente, esses comandos "SET GLOBAL", existe uma série de comandos de configuração do MySQL, é o administrador do ambiente que vai determinar para você. Quando eu faço isso, eu estou fazendo com que a minha sessão tenha esse parâmetro, mas não significa que o banco MySQL tenha esse parâmetro. Seria interessante que esse parâmetro fosse colocado no arquivo de inicialização do MySQL.
+
+[08:29] Para, quando o serviço do MySQL for inicializado, todas as sessões que serão criadas dali para frente tenham esse parâmetro igual a um configurados. Mas não vamos nos preocupar com isso agora. Simplesmente, coloquem o comando "SET GLOBAL". Esse nome grande é igual a 1. Rodem ele na sessão em que você está com o "WORKBENCH" aberto antes de salvar a função.
+
+[09:02] Visto isso, temos a função criada. Claro que se eu der isso aqui "CALL F_ACHA_TIPO_SABOR", e aí vou botar aqui dentro entre aspas simples: "LARANJA". Quer dizer, entre aspas duplas. Se eu rodar isso daqui, ele vai me dar erro. Porque o "CALL" chama uma procedure, não chama uma função. Só que eu uso isso daqui assim. Se eu der aqui um select, este cara, aí sim, isso vai voltar com uma função.
+
+[09:52] Veio "CÍTRICO". Porém, melhor. Olha só. Se eu der um "SELECT SABOR FROM". Não, vamos fazer assim. "NOME SABOR FROM TABELA_DE_PRODUTOS". Eu vou executar esse comando select aqui. Não é "NOME". É "NOME_PRODUTO". "NOME_DO_PRODUTO". Você vê que eu trago o nome do produto e o sabor. Agora, eu posso, aqui, depois, criar mais um campo onde eu uso a função.
+
+[10:52] Só que, é claro, eu não vou passar como parâmetro "LARANJA". Eu vou passar como parâmetro o campo "SABOR" dentro do meu select. Vou botar aqui "AS", um "ALLIAS" para a coluna ter um nome. Então, se eu rodar isso daqui, eu tenho o meu resultado aqui do lado. "CÍTRICO", "NEUTRO", "ÁCIDO" e assim por diante. Posso, inclusive, fazer isso daqui. Deixa. Eu vou manter esse comando.
+
+[11:32] Eu vou copiar. Colar aqui. Posso, inclusive, fazer isso daqui "WHERE". A função = "NEUTRO". Só trouxe os produtos neutros. Então, a função, ela tem esse poder. Quando a gente dá um, como por exemplo, quando eu rodo isso daqui "CONCAT" do campo nome, do produto, com espaço, com sabor. Isso daqui, a gente aprendeu isso lá no curso de consultas avançadas.
+
+[12:38] Isso daqui é uma função. Só que é uma função que já vem pronta dentro do MySQL. Isso aqui é uma função igualzinha. Só que é uma função que eu construí. E aí, o comportamento da função que eu construí é o mesmo das funções que já vêm prontas dentro do MySQL.
+
+
+
+
+5-9  Função para obter o número
+
+Veja a Stored Procedure abaixo:
+
+CREATE PROCEDURE `sp_numero_notas` ()
+BEGIN
+DECLARE NUMNOTAS INT;
+SELECT COUNT(*) INTO NUMNOTAS FROM notas_fiscais WHERE DATA_VENDA = '20170101';
+SELECT NUMNOTAS;
+END
+
+Transforme esta SP em uma função onde passamos como parâmetro da data e retornamos o número de notas. Chame esta função de NumeroNotas. Após a criação da função teste seu uso com um SELECT.
+Opinião do instrutor
+
+CREATE FUNCTION `numero_notas` (DATA DATE)
+RETURNS INTEGER
+BEGIN
+DECLARE NUMNOTAS INT;
+SELECT COUNT(*) INTO NUMNOTAS FROM notas_fiscais WHERE DATA_VENDA = DATA;
+RETURN NUMNOTAS;
+END
+
+
+
+
+5-10  Consolidando o seu conhecimento
+
+Chegou a hora de você seguir todos os passos realizados por mim durante esta aula. Caso já tenha feito, excelente. Se ainda não, é importante que você execute o que foi visto nos vídeos para poder continuar com a próxima aula.
+
+1) Quando o resultado de um SELECT possui mais de uma linha não podemos atribuí-lo a uma variável usando o SELECT INTO. Para isso temos que usar o Cursor para receber valores vindos de uma tabela, com uma ou mais colunas.
+
+2) Vamos criar uma SP que utilize Cursor. Digite e execute:
+
+USE sucos_vendas;
+
+DROP procedure IF EXISTS cursor_primeiro_contato;
+
+DELIMITER $$
+
+USE sucos_vendas$$
+
+CREATE PROCEDURE `cursor_primeiro_contato` ()
+
+BEGIN
+  DECLARE vNome VARCHAR(50);
+  DECLARE c CURSOR FOR SELECT NOME FROM tabela_de_clientes limit 4;
+  OPEN c;
+  FETCH c INTO vNome;
+  SELECT vNome;
+  FETCH c INTO vNome;
+  SELECT vNome;
+  FETCH c INTO vNome;
+  SELECT vNome;
+  FETCH c INTO vNome;
+  SELECT vNome;
+  CLOSE c;
+END$$
+DELIMITER ;
+
+3) Note que cada linha da seleção é atribuída a variável vNome, uma de cada vez. Execute:
+
+call cursor_primeiro_contato;
+
+1.png
+
+2.png
+
+3.png
+
+4.png
+
+4) Na SP acima executamos um Cursos controlado onde sabíamos quantos elementos o mesmo tinha. Mas, normalmente, não sabemos esta informação. Por isso usamos sempre o Cursos combinados com um Looping. Digite e execute a criação da SP abaixo:
+
+USE sucos_vendas;
+
+DROP procedure IF EXISTS cursor_looping;
+
+
+DELIMITER $$
+
+USE `sucos_vendas`$$
+
+CREATE PROCEDURE `cursor_looping` ()
+
+BEGIN
+
+   DECLARE fim_do_cursor INT DEFAULT 0;
+
+   DECLARE vNome VARCHAR(50);
+
+   DECLARE c CURSOR FOR SELECT NOME FROM tabela_de_clientes;
+
+   DECLARE CONTINUE HANDLER FOR NOT FOUND SET fim_do_cursor = 1;
+
+   OPEN c;
+
+   WHILE fim_do_cursor = 0
+   DO
+       FETCH c INTO vNome;
+       IF fim_do_cursor = 0 THEN
+          SELECT vNome;
+       END IF;
+   END WHILE;
+
+   CLOSE c;
+
+END$$
+
+DELIMITER ;
+
+5) Executando a SP:
+
+call cursor_looping;
+
+Teremos diversos resultados em diferentes consultas.
+
+5.png
+
+6) O Cursor pode suportar mais de uma coluna. Crie a SP abaixo:
+
+USE sucos_vendas;
+
+DROP procedure IF EXISTS looping_cursor_multiplas_colunas;
+
+
+DELIMITER $$
+
+USE sucos_vendas$$
+
+CREATE PROCEDURE `looping_cursor_multiplas_colunas` ()
+
+BEGIN
+
+  DECLARE fim_do_cursor INT DEFAULT 0;
+
+  DECLARE vCidade, vEstado, vCep VARCHAR(50);
+
+  DECLARE vNome, vEndereco VARCHAR(150);
+
+  DECLARE c CURSOR FOR
+
+  SELECT nome, endereco_1, cidade, estado, cep FROM tabela_de_clientes;
+
+  DECLARE CONTINUE HANDLER FOR NOT FOUND SET fim_do_cursor = 1;
+
+  OPEN c;
+
+  WHILE fim_do_cursor = 0
+
+  DO
+
+     FETCH c INTO vNome, vEndereco, vCidade, vEstado, vCep;
+
+     IF fim_do_cursor = 0 THEN
+
+        SELECT CONCAT(vNome, ' Endereço: ',
+
+        vEndereco, ', ', vCidade , ' - ', vEstado, ' CEP: ' , vCep);
+
+     END IF;
+
+  END WHILE;
+
+  CLOSE c;
+
+END$$
+
+DELIMITER ;
+
+7) Execute-a:
+
+call looping_cursor_multiplas_colunas;
+
+Esta SP também retorna múltiplas consultas.
+
+6.png
+
+8) Também podemos criar uma função. A diferença de uma função e uma SP é que a função retorna um valor e pode ser usada dentro de um comando SELECT, INSERT, UPDATE e condições de DELETE.
+
+9) Para criar uma função vá com o botão da direita do mouse sobre Function e selecione Create Function:
+
+7.png
+
+10) Acrescente o código abaixo:
+
+CREATE FUNCTION `f_acha_tipo_sabor`(vSabor VARCHAR(50)) RETURNS varchar(20) CHARSET utf8mb4
+
+BEGIN
+
+  DECLARE vRetorno VARCHAR(20) default "";
+
+  CASE vSabor
+
+  WHEN 'Lima/Limão' THEN SET vRetorno = 'Cítrico';
+
+  WHEN 'Laranja' THEN SET vRetorno = 'Cítrico';
+
+  WHEN 'Morango/Limão' THEN SET vRetorno = 'Cítrico';
+
+  WHEN 'Uva' THEN SET vRetorno = 'Neutro';
+
+  WHEN 'Morango' THEN SET vRetorno = 'Neutro';
+
+  ELSE SET vRetorno = 'Ácidos';
+
+  END CASE;
+
+  RETURN vRetorno;
+
+END
+
+11) Clique em Apply. Teremos o código que poderá ser eecutado diretamente do script MYSQL.
+
+USE sucos_vendas;
+
+DROP function IF EXISTS f_acha_tipo_sabor;
+
+
+DELIMITER $$
+
+USE `sucos_vendas`$$
+
+CREATE FUNCTION `f_acha_tipo_sabor`(vSabor VARCHAR(50)) RETURNS varchar(20) CHARSET utf8mb4
+
+BEGIN
+
+  DECLARE vRetorno VARCHAR(20) default "";
+
+  CASE vSabor
+
+  WHEN 'Lima/Limão' THEN SET vRetorno = 'Cítrico';
+
+  WHEN 'Laranja' THEN SET vRetorno = 'Cítrico';
+
+  WHEN 'Morango/Limão' THEN SET vRetorno = 'Cítrico';
+
+  WHEN 'Uva' THEN SET vRetorno = 'Neutro';
+
+  WHEN 'Morango' THEN SET vRetorno = 'Neutro';
+
+  ELSE SET vRetorno = 'Ácidos';
+
+  END CASE;
+
+  RETURN vRetorno;
+
+END$$
+
+
+DELIMITER ;
+
+12) Clique em Apply. Teremos o código que poderá ser executado diretamente do script MYSQL.
+
+Observação: Se você verificar um erro como mostrado abaixo:
+
+8.png
+
+É porque o MYSQL não permite a construção de Funções. Para permitir, execute o comando:
+
+SET GLOBAL log_bin_trust_function_creators = 1;
+
+E crie a função novamente.
+
+13) Execute a função:
+
+SELECT f_acha_tipo_sabor ("Laranja");
+
+9.png
+
+14) Podemos usar a função num comando SELECT. Digite e execute:
+
+SELECT NOME_DO_PRODUTO, SABOR, f_acha_tipo_sabor (SABOR) as TIPO
+
+ FROM tabela_de_produtos;
+
+10.png
+Opinião do instrutor
+
+Continue com os seus estudos, e se houver dúvidas, não hesite em recorrer ao nosso fórum!
+
+
+
+
+5-11  O que aprendemos?
+
+  Conhecemos a estrutura de Cursor onde podemos atribuir valores resultados de um SELECT com múltiplas linhas.
+  
+  Vimos que podemos atribuir ao Cursor mais de uma coluna.
+  
+  Aprendemos como usar o Cursor em conjunto com um Looping.
+  
+  Foi mostrado como criamos e usamos uma função.

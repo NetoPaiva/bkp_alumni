@@ -1,0 +1,732 @@
+https://cursos.alura.com.br/course/mysql-consultas-sql
+
+Data Science > Cursos de SQL e Banco de Dados
+
+Curso de
+Consultas SQL: avançando no SQL com MySQL
+
+
+Formação com esse curso
+SQL com MySQL Server da Oracle
+
+
+Instrutor(a)
+
+    instructor Victorino Vila
+
+    Linkedin
+    https://www.linkedin.com/in/victorino-vila-1a160/
+
+    Victorino é desenvolvedor com foco em .NET e Web Services. Durante mais de 20 anos gerenciou uma empresa de consultoria na área de tecnologia. Criou e desenvolveu projetos de planejamento, Business Intelligence e integração de dados, além de databases de relacionamento com foco em BI, usando SQL Server, MYSQL ou DB2. Suas soluções são usadas em Brasil, nos EUA e na Europa. É consultor sênior certificado em SAP BW.
+
+
+Faça esse curso de SQL e Banco de Dados e:
+
+    Pagine seus dados com LIMIT
+    Filtre consultas com HAVING
+    Entenda a diferença entre o LEFT e RIGHT JOIN
+    Saiba usar Sub-Queries
+    Use funções do MySQL
+    Ordene os seus dados usando o ORDER BY
+    Agrupe dados com GROUP BY
+
+
+
+Aulas
+
+2- Filtrando as consultas de dados | 0 / 12 | 57min
+
+https://cursos.alura.com.br/course/mysql-consultas-sql/section/8142/tasks
+
+  2-1  Conhecendo o banco de dados
+  2-2  Por que visualizar o esquema de dados
+  2-3  Revisando consultas
+  2-4  Listando dados de uma tabela
+  2-5  Consultas condicionais
+  2-6  Resolvendo a estrutura lógica
+  2-7  Aplicando consultas condicionais
+  2-8  Selecionar vendas
+  2-9  Usando o LIKE
+  2-10  Buscando clientes
+  2-11  Consolidando o seu conhecimento
+  2-12  O que aprendemos?
+
+
+
+2-1  Conhecendo o banco de dados
+
+
+Transcrição
+
+Para construir consultas em um banco de dados, é fundamental conhecer o banco com que se vai trabalhar. Já sabemos que toda base é composta por tabelas, que cada uma delas possui uma chave primária, e que se relacionam por meio de um mecanismo de chaves estrangeiras. Portanto, ao trabalhar com um banco, é importante identificar as tabelas que estão à disposição, o que significa cada campo e qual o seu tipo, quais são as chaves primárias e como as tabelas se relacionam entre si (ou seja, entender quais são as chaves estrangeiras).
+
+Para obter todas essas informações, uma opção é consultar a documentação do banco de dados. Em empresas pequenas, é comum que a pessoa que irá consultar o banco seja a mesma que o projetou (e, por isso, esse documento talvez não tenha sido elaborado). Independentemente do tamanho da empresa, nem sempre teremos à disposição uma documentação satisfatória.
+
+Por meio do MySQL Workbench também temos a possibilidade de conhecer tudo que está incluso no nosso banco. Então, nesse vídeo, vamos abrir o MySQL Workbench, entrar na nossa conexão e verificar o que temos na nossa base "sucos_vendas".
+
+Começaremos clicando na seta à esquerda do nome "sucos_vendas" para abrir um menu com mais informações sobre a base. Veremos quatro grupos de componentes: tables, views, stored procedures e functions - nosso foco agora serão as tabelas (tables).
+
+Ao abrir o menu tables, notaremos que há cinco tabelas: "itens_notas_fiscais", "notas_fiscais", "tabela_de_clientes", "tabela_de_produtos" e "tabela_de_vendedores".
+
+Pelos próprios nomes, já temos uma boa noção do que elas tratam: "tabelas_de_vendedores" é a lista de vendodores, "tabela_de_produtos" são os produtos vendidos pela empresa de sucos, "tabela_de_clientes" é a lista de clientes, "notas_fiscais" e "itens_notas_fiscais" são referentes às notas fiscais.
+
+    Normalmente uma nota fiscal é composta por um cabeçalho seguido de uma lista dos itens comprados pelo cliente, então é comum representar uma nota fiscal com duas tabelas - uma com os cabeçalhos e outra com os itens.
+
+Quando eu nomeei essas tabelas, me preocupei mais com a didática do que com a nomenclatura, então ficou fácil deduzir o que significa cada tabela. Em projeto reais, no entanto, você não vai encontrar esses nomes amigáveis. Você pode se deparar com nomenclaturas como "tb018665" ou "tabCli", nomes que não te darão muitas pistas, principalmente porque, dentro das empresas, existem regras de nomenclaturas para as tabelas.
+
+Assim sendo, é interessante usar o MySQL Workbench para descobrir o que cada tabela contém e como ela se relaciona com outras tabelas. A seguir, vamos descobrir de que trata "tabela_de_clientes".
+
+Abrindo o menu de "tabelas_de_clientes", veremos quatro subgrupos: Columns (colunas, que também podemos chamar de "campos"), Indexes (índices), Foreign Keys (chaves estrangeiras) e Triggers.
+
+    Nesse curso, não vamos nos aprofundar em triggers, pois não têm uma relação estreita com consultas SQL, e também não focaremos em índices. Como eu já havia explicado sobre organização de banco de dados em um curso anterior, vale lembrar que índices são estruturas que nos auxiliam a encontrar elementos mais rapidamente. Isso é uma regra no MySQL: para toda chave primária ou estrangeira, o MySQL automaticamente criará um índice. Isso ocorre porque a chave primária é uma coluna que não pode se repetir, assim, toda vez que eu insiro um item novo em uma tabela, o banco de dados faz uma busca nessa tabela para verificar se esse item já existe, e o índice facilitará muito nessa busca. O mesmo vale para a chave estrangeira: se há duas tabelas que se relacionam e eu quero incluir um novo registro na tabela-filha cujo campo tem uma relação de chave estrangeira com a tabela-pai, essa inclusão só é possível se esse campo existir na tabela-pai. Então, o banco de dados fará uma busca e só permitirá o novo registro se essa condição for atendida. Também nesse caso o índice funciona como um facilitador.
+
+Em "tabela_de_clientes", vamos abrir o subgrupo Columns e conferir uma lista das colunas que compõem essa tabela ("CPF", "NOME", "ENDERECO_1", "ENDERECO_2", "BAIRRO", "CIDADE", "ESTADO", "CEP", "DATA_DE_NASCIMENTO", "IDADE", "SEXO", LIMITE_DE_CREDITO", "VOLUME_DE_COMPRA" e "PRIMEIRA_COMPRA"). Se você clicar sobre o nome de uma das colunas, é possível ver mais detalhes no painel esquerdo inferior. Dentre essas informações, o que mais nos interessa é saber se o campo em questão é uma chave primária ou não, e com que tipo de dado estamos lidando. Clicando na coluna "CPF", por exemplo, verificamos que se trata de uma chave primária, pois vem acompanhada da sigla PK (em inglês, primary key), e que é um varchar(11), ou seja, um texto de 11 caracteres.
+
+Em seguida, exploraremos o subgrupo Indexes de "tabela_de_clientes", no qual podemos ver os índices states. Nesse caso, essa tabela tem apenas chave primária, então há apenas um índice associado à chave primária. Não há chaves estrangeiras, ou seja, essa tabela não tem um relacionamento com nenhuma outra - não é filha de uma tabela-pai. E também não há triggers.
+
+Diferentemente disso, ao abrir indexes da tabela "notas_fiscais", verifica-se que existem três índices. O de nome "PRIMARY" é referente à chave primária e os índices "MATRICULA" e "CPF" me dão pistas de que estão relacionados a chaves estrangeiras. Como esperado, abrindo o subgrupo foreing keys dessa tabela, veremos duas chaves estrangeiras cujos nomes o banco produziu automaticamente. Selecionando uma dessas chaves, são mostradas informações mais detalhadas, no painel abaixo, sobre o relacionamento entre tabelas.
+
+Assim sendo, essa é uma das maneiras de conhecer o seu banco de dados. Mas existe também uma forma mais visual de analisar as tabelas e seus relacionamentos. Inclusive, muitas pessoas preferem ver a documentação por meio dessa representação mais visual e, no caso de bancos com poucas tabelas, até imprimir esse esquema e deixar ao alcance para consultas.
+
+Para gerar esse esquema visual, vamos até a barra superior do programa e selecionamos "Database > Reverse Engineer...". Em outras palavras, faremos uma engenharia reversa no nosso banco que já existe. Na caixa de diálogo que será aberta, selecionamos a nossa conexão usual, clicamos em "Next" duas vezes, selecionamos a base "sucos_vendas", clicamos em "Next" mais duas vezes e, em seguida, em "Execute".
+
+Com isso, será gerado um diagrama que representa as tabelas e suas relações. Você pode dar zoom, arrastar e organizar os elementos do esquema da maneira que preferir.
+
+Diagrama com cinco retângulos, inteligados por linhas. Cada retângulo representa uma tabela do banco de dados e contém o nome da tabela e uma lista de suas colunas e tipos. O retângulo de "notas_fiscais" está interligado com "tabelas_de_clientes", "tabelas_de_vendedores" e "itens_notas_fiscais". O retângulo de "tabelas_de_produtos" está interligado com "itens_notas_fiscais".
+
+Temos então várias tabelas, em cada uma delas há informações sobre campos e tipos. A tabela de produtos, a de clientes e a de vendedores são cadastrais, ou seja, nenhuma outra "chega" nelas.
+
+Temos também a tabela "notas_fiscais" com dados do cabeçalho das notas fiscais. Este deve conter o número identificador da nota, o cliente e o vendedor. É essencial lembrar que o cliente e o vendedor que eu coloco no cabeçalho da nota fiscal precisam necessariamente existir nas tabelas cadastrais! Então, se você clicar sobre a linha que conecta "notas_fiscais" e "tabela_de_clientes", é possível ver em destaque quais são os campos que estão relacionados entre essas duas tabelas (no caso, trata-se do "CPF").
+
+Entre "notas_fiscais" e "tabela_de_vendedores", os que campos que se relacionam são os de "MATRICULA". Entre "notas_fiscais" e "itens_notas_fiscais" são os campos de "NUMERO" (da nota fiscal). E entre "itens_notas_fiscais" e "tabela_de_produtos", os campos de "CODIGO_DO_PRODUTO".
+
+Dessa forma, podemos utilizar esse diagrama como guia para as consultas. Normalmente, quando se tem um analista responsável por um banco de dados numa empresa, ele acaba até decorando as tabelas, os campos e os relacionamentos e sequer precisa consultar esse diagrama de entidades! Mas essa é uma ótima forma de melhor se familiarizar com seu banco de dados.
+
+
+
+
+2-2  Por que visualizar o esquema de dados
+
+Por que devemos visualizar o esquema de dados?
+
+Para preparar boas documentações.
+  Alternativa Errada! Não é essa a principal razão para conhecer a estrutura do banco de dados relacional.
+
+Para poder executar os comandos SQL corretamente.
+  Alternativa Correta! Para determinar que consultas vou fazer é fundamental conhecer a estrutura do banco de dados.
+
+Para reduzir o custo de desenvolvimento.
+  Alternativa Errada! Não foi mencionado esta afirmação nesta aula.
+
+
+
+
+2-3  Revisando consultas
+
+Transcrição
+
+Aqui você pode fazer o download completo do projeto realizado neste vídeo e continuar seus estudos.
+https://caelum-online-public.s3.amazonaws.com/1221-mysqlconsultasavancadas/02/Revisao%20Consultas.sql
+
+
+
+Agora que temos uma noção do conteúdo da nossa base de dados, podemos começar a fazer consultas. No MySQL Workbench, criaremos um novo script SQL, clicando no primeiro ícone da barra superior do programa (ou usando o atalho "Ctrl + T").
+
+De início, é importante escolher a base de dados com que vamos trabalhar. Para selecionar um banco, basta dar um clique duplo sobre seu nome e ele ficará destacado em negrito, significando que está selecionado. Por exemplo, posso escolher "sakila" (um banco padrão do MySQL Workbench) e tudo que eu fizer será aplicado a esta base. Nesse sentido, como pretendo me dedicar à base "sucos_vendas", darei um clique duplo nela.
+
+Outra alternativa é "forçar" a conexão com um banco através do comando USE. Em nosso script, digitamos:
+
+USE sucos_vendas;
+
+Em seguida, execute o script, clicando no terceiro ícone da barra acima da área de digitação (um símbolo de raio).
+
+    Não se esqueça de colocar um ponto e vírgula (;) ao final de cada linha.
+
+    Na sintaxe SQL, não há distinção entre letras maiúsculas e minúsculas, portanto você pode digitar USE ou use. Opto pela primeira opção para destacar as partes que são comandos SQL.
+
+Com o banco selecionado, vamos examinar as tabelas. Para conferir todo o conteúdo da "tabela_de_clientes", por exemplo, basta usar o comando SELECT, seguido das colunas que gostaríamos de ver (separadas por vírgula), seguidas de FROM e o nome da tabela a que estamos nos referindo:
+
+SELECT CPF, NOME, ENDERECO_1, ENDERECO_2, BAIRRO, CIDADE, ESTADO, CEP, DATA_DE_NASCIMENTO, IDADE, SEXO, LIMITE_DE_CREDITO, VOLUME_DE_COMPRA, PRIMEIRA_COMPRA FROM tabela_de_clientes;
+
+Selecionaremos esse trecho do script e clicaremos no botão de execução. Ao rodar o código, logo abaixo teremos uma tabela como retorno. Note que, caso algum termo esteja escrito incorretamente, o programa acusará um erro na área output (saída), no painel inferior. Se isso ocorrer, corrija e execute novamente.
+
+À direita do resultado da consulta, há três opções de visualização. A padrão é Result Grid, que organiza os dados em forma de grade. Form Editor mostra o resultado com um leiaute semelhante a uma entrada de dados, com opções de navegação na parte superior dessa área. Já Field Types foca nos tipos de dados dos resultados das seleções. Ademais, também temos a aba Query Stats, que nos informa sobre o tempo de execução da query (consulta).
+
+Voltando ao nosso ambiente, um modo mais simples de consultar todos os campos de uma tabela é usar o asterisco em vez de escrever o nome de todas as colunas:
+
+SELECT * FROM tabela_de_clientes;
+
+Em outras palavras, ao colocar o asterisco, estamos indicando que queremos consultar todos os campos da tabela. O código é diferente, porém o resultado é o mesmo.
+
+Vale destacar que nem sempre há necessidade de consultar todas as colunas, é possível especificar apenas os campos desejados:
+
+SELECT CPF, NOME FROM tabela_de_clientes;
+
+Em consultas SQL, existe a opção do uso de alias, que funciona como um apelido que atribuímos a determinado campo. Isso é feito com o uso de as:
+
+SELECT CPF as IDENTIFICADOR, NOME as CLIENTE FROM tabela_de_clientes;
+
+Nesse caso, "identificador" representa o CPF e "cliente" representa o NOME. Assim, quando o script for executado, notaremos que as colunas do resultado são os aliases e não os nomes originais dos campos (CPF e NOME).
+
+Como expliquei anteriormente, as nomenclaturas usadas para tabelas nem sempre são facilmente identificáveis e, às vezes, isso também ocorre em relação às colunas das tabelas. Nesses casos, o uso de aliases nos auxilia nas leituras dos dados, pois tornam os campos mais reconhecíveis.
+
+Outro cenário em que os aliases são relevantes são as consultas que empregam o JOIN. A cláusula JOIN (que aprenderemos mais adiante no curso) permite a junção de duas tabelas em uma mesma consulta e, nesse processo, pode ser que essas tabelas tenham campos com os mesmos nomes. Aqui, então, o uso de aliases é interessante para distinguir esses campos.
+
+A seguir, vamos consultar a "tabela_de_produtos":
+
+SELECT * FROM tabela_de_produtos;
+
+Até agora, fizemos consultas que abrangiam tudo de uma tabela, mas por meio da cláusula WHERE temos a opção de segregar os dados que nos interessa ver:
+
+SELECT * FROM tabela_de_produtos WHERE CODIGO_DO_PRODUTO ="1000889";
+
+Nesse caso, determinamos uma condição lógica (CODIGO_DO_PRODUTO = "1000889") de modo que o resultado dessa consulta mostra apenas o produto que possui esse código específico. Aqui, trata-se do "Sabor da Montanha - 700ml - Uva".
+
+    Às vezes, o editor de texto do MySQL Workbench traz opções de preenchimento automático enquanto digitamos. Por exemplo, caso você erre o nome de uma tabela, ele possivelmente trará uma caixa de sugestões com nomes de tabelas que existem no seu banco de dados.
+
+"CODIGO_DO_PRODUTO" é uma chave primária, no entanto, qualquer campo pode ser usado para filtrar resultados, por exemplo, sabor:
+
+SELECT * FROM tabela_de_produtos WHERE SABOR = "Uva";
+
+Essa consulta retorna apenas um produto, pois somente um suco tem sabor uva. Trocando o valor "uva" por "limão", nenhum produto será mostrado, pois não há sucos com esse sabor. Já ao escrever "laranja", são cinco os produtos que atendem a essa condição.
+
+Mas qual é a grande diferença interna na execução da consulta com WHERE CODIGO_DO_PRODUTO = '1000889' e da consulta com WHERE SABOR = 'Uva'? A resposta está na performance!
+
+Buscas com condições de filtro que possuem chaves primárias (como "CODIGO_DO_PRODUTO") são mais rápidas, pois chaves primárias têm índices que facilitam muito esse processo. "SABOR", por outro lado, não é uma chave primária nem estrangeira, logo não tem índice e consequentemente resulta numa busca um pouco mais lenta.
+
+Como nosso banco de dados atual é relativamente pequeno, essa lentidão não é perceptível, porém essa diferença de performance pode ser problemática em bancos mais volumosos. Uma forma de solucionar esse problema é atribuindo um índice à coluna, algo que aprenderemos mais para frente, em outro curso de MySQL.
+
+Seguindo com as consultas, agora vamos fazer um filtro referente à embalagem:
+
+SELECT * FROM tabela_de_produtos WHERE EMBALAGEM = 'PET';
+
+Ao executar esse script, note que na tabela o valor "PET" está escrito com letras maiúsculas. O que será que acontece se eu fizer a consulta usando letras minúsculas?
+
+SELECT * FROM tabela_de_produtos WHERE EMBALAGEM = 'pet';
+
+O resultado é o mesmo! Como vimos anteriormente, o MySQL não distingue entre letras maiúsculas e minúsculas, ele fará a busca da mesma forma.
+
+Também podemos fazer seleções usando valores como critérios. Na nossa base, temos o produto "Videira do Campo - 1,5 Litros - Melancia" cujo "PRECO_DE_LISTA" é 19.51. Vamos criar um filtro usando esse valor como critério:
+
+SELECT * FROM tabela_de_produtos WHERE PRECO_DE_LISTA = 19.51
+
+Ao rodar essa consulta, o MySQL retorna vazio. Mas por que isso acontece, se vimos que existe um produto que corresponde a esse filtro? Ao verificar mais detalhes sobre "PRECO_DE_LISTA", vê-se que é um dado do tipo float. Isso significa que é um ponto flutuante, ou seja, não é exatamente 19.51 mas, sim, um número com muitas casas decimais além das que estamos vendo. Em outras palavras, não corresponde completamente à condição que descrevemos.
+
+Para solucionar esse problema e filtrar um valor cravado, bem específico, podemos usar os operadores BETWEEN (entre) e AND (e):
+
+SELECT * FROM tabela_de_produtos WHERE PRECO_DE_LISTA BETWEEN 19.50 AND 19.52;
+
+Assim, selecionamos tudo de "tabela_de_produtos" cujo "PRECO_DE_LISTA" está entre 19.50 e 19.52. Percebemos que fazer buscas com campos float é um pouquinho mais complicado.
+
+Dessa forma, nesse vídeo procurei fazer uma apresentação dos comandos de SELECT (com o asterisco ou especificando campos), usando alguns filtros simples que usam =*, *>, ≥*, *<, ≤ ou BETWEEN entre dois valores. Foi uma revisão do que vimos no curso de Introdução ao SQL com MySQL.
+
+Link curso Introdução SQL
+https://cursos.alura.com.br/course/mysql-manipule-dados-com-sql
+
+
+
+2-4  Listando dados de uma tabela
+
+Qual é o comando SQL para listar todos os dados de uma tabela?
+
+SELECT FROM TABELA
+  Alternativa Errada! Precisamos determinar os campos a serem exibidos
+
+SELECT * FROM TABELA
+  Alternativa Correta! O * determina que todos os campos da tabela serão selecionados
+
+SELECT * TABELA
+  Alternativa Errada! Não foi mencionado na opção a cláusula FROM.
+
+
+
+
+2-5  Consultas condicionais
+
+Transcrição
+
+Até agora, para segregar dados de uma consulta, usamos a cláusula WHERE seguida de uma condição, por exemplo:
+
+SELECT * from tab WHERE X = A;
+
+Uma expressão condicional pode ser verdadeira (V) ou falsa (F). Quando for verdadeira, o elemento avaliado será exibido no resultado da consulta. Quando for falsa, será omitido.
+
+Esse resultado depende do uso do sinal lógico, que pode ser o de igualdade (=**), de diferença (≠), maior (>), menor (<), maior ou igual (≥), menor ou igual (≤**). Caso a caso, podemos verificar se uma expressão é verdadeira ou falsa, e analisar os dados resultantes.
+
+Os filtros que criamos até então são bastante simples, portanto vamos incrementá-los colocando os operadores AND e OR no meio das expressões. Por exemplo:
+
+SELECT * FROM tab WHERE X = A OR Y = B;
+SELECT * FROM tab WHERE X = A AND Y = B;
+
+No exemplo acima, temos duas consultas condicionais, cada qual composta por duas expressões - X = A e Y = B - separadas por um operador lógico no meio.
+
+Cada uma das expressões em uma condição pode ser verdadeira ou falsa e, a depender do operador lógico entre elas, a expressão como um todo (a condição completa) também poderá ser considerada verdadeira ou falsa. Vamos ver isso mais a fundo a seguir.
+
+O operador OR determina que, se uma das expressões for verdadeira, a expressão completa será verdadeira. Somente no caso de as duas expressões serem falsas que a expressão completa também será falsa. Veja uma tabela que resume os possíveis resultados para X = A OR Y = B:
+Condição	Resultado
+(V) OR (V)	Verdadeiro
+(V) OR (F)	Verdadeiro
+(F) OR (V)	Verdadeiro
+(F) OR (F)	Falso
+
+Diferente disso, o operador AND estabelece que, somente se todas as expressões forem verdadeiras, a expressão completa também será verdadeira. Se uma delas for falsa, a expressão toda é falsa. Veja, a seguir, uma tabela que resume essa explicação:
+Condição	Resultado
+(V) OR (V)	Verdadeiro
+(V) OR (F)	Falso
+(F) OR (V)	Falso
+(F) OR (F)	Falso
+
+Outro operador importante é o NOT, que é aplicado para inverter o resultado de uma expressão. Observe o seguinte exemplo:
+
+NOT (X = A OR Y = B);
+NOT (X = A AND Y = B);
+
+No primeiro caso, se a expressão interna X = A OR Y = B for verdadeira, o operador NOT torna o resultado falso. Por outro lado, se a expressão interna for falsa, colocando o NOT acabamos com uma expressão verdadeira. O mesmo serve para o segundo caso: se a expressão interna X = A AND Y = Bfor verdadeira, o resultado com o NOT será falso e vice-versa.
+
+Veja a tabela que resume as possíveis conclusões para NOT (X = A OR Y = B). O resultado só será verdadeiro quando ambas expressões forem falsas:
+Condição	Resultado
+(V) OR (V)	Falso
+(V) OR (F)	Falso
+(F) OR (V)	Falso
+(F) OR (F)	Verdadeiro
+
+E, para NOT (X = A AND Y = B), o resultado só será falso quando ambas expressões forem verdadeiras:
+Condição	Resultado
+(V) OR (V)	Falso
+(V) OR (F)	Verdadeiro
+(F) OR (V)	Verdadeiro
+(F) OR (F)	Verdadeiro
+
+Como o MySQL trabalha com esses tipos de consultas condicionais? Vejamos alguns exemplos, preenchendo a seguinte tabela com os resultados obtidos.
+X	Y	Expr1		Expr2		Result
+A	B					
+C	E					
+A	F					
+F	B					
+
+    Para melhor visualização, vários elementos da tabela foram omitidos. A tabela completa pode ser encontrada no projeto do curso.
+
+Exemplo 1: A condição é X = A. A partir disso, o MySQL percorrerá a coluna "X", comparando cada valor com a constante A. Sempre que X for igual a A, o MySQL gravará na memória que, naquela instância, a expressão é verdadeira:
+X	Y	Expr1		Expr2		Result
+A	B	A = A	V			V
+C	E	C = A	F			F
+A	F	A = A	V			V
+F	B	F = A	F			F
+
+Portanto, ao fazer uma consulta com a condição X = A, o MySQL retornará apenas os registros que constam como verdadeiro. No caso da tabela acima, seria um retorno de duas linhas (a primeira e a terceira).
+
+Exemplo 2: A condição é X = A OR Y = B. Dessa vez, o MySQL percorrerá o campo "X" (comparando-o com A) e o campo "Y" (comparando-o com B), gravando os resultados parciais de cada expressão.
+
+Como se trata de uma condição com o operador OR, sabemos que somente quando as duas expressões forem falsas que a expressão como um todo também será falsa:
+X	Y	Expr1		Expr2		Result
+A	B	A = A	V	B = B	V	V
+C	E	C = A	F	E = B	F	F
+A	F	A = A	V	F = B	F	V
+F	B	F = A	F	B = B	V	V
+
+Ou seja, com base na nossa tabela, ao realizar uma consulta com a condição X = A OR Y = B, nosso retorno terá três registros (os verdadeiros).
+
+Exemplo 3: A condição é X = A AND Y = B. O processo será parecido com o anterior, porém dessa vez estamos trabalhando com o operador AND. Ou seja, somente quando as duas expressões forem verdadeiras que a expressão como um todo também será verdadeira:
+X	Y	Expr1		Expr2		Result
+A	B	A = A	V	B = B	V	V
+C	E	C = A	F	E = B	F	F
+A	F	A = A	V	F = B	F	F
+F	B	F = A	F	B = B	V	F
+
+O retorno dessa consulta terá apenas um registro (a primeira linha).
+
+Exemplo 4: A condição é NOT (X = A OR Y = B). Nesse caso, o MySQL percorrerá com a expressão interna X = A OR Y = B (cuja tabela será igual ao exemplo 3) e, em seguida, o NOT será responsável por inverter os valores da coluna "Result":
+X	Y	Expr1		Expr2		Result
+A	B	A = A	V	B = B	V	F
+C	E	C = A	F	E = B	F	V
+A	F	A = A	V	F = B	F	V
+F	B	F = A	F	B = B	V	V
+
+Seguindo o padrão, os registros selecionados na consulta serão os verdadeiros.
+
+Exemplo 5: A condição é X = A AND NOT (Y = B). Perceba que o NOT será aplicado somente a uma das expressões. O MySQL percorrerá a coluna "X", comparando os valores à constante A. Depois, percorrerá o campo "Y", comparando os valores à B:
+X	Y	Expr1		Expr2		Result
+A	B	A = A	V	B = B	V	
+C	E	C = A	F	E = B	F	
+A	F	A = A	V	F = B	F	
+F	B	F = A	F	B = B	V	
+
+Em seguida, por causa do operador NOT, os resultados da expressão 2 serão invertidos:
+X	Y	Expr1		Expr2		Result
+A	B	A = A	V	B = B	F	
+C	E	C = A	F	E = B	V	
+A	F	A = A	V	F = B	V	
+F	B	F = A	F	B = B	F	
+
+E, por fim, aplicaremos o operador AND - somente quando as duas expressões forem verdadeiras que a expressão como um todo também será verdadeira:
+X	Y	Expr1		Expr2		Result
+A	B	A = A	V	B = B	F	F
+C	E	C = A	F	E = B	V	F
+A	F	A = A	V	F = B	V	V
+F	B	F = A	F	B = B	F	F
+
+A seleção resultante terá apenas o terceiro registro da tabela acima. Assim, examinamos vários cenários possíveis relativos às consultas condicionais.
+
+Para finalizar esse vídeo, vamos resolver, passo a passo, uma expressão mais complexa:
+
+((NOT (V AND F)) AND (V OR F)) OR F
+
+Nesse contexto, já temos os resultados das expressões (verdadeiras ou falsas), falta destrinchar essa operação para chegar ao resultado. Começaremos de dentro para fora, ou seja, a partir das expressões internas.
+
+Seguindo a lógica que aprendemos, a condição V AND F resulta em falso (F), então podemos substituí-la assim:
+
+((NOT (F)) AND (V OR F)) OR F
+
+Quanto à condição V OR F, sabemos que resulta em verdadeiro (V):
+
+((NOT (F)) AND (V)) OR F
+
+Em seguida, respeitando os parênteses, vamos solucionar a expressão NOT (F). O operador NOT inverte o resultado, logo temos verdadeiro:
+
+((V) AND (V)) OR F
+
+Agora, resolveremos V AND V. Como aprendemos, quando tratamos do operador AND, se ambas expressões são verdadeiras, a expressão como um todo também será verdadeira:
+
+(V) OR F
+
+E, por fim, V OR F resulta em verdadeiro. Sendo assim, constatamos que a expressão ((NOT (V AND F)) AND (V OR F)) OR F é verdadeira.
+
+Chegamos a todas essas conclusões através da lógica, um campo de estudo que vem da filosofia e também se aplica à área de informática (não somente no SQL - programadores de diversos setores precisam lidar com condições e operadores que vimos nesse material).
+
+Dessa forma, nota-se que depois do WHERE podemos encontrar condições bastante complexas, com AND, OR, NOT e parênteses, mas nas seleções das tabelas nós visualizamos apenas aquilo que a expressão está atestando. Nesse material, então, procurei mostrar mais a teoria dessa parte de lógica e, no próximo vídeo, vamos colocar na prática com o MySQL.
+
+
+
+
+2-6  Resolvendo a estrutura lógica
+
+A expressão abaixo é verdadeira ou falsa?
+
+(NOT ((3 > 2) OR (4 >= 5)) AND (5 > 4) ) OR (9 > 0)
+
+Opinião do instrutor
+
+(NOT ((3 > 2) OR (4 >= 5)) AND (5 > 4) ) OR (9 > 0)
+(NOT ((Verdadeiro) OR (Falso)) AND (Verdadeiro) ) OR (Verdadeiro)
+(NOT (Verdadeiro) AND (Verdadeiro) ) OR (Verdadeiro)
+(Falso AND Verdadeiro) OR (Verdadeiro)
+(Falso) OR (Verdadeiro)
+Verdadeiro
+
+
+
+2-7  Aplicando consultas condicionais
+
+Transcrição
+
+Aqui você pode fazer o download completo do projeto realizado neste vídeo e continuar seus estudos.
+https://caelum-online-public.s3.amazonaws.com/1221-mysqlconsultasavancadas/02/Consultas%20Condicionais.sql
+
+
+Então, vamos colocar em prática os conceitos de condições lógicas que estudamos previamente, usando AND, OR, NOT e assim por diante. Começaremos criando um novo script SQL e nos certificando de que estamos com a base de dados "sucos_vendas" selecionada.
+
+Nossa primeira consulta será simples, com uma condição que já aprendemos como trabalhar:
+
+SELECT * FROM tabela_de_produtos WHERE SABOR = 'Manga';
+
+Ao executar o script, você pode verificar na coluna "SABOR" que todos os registros encontrados têm valor "manga". Então, vamos incrementar nossa consulta, adicionando mais uma expressão à condição:
+
+SELECT * FROM tabela_de_produtos WHERE SABOR = 'Manga' OR TAMANHO = '470 ml';
+
+Com essa seleção, vamos filtrar apenas os registros que tenham sabor manga ou tamanho de 470 ml (ou até mesmo os dois). Executando o script, podemos reparar que o primeiro item do resultado atende às duas expressões; os quatro produtos seguintes têm sabor manga, porém tamanhos diferentes de 470 ml; e o último registro tem 470 ml, no entanto, é sabor laranja.
+
+A seguir, criaremos uma consulta com AND:
+
+SELECT * FROM tabela_de_produtos WHERE SABOR = 'Manga' AND TAMANHO = '470 ml';
+
+Nesse caso, como usamos o AND, o retorno terá apenas um registro - nessa tabela, é o único produto cujo sabor é manga E** o tamanho é igual a 470 ml **ao mesmo tempo.
+
+Agora, vamos inserir o NOT, para fazer a seleção inversa: uma consulta de todos os registros exceto os que têm sabor manga e** tamanho 470 ml **ao mesmo tempo:
+
+SELECT * FROM tabela_de_produtos WHERE NOT (SABOR = 'Manga' AND TAMANHO = '470 ml');
+
+Dessa consulta obteremos um resultado bem extenso. Já se colocarmos o NOT em combinação com OR, o retorno não será tão abrangente:
+
+SELECT * FROM tabela_de_produtos WHERE NOT (SABOR = 'Manga' OR TAMANHO = '470 ml');
+
+Desse script resulta uma seleção em que não veremos nenhum registro com sabor manga e nenhum registro com tamanho 470 ml.
+
+Há ainda outras formas de usar o NOT. Podemos, por exemplo, inseri-lo na frente de apenas uma das expressões:
+
+SELECT * FROM tabela_de_produtos WHERE SABOR = 'Manga' AND NOT (TAMANHO = '470 ml');
+
+Nesse caso, procuraremos itens que tenham sabor manga E** que o tamanho **não seja 470 ml. Isso é, ao rodar o script, na tabela resultante você encontrará todos os produtos com sabor manga exceto os que tem tamanho 470 ml - qualquer outro tamanho será apresentado.
+
+Existem mais condições lógicas além das que expliquei no vídeo anterior. Uma delas é o IN, que pode ser interpretado como "contido":
+
+SELECT * FROM tabela_de_produtos WHERE SABOR IN ('Laranja', 'Manga');
+
+Com esse script, estamos selecionando todos os produtos da "tabela_de_produtos" cujo sabor está contido na lista ('Laranja', 'Manga'). Essa consulta é equivalente à seguinte:
+
+SELECT * FROM tabela_de_produtos WHERE SABOR = 'Laranja' OR SABOR = 'Manga';
+
+Ou seja, também procuramos registros cujo sabor seja laranja ou manga.
+
+Além disso, temos a opção de criar condições que mesclam diferentes colunas. Para exemplificar, vamos fazer outra consulta com o operador IN, desta vez com a tabela de clientes:
+
+SELECT * FROM tabela_de_clientes WHERE CIDADE IN ('Rio de Janeiro', 'São Paulo') AND IDADE >= 20;
+
+Rodando esse script, teremos como resultado uma tabela com todos os clientes cuja cidade consta como Rio de Janeiro ou como São Paulo, e cuja idade seja maior ou igual a 20.
+
+Ademais, há sempre a possibilidade de criar consultas mais complexas:
+
+SELECT * FROM tabela_de_clientes WHERE CIDADE IN ('Rio de Janeiro', 'São Paulo') AND (IDADE >= 20 AND IDADE <= 22);
+
+É interessante fazer uso dos parênteses, como em (IDADE >= 20 AND IDADE <=22), para manter a ordem em seu script. Mesmo que não acarrete diferenças na execução da consulta, trata-se de uma boa prática de organização. Nesse caso, estamos unindo condições que dizem respeito ao mesmo campo. Um código bem indentado e com uma boa estrutura facilita bastante na hora de ler, interpretar e corrigir problemas.
+
+Assim, nesse vídeo buscamos colocar em prática toda a teoria que aprendemos anteriormente, aplicando os operadores e sinais lógicos em uma variedade de consultas.
+
+
+
+
+2-8  Selecionar vendas
+
+Qual seria o comando SQL para selecionar todos os itens de notas fiscais cuja quantidade seja maior que 60 e preço menor ou igual a 3?
+
+SELECT * FROM itens_notas_fiscais WHERE QUANTIDADE >= 60 AND PRECO <= 3
+  Alternativa Errada! Não é menor ou igual a 60. É menor que 60.
+
+SELECT * FROM itens_notas_fiscais WHERE QUANTIDADE > 60 AND PRECO <= 3
+  Alternativa Correta! Este comando irá obter a resposta contida no enunciado.
+
+SELECT * FROM notas_fiscais WHERE QUANTIDADE >= 60 AND PRECO <= 3
+  Alternativa Errada! Tabela de NOTAS FISCAIS não tem indicador de quantidade.
+
+
+
+
+2-9  Usando o LIKE
+
+Transcrição
+
+Você pode fazer o download completo do projeto realizado neste vídeo e continuar seus estudos.
+https://caelum-online-public.s3.amazonaws.com/1221-mysqlconsultasavancadas/02/Consultas%20LIKE.sql
+
+
+Vamos aprender mais um comando que filtra informações de uma seleção: o operador LIKE. Normalmente, ele é usado assim:
+
+SELECT * FROM tab WHERE campo LIKE '<condição>';
+
+Nesse exemplo, "tab" refere-se a uma tabela, e "campo" é a coluna que se está consultando. Após o LIKE, escrevemos o critério de busca entre aspas simples. Esse critério deve ser um texto e pode vir acompanhado do símbolo de porcentagem, também chamado de percent (%).
+
+O % é usado para representar qualquer registro genérico que venha antes ou depois do texto que estamos procurando. Ele é como um caractere curinga em determinado trecho de uma string, equivalente ao * quando manipulamos arquivos.
+
+Vamos ver na prática para ficar mais claro. Digamos que nós temos a seguinte lista de nomes:
+Nomes
+João da Silva Filho
+Pedro Almeida Soares
+Margarida Silva Soares
+José da Silva Almeida
+Carlos Soares da Silva
+Pedro Filho de Almeida
+Jorge da Silva Filho
+Antônio Almeida Soares
+Jonas Soares Filho
+Vitor Filho Soares
+
+Ao realizar uma busca com a condição LIKE '%SOARES%', estaremos procurando todas as pessoas cujo nome contenha "SOARES". Essa consulta retornaria os seguintes nomes:
+Nomes
+Pedro Almeida Soares
+Margarida Silva Soares
+Carlos Soares da Silva
+Antônio Almeida Soares
+Jonas Soares Filho
+Vitor Filho Soares
+
+Note que, em alguns casos, "SOARES" aparece no final (como Pedro Almeida Soares), mas em outros está no meio do nome (como Carlos Soares da Silva). Obtemos esse resultado porque usamos o símbolo % antes e depois de "SOARES".
+
+Também podemos trabalhar com limites, por exemplo, buscando nomes que terminem com "SOARES". Com esse propósito, nossa condição será LIKE '%SOARES', sem o símbolo percent ao fim. O resultados será:
+Nomes
+Pedro Almeida Soares
+Margarida Silva Soares
+Antônio Almeida Soares
+Vitor Filho Soares
+
+Dessa forma, a consulta não retornará os nomes "Carlos Soares da Silva" nem "Jonas Soares Filho", pois o texto que estamos buscando está no meio (e não no fim) dos nomes.
+
+Agora que entendemos como esse operador funciona, vamos ao MySQL Workbench criar algumas consultas na base "sucos_vendas". Em um script novo, digitaremos o seguinte:
+
+SELECT * FROM tabela_de_produtos WHERE SABOR LIKE '%Maça%';
+
+Perceba que usamos um percent antes e outro depois do texto que vamos buscar. Ao executar o script, podemos verificar que a seleção retorna produtos com dois sabores diferentes: Maçã e Cereja/Maçã. Este último está presente no resultado por causa do primeiro % que colocamos na consulta: há outros caracteres antes, mas contém "Maça", que era o nosso critério de busca.
+
+Vale lembrar que o LIKE pode ser uma parcela de uma expressão mais complexa, é possível combiná-lo com outros operadores, por exemplo:
+
+SELECT * FROM tabela_de_produtos WHERE SABOR LIKE '%Maça%' AND
+EMBALAGEM = 'PET';
+
+Ou seja, buscaremos todos os produtos que contêm "Maça" no campo "SABOR" E cuja embalagem é PET.
+
+Então, esses foram alguns exemplos de uso do comando LIKE.
+
+
+
+
+2-10  Buscando clientes
+
+Quantos clientes possuem o último sobrenome Mattos?
+
+Opinião do instrutor
+
+Executando a consulta:
+
+SELECT * FROM tabela_de_clientes WHERE NOME LIKE '%Mattos'
+
+Teremos 2 clientes selecionados.
+
+
+
+
+2-11  Consolidando o seu conhecimento
+
+Chegou a hora de você seguir todos os passos realizados por mim durante esta aula. Caso já tenha feito, excelente. Se ainda não, é importante que você execute o que foi visto nos vídeos para poder continuar com a próxima aula.
+
+1) Para que possam ser efetuadas as consultas na base de dados, é preciso conhecer as suas tabelas e seus relacionamentos. Para isso, vá no Workbench e verifique se o banco de dados Sucos_Vendas está disponível.
+
+2) Expandindo a árvore de estrutura de base de dados sobre Sucos_Vendas, podemos ver os componentes de um banco de dados. Para as consultas, um dos elementos mais importantes são as tabelas que podem ser vistas em mais detalhe até a sua estrutura de campos.
+
+1.png
+
+3) Vá no menu e selecione Database / Reverse Engineer.
+
+4) Clique em Next duas vezes e depois escolha o banco no qual a engenharia reversa será efetuada.
+
+5) Continue no assistente confirmando as seleções padrões até o final.
+
+6) Você poderá ver um esquema visual das suas tabelas. Este esquema pode ser um guia para suas consultas.
+
+2.png
+
+7) Sabendo como é nossa base, podemos fazer nossas consultas. Selecione um novo script de SQL, com a base de dados selecionada, e digite:
+
+USE sucos_vendas;
+SELECT CPF, NOME, ENDERECO_1, ENDERECO_2, BAIRRO, CIDADE, ESTADO,
+CEP, DATA_DE_NASCIMENTO,
+IDADE, SEXO, LIMITE_DE_CREDITO, VOLUME_DE_COMPRA, PRIMEIRA_COMPRA
+FROM tabela_de_clientes;
+
+3.png
+
+Aqui veremos todos os campos da tabela Tabela_de_Clientes. Isso porque os campos foram selecionados um a um.
+
+8) Digite abaixo:
+
+SELECT * FROM tabela_de_clientes;
+
+4.png
+
+Este resultado foi semelhante a consulta anterior. Isso porque, ao colocar * estamos selecionado todos os campos.
+
+9) Digite:
+
+SELECT CPF, NOME FROM tabela_de_clientes;
+
+5.png
+
+Agora podemos ver que não é necessário selecionar todos os campos de uma tabela. Basta eu destacar os campos que serão vistos.
+
+10) Digite:
+
+SELECT CPF as INDENTIFICADOR, NOME AS CLIENTE FROM tabela_de_clientes;
+
+6.png
+
+Nem sempre o nome original da coluna é o nome que queremos que seja retornado pela consulta. Por isso, podemos criar Alias (Apelidos) para os campos escrevendo algo após o comando AS.
+
+11) Podemos filtrar nossa consulta. Digite:
+
+SELECT * FROM tabela_de_produtos WHERE CODIGO_DO_PRODUTO = '1000889';
+
+7.png
+
+Aqui, o nosso retorno foi uma linha, porque selecionamos um filtro através da chave primária, que não repete.
+
+12) Mas podemos implementar filtros que retornem mais linhas. Veja:
+
+SELECT * FROM tabela_de_produtos WHERE SABOR = 'Uva';
+
+8.png
+
+SELECT * FROM tabela_de_produtos WHERE SABOR = 'Laranja';
+
+9.png
+
+SELECT * FROM tabela_de_produtos WHERE EMBALAGEM = 'PET';
+
+10.png
+
+SELECT * FROM tabela_de_produtos WHERE EMBALAGEM = 'pet';
+
+11.png
+
+Os filtros usados acima retornam mais linhas. Podemos usar qualquer coluna como critério.
+
+13) Existem comandos de filtro aplicados a valores:
+
+SELECT * FROM tabela_de_produtos WHERE PRECO_DE_LISTA > 19.50;
+
+12.png
+
+SELECT * FROM tabela_de_produtos WHERE PRECO_DE_LISTA BETWEEN 19.50 AND 19.52;
+
+13.png
+
+Neste caso podemos usar >,>=, <, <=, =, <> e Between. Assim podemos aplicar filtros sobre os valores que retornem mais valores.
+
+14) É possível aplicar consultas condicionais usando operadores AND e OR. O retorno vai depender do significado do AND e OR numa estrutura lógica. Digite:
+
+SELECT * FROM tabela_de_produtos WHERE SABOR = 'Manga'
+OR TAMANHO = '470 ml';
+
+14.png
+
+Aqui retornamos ou um filtro (Sabor = Manga) ou outro ( Tamanho = 470 ml). Isso porque usamos o operador OR.
+
+15) Digite:
+
+SELECT * FROM tabela_de_produtos WHERE SABOR = 'Manga'
+AND TAMANHO = '470 ml';
+
+15.png
+
+Agora, por causa do operador AND, o retorno somente ocorrerá quando as duas condições ocorrerem na mesma linha da tabela.
+
+16) Podemos usar parte de um texto para ser usado como critério de localização de registros da tabela. Digite abaixo:
+
+SELECT * FROM tabela_de_produtos WHERE SABOR LIKE '%Maça%';
+
+16.png
+
+Aqui iremos buscar todos os registros cujo sabor possua a palavra Maça. Não importa se no início, no meio ou no final do texto.
+
+17) Podemos mesclar condições LIKE com outras. Digite:
+
+SELECT * FROM tabela_de_produtos WHERE SABOR LIKE '%Maça%'
+AND EMBALAGEM = 'PET';
+
+17.png
+
+Por fim, faremos a consulta do texto “Maça” apenas para embalagens PET.
+Opinião do instrutor
+
+Continue com os seus estudos, e se houver dúvidas, não hesite em recorrer ao nosso fórum!
+
+
+
+
+2-12  O que aprendemos?
+
+  A importância de conhecer a base de dados antes de fazer as consultas;
+  
+  O comando de consultas e como podemos filtrá-las;
+  
+  Como podemos mesclar filtros condicionais com AND e OR;
+  
+  A usar >, >=, <, <=, = ou <> nos filtros que envolvem valores;
+  
+  Como funciona o comando LIKE;

@@ -1,0 +1,599 @@
+https://cursos.alura.com.br/course/mysql-consultas-sql
+
+Data Science > Cursos de SQL e Banco de Dados
+
+Curso de
+Consultas SQL: avançando no SQL com MySQL
+
+
+Formação com esse curso
+SQL com MySQL Server da Oracle
+
+
+Instrutor(a)
+
+    instructor Victorino Vila
+
+    Linkedin
+    https://www.linkedin.com/in/victorino-vila-1a160/
+
+    Victorino é desenvolvedor com foco em .NET e Web Services. Durante mais de 20 anos gerenciou uma empresa de consultoria na área de tecnologia. Criou e desenvolveu projetos de planejamento, Business Intelligence e integração de dados, além de databases de relacionamento com foco em BI, usando SQL Server, MYSQL ou DB2. Suas soluções são usadas em Brasil, nos EUA e na Europa. É consultor sênior certificado em SAP BW.
+
+
+Faça esse curso de SQL e Banco de Dados e:
+
+    Pagine seus dados com LIMIT
+    Filtre consultas com HAVING
+    Entenda a diferença entre o LEFT e RIGHT JOIN
+    Saiba usar Sub-Queries
+    Use funções do MySQL
+    Ordene os seus dados usando o ORDER BY
+    Agrupe dados com GROUP BY
+
+
+
+Aulas
+
+6- Exemplos de relatórios | 0 / 9 | 52min
+
+https://cursos.alura.com.br/course/mysql-consultas-sql/section/8146/tasks
+
+  6-1  Relatório de vendas válidas
+  6-2  A consulta do relatório
+  6-3  Relatório de vendas por sabor
+  6-4  Vendas percentuais por tamanho
+  6-5  Consolidando o seu conhecimento
+  6-6  O que aprendemos?
+  6-7  Conclusão
+  6-8  Próximos passos
+  6-9  Projeto do curso
+
+
+6-1  Relatório de vendas válidas
+
+Transcrição
+
+Aqui você pode fazer o download completo do projeto realizado neste vídeo e continuar seus estudos.
+
+https://caelum-online-public.s3.amazonaws.com/1221-mysqlconsultasavancadas/06/Vendas%20v%C3%A1lidas.sql
+
+
+Nesse momento, já somos capazes de colocar em prática todo o nosso conhecimento de SQL relativo às consultas. Vamos revisar e adaptar tudo que aprendemos neste curso para atender a um pedido do gerente de vendas da empresa de sucos: ele solicitou um relatório para evidenciar, dentre todas as vendas realizadas, quais foram válidas e quais foram inválidas.
+
+Primeiramente, vamos esclarecer o que é uma venda válida. Na tabela de clientes, há uma coluna chamada "VOLUME_DE_COMPRA" que corresponde ao volume máximo de suco que cada cliente pode comprar em um mês. Para saber se esse número foi respeitado, podemos consultar a tabela de itens de notas fiscais e compará-lo à quantidade adquirida por cada cliente em cada mês. Vendas válidas são aquelas que não extrapolam esse limite mensal.
+
+Então, devemos entregar um relatório sobre vendas válidas e inválidas ao gerente de vendas para que possa ser analisado se o parâmetro de volume de compras está sendo considerado durante as negociações com os clientes.
+
+Agora que compreendemos nossa meta, aos poucos vamos construir uma seleção que atenda essa demanda. Começaremos abrindo o MySQL Workbench e criando um script. Nosso primeiro passo será descobrir o volume total de vendas para cada cliente dentro de um mês, lembrando que o mês é o fator limitante.
+
+Vamos consultar a tabela de itens das notas fiscais e a tabela de notas fiscais para saber o que cada uma delas pode nos mostrar:
+
+SELECT * FROM ITENS_NOTAS_FISCAIS;
+SELECT * FROM NOTAS_FISCAIS;
+
+As informações que nos interessam estão em tabelas diferentes: os dados sobre o cliente (CPF) e a data da venda estão na tabela de notas fiscais, enquanto a quantidade das vendas consta na tabela de itens das notas fiscais. Para unificar essa visualização, vamos fazer uma seleção com INNER JOIN:
+
+SELECT * FROM NOTAS_FISCAIS NF
+INNER JOIN ITENS_NOTAS_FISCAIS INF
+ON NF.NUMERO = INF.NUMERO;
+
+Note que criamos um alias para cada tabela ("NF" e "INF") e usamos o número das notas fiscais como campo em comum para realizar essa junção. Como usamos o asterisco, o retorno mostrará todas as colunas de ambas as tabelas, mas não precisamos de todas essas informações. Então, vamos refazer essa consulta, selecionando apenas as colunas relevantes para nosso relatório:
+
+SELECT NF.CPF, NF.DATA_VENDA, INF.QUANTIDADE FROM NOTAS_FISCAIS NF
+INNER JOIN ITENS_NOTAS_FISCAIS INF
+ON NF.NUMERO = INF.NUMERO;
+
+Agora, vejamos o formato das datas. Tendo em vista nosso objetivo, seria interessante agrupar as vendas mensalmente, porém no momento as datas na coluna "DATA_VENDA" são exibidas dia a dia. Para trocar esse formato, usaremos a função DATE_FORMAT():
+
+SELECT NF.CPF, DATE_FORMAT(NF.DATA_VENDA, '%Y-%m') AS MES_ANO, INF.QUANTIDADE FROM NOTAS_FISCAIS NF
+INNER JOIN ITENS_NOTAS_FISCAIS INF
+ON NF.NUMERO = INF.NUMERO;
+
+Dessa forma, usamos os especificadores %Y e %m para exibir somente o ano e o mês de cada venda. Ademais, renomeamos o campo "DATA_VENDA" para "MES_ANO".
+
+Analisando o retorno, há vários registros cujo CPF e a data são iguais. Os quatro primeiros registros, por exemplo, são vendas realizadas em janeiro de 2015 para o cliente de CPF 7771579779. Se temos vendas no mesmo mês para o mesmo cliente, podemos agrupá-las por esses campos:
+
+SELECT NF.CPF, DATE_FORMAT(NF.DATA_VENDA, '%Y-%m') AS MES_ANO, SUM(INF.QUANTIDADE) AS QUANTIDADE_VENDAS FROM NOTAS_FISCAIS NF
+INNER JOIN ITENS_NOTAS_FISCAIS INF
+ON NF.NUMERO = INF.NUMERO
+GROUP BY NF.CPF, DATE_FORMAT(NF.DATA_VENDA, '%Y-%m');
+
+    Note que, no GROUP BY, inserimos a função DATE_FORMAT() inteira e não somente o campo "NF.DATA_VENDA". Nem sempre essa inclusão é necessária, dependerá do resultado da função, mas para garantir o sucesso, colocamos a função completa (sem o alias!).
+
+Com essa seleção, além de agrupar registros por CPF e data, também aplicamos SUM() aos valores da coluna "QUANTIDADE" e a esse total demos o nome de "QUANTIDADE_VENDAS". Assim, o retorno será uma lista em que cada registro corresponde à quantidade de vendas para um determinado cliente em um determinado mês. Em outras palavras, concluímos nosso primeiro passo.
+
+Antes de continuar, vamos fazer um comentário no script para não nos esquecer dessa seleção. Na linha acima da consulta, vamos digitar o seguinte texto:
+
+/* CONSULTA COM VENDAS DE CLIENTES POR MES */
+
+O comentário é um texto que não altera a execução do código, o programa irá ignorar esse trecho quando estiver rodando. No SQL, basta colocar os símbolos /* no início, e */ ao final. Quanto maior e mais complexo nosso script ficar, mais importante é colocar comentários para lembrarmos o que cada parte faz.
+
+O segundo passo é mais simples: exibir o volume de compra permitido para cada cliente. Encontraremos essa informação na tabela de clientes, à qual daremos o alias "TC":
+
+SELECT * FROM TABELA_DE_CLIENTES TC;
+
+Novamente, temos uma consulta que retorna mais colunas do que necessitamos. Vamos selecionar apenas os campos relevantes:
+
+SELECT TC.CPF, TC.NOME, TC.VOLUME_DE_COMPRA AS QUANTIDADE_LIMITE
+FROM TABELA_DE_CLIENTES TC;
+
+Assim, obtemos o CPF, o nome e o volume de compra de cada cliente — terminamos o segundo passo. Podemos também fazer um comentário sobre essa consulta para nos lembrarmos dela:
+
+/* LIMITE DE COMPRA POR CLIENTE */
+SELECT TC.CPF, TC.NOME, TC.VOLUME_DE_COMPRA AS QUANTIDADE_LIMITE
+FROM TABELA_DE_CLIENTES TC;
+
+Por fim, o terceiro passo será comparar as tabelas resultantes do primeiro e do segundo passo. Faremos um INNER JOIN entre elas:
+
+SELECT NF.CPF, TC.NOME, DATE_FORMAT(NF.DATA_VENDA, '%Y-%m') AS MES_ANO, SUM(INF.QUANTIDADE) AS QUANTIDADE_VENDAS, TC.VOLUME_DE_COMPRA AS QUANTIDADE_LIMITE FROM NOTAS_FISCAIS NF
+INNER JOIN ITENS_NOTAS_FISCAIS INF
+ON NF.NUMERO = INF.NUMERO
+INNER JOIN TABELA_DE_CLIENTES TC 
+ON TC.CPF = NF.CPF
+GROUP BY NF.CPF, TC.NOME, DATE_FORMAT(NF.DATA_VENDA, '%Y-%m');
+
+Assim, fizemos um JOIN cujo campo em comum é o CPF. Além do mais, incluímos as colunas "TC.NOME" e "TC.VOLUME_DE_COMPRA" no início do SELECT para serem exibidas no retorno. Também inserimos "TC.NOME" no GROUP BY ao final da seleção.
+
+Ao tentar executar, receberemos um erro. O problema está no trecho TC.VOLUME_DE_COMPRA. Quando agrupamos registros, somos obrigados a especificar o que deve ser feito com os campos numéricos. Por exemplo, em SUM(INF.QUANTIDADE) temos a indicação de que os valores devem ser somados. Já em TC.VOLUME_DE_COMPRA não há especificação. Uma solução, então, é usar a função MAX() para que a coluna exiba o maior valor:
+
+SELECT NF.CPF, TC.NOME, DATE_FORMAT(NF.DATA_VENDA, '%Y-%m') AS MES_ANO, SUM(INF.QUANTIDADE) AS QUANTIDADE_VENDAS, MAX(TC.VOLUME_DE_COMPRA) AS QUANTIDADE_LIMITE FROM NOTAS_FISCAIS NF
+INNER JOIN ITENS_NOTAS_FISCAIS INF
+ON NF.NUMERO = INF.NUMERO
+INNER JOIN TABELA_DE_CLIENTES TC 
+ON TC.CPF = NF.CPF
+GROUP BY NF.CPF, TC.NOME, DATE_FORMAT(NF.DATA_VENDA, '%Y-%m');
+
+    Note que também poderíamos usar MIN() já que o volume de compra é constante para cada CPF - ou seja, nesse caso, o valor máximo e o mínimo são o mesmo. O uso de SUM(), no entanto, não funcionaria, pois os valores seriam somados e o volume permitido aumentaria.
+
+Com essa consulta, cada registro exibirá o CPF e o nome do cliente, o mês e o ano das vendas, a soma das quantidades adquiridas no mês em questão e o volume de compras permitido. O primeiro registro, por exemplo, informa que em janeiro de 2015, Érica Carvalho comprou 24316 sucos do seu volume máximo de 24500 — está abaixo de seu limite, ou seja, é uma venda válida. Já no quinto registro, sabemos que em maio do mesmo ano ela extrapolou o volume permitido (26385 de 24500), então trata-se de uma venda inválida.
+
+Em outras palavras, já somos capazes de averiguar se cada venda foi válida ou não, ao subtrair a quantidade limite da quantidade de vendas. Mas não convém enviar o relatório do jeito que está agora, pois o gerente teria que calcular os valores linha a linha. Em vez disso, criaremos um script que faça essa operação por nós e automaticamente mostre se é uma venda válida ou não.
+
+Vamos usar a última seleção como uma subconsulta com alias "X". Em seguida, incluiremos uma coluna chamada "DIFERENCA" que exiba o resultado de X.QUANTIDADE_LIMITE - X.QUANTIDADE_VENDAS:
+
+SELECT X.CPF, X.NOME, X.MES_ANO, X.QUANTIDADE_VENDAS, X.QUANTIDADE_LIMITE,
+X.QUANTIDADE_LIMITE - X.QUANTIDADE_VENDAS AS DIFERENCA
+FROM (
+SELECT NF.CPF, TC.NOME, DATE_FORMAT(NF.DATA_VENDA, '%Y-%m') AS MES_ANO, 
+SUM(INF.QUANTIDADE) AS QUANTIDADE_VENDAS , MAX(TC.VOLUME_DE_COMPRA) AS QUANTIDADE_LIMITE FROM NOTAS_FISCAIS NF
+INNER JOIN ITENS_NOTAS_FISCAIS INF
+ON NF.NUMERO = INF.NUMERO
+INNER JOIN TABELA_DE_CLIENTES TC 
+ON TC.CPF = NF.CPF
+GROUP BY NF.CPF, TC.NOME, DATE_FORMAT(NF.DATA_VENDA, '%Y-%m')) X;
+
+Depois, para facilitar a leitura desses dados, vamos acrescentar uma coluna que apresente o texto "válida" ou "inválida" conforme o resultado da coluna "DIFERENCA". Quando negativo, a venda é inválida; senão, é válida:
+
+SELECT X.CPF, X.NOME, X.MES_ANO, X.QUANTIDADE_VENDAS, X.QUANTIDADE_LIMITE,
+X.QUANTIDADE_LIMITE - X.QUANTIDADE_VENDAS AS DIFERENCA,
+CASE 
+    WHEN (X.QUANTIDADE_LIMITE - X.QUANTIDADE_VENDAS) < 0 THEN 'INVÁLIDA'
+    ELSE 'VÁLIDA' 
+END AS STATUS_VENDA
+FROM (
+SELECT NF.CPF, TC.NOME, DATE_FORMAT(NF.DATA_VENDA, '%Y-%m') AS MES_ANO, 
+SUM(INF.QUANTIDADE) AS QUANTIDADE_VENDAS , 
+MAX(TC.VOLUME_DE_COMPRA) AS QUANTIDADE_LIMITE FROM NOTAS_FISCAIS NF
+INNER JOIN ITENS_NOTAS_FISCAIS INF
+ON NF.NUMERO = INF.NUMERO
+INNER JOIN TABELA_DE_CLIENTES TC 
+ON TC.CPF = NF.CPF
+GROUP BY NF.CPF, TC.NOME, DATE_FORMAT(NF.DATA_VENDA, '%Y-%m')) X;
+
+Agora que temos a coluna "STATUS_VENDA" nos informando se cada venda é válida ou não, o campo "DIFERENCA" se torna desnecessário, então podemos retirá-lo da consulta:
+
+SELECT X.CPF, X.NOME, X.MES_ANO, X.QUANTIDADE_VENDAS, X.QUANTIDADE_LIMITE,
+CASE 
+    WHEN (X.QUANTIDADE_LIMITE - X.QUANTIDADE_VENDAS) < 0 THEN 'INVÁLIDA'
+    ELSE 'VÁLIDA' 
+END AS STATUS_VENDA
+FROM (
+SELECT NF.CPF, TC.NOME, DATE_FORMAT(NF.DATA_VENDA, '%Y-%m') AS MES_ANO, 
+SUM(INF.QUANTIDADE) AS QUANTIDADE_VENDAS , 
+MAX(TC.VOLUME_DE_COMPRA) AS QUANTIDADE_LIMITE FROM NOTAS_FISCAIS NF
+INNER JOIN ITENS_NOTAS_FISCAIS INF
+ON NF.NUMERO = INF.NUMERO
+INNER JOIN TABELA_DE_CLIENTES TC 
+ON TC.CPF = NF.CPF
+GROUP BY NF.CPF, TC.NOME, DATE_FORMAT(NF.DATA_VENDA, '%Y-%m')) X;
+
+Essa seleção nos permitirá analisar todas as vendas mensais por CPF e rapidamente avaliar quais delas estavam dentro do limite de cada cliente. Por exemplo, veremos que Fernando Cavalcante realizou várias compras inválidas mas, ao mesmo tempo, ele tinha um limite menor que o de Érica Carvalho.
+
+Desse modo, conseguimos reunir em uma consulta todos os dados pertinentes para o relatório que foi solicitado pelo gerente de vendas da empresa de sucos.
+
+
+
+
+6-2  A consulta do relatório
+
+Nesta aula construímos um relatório que apresentou os clientes que tiveram vendas inválidas. Complemente este relatório listando somente os que tiveram vendas inválidas e calculando a diferença entre o limite de venda máximo e o realizado, em percentuais.
+
+Dica:
+
+Capture a SQL final da aula.
+
+Filtre somente as linhas onde
+
+(X.QUANTIDADE_LIMITE - X.QUANTIDADE_VENDAS) < 0
+
+Liste a coluna de X.QUANTIDADE_LIMITE
+
+Crie uma nova coluna fazendo a fórmula:
+
+(1 - (X.QUANTIDADE_LIMITE/X.QUANTIDADE_VENDAS)) * 100
+
+
+Opinião do instrutor
+
+Este desafio pode obter diversas respostas. Abaixo uma delas.
+
+SELECT X.CPF, X.NOME, X.MES_ANO, X.QUANTIDADE_VENDAS, X.QUANTIDADE_LIMITE,
+CASE WHEN (X.QUANTIDADE_LIMITE - X.QUANTIDADE_VENDAS) < 0 THEN 'INVÁLIDA'
+ELSE 'VÁLIDA' END AS STATUS_VENDA, (1 - (X.QUANTIDADE_LIMITE/X.QUANTIDADE_VENDAS)) * 100 AS PERCENTUAL
+FROM (SELECT NF.CPF, TC.NOME, DATE_FORMAT(NF.DATA_VENDA, '%Y-%m') AS MES_ANO
+, SUM(INF.QUANTIDADE) AS QUANTIDADE_VENDAS 
+, MAX(TC.VOLUME_DE_COMPRA) AS QUANTIDADE_LIMITE FROM NOTAS_FISCAIS NF
+INNER JOIN ITENS_NOTAS_FISCAIS INF
+ON NF.NUMERO = INF.NUMERO
+INNER JOIN TABELA_DE_CLIENTES TC 
+ON TC.CPF = NF.CPF
+GROUP BY NF.CPF, TC.NOME, DATE_FORMAT(NF.DATA_VENDA, '%Y-%m')) X
+WHERE (X.QUANTIDADE_LIMITE - X.QUANTIDADE_VENDAS) < 0;
+
+
+
+
+6-3  Relatório de vendas por sabor
+
+Transcrição
+
+Aqui você pode fazer o download completo do projeto realizado neste vídeo e continuar seus estudos.
+
+https://caelum-online-public.s3.amazonaws.com/1221-mysqlconsultasavancadas/06/Vendas%20por%20sabor.sql
+
+
+Nesse vídeo, criaremos mais um relatório a pedido da área comercial da empresa de sucos de frutas. A solicitação é um acompanhamento sobre as vendas do ano de 2016 por sabores e eles gostariam de ver as informações no seguinte modelo:
+Sabor	Ano	Quantidade vendida	Participação
+Açaí	2016	10024014.20	23.66
+Melancia	2016	6128138.08	14.47
+Manga	2016	5725137.08	13.51
+...	...	...	...
+
+    Para melhor visualização, vários elementos da tabela foram omitidos. A tabela completa pode ser encontrada no projeto do curso.
+
+Na primeira coluna, são apresentados os sabores dos sucos. Na segunda, o ano analisado (2016). Na terceira coluna, temos a quantidade vendida no ano todo, em litros. Os dados devem ser ordenados do maior para o menor em relação a esta coluna. E, por fim, temos o percentual de participação.
+
+Por exemplo: açaí foi o sabor mais vendido de 2016, com o total de 10.024.014 litros, que representam 23,66% do volume de sucos vendidos nesse ano. O sabor de melancia aparece em segundo lugar, com 6.128.138 litros, correspondentes a 14,47% do total de vendas.
+
+Agora que compreendemos a tarefa, vamos ao MySQL Workbench para abrir um novo script e analisar onde se encontram esses dados e como os consultamos.
+
+Para nosso relatório, precisamos de três informações que estão em três tabelas diferentes. Quantidade de vendas encontra-se na tabela de itens de notas fiscais. Os sabores são listados na tabela de produtos. E o ano das vendas está na tabela de notas fiscais, na coluna "DATA_VENDA". Primeiro juntaremos essas tabelas com o comando JOIN.
+
+Nossa primeira junção será entre a tabela de produtos e a tabela de itens de notas fiscais, que têm "CODIGO_DO_PRODUTO" como campo em comum:
+
+SELECT * FROM
+TABELA_DE_PRODUTOS TP
+INNER JOIN ITENS_NOTAS_FISCAIS INF ON TP.CODIGO_DO_PRODUTO = INF.CODIGO_DO_PRODUTO;
+
+Em seguida, faremos mais um INNER JOIN com a tabela de notas fiscais, dessa vez usando o campo em comum "NUMERO". Essa junção é importante para acessarmos a data, presente nas notas fiscais:
+
+SELECT * FROM
+TABELA_DE_PRODUTOS TP
+INNER JOIN ITENS_NOTAS_FISCAIS INF ON TP.CODIGO_DO_PRODUTO = INF.CODIGO_DO_PRODUTO
+INNER JOIN NOTAS_FISCAIS NF ON NF.NUMERO = INF.NUMERO;
+
+E, depois, vamos selecionar apenas as colunas relevantes para o relatório (sabor, quantidade e data). Ou seja, substituiremos o asterisco pelos campos que nos interessam, cuidando para colocar os prefixos corretos, já que cada coluna pertence a uma tabela distinta — sabor, à tabela de produtos; o ano, à tabela de notas fiscais; e quantidade, à de itens de notas fiscais:
+
+SELECT TP.SABOR, NF.DATA_VENDA, INF.QUANTIDADE FROM 
+TABELA_DE_PRODUTOS TP 
+INNER JOIN ITENS_NOTAS_FISCAIS INF ON TP.CODIGO_DO_PRODUTO = INF.CODIGO_DO_PRODUTO
+INNER JOIN NOTAS_FISCAIS NF ON NF.NUMERO = INF.NUMERO;
+
+Quando ocorrerem erros na execução dos scripts, você pode checar a aba "Output", no painel inferior do programa, para mais detalhes. É comum cometer erros de digitação ou confundir-se com os nomes dos campos, por exemplo. Esses pequenos "tropeços" também acontecem em cenários reais, com pessoas mais experientes. O importante é continuar se dedicando!
+
+Essa seleção retornará os dados de todas as vendas, uma a uma.
+
+Lembrando que o foco do relatório é 2016, nossa primeira meta será agrupar os registros anualmente (ignorando dia e mês). Então, vamos modificar o formato da data para que mostre somente o ano. Aplicaremos a função YEAR sobre a data da venda:
+
+SELECT TP.SABOR, YEAR(NF.DATA_VENDA) AS ANO, INF.QUANTIDADE FROM 
+TABELA_DE_PRODUTOS TP 
+INNER JOIN ITENS_NOTAS_FISCAIS INF ON TP.CODIGO_DO_PRODUTO = INF.CODIGO_DO_PRODUTO
+INNER JOIN NOTAS_FISCAIS NF ON NF.NUMERO = INF.NUMERO;
+
+Em seguida, agruparemos os registros pelo ano e pelo sabor, somando os valores da coluna "QUANTIDADE". Usaremos GROUP BY:
+
+SELECT TP.SABOR, YEAR(NF.DATA_VENDA) AS ANO, SUM(INF.QUANTIDADE) AS QUANTIDADE FROM 
+TABELA_DE_PRODUTOS TP 
+INNER JOIN ITENS_NOTAS_FISCAIS INF ON TP.CODIGO_DO_PRODUTO = INF.CODIGO_DO_PRODUTO
+INNER JOIN NOTAS_FISCAIS NF ON NF.NUMERO = INF.NUMERO
+GROUP BY TP.SABOR, YEAR(NF.DATA_VENDA);
+
+Quanto mais complexa for a consulta, mais demorado pode ser o retorno. Essa última seleção, por exemplo, é mais pesada do que as que vínhamos fazendo até então.
+
+Com esses dados agrupados, filtraremos apenas os registros cujo ano é 2016. Usaremos a cláusula WHERE (depois do JOIN, mas antes do GROUP BY). E, finalmente, vamos organizar o resultado do maior para o menor (ordem descendente), de acordo com os valores da coluna "QUANTIDADE". Basta adicionar o comando ORDER BY ao final da consulta:
+
+SELECT TP.SABOR, YEAR(NF.DATA_VENDA) AS ANO, SUM(INF.QUANTIDADE) AS QUANTIDADE FROM 
+TABELA_DE_PRODUTOS TP 
+INNER JOIN ITENS_NOTAS_FISCAIS INF ON TP.CODIGO_DO_PRODUTO = INF.CODIGO_DO_PRODUTO
+INNER JOIN NOTAS_FISCAIS NF ON NF.NUMERO = INF.NUMERO
+WHERE YEAR(NF.DATA_VENDA) = 2016
+GROUP BY TP.SABOR, YEAR(NF.DATA_VENDA)
+ORDER BY SUM(INF.QUANTIDADE) DESC;
+
+    Os registros que obtemos são diferentes da tabela-modelo que vimos no início do vídeo, pois são resultados de bancos de dados distintos.
+
+Assim, conseguimos ver o ranqueamento dos sabores que foram mais vendidos em 2016: manga, melancia, laranja, maçã, açaí e assim por diante. Por enquanto, vamos reservar essa seleção, adicionando um comentário para lembrarmos o que ela retorna:
+
+/* QUANTIDADE VENDIDA POR SABOR ANO 2016 */
+SELECT TP.SABOR, YEAR(NF.DATA_VENDA) AS ANO, SUM(INF.QUANTIDADE) AS QUANTIDADE FROM 
+TABELA_DE_PRODUTOS TP 
+INNER JOIN ITENS_NOTAS_FISCAIS INF ON TP.CODIGO_DO_PRODUTO = INF.CODIGO_DO_PRODUTO
+INNER JOIN NOTAS_FISCAIS NF ON NF.NUMERO = INF.NUMERO
+WHERE YEAR(NF.DATA_VENDA) = 2016
+GROUP BY TP.SABOR, YEAR(NF.DATA_VENDA)
+ORDER BY SUM(INF.QUANTIDADE) DESC;
+
+A seguir, focaremos na coluna de participação. Para calcular esse percentual, dividimos a quantidade vendida de cada sabor pela quantidade total de sucos vendidos, então multiplicamos o resultado por 100.
+
+Para obter a quantidade total, basta reutilizar a última seleção, removendo as duas ocorrências de TP.SABOR:
+
+/* QUANTIDADE TOTAL 2016*/
+SELECT YEAR(NF.DATA_VENDA) AS ANO, SUM(INF.QUANTIDADE) AS QUANTIDADE FROM 
+TABELA_DE_PRODUTOS TP 
+INNER JOIN ITENS_NOTAS_FISCAIS INF ON TP.CODIGO_DO_PRODUTO = INF.CODIGO_DO_PRODUTO
+INNER JOIN NOTAS_FISCAIS NF ON NF.NUMERO = INF.NUMERO
+WHERE YEAR(NF.DATA_VENDA) = 2016
+GROUP BY YEAR(NF.DATA_VENDA)
+ORDER BY SUM(INF.QUANTIDADE) DESC;
+
+Logo, sabemos que a quantidade total é 3626240 litros! Agora, precisamos fazer a junção desta tabela com aquela que reservamos há pouco, com a quantidade vendida por sabor em 2016.
+
+Para facilitar o entendimento, primeiramente vamos copiá-las uma abaixo da outra, retirando os dois comandos ORDER BY. Não é preciso rodar o script ainda, estamos construindo a consulta passo a passo:
+
+/* QUANTIDADE VENDIDA POR SABOR ANO 2016 */
+SELECT TP.SABOR, YEAR(NF.DATA_VENDA) AS ANO, SUM(INF.QUANTIDADE) AS QUANTIDADE FROM 
+TABELA_DE_PRODUTOS TP 
+INNER JOIN ITENS_NOTAS_FISCAIS INF ON TP.CODIGO_DO_PRODUTO = INF.CODIGO_DO_PRODUTO
+INNER JOIN NOTAS_FISCAIS NF ON NF.NUMERO = INF.NUMERO
+WHERE YEAR(NF.DATA_VENDA) = 2016
+GROUP BY TP.SABOR, YEAR(NF.DATA_VENDA)
+
+/* QUANTIDADE TOTAL 2016*/
+SELECT YEAR(NF.DATA_VENDA) AS ANO, SUM(INF.QUANTIDADE) AS QUANTIDADE FROM 
+TABELA_DE_PRODUTOS TP 
+INNER JOIN ITENS_NOTAS_FISCAIS INF ON TP.CODIGO_DO_PRODUTO = INF.CODIGO_DO_PRODUTO
+INNER JOIN NOTAS_FISCAIS NF ON NF.NUMERO = INF.NUMERO
+WHERE YEAR(NF.DATA_VENDA) = 2016
+GROUP BY YEAR(NF.DATA_VENDA)
+
+Depois, vamos colocá-las entre parênteses (seguidos de AS) para transformá-las em subconsultas, atribuindo-lhes aliases "VENDA_SABOR" e "VENDA_TOTAL":
+
+(SELECT TP.SABOR, YEAR(NF.DATA_VENDA) AS ANO, SUM(INF.QUANTIDADE) AS QUANTIDADE FROM 
+TABELA_DE_PRODUTOS TP 
+INNER JOIN ITENS_NOTAS_FISCAIS INF ON TP.CODIGO_DO_PRODUTO = INF.CODIGO_DO_PRODUTO
+INNER JOIN NOTAS_FISCAIS NF ON NF.NUMERO = INF.NUMERO
+WHERE YEAR(NF.DATA_VENDA) = 2016
+GROUP BY TP.SABOR, YEAR(NF.DATA_VENDA)) AS VENDA_SABOR
+
+(SELECT YEAR(NF.DATA_VENDA) AS ANO, SUM(INF.QUANTIDADE) AS QUANTIDADE FROM 
+TABELA_DE_PRODUTOS TP 
+INNER JOIN ITENS_NOTAS_FISCAIS INF ON TP.CODIGO_DO_PRODUTO = INF.CODIGO_DO_PRODUTO
+INNER JOIN NOTAS_FISCAIS NF ON NF.NUMERO = INF.NUMERO
+WHERE YEAR(NF.DATA_VENDA) = 2016
+GROUP BY YEAR(NF.DATA_VENDA)) AS VENDA_TOTAL
+
+Então, faremos um INNER JOIN entre essas duas subconsultas. É interessante lembrar que os INNER JOINs não precisam necessariamente ser feitos com tabelas, podemos aplicá-los em subconsultas. No nosso caso, a coluna "ANO" será o campo em comum:
+
+SELECT * FROM
+(SELECT TP.SABOR, YEAR(NF.DATA_VENDA) AS ANO, SUM(INF.QUANTIDADE) AS QUANTIDADE FROM 
+TABELA_DE_PRODUTOS TP 
+INNER JOIN ITENS_NOTAS_FISCAIS INF ON TP.CODIGO_DO_PRODUTO = INF.CODIGO_DO_PRODUTO
+INNER JOIN NOTAS_FISCAIS NF ON NF.NUMERO = INF.NUMERO
+WHERE YEAR(NF.DATA_VENDA) = 2016
+GROUP BY TP.SABOR, YEAR(NF.DATA_VENDA)) AS VENDA_SABOR
+INNER JOIN
+(SELECT YEAR(NF.DATA_VENDA) AS ANO, SUM(INF.QUANTIDADE) AS QUANTIDADE FROM 
+TABELA_DE_PRODUTOS TP 
+INNER JOIN ITENS_NOTAS_FISCAIS INF ON TP.CODIGO_DO_PRODUTO = INF.CODIGO_DO_PRODUTO
+INNER JOIN NOTAS_FISCAIS NF ON NF.NUMERO = INF.NUMERO
+WHERE YEAR(NF.DATA_VENDA) = 2016
+GROUP BY YEAR(NF.DATA_VENDA)) AS VENDA_TOTAL
+ON VENDA_SABOR.ANO = VENDA_TOTAL.ANO;
+
+Finalmente, vamos executar a seleção. As três primeiras colunas do resultado são referentes à primeira subconsulta, em que "QUANTIDADE" é o volume de suco vendido de cada sabor. As duas colunas seguintes são referentes à segunda subconsulta, onde "QUANTIDADE" é o volume total de suco vendido.
+
+Selecionaremos somente os campos que nos interessam e adicionaremos a coluna "PARTICIPACAO". Como vimos antes, o cálculo desse percentual é a divisão da quantidade vendida de cada sabor pela quantidade total de sucos vendidos, multiplicado por 100:
+
+SELECT VENDA_SABOR.SABOR, VENDA_SABOR.ANO, VENDA_SABOR.QUANTIDADE,
+(VENDA_SABOR.QUANTIDADE/VENDA_TOTAL.QUANTIDADE) * 100, 2 AS PARTICIPACAO FROM 
+(SELECT TP.SABOR, YEAR(NF.DATA_VENDA) AS ANO, SUM(INF.QUANTIDADE) AS QUANTIDADE FROM 
+TABELA_DE_PRODUTOS TP 
+INNER JOIN ITENS_NOTAS_FISCAIS INF ON TP.CODIGO_DO_PRODUTO = INF.CODIGO_DO_PRODUTO
+INNER JOIN NOTAS_FISCAIS NF ON NF.NUMERO = INF.NUMERO
+WHERE YEAR(NF.DATA_VENDA) = 2016
+GROUP BY TP.SABOR, YEAR(NF.DATA_VENDA)) AS VENDA_SABOR
+INNER JOIN 
+(SELECT YEAR(NF.DATA_VENDA) AS ANO, SUM(INF.QUANTIDADE) AS QUANTIDADE FROM 
+TABELA_DE_PRODUTOS TP 
+INNER JOIN ITENS_NOTAS_FISCAIS INF ON TP.CODIGO_DO_PRODUTO = INF.CODIGO_DO_PRODUTO
+INNER JOIN NOTAS_FISCAIS NF ON NF.NUMERO = INF.NUMERO
+WHERE YEAR(NF.DATA_VENDA) = 2016
+GROUP BY YEAR(NF.DATA_VENDA)) AS VENDA_TOTAL
+ON VENDA_SABOR.ANO = VENDA_TOTAL.ANO;
+
+No campo "PARTICIPACAO", aplicaremos a função ROUND() para exibir duas casas decimais. Por fim, vamos ordenar a consulta, aplicando um ORDER BY:
+
+SELECT VENDA_SABOR.SABOR, VENDA_SABOR.ANO, VENDA_SABOR.QUANTIDADE,
+ROUND((VENDA_SABOR.QUANTIDADE/VENDA_TOTAL.QUANTIDADE) * 100, 2) AS PARTICIPACAO FROM 
+(SELECT TP.SABOR, YEAR(NF.DATA_VENDA) AS ANO, SUM(INF.QUANTIDADE) AS QUANTIDADE FROM 
+TABELA_DE_PRODUTOS TP 
+INNER JOIN ITENS_NOTAS_FISCAIS INF ON TP.CODIGO_DO_PRODUTO = INF.CODIGO_DO_PRODUTO
+INNER JOIN NOTAS_FISCAIS NF ON NF.NUMERO = INF.NUMERO
+WHERE YEAR(NF.DATA_VENDA) = 2016
+GROUP BY TP.SABOR, YEAR(NF.DATA_VENDA)) AS VENDA_SABOR
+INNER JOIN 
+(SELECT YEAR(NF.DATA_VENDA) AS ANO, SUM(INF.QUANTIDADE) AS QUANTIDADE FROM 
+TABELA_DE_PRODUTOS TP 
+INNER JOIN ITENS_NOTAS_FISCAIS INF ON TP.CODIGO_DO_PRODUTO = INF.CODIGO_DO_PRODUTO
+INNER JOIN NOTAS_FISCAIS NF ON NF.NUMERO = INF.NUMERO
+WHERE YEAR(NF.DATA_VENDA) = 2016
+GROUP BY YEAR(NF.DATA_VENDA)) AS VENDA_TOTAL
+ON VENDA_SABOR.ANO = VENDA_TOTAL.ANO
+ORDER BY VENDA_SABOR.QUANTIDADE DESC;
+
+Visualizando esse ranqueamento dos sabores mais vendidos, reconhecemos, por exemplo, em primeiro lugar o suco de manga, com 613309 litros vendidos, representando 16,91% das vendas totais de 2016. Note que, com o uso do ROUND(), a participação que antes mostrava 16,9131% passou a ter apenas duas casas decimais (16,91%) — assim, a leitura ficou mais simples.
+
+Conseguimos, então, criar o relatório conforme o modelo solicitado pela área de vendas da empresa de sucos!
+
+
+
+
+6-4  Vendas percentuais por tamanho
+
+Modifique o relatório mas agora para ver o ranking das vendas por tamanho.
+
+Dica: Pode parecer difícil mas este é o exercício mais fácil de resolver.
+Opinião do instrutor
+
+Basta substituir o campo SABOR por TAMANHO.
+
+SELECT VENDA_TAMANHO.TAMANHO, VENDA_TAMANHO.ANO, VENDA_TAMANHO.QUANTIDADE,
+ROUND((VENDA_TAMANHO.QUANTIDADE/VENDA_TOTAL.QUANTIDADE) * 100, 2) AS PARTICIPACAO FROM 
+(SELECT TP.TAMANHO, YEAR(NF.DATA_VENDA) AS ANO, SUM(INF.QUANTIDADE) AS QUANTIDADE FROM 
+TABELA_DE_PRODUTOS TP 
+INNER JOIN ITENS_NOTAS_FISCAIS INF ON TP.CODIGO_DO_PRODUTO = INF.CODIGO_DO_PRODUTO
+INNER JOIN NOTAS_FISCAIS NF ON NF.NUMERO = INF.NUMERO
+WHERE YEAR(NF.DATA_VENDA) = 2016
+GROUP BY TP.TAMANHO, YEAR(NF.DATA_VENDA)) AS VENDA_TAMANHO
+INNER JOIN 
+(SELECT YEAR(NF.DATA_VENDA) AS ANO, SUM(INF.QUANTIDADE) AS QUANTIDADE FROM 
+TABELA_DE_PRODUTOS TP 
+INNER JOIN ITENS_NOTAS_FISCAIS INF ON TP.CODIGO_DO_PRODUTO = INF.CODIGO_DO_PRODUTO
+INNER JOIN NOTAS_FISCAIS NF ON NF.NUMERO = INF.NUMERO
+WHERE YEAR(NF.DATA_VENDA) = 2016
+GROUP BY YEAR(NF.DATA_VENDA)) AS VENDA_TOTAL
+ON VENDA_TAMANHO.ANO = VENDA_TOTAL.ANO
+ORDER BY VENDA_TAMANHO.QUANTIDADE DESC
+
+
+
+
+6-5  Consolidando o seu conhecimento
+
+Chegou a hora de você seguir todos os passos realizados por mim durante esta aula. Caso já tenha feito, excelente. Se ainda não, é importante que você execute o que foi visto nos vídeos para poder continuar com os próximos cursos que tenham este como pré-requisito.
+
+1) Vamos por em prática o nosso conhecimento.
+
+2) Primeiro montamos uma seleção que determina se as vendas mensais por cliente são válidas ou não. Consideramos válidas vendas abaixo da quantidade limite e não válidas acima da quantidade limite existente no cadastro do cliente. A consulta é a mostrada abaixo:
+
+SELECT X.CPF, X.NOME, X.MES_ANO, X.QUANTIDADE_VENDAS, X.QUANTIDADE_LIMITE,
+CASE WHEN (X.QUANTIDADE_LIMITE - X.QUANTIDADE_VENDAS) < 0 THEN 'INVÁLIDA'
+ELSE 'VÁLIDA' END AS STATUS_VENDA
+FROM (SELECT NF.CPF, TC.NOME, DATE_FORMAT(NF.DATA_VENDA, '%Y-%m') AS MES_ANO
+, SUM(INF.QUANTIDADE) AS QUANTIDADE_VENDAS
+, MAX(TC.VOLUME_DE_COMPRA) AS QUANTIDADE_LIMITE FROM NOTAS_FISCAIS NF
+INNER JOIN ITENS_NOTAS_FISCAIS INF
+ON NF.NUMERO = INF.NUMERO
+INNER JOIN TABELA_DE_CLIENTES TC
+ON TC.CPF = NF.CPF
+GROUP BY NF.CPF, TC.NOME, DATE_FORMAT(NF.DATA_VENDA, '%Y-%m')) X;
+
+1.png
+
+3) Outro exemplo de relatório é o que determina a venda por sabores, para o ano de 2016, apresentando o percentual de participação de cada um destes sabores, ordenados.
+
+SELECT VENDA_SABOR.SABOR, VENDA_SABOR.ANO, VENDA_SABOR.QUANTIDADE,
+ROUND((VENDA_SABOR.QUANTIDADE/VENDA_TOTAL.QUANTIDADE) * 100, 2) AS PARTICIPACAO FROM
+(SELECT TP.SABOR, YEAR(NF.DATA_VENDA) AS ANO, SUM(INF.QUANTIDADE) AS QUANTIDADE FROM
+TABELA_DE_PRODUTOS TP
+INNER JOIN ITENS_NOTAS_FISCAIS INF ON TP.CODIGO_DO_PRODUTO = INF.CODIGO_DO_PRODUTO
+INNER JOIN NOTAS_FISCAIS NF ON NF.NUMERO = INF.NUMERO
+WHERE YEAR(NF.DATA_VENDA) = 2016
+GROUP BY TP.SABOR, YEAR(NF.DATA_VENDA)) AS VENDA_SABOR
+INNER JOIN
+(SELECT YEAR(NF.DATA_VENDA) AS ANO, SUM(INF.QUANTIDADE) AS QUANTIDADE FROM
+TABELA_DE_PRODUTOS TP
+INNER JOIN ITENS_NOTAS_FISCAIS INF ON TP.CODIGO_DO_PRODUTO = INF.CODIGO_DO_PRODUTO
+INNER JOIN NOTAS_FISCAIS NF ON NF.NUMERO = INF.NUMERO
+WHERE YEAR(NF.DATA_VENDA) = 2016
+GROUP BY YEAR(NF.DATA_VENDA)) AS VENDA_TOTAL
+ON VENDA_SABOR.ANO = VENDA_TOTAL.ANO
+ORDER BY VENDA_SABOR.QUANTIDADE DESC
+
+2.png
+
+
+Opinião do instrutor
+
+Continue com os seus estudos, e se houver dúvidas, não hesite em recorrer ao nosso fórum!
+
+
+
+
+6-6  O que aprendemos?
+
+  Colocarmos em prática o nosso conhecimento montando dois relatórios conforme especificado pela empresa de suco de frutas.
+
+
+
+6-7  Conclusão
+
+Transcrição
+
+Parabéns! Você completou o curso de consultas avançadas com SQL, usando MySQL! Vamos relembrar o que vimos nesse treinamento.
+
+Começamos conhecendo a história do SQL e do MySQL. Em seguida, recuperamos o ambiente de trabalho e quem ainda não tinha o MySQL no computador aproveitou o material do curso introdutório para aprender como fazer essa instalação. Depois, recuperamos a base de dados "sucos_vendas" e exploramos o esquema de tabelas contido nesse banco, analisando seus conteúdos e suas relações.
+
+Com esse conhecimento em mãos, partimos para as consultas. A princípio, realizamos seleções básicas, revisando conceitos do curso de Introdução ao SQL com MySQL, como a implementação de filtros simples. Depois, aprendemos sobre consultas condicionais, nas quais utilizamos operações lógicas, como maior, menor, maior ou igual, menor ou igual, AND, OR e IN, que significa "dentro de um determinado conjunto".
+
+Entendemos a estrutura do LIKE, que é um modo especial para selecionar um conjunto específico de caracteres dentro dos campos, e estudamos o DISTINCT, um comando que restringe a saída, não permitindo que dados repetidos apareçam no retorno da consulta SQL. Ainda nesse âmbito, aprendemos a limitar as seleções (com LIMIT), tendo então a opção de não visualizar todos os registros, somente uma parcela em particular que nos interesse.
+
+Ver os dados de forma ordenada (seja alfabeticamente ou por outro indicador) é imprescindível e, sem esse aspecto, o SQL não faria muito sentido. Nesse curso, aprendemos como efetuar a ordenação dos registros por meio ORDER BY, usando critérios mistos e especificando a direção em que as informações devem aparecer (de forma ascendente ou descendente).
+
+Outra cláusula importante que estudamos é o GROUP BY, que nos permite agrupar dados — no caso de campos numéricos, aplicando fórmulas de soma, máximo ou mínimo. Para a elaboração de relatórios, o GROUP BY é um comando marcante.
+
+Também passamos pela cláusula HAVING que, apesar de pouco usada no dia a dia, é bastante útil por possibilitar o uso de um dado numérico agrupado dentro de uma condição de filtro. Ademais, vimos o CASE (acompanhado do WHEN), uma ótima ferramenta para classificação. Com essa expressão, podemos avaliar dados numéricos, por exemplo, e determinar o que aparecerá na saída.
+
+Em seguida, nos aprofundamos nos diversos tipos de JOIN, comandos que juntam tabelas em um único SELECT. Descobrimos que, dependendo do tipo usado, obtemos resultados bem diferentes. Depois, falamos um pouco sobre o UNION, que permite unir duas consultas em uma só. Vimos as distinções entre UNION e UNION ALL e focamos nas peculiaridades desse comando: é preciso que as tabelas em questão tenham o mesmo número de campos e que seus tipos coincidam.
+
+Estudamos as subconsultas (ou seja, consultas dentro de outras consultas) e partindo desse conceito também aprendemos sobre as views no SQL.
+
+Depois, estudamos as funções. Neste tópico, nos aprofundamos nas funções de string, que manipulam textos. Também vimos as funções de data, que permitem a extração de informações como dia ou hora, bem com a soma e a subtração de datas. Checamos as funções matemáticas, com as quais podemos fazer operações complexas ou efetuar, por exemplo, o arredondamento de valores. E, por fim, falamos das funções de conversão, responsáveis por converter os tipos dos campos. Às vezes, durante uma consulta SQL, é fundamental fazer essas conversões.
+
+Finalizamos o treinamento com a simulação de dois casos específicos. Em um deles, consultamos os dados para averiguar quais clientes haviam respeitado seus limites de compra mensal, conforme seu cadastro. No outro, criamos um relatório da participação nas vendas dos produtos por sabor, no ano de 2016. Nesses dois cenários, aplicamos diversos conceitos que aprendemos ao longo do treinamento, numa mesma consulta SQL.
+
+Espero que este curso tenha te estimulado a se aprofundar mais na linguagem SQL, principalmente em relação às consultas — ainda existe muito o que ser estudado sobre esse assunto. Com os conceitos que vimos, você já é capaz de realizar diversas tarefas no seu dia a dia profissional. Além disso, com essa base de conhecimentos, você também pode continuar seus estudos da linguagem SQL, através de livros e da internet.
+
+Muito obrigado pela preferência! Espero vê-los em outros cursos de SQL!
+
+Link do curso citado na aula:
+
+https://cursos.alura.com.br/course/mysql-manipule-dados-com-sql
+
+
+
+6-8  Próximos passos
+
+Transcrição
+
+    O CEO da Alura tem uma mensagem para você! É importante nesse momento organizar seus estudos, praticar e mostrar o que você aprendeu. Vai fazer você refletir, aprender mais e ainda te ajudar a criar um portfólio. Leia este artigo do Natan, que tem mais informações.
+
+Oi, eu sou o Paulo Silveira, CEO da Alura. Queria dar parabéns por você ter terminado este curso de queries avançadas em SQL.
+
+Agrupamentos, filtros e comandos comoHAVING são recursos que usamos todos os dias, seja o foco do seu trabalho banco de dados puros, DevOps ou Ciência de Dados. Esses conhecimentos são essenciais para o dia a dia de quem trabalha com desenvolvimento de softwares, a despeito de que ponta você se encontra.
+
+Esse curso é um caminho ótimo para começarmos a perceber que, independentemente de como escrevemos uma query, mesmo que o resultado seja o que esperávamos, o retorno pode ser mais ou menos demorado. E nem sempre o computador vai no ajudar!
+
+Então, nós gostaríamos de ver outras queries que você está fazendo, outras conclusões a que você está chegando. Compartilhe conosco, no LinkedIn, outras manipulações interessantes você tem implementado e seus resultados, até mesmo o que vai além do que foi ensinado nesse curso. Desse modo, você já começa a criar o seu portfólio!
+
+A linguagem SQL está cada vez mais em voga, independentemente do caminho que você decidir trilhar mais adiante (Ciência de Dados, com Python, por exemplo). A grande massa de dados — o tal do Big Data — ainda continua nos bancos de dados mais tradicionais, por assim dizer. Por mais que hoje em dia tenhamos muito no não-estruturado, os bancos tradicionais ainda são fontes riquíssimas e que a maioria das empresas usa o tempo inteiro.
+
+Mais uma vez: parabéns!
+
+
+
+6-9  Projeto do curso
+
+Caso queira, você pode baixar aqui o projeto completo implementado neste curso.
+
+https://caelum-online-public.s3.amazonaws.com/1221-mysqlconsultasavancadas/queries-sql.zip

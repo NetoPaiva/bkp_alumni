@@ -1,0 +1,784 @@
+https://cursos.alura.com.br/course/mysql-dml-manipulacao-de-dados/section/8170/tasks
+
+Data Science | Cursos de SQL e Banco de Dados
+
+Curso de
+Comandos DML: manipulação de dados com MySQL
+
+Aula 2- Criando a estrutura do banco de dados | 0 / 13 | 55min
+
+  2-1  Criação de banco de dados
+  2-2  Parâmetro para criação da base de dados
+  2-3  Criação de tabela com PK
+  2-4  Criação de tabela pelo assistente
+  2-5  Criando tabelas
+  2-6  Criação de tabela com FK
+  2-7  Mudando o nome da tabela
+  2-8  Chave estrangeira
+  2-9  Finalizando a criação do banco
+  2-10  Diagrama
+  2-11  Tabela de itens_notas
+  2-12  Consolidando o seu conhecimento
+  2-13  O que aprendemos?
+
+
+
+2-1  Criação de banco de dados
+
+
+Transcrição
+
+[0:00] Vamos continuar estudando?
+
+[0:02] Então, nesse momento eu já fiz as entrevistas com os meus usuários, eu conheci como funciona o negócio de vendas da área de suco de frutas, já que meu objetivo é projetar um banco de dados para a área de vendas dessa empresa, e agora chegou a hora de botar a mão na massa.
+
+[0:21] E aí o primeiro passo que eu tenho que fazer é criar um repositório onde as tabelas, as entidades serão criadas, e esse repositório, é claro, nós chamamos de banco de dados.
+
+[0:34] É a primeira entidade que eu tenho que criar dentro do MySQL.
+
+[0:39] E aí é que vem um ponto interessante que eu vou colocar em debate nesse momento.
+
+[0:46] Quem é que cria o banco de dados? Quando eu falo banco de dados eu não estou falando das tabelas, dos índices, das chaves primárias, dos relacionamentos, eu estou falando do repositório vazio onde o analista que projetou o trabalho a ser feito vai começar a trabalhar.
+
+[1:04] Essa área vazia, que é o banco de dados, onde eu vou colocar as minhas entidades, dependendo do tipo de empresa pode ser que seja um profissional especializado que vai fazer isso.
+
+[1:18] Normalmente, esse profissional a gente chama de DBA.
+
+[1:21] O DBA é o profissional responsável por administrar o ambiente de banco de dados, e cabe a ele criar os bancos, mas isso funciona quando a gente está falando de uma empresa coorporativa, grande.
+
+[1:38] Se a gente estiver falando de empresas pequenas ou até mesmo de bancos de dados muito pontuais, muito departamentais, onde tem um servidor que foi comprado exclusivamente para colocar esse banco de dados, aí o próprio profissional que vai realmente criar as tabelas, os índices, as chaves primárias, a estrutura para receber os dados, também pode criar o banco de dados.
+
+[2:11] Então, apesar de que normalmente isso é uma tarefa do DBA e não do analista que está projetando o banco, a gente vai ver um pouquinho sobre como criar banco de dados no MySQL.
+
+[2:24] E aí eu começo mostrando a vocês aqui do lado a sintaxe do comando.
+
+[2:30] Eu posso usar create database ou create schema, está aqui.
+
+[2:42] Posso ter a cláusula if not exist, ou seja, se eu quiser criar um dado que já existe, se eu tiver a cláusula if not exist, não vai dar erro.
+
+[2:53] E aí eu coloco aqui o nome do banco, dependendo do ambiente ele é case sensitive ou não.
+
+[3:03] Se eu estiver em um ambiente Windows, ele não é case sensitive, mas se eu estiver em um ambiente Linus ou ou Unix, ele será case sensitive.
+
+[3:12] E aí eu coloco a especificação da criação.
+
+[3:17] Essa especificação são informações que estão relacionadas com a criptografia do banco, se ele vai ter ou não uma criptografia interna, e sobre o character set, ou seja, quais são os caracteres que o banco de dados vai suportar.
+
+[3:35] Todo mundo sabe que dependendo do país, da língua utilizada, eu tenho alguns caracteres que são fora do padrão.
+
+[3:46] Nós aqui do português temos o Ç, o A com tio, o A com acento, então, normalmente a gente usa o TF8, que é um conjunto de caracteres um pouco mais abrangente, que comportam esses símbolos específicos do português, mas você tem, por exemplo, outras tabelas que comportam outros símbolos, como por exemplo alfabeto grego, russo, japoneses ou chineses, árabes, e assim por diante.
+
+[4:20] Mas se eu não falar nada ele vai usar a padronização do ambiente operacional onde o banco está instalado.
+
+[4:31] Eu posso usar tanto o create database quanto o create schema, os dois são as mesmas coisas, ok?
+
+[4:40] Agora, eu também posso apagar um banco.
+
+[4:43] Para apagar um banco eu uso o comando drop, database ou schema, o if exist e o nome do banco.
+
+[4:53] O if exist, como está mostrado aqui, ele é opcional.
+
+[4:58] Tanto o create quanto o drop podem, ser também executado com um assistente.
+
+[5:03] Então está bom? Agora a gente já fez uma revisão da sintaxe, vamos, então, agora, para o Workbench fazer alguns exemplos.
+
+[5:19] Então está aqui, MySQL Workbench 8.0 CE, que a gente instalou durante o processo de instalação do software.
+
+[5:36] Então tem a minha conexão aqui que já foi configurada durante a instalação.
+
+[5:46] E aí eu tenho a minha área de trabalho onde eu tenho nesse canto esquerdo as bases de dados disponíveis para mim conforme o meu usuário, e do lado direito uma área vazia onde eu posso entrar com os comandos.
+
+[6:03] Então vamos lá, vou entrar aqui com o mando create database vendas sucos, e termino com ponto e vírgula.
+
+[6:15] Se eu clicar sobre esse raio aqui eu executo o comando.
+
+[6:22] Lá embaixo eu tenho o resultado do comando, veja que mostra um ícone verdinho, significa que o comando rodou com sucesso.
+
+[6:31] Aqui do lado, se eu der o botão direito do mouse e der um refresh all, vou vou ver aqui a minha base selecionada.
+
+[6:41] Bem, eu poderia estar usando aquelas tabelas de símbolos, as collections, para especificar o conjunto de caracteres padrões de uma determinada língua, porque eu quero armazenar caracteres especiais caso meu banco esteja, por exemplo, sendo criado com dados em português, em chinês, japonês, e assim por diante.
+
+[7:10] Para mostrar esse exemplo, eu vou escrever aqui: databese, vendas, sucos 2, por exemplo, porque sucos 1 já existe, eu boto default, character set, por exemplo, utf8.
+
+[7:36] Se eu rodar esse comando eu crio a base, só que ele me dá um warning porque ele está dizendo que utf8 já é a tabela corrente do meu banco, isso porque eu estou já em um Windows em português, então ele já sabe e já carrega o utf8.
+
+[8:04] Mas eu mostrei aqui para vocês como é que eu poderia estar criando isso usando uma tabela de caracteres padrões.
+
+[8:14] Eu posso, por exemplo, se eu vier aqui, tentar criar de novo o banco.
+
+[8:22] Se eu tentar criar de novo o banco, claro que ele vai me dar um erro, porque o banco vendas sucos 2 já existe.
+
+[8:31] Ele vai me dar esse erro aqui e a mensagem está aqui embaixo, ó: "não posso criar o database vendas sucos 2 database existe".
+
+[8:42] Mas se eu usar aquela cláusula if not exist...
+
+[8:55] Vamos lá.
+
+[9:01] E aí vamos colocar aqui vendas sucos 2.
+
+[9:08] Se eu rodar com essa cláusula, ele não vai dar erro, mas ele me dá também um warning, dizendo, claro: "olha, eu não posso criar porque já existe".
+
+[9:22] A mensagem inclusive é a mesma de quando tem erro, só que o warning significa que rodou com sucesso.
+
+[9:31] A gente pode, se quiser, apagar o banco.
+
+[9:33] O apagar o banco é o drop, database, aí posso usar o if exist e posso colocar aqui, por exemplo, vendas sucos 2.
+
+[9:54] Aí, ao executar esse comando, tenho lá sucesso, o banco foi apagado.
+
+[10:01] Criar e apagar bancos pode também ser feito por assistentes dentro do Workbench.
+
+[10:08] Se eu der o botão direito do mouse em qualquer área da tela, eu tenho a opção create schema, e eu selecionando ela coloco o nome da base, vendas sucos 2, por exemplo, e aqui eu posso usar os default character 7, no caso que eu vou usar utf32, e o collation, por exemplo, eu quero usar caracter roman.
+
+[10:46] Roman é romano, não é? Polonês, persa,tem um montão de opções aqui, olha. Turco.
+
+[10:56] Se eu der o apply ele me mostra esse comando aqui, então, no caso do caracter turco eu uso utf32, eu dou apply, dou o finish, e aí eu tenho esse banco aqui criado já pronto para receber caracteres turcos.
+
+[11:20] Se eu der botão direito do mouse sobre o nome do banco eu tenho o drop database aqui.
+
+[11:29] E aí eu posso apagar a base de dados, ok?
+
+[11:36] Nesse momento, para você que vai trabalhar apenas como projeto do banco de dados, de manipular os dados, o que diz respeito a criar banco de dados é isso que você deve saber.
+
+[11:49] Mais detalhes, mais informações sobre isso, aí você deve consultar um DBA que vai poder te orientar melhor.
+
+[11:56] Está legal? Então é isso, gente, valeu.
+
+
+
+
+
+2-2  Parâmetro para criação da base de dados
+
+O que significa o parâmetro DEFAULT CHARACTER SET usado na criação da base de dados no MYSQL?
+
+Significa o texto DEFAULT do campo texto
+  Alternativa Errada! Não, não existe esta propriedade na definição de um banco de dados.
+
+Significa o tamanho máximo do banco
+  Alternativa Errada! Não, não existe esta propriedade na definição de um banco de dados.
+
+Significa a tabela de caracteres que será utilizada no armazenamento de campos textos
+  Alternativa Correta! Aqui especificamos a tabela ASCII de caracteres a serem usados no banco de dados.
+
+
+
+
+2-3  Criação de tabela com PK
+
+
+Transcrição
+
+[0:00] Beleza, nesse momento temos o banco de dados criado - seja por você mesmo ou pelo DBA - e eu tenho a estrutura vazia, onde eu vou começar a colocar as entidades ali dentro, e as primeiras coisas que eu tenho que criar são as tabelas.
+
+[0:15] Serão as tabelas em que os dados serão armazenados.
+
+[0:19] E aí, normalmente, quando a gente cria a tabela, a gente já especifica os campos, os seus tipos e quem será a chave primária da tabela.
+
+[0:30] A sintaxe está aqui em cima, ela é bem complicada, tem muito parâmetro.
+
+[0:36] Aqui eu coloquei basicamente o comando create table, onde você especifica aqui se é uma tabela temporária ou não - mais adiante a gente vai falar sobre isso -, mas basicamente a gente vai usar o create table, if not existe é aquela mesma coisa, se não existir a tabela não vai criar.
+
+[0:57] Quer dizer, se a tabela já existir e eu quiser criar de novo ela não vai criar.
+
+[1:03] O nome da tabela, e aí eu tenho uma série de informações, como por exemplo definições de criação, opções de tabelas e opções de partições.
+
+[1:13] Isso mesmo, porque eu posso, por exemplo, ter tabelas particionadas.
+
+[1:19] Existe outro tipo aqui de forma de criação, posso criar, por exemplo, usando essa cláusula like, ou seja, criar uma tabela como uma tabela já existente.
+
+[1:32] Mas, enfim, na medida em que for avançando com esse e com outros treinamentos, a gente vai entrando mais a fundo sobre os comandos de criar tabela.
+
+[1:41] O que a gente quer saber, por enquanto, é isso aqui.
+
+[1:47] A gente vai colocar o nome da tabela, entre parênteses o nome do campo, o tipo do campo e se ele vai ser nulo ou não.
+
+[1:56] O que é isso? Se ele aceita ou não valores nulos na coluna.
+
+[2:06] Obrigatoriamente, quando o campo é chave primária, ele não pode ser nulo.
+
+[2:12] Campos que não são chave primária podem ser ou não nulos.
+
+[2:17] E aí eu coloco a palavra primary key e entre parenteses os campos que fazem parte da chave primária.
+
+[2:25] E, é claro, para eu apagar a tabela eu uso o drop table, o nome da tabela, está bom?
+
+[2:34] Bem, então vamos começar a criar as tabelas no nosso banco.
+
+[2:38] Para a gente lembrar, eu tenho aqui, separado, o nosso esquema.
+
+[2:46] A gente especificou que essas são as tabelas que nós vamos criar, e nós vamos criar, inicialmente, a tabela de produtos e a tabela de vendedores.
+
+[2:56] Então, para a a gente poder seguir bem com esse vídeo, eu vou fazer o seguinte: eu vou manter aqui essa janela mais ou menos aqui salva nesse canto.
+
+[3:17] Vamos tentar ver se consigo de novo.
+
+[3:25] Vou manter ela aqui, e aí eu vou voltar no Workbench e vou criar um novo script.
+
+[3:39] Aí o Workbench eu também vou deixar um pouquinho mais para cá para eu poder olhar aqui a especificação das tabelas e ir digitando o comando.
+
+[3:53] Então, vamos lá, eu vou começar.
+
+[3:57] Uma coisa importante: quando eu digito um comando SQL e vou executá-lo, é importante você ver qual é o banco que está selecionado.
+
+[4:06] No caso, aqui, é meu vendas sucos.
+
+[4:09] Para selecionar o banco dentro do Workbench, basta eu dar double click sobre ele, mas eu posso aqui forçar a entrada do banco, eu coloco use e o nome do banco: vendas sucos.
+
+[4:26] Então, vamos começar: create, table, então eu vou botar o nome da tabela, no caso aqui eu vou botar produtos.
+
+[4:37] Aí eu vou abrir a parenteses e vou começar a colocar os campos, que são esses aqui: código, descritor, sabor, tamanho, ok?
+
+[4:51] Então, eu vou começar aqui: código, o tipo.
+
+[4:58] É string, eu vou usar varchar, por exemplo, de 10, vírgula.
+
+[5:08] Ah, posso especificar aqui o not null, porque o código é chave primária, então não pode ser nulo.
+
+[5:18] Ele vai ser chave primária, porque aqui na minha especificação está dizendo: o código é a chave primária da tabela de produtos, eu não posso ter dois produtos com o mesmo código.
+
+[5:30] Vamos seguindo, depois eu vou colocar descritor, varchar de 100, null.
+
+[5:43] Sabor, varchar de 50, null.
+
+[5:51] Próximo, tamanho, varchar de 50, null.
+
+[5:59] Lembrando, varchar é string, não é texto, que eu estou reservando 50 espaços, mas se ele tiver 10 ele só vai ocupar os 10.
+
+[6:13] Embalagem, varchar de 50, null.
+
+[6:24] Preço lista, é um float, null.
+
+[6:33] E aí antes de terminar a tabela, em vez de eu fechar o parenteses... quer dizer, eu posso até fazer isso aqui, mas se eu fizer eu vou criar a tabela sem primary key.
+
+[6:47] Como eu quero primary key, eu boto vírgula e escrevo a palavra primary key, abre parenteses, e dentro o campo que faz parte da primary key.
+
+[6:58] No caso, é só código, então eu boto o código, fecho o parenteses do primary key e do create produtos, ponto e vírgula.
+
+[7:11] Vamos para a próxima tabela, a de vendedores.
+
+[7:15] Create, table, vendedores, vou abrir parenteses, tem matrícula, que vai ser varchar de 5, not null.
+
+[7:35] Depois é nome, varchar de 100, null.
+
+[7:42] Depois é bairro, varchar de 50, null.
+
+[7:50] Depois tem comissão, é float, null.
+
+[8:01] Depois tem data admissão, é do tipo date, null, e, finalmente, férias.
+
+[8:13] Boolean significa lógico, verdadeiro ou falso, vai ser do tipo bit de 1.
+
+[8:23] Vírgula e agora primary key, primary key, abre parentese, matrícula, fecha o segundo parentese, ponto e vírgula, ok?
+
+[8:39] Vamos ver se eu fiz certo a coisa ou se eu cometi algum erro.
+
+[8:45] Pronto, executei, criari as minhas tabelas.
+
+[8:50] Se eu vier aqui na relação do banco de dados, botão direito do mouse, refresh all, eu já tenho aqui as duas tabelas: produtos e vendedores, está bom?
+
+[9:03] Então, criei aqui já duas tabelas do meu banco, do meu esquema da empresa de suco de frutas.
+
+[9:09] Eu voltei para corrigir um erro.
+
+[9:13] Eu coloquei aqui data admissão, cometi um erro de português, mas foi até bom que eu tenha feito isso, porque eu vou mostrar a vocês como é que, depois que a gente cria uma tabela, quando a gente quer mudar o nome de uma coluna.
+
+[9:31] Mudar nome de colunas é uma coisa que não é sempre que a gente consegue.
+
+[9:37] Se a coluna já for primary key, por exemplo, nós vamos ter dificuldade de fazer isso, aí é melhor você destruir a tabela e colocar de novo.
+
+[9:46] No caso dessa coluna da admissão, é uma coluna comum, então eu vou mudar o nome dela.
+
+[9:54] O que eu vou fazer? Vou vir aqui, vou escrever um comando que é alter table, ou seja, vou alterar a tabela, o nome da tabela, vendedores, vou colocar a cláusula rename colun, coloco o nome da coluna errada.
+
+[10:24] E aí eu coloco o nome da coluna certa.
+
+[10:32] Então, ficou assim: alter table, rename, o nome da coluna errada e o nome da coluna certa.
+
+[10:42] Esse aqui é o nome da coluna que está na tabela.
+
+[10:46] Eu posso querer mudar o nome não porque está escrito errado, porque eu quero que o nome seja diferente.
+
+[10:53] Você seleciona e executa.
+
+[10:57] Pronto, é feita a alteração.
+
+[11:00] Esse comando vai me dizer sempre que tem um erro aqui, mas, nesse caso, a gente ignora, porque essa sintaxe de rename de coluna é uma coisa que veio nova na versão 8 do MySQL.
+
+[11:18] Nas versões anteriores o rename de coluna era um pouco diferente, e, de alguma maneira, o Workbench ainda está interpretando esse comando como se fosse uma versão antiga do MySQL, mas funciona.
+
+[11:32] Então, agora, se eu vier aqui na tabela de vendedores, der um refresh, eu agora vou ter aqui a minha coluna com o nome correto, está legal?
+
+[11:51] Na verdade, quando eu gravei o vídeo eu vi que eu cometi esse erro, e, em vez de eu corrigir e ter que gravar um vídeo de novo, eu preferi mostrar a vocês um comando novo que faz com que a gente altere o nome de uma coluna de uma tabela que já está criada, está legal?
+
+[12:08] Agora eu vou me despedindo de verdade do vídeo, tá bom? Tchau, tchau.
+
+
+
+
+2-4  Criação de tabela pelo assistente
+
+
+Transcrição
+
+[0:00] Vamos continuar? A gente agora vai criar a tabela de clientes. Só que em vez de fazer isso por comandos, nós vamos criar a tabela de clientes através do assistente do MySQL.
+
+[0:13] Então eu vou aqui nessa parte do lado, chegar um pouquinho essa janela para cá, para eu poder olhar aqui os campos que vão fazer parte da tabela de clientes.
+
+[0:28] Então vai ser CPF, nome, endereço, bairro, e assim por diante.
+
+[0:33] Para a gente criar a tabela de clientes, pelo assistente, eu vou dar botão direito do mouse sobre tables, e vou selecionar a opção Create Table.
+
+[0:46] Ele vai me abrir essa caixa de diálogo aqui, que me mostra as perguntas que eu preciso fazer para criar a tabela através do assistente. E note que eu tenho vários parâmetros, porque a gente quando criou pelo script, a gente não falou muito a fundo sobre todas as possibilidades que a gente podia estar usando no momento de criar uma tabela. E aqui na caixa de diálogo ele mostra mais possibilidades.
+
+[1:21] Então vamos lá, o nome da tabela eu vou colocar aqui em cima, eu vou chamar de clientes.
+
+[1:29] Eu posso também, se quiser, especificar um conjunto de caracteres especiais para apenas aquela tabela.
+
+[1:38] A gente não vai se preocupar com isso nesse momento, mas é possível eu só ter uma tabela especial de caracteres para uma tabela, e não para o banco todo.
+
+[1:49] Essa coisa aqui, engine, significa o seguinte: eu posso ter vários tipos de forma de armazenamento de uma tabela dentro do MySQL, inclusive isso é uma funcionalidade muito interessante, que eu não sei se somente o MySQL, mas eu desconheço o Oracle e o MySQL por exemplo apresentar esse tipo de funcionalidade. Existem vários tipos de engine de formas com que a tabela será criada e armazenada no banco de dados, tanto é que se eu abrir essa caixa de diálogo aqui eu tenho diversas opções, mas as duas opções mais utilizadas é a InnoDB e a MyISAM.
+
+[2:36] O que é o InnoDB e o que é a MyISAM? Vamos dizer o seguinte: o InnoDB tem um controle mais robusto sobre a tabela, porque ele está preparado para gerenciar tabelas que tenham muitas transações.
+
+[2:57] Então se eu tiver uma tabela que tenha muita chave primária ou estrangeira, tiver muita inclusão, alteração, exclusão, ou seja, tabelas que fazem parte de um sistema transacional que se troca muito dado, a gente utiliza InnoDB.
+
+[3:13] O MyISAM é para tabelas que vão mudar muito pouco, vão ser estáticas. Tabelas, por exemplo, de cadastros, que são coisas que depois de criadas, ficam ali meio que paradas, e só uma vez ou outra a gente vai estar, digamos assim, modificando a tabela.
+
+[3:33] Aqui o padrão, quando eu entrei, é InnoDB, e claro, esse padrão está muito ligado com performance e tamanho de banco.
+
+[3:43] Tabelas InnoDBs ocupam muito mais espaço, e elas também não têm tanta performance na consulta, porque elas têm internamente uma série de outros controles para serem feitos, enquanto o MyISAM ocupa menor espaço e é mais performático quando a gente vai fazer uma consulta.
+
+[4:04] Aqui no meu caso, nós vamos manter o InnoDB, e aqui em Column Name e Datatype, eu vou criar os meus campos, e eu vou especificar aqui os campos que vão ser, por exemplo, PK, e NN é Not Null.
+
+[4:27] Só que isso aqui fica muito curto, mas aí eu tenho essa setinha aqui de cima, que eu posso clicar nela, e eu abro a caixa de diálogo aqui de nome das colunas.
+
+[4:38] Então vamos começar, eu vou ter CPF, o Datatype vai ser VARCHAR de 11, vai ser PK e é not null, ele até já me mostrou aqui.
+
+[4:55] Note que quando eu disse que é PK e not null, ele já colocou um símbolo aqui de uma chavinha, dizendo que essa linha é chave da tabela.
+
+[5:09] Depois eu vou entrar com nome, vai ser um varchar de 100. Depois eu entro com endereco, vai ser um varchar de 150.
+
+[5:30] Vamos seguindo. Bairro, varchar de 50. Cidade, varchar de 50 também.
+
+[5:52] Depois de cidade vem Estado, varchar de 50.
+
+[6:01] Eu dei um enter, ele automaticamente já botou uma linha ali para baixo para mim.
+
+[6:06] CEP, vai ser um varchar de oito. Enter. Data nascimento vai ser um campo, vamos lá, tem lá todos os campos aqui, vai ser date.
+
+[6:32] Depois temos idade, vai ser um inteiro, vamos procurar aqui, int. Depois sexo, vai ser um varchar de um. Limite de crédito, vai ser float. Vamos procurar o float aqui.
+
+[7:08] Volume de compra também vai ser float.
+
+[7:19] E finalmente, primeira compra, vai ser um bit de um.
+
+[7:35] Aí eu não vou dar enter, eu clico em cima um pouquinho, só para que todos os meus campos já estão criados, se eu desse enter ele ia querer criar mais uma linha abaixo. E aí eu clico aqui em apply, para poder aplicar essa modificação.
+
+[7:54] Ele vai me mostrar o texto do comando, e aí eu dou apply, e aí a tabela foi criada. Está aqui agora a minha tabela de clientes criada.
+
+[8:08] Então eu já tenho clientes, produtos, e vendedores, tá legal? Valeu, abraço.
+
+
+
+
+2-5  Criando tabelas
+
+Durante esta aula, aprendemos como podemos realizar a criação de tabelas no MySQL utilizando o MySQL Workbench.
+
+Sabendo disso, indique quais são as formas apresentadas pelo instrutor para criar uma tabela:
+
+Através de comando com o CREATE TABLE e utilizando o assistente.
+  Alternativa correta! Ao criar tabelas, podemos executar o comando CREATE TABLE ou utilizar o assistente no MySQL Workbench.
+
+Utilizando o assistente ou executando o comando UPDATE.
+  O comando UPDATE é utilizado para atualizar dados armazenados nas tabelas.
+
+Utilizamos o comando ALTER TABLE e CREATE TABLE para criar tabelas.
+  O comando ALTER TABLE é utilizado para atualizar a estrutura de tabelas já criadas.
+
+Realizamos a criação de tabelas no momento de criar o banco de dados.
+  Realizamos a criação de tabelas após o banco de dados já estar criado.
+
+
+
+2-6  Criação de tabela com FK
+
+
+Transcrição
+
+[0:00] Vamos continuar? Agora vamos criar as tabelas com as chaves estrangeiras.
+
+[0:08] Deixa eu voltar de novo para o nosso esquema.
+
+[0:13] Esse slide que está aqui está mostrando as tabelas normais, mas nós temos aqui as tabelas com relacionamentos.
+
+[0:23] Então nós vamos iniciar primeiro com a tabela de vendas que é essa daqui, que vai ter que ter um relacionamento do CPF com o código do CPF do cliente, da tabela de clientes, e vai ter que ter um relacionamento a matrícula com o código da matrícula da tabela de vendedores.
+
+[0:53] Então nós vamos primeiro criar a tabela, e depois criar o relacionamento.
+
+[1:02] Então eu vou voltar de novo aqui para o modelo onde eu tenho as tabelas.
+
+[1:11] Nós vamos aqui criar então um script novo, vou botar use vendas sucos, e aí vamos criar a tabela create table tabela de vendas.
+
+[1:40] Então vamos começar. Nós temos o número, que é um varchar de cinco, not null, depois temos uma data, nós não vamos chamar esse campo de data, vamos chamar de data venda. É um tipo date, null.
+
+[2:13] CPF que é um varchar de 11. Aí o seguinte, como o CPF vai fazer parte de chave estrangeira com o CPF da tabela de clientes, é legal a gente colocar ele como not null.
+
+[2:32] Matrícula varchar de cinco, not null.
+
+[2:42] Imposto, vai ser um float null.
+
+[2:53] E aí finalmente eu vou botar uma primary key que vai ser número.
+
+[3:04] Bem, vamos ver se isso daqui vai rodar sem problemas.
+
+[3:10] Então eu criei a minha tabela de vendas.
+
+[3:15] Agora eu preciso fazer uma ligação entre a tabela de vendas e a tabela de clientes pelo CPF.
+
+[3:26] Então nós vamos fazer o seguinte, como é que eu faço esse tipo de coisa? Eu faço o comando alter table, o nome da tabela que eu quero mudar que é tabela de vendas, aí eu coloco esse comando add constraint.
+
+[3:54] Todas essas ligações, a gente chama de constraint, seria como se fossem restrições ou relacionamentos, então eu estou dizendo que eu vou alterar a tabela de vendas adicionando um novo relacionamento.
+
+[4:13] E esse relacionamento vai ter um nome. Normalmente a gente coloca FK na frente do nome, e aí como esse cara vai ter um relacionamento com a tabela de clientes, eu vou chamar de FK clientes.
+
+[4:31] Aí eu boto a palavra foreign key, que é chave estrangeira, e o campo, CPF.
+
+[4:43] Ou seja, eu estou ligando uma restrição do tipo foreign key a este campo aqui, da tabela de vendas, e ele vai ter que ter uma referência com quem? Com o campo CPF, aqui. Eu vou ter que ter uma referência com esse código, está aqui a criação da tabela de clientes, com esse código CPF aqui da tabela de clientes.
+
+[5:21] Então eu vou escrever reference, a que tabela é? À tabela clientes, e aqui o campo lá da tabela de clientes, CPF.
+
+[5:42] Vamos rodar. Pronto. Criou a relação.
+
+[5:48] Agora nós vamos fazer a relação entre o campo matrícula da tabela de vendas com o campo matrícula de vendedores. Então vamos lá.
+
+[6:00] Alter table tabela de vendas add constraint fk vendedores, foreign key. Qual é o nome do campo? Matrícula. References, qual é o nome da tabela lá de cima? Vendedores. E qual é o nome do campo? Matrícula.
+
+[6:40] Esse nome aqui, e esse nome aqui, não precisariam estar iguais, porque inclusive eu repito esses nomes.
+
+[6:54] Aqui eu errei, alter table.
+
+[6:58] Vamos rodar agora aqui o comando. Fez com sucesso.
+
+[7:10] Então tá, vamos parar por aqui então, valeu.
+
+
+
+
+2-7  Mudando o nome da tabela
+
+
+Transcrição
+
+[0:00] Ok, quando eu fui mostrar esse banco de dados aqui temporariamente lá para a empresa de suco de frutas, ou seja, vim aqui, dei refresh, mostrei para eles: "olha, eu estou criando esse banco aqui", o pessoal não gostou muito do nome tabela de vendas.
+
+[0:21] Na verdade, essa tabela se referencia a notas fiscais.
+
+[0:27] Então eles falaram assim para mim: "essa tabela de vendas eu queria que na verdade se chamasse notas".
+
+[0:37] Ok, felizmente eu consigo alterar o nome de uma tabela pelo MySQL.
+
+[0:44] Então eu vou fazer isso para poder transformar essa tabela underscore de vendas em notas.
+
+[0:53] Então eu vou criar aqui um script novo, e aí vou novamente entrar aqui na base.
+
+[1:06] O comando é o seguinte: é alter table, o nome da tabela, tabela de vendas, e aí é muito simples, é rename, e o novo nome, notas.
+
+[1:26] Então ficou assim, alter table, o nome da tabela atual, a cláusula rename, e o nome da nova tabela.
+
+[1:39] Eu vou clicar, fez com sucesso.
+
+[1:43] Se eu vier então aqui do lado esquerdo, botão direito do mouse, e der um refresh, note que agora a minha tabela se chama notas.
+
+
+
+
+
+2-8  Chave estrangeira
+
+Agora que já sabemos como podemos criar chaves estrangeiras para realizar a ligação entre as tabelas, indique qual comando altera a TABELA_DE_VENDAS para realizar a criação da chave estrangeira com a tabela de CLIENTES através do campo CPF
+
+ALTER TABLE tabela_de_vendas ADD CONSTRAINT FK_Clientes FOREIGN KEY (CPF)
+  Ao criar uma chave estrangeira, precisamos indicar de qual tabela será feita a relação.
+
+
+ALTER TABLE tabela_de_vendas ADD CONSTRAINT FK_Clientes FOREIGN KEY (CPF) REFERENCES clientes (CPF);
+  Alternativa correta! O comando ALTER TABLE é usado para modificar a estrutura de uma tabela existente. Através da adição de uma restrição de chave estrangeira, o comando estabelece a relação entre as tabelas TABELA_DE_VENDAS e CLIENTES através do campo CPF.
+
+UPDATE TABELA_DE_VENDAS SET CONSTRAINT FK_Clientes FOREIGN KEY (CPF) REFERENCES CLIENTES (CPF);
+O comando UPDATE é utilizado para modificar registros em uma tabela, não para criar uma chave estrangeira.
+
+CREATE TABLE TABELA_DE_VENDAS (...FOREIGN KEY (CPF) REFERENCES CLIENTES (CPF) );
+  O comando CREATE TABLE é utilizado para criar uma nova tabela, não para adicionar uma chave estrangeira a uma tabela existente.
+
+
+
+2-9  Finalizando a criação do banco
+
+
+Transcrição
+
+[0:00] Vamos finalizar então a criação das tabelas, e das chaves primárias estrangeiras do nosso banco conforme a especificação.
+
+[0:10] Então eu vou voltar aqui para o diagrama, e eu tenho aqui, vamos chegar um pouquinho mais para o lado, ficou muito pequeno, porque o tamanho da janela diminuiu.
+
+[0:31] Eu tenho aqui a tabela de itens vendidos, que aí eu tomei cuidado de conversar com o pessoal da empresa de suco de frutas, e eles me falaram que eu deveria chamar essa tabela de itens notas.
+
+[0:44] Então vamos lá, vamos criá-la aqui, eu vou adicionar aqui um novo script.
+
+[0:56] Vou dar o use vendas sucos, vamos lá.
+
+[1:05] Create table itens notas, aí eu abro meu parênteses, número, vai ser varchar de cinco, not null.
+
+[1:26] Depois código vai ser varchar de dez, not null.
+
+[1:35] Por que está not null as duas? Porque na especificação, a chave primária, PK, ela vai ser em cima dessas duas linhas, apesar de não estar escrito PK na especificação, mas é assim, uma nota fiscal pode ter vários itens, então se eu colocar somente número como PK, vai dar problema, porque aí não vou conseguir ter mais de um item, mas o que diferencia cada item de uma nota fiscal? É o código do produto.
+
+[2:12] Então número e código do produto é que serão PK.
+
+[2:16] Então será uma PK composta, por isso eu botei not null nas duas linhas.
+
+[2:24] Depois eu vou botar quantidade, vai ser int, e depois preco, float.
+
+[2:38] Note que eu não escrevi aqui o null, porque o null é default. Se eu não colocar nada, ele automaticamente vai considerar o campo como nulo. Então não preciso colocar o null.
+
+[2:56] Primary key, e aí como é uma primary key composta, eu vou colocar número e código.
+
+[3:08] Fiz aí a criação da tabela. Vamos até rodar a criação da tabela. Não deu problema.
+
+[3:17] Se eu der um refresh, tenho aqui as tabelas criadas.
+
+[3:24] Eu vou então agora fazer o alter table, itens notas, add constraint, o nome da constraint, eu vou chamar uma de FK notas, vou dar um enter aqui, FK notas, vai ser o nome da constraint do número da nota fiscal de itens com o número da nota fiscal de notas.
+
+[4:05] Foreign key, o campo, é o campo número.
+
+[4:15] References. Faço referência a que? À tabela notas, que também o campo lá na tabela de notas chama-se número.
+
+[4:27] Vamos fazer agora a referência entre o código do produto da tabela de itens com o código de produto da tabela de produto.
+
+[4:36] Só relembrando, é isso aí, o nome do campo é código mesmo. Mesmo nome que eu coloquei aqui.
+
+[4:46] Então vamos lá, alter table, itens notas, add constraint, FK produtos, foreign key, código, reference, o nome da tabela é produtos, entre parênteses, código.
+
+[5:26] Então tenho aqui a criação da tabela itens notas, e a criação das duas relações.
+
+[5:41] Vou selecionar tudo isso aqui, vamos rodar.
+
+[5:43] Não, na verdade, não posso rodar. Eu já criei a tabela de itens, então só vou rodar esses dois comandos.
+
+[5:53] Ok, rodou com sucesso.
+
+[5:56] E aí eu tenho já o meu banco criado com todas as tabelas, as primary keys, e os relacionamentos. Tá legal? Valeu.
+
+
+
+
+
+2-10  Diagrama
+
+
+Transcrição
+
+[0:00] Então ok, nesse ponto eu tenho o meu banco de dados com os componentes internos dele: tabela, relacionamentos, chaves primárias, estrangeiras, criadas.
+
+[0:13] Como eu estou usando aqui o MySQL Workbench, eu tenho a possibilidade de olhar esse banco de forma gráfica, muito parecido com esse desenho mais ou menos que eu fiz durante a especificação da base.
+
+[0:33] Como é que eu faço isso? Olha só, eu estou com o meu vendas sucos aqui selecionado, eu vou aqui em database, reverse engineer. É essa opção aqui.
+
+[0:50] Ele vai me mostrar a conexão local dos meus bancos de dados, eu vou dar next, vou dar next de novo, vou selecionar vendas sucos, que é o meu banco, next, next, e execute.
+
+[1:08] Então note, ele vai escrever aqui, isso daqui.
+
+[1:19] Eu tenho aqui a minha tabela de clientes, se eu boto o mouse aqui, ela tem a relação com a tabela de notas através de CPF, eu tenho a tabela de vendedores, se eu boto o mouse aqui tem uma relação tabela de vendedores com a tabela de notas pelo código da matrícula. Itens de notas, se eu botar o mouse aqui, nesse relacionamento que está passando por detrás da tabela de clientes, eu tenho uma relação de notas com itens notas pelo campo número, e eu tenho a tabela de produtos aqui embaixo, se eu boto o mouse aqui, eu tenho uma relação entre código da tabela de produtos com código da tabela de itens notas.
+
+[2:09] Então com esse esquema aqui, eu tenho o esquema do meu banco, e eu posso, por exemplo, se quiser fazer consultas, na hora de fazer os inserts, eu já tenho essa informação guardada para mim.
+
+[2:31] Eu posso inclusive fazer o seguinte, eu posso com esse banco selecionado, eu posso por exemplo, import, reverse engineer SQL create script.
+
+[2:47] Eu posso, por exemplo, escolher aqui um arquivo no meu computador, eu vou criar aqui no diretório tempo um script chamado script criação base.
+
+[3:14] Na verdade ele está pedindo para eu selecionar um script existente? Não, é ao contrário. Desculpe, é file, export, create script.
+
+[3:24] Então eu me enganei, é file export. Porque eu estou exportando. Tem sentido, cometi um erro grave aqui.
+
+[3:32] Eu estou exportando o esquema para um script, esse esquema que eu estou vendo aqui.
+
+[3:38] Aí sim, eu seleciono aqui um create script DB, por exemplo, e aí eu escolho o que eu quero fazer, se eu quero dropar e criar o esquema, se tivesse dados, eu poderia dizer os comandos inserts para poder colocar dados dentro da tabela, mas eu não vou fazer nada não. Eu vou só clicar aqui em next, next.
+
+[4:09] E olha só o que ele me escreveu, ele me escreveu esse script todo aqui onde eu tenho, eu crio aqui, nesse primeiro ponto, eu crio a base, aqui eu crio a tabela de clientes, note que ele até inseriu aqui algumas coisas a mais, porém muito parecido com o que a gente digitou aqui em cima. Depois eu crio a tabela de vendedores, crio a tabela de notas, e note que ele até fez a criação de um jeito diferente.
+
+[4:55] A criação das constraints, ela ficou dentro do próprio comando create depois da criação do primary key. Aqui eu criei o primary key, e depois eu fiz isso aqui.
+
+[5:12] Isso também funcionaria.
+
+[5:15] Eu crio dois índices, e crio as constraints dizendo a que tabela está se referenciando.
+
+[5:27] E aí eu tenho aqui também a criação da tabela de produtos, e aí finalmente a criação da tabela de itens de notas, com os relacionamentos com a tabela de notas através de número, e a tabela de produtos através de código.
+
+[5:46] Então eu tenho isso daqui, se eu der um finish, se eu for lá para o diretório que eu selecionei, eu tenho um arquivo aqui, create script DB, se eu abrir com editor de texto, eu tenho o script todo aqui de criação do meu banco. Então eu poderia, por exemplo, pegar esse script e rodar em outro banco.
+
+[6:14] Enfim, eu fiz uma engenharia reversa, vi graficamente a minha base, e transformei essa engenharia reversa em um script para criar o banco, por exemplo, novamente, ou criá-lo, por exemplo, em um outro MySQL.
+
+[6:33] Então era isso que eu queria mostrar, mas mais importante era só para a gente poder ver visualmente como é que ficou o nosso esquema de banco de dados depois de ter dado os comandos de create, de criar tabela, create table, e de alter table para criar os relacionamentos entre as tabelas. Valeu então, um abraço.
+
+
+
+
+2-11  Tabela de itens_notas
+
+Durante o vídeo o instrutor realizou a criação da tabela de itens notas utilizando comandos SQL. De acordo com o apresentado durante as aulas, indique a alternativa que descreve corretamente o comando CREATE TABLE do MySQL?
+
+CREATE TABLE nome_da_tabela ( nome_do_campo tipo, nome_do_campo tipo, … PRIMARY KEY(campo) );
+  Alternativa correta! Ao criar uma tabela, passamos o seu nome, campos, tipos de cada campo e também podemos especificar a sua chave primária.
+
+CREATE TABLE nome_da_tabela ( nome_do_campo, nome_do_campo, … PRIMARY KEY(campo) );
+  Errada: Além de informar os nomes dos campos, também informamos os tipos de dados de cada um.
+
+CREATE nome_da_tabela ( nome_do_campo tipo, nome_do_campo tipo, 
+… PRIMARY KEY(campo) );
+  Ao utilizar o CREATE, precisamos especificar qual objeto queremos criar, que neste caso, seria uma tabela, então especificamos a palavra TABLE.
+
+CREATE TABLE ( nome_do_campo tipo, nome_do_campo tipo, …
+PRIMARY KEY(campo) );
+  Ao realizar a criação da tabela, é necessário especificar o nome que a tabela terá.
+
+
+
+
+
+2-12  Consolidando o seu conhecimento
+
+Chegou a hora de você seguir todos os passos realizados por mim durante esta aula. Caso já tenha feito, excelente. Se ainda não, é importante que você execute o que foi visto nos vídeos para poder continuar com a próxima aula.
+
+1) Abra o MYSQL Workbench e crie um novo script de comandos SQL.
+
+2) Para criar uma base de dados podemos usar o comando CREATE. Digite o comando abaixo para criar uma nova base de dados:
+
+CREATE DATABASE vendas_sucos;
+
+3) Podemos usar algumas propriedades para definir o tipo de tabela de caracteres que podem ser usadas na armazenagem dos dados no banco. Digite o comando abaixo para criar um banco que utilize a tabela de caracteres UTF8:
+
+CREATE DATABASE vendas_sucos2 DEFAULT CHARACTER SET utf8;
+
+4) Se tivermos dúvida se o banco de dados a ser criado existe ou não, podemos usar o comando IF NOT EXISTS. Este comando é usado em diversas entidades do MYSQL e é usado para que o processo de criação aconteça apenas se o componente existe. Digite o comando abaixo para criar novo banco, somente se ele não existir:
+
+CREATE DATABASE IF NOT exists vendas_sucos2;
+
+5) Podemos apagar um banco de dados existente. Para isso digite o comando:
+
+DROP DATABASE IF EXISTS vendas_sucos2;
+
+6) Clique com o botão da direita do mouse sobre a área vazia na lista de bases de dados, a direita no Workbech, e escolha a opção Create Schema.
+
+1.png
+
+7) Será apresentado um assistente que lhe ajuda a criar um banco de dados sem precisar usar os comandos. Digite no nome da base vendas_sucos2 e escolha as opções UTF16 para lista de caracteres.
+
+2.png
+
+8) Clique em Apply. O comando SQL a ser executado é gerado dinamicamente. Confirme a execução e o banco será criado.
+
+9) Clique com o botão da direita do mouse sobre vendas_sucos2 e escolha a opção DROP SCHEMA.
+
+3.png
+
+A base será excluida com este comando.
+
+10) Duplo clique sobre a base de dados vendas_sucos para que a mesma fique selecionada. O nome dela deverá ficar em negrito.
+
+11) Crie um novo script de SQL e digite o comando:
+
+USE vendas_sucos;
+
+Este comando forçará a seleção da base de dados vendas_sucos;
+
+12) Vamos criar a primeira tabela no nosso banco. Digite e execute:
+
+CREATE TABLE PRODUTOS
+(CODIGO VARCHAR(10) NOT NULL,
+DESCRITOR VARCHAR(100) NULL,
+SABOR VARCHAR(50) NULL,
+TAMANHO VARCHAR(50) NULL,
+EMBALAGEM VARCHAR(50) NULL,
+PRECO_LISTA FLOAT NULL,
+PRIMARY KEY (CODIGO));
+
+13) Vamos criar a segunda tabela (vendedores). Digite:
+
+CREATE TABLE VENDEDORES
+(MATRICULA VARCHAR(5) NOT NULL,
+NOME VARCHAR(100) NULL,
+BAIRRO VARCHAR(50) NULL,
+COMISSAO FLOAT NULL,
+DATA_ADIMISSAO DATE NULL,
+FERIAS BIT(1) NULL,
+PRIMARY KEY (MATRICULA));
+
+14) Note que houve um erro proposital ao selecionar o nome do campo que mostra a data de admissão do vendedor. Podemos alterar este nome mesmo com a tabela criada. Para isso digite execute::
+
+ALTER TABLE VENDEDORES RENAME COLUMN DATA_ADIMISSAO TO DATA_ADMISSAO;
+
+15) Clique com o botão da direita do mouse sobre o nó Table e selecione a opção Create Table.
+
+4.png
+
+16) Temos a caixa de diálogo para criar uma tabela através de um assistente. Digite na caixa de diálogo:
+
+5.png
+
+6.png
+
+7.png
+
+17) Confirme a criação da tabela acima.
+
+18) Vamos criar mais uma tabela que é a tabela de vendas (Cabeçalho da nota fiscal). Para isso digite execute:
+
+USE vendas_sucos;
+
+CREATE TABLE TABELA_DE_VENDAS
+(NUMERO VARCHAR(5) NOT NULL,
+DATA_VENDA DATE NULL,
+CPF VARCHAR(11) NOT NULL,
+MATRICULA VARCHAR(5) NOT NULL,
+IMPOSTO FLOAT NULL,
+PRIMARY KEY (NUMERO));
+
+19) Podemos criar relacionamentos entre esta tabela e a tabela de clientes e vendedores. Para isso digite e execute:
+
+ALTER TABLE TABELA_DE_VENDAS ADD CONSTRAINT FK_CLIENTES
+FOREIGN KEY (CPF) REFERENCES CLIENTES (CPF);
+
+ALTER TABLE TABELA_DE_VENDAS ADD CONSTRAINT FK_VENDEDORES
+FOREIGN KEY (MATRICULA) REFERENCES VENDEDORES (MATRICULA);
+
+20) Da mesma maneira que fizemos em alguns passos anteriores, com o campo, o nome da tabela também pode ser alterado depois da mesma ser criada. Digite execute:
+
+USE vendas_sucos;
+
+ALTER TABLE tabela_de_vendas RENAME Notas;
+
+
+Opinião do instrutor
+
+Continue com os seus estudos, e se houver dúvidas, não hesite em recorrer ao nosso fórum!
+
+
+
+
+2-13  O que aprendemos?
+
+
+
+  Aprendemos a criar o banco de dados.
+  
+  Aprendemos a criar uma tabela;
+  
+  Vimos que o nome dos campos podem ser modificados mesmo depois da tabela ter sido criada;
+  
+  Podemos criar as tabelas por um assistente. Foi mostrado isso nesta aula;
+  
+  Vimos como criar os relacionamentos entre as tabelas;
+  
+  Vimos que o nome da tabela também pode ser modificada após sua criação.
