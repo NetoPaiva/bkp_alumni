@@ -1,0 +1,102 @@
+https://cursos.alura.com.br/course/oracle-cloud-infrastructure-aplicacao-nuvem
+
+Evernote: devweb - alumni-2_cloud_1
+
+
+
+DevOps | Cursos de OCI 
+
+Curso de
+Oracle Cloud Infrastructure: implantação de uma aplicação na nuvem
+
+
+Instrutor
+  Tiago Lage Payne de Pádua
+  Formação em Computação Licenciatura pela UnB
+
+
+Sabia que esse curso foi criado em conjunto com o time de engenheiros da Oracle?
+
+A Oracle Corporation é uma empresa multinacional de tecnologia e informática norte-americana, especializada no desenvolvimento e comercialização de hardware e softwares e de banco de dados.
+
+A Oracle Cloud abrange 41 regiões geográficas interconectadas, oferecendo um conjunto completo de Oracle Cloud Applications e mais de 100 serviços da Oracle Cloud Infrastructure.
+
+Saiba mais em https://www.oracle.com/br/
+
+
+Faça esse curso de OCI e:
+
+  - Aprenda conceitos básicos de computação em nuvem
+  - Compreenda a arquitetura da Oracle Cloud
+  - Crie uma conta na Oracle Cloud
+  - Aprenda a criar redes virtuais e um load balancer na Oracle Cloud
+  - Aprenda a criar e configurar computes na VCN
+  - Implante uma aplicação básica na Oracle Cloud
+
+
+
+Aulas
+
+1 - Computação em nuvem | 0 / 7 | 16min
+
+  1-1 Apresentação
+  1-2 Doguito Petshop
+  1-3 Computação em nuvem
+  1-4 Por que usamos Clouds
+  1-5 Faça como eu fiz: iniciando na Cloud
+  1-6 Para saber mais: conceitos de Cloud
+  1-7 O que aprendemos?
+
+2 - Conta Free Tier na OCI | 0 / 8 | 17min
+
+  2-1 Criação de conta na OCI
+  2-2 Para saber mais: modo gratuito (Free Tier)
+  2-3 Modo gratuito (Free Tier)
+  2-4 Faça como eu fiz: criando uma conta na OCI
+  2-5 Conhecendo o Console da OCI
+  2-6 Faça como eu fiz: navegando no Console da OCI
+  2-7 Características da Free Tier
+  2-8 O que aprendemos?
+
+3 - Arquitetura da OCI | 0 / 12 | 18min
+
+  3-1 Visão geral da OCI
+  3-2 Para saber mais: infraestrutura da OCI
+  3-3 Compartments
+  3-4 Para saber mais: compartments à fundo
+  3-5 Faça como eu fiz: criando compartimentos
+  3-6 Usuários
+  3-7 Para saber mais: IAM na OCI
+  3-8 Faça como eu fiz: criando um usuário
+  3-9 Cloud Shell
+  3-10 Faça como eu fiz: configurando o Cloud Shell
+  3-11 Compartments
+  3-12 O que aprendemos?
+
+4 - Redes | 0 / 7 | 20min
+
+  4-1 Introdução à Virtual Cloud Network - VCN
+  4-2 Criando a VCN
+  4-3 Faça como eu fiz: uma VCN para instâncias
+  4-4 Roteamento e segurança
+  4-5 Para saber mais: redes na OCI
+  4-6 A VCN
+  4-7 O que aprendemos?
+
+5 - Compute | 0 / 14 | 45min
+
+  5-1 Criando um Compute
+  5-2 Faça como eu fiz: nosso primeiro compute
+  5-3 Para saber mais: tudo sobre computes
+  5-4 Configurando um servidor
+  5-5 Faça como eu fiz: instalando softwares na instância
+  5-6 Múltipla escolha Computes
+  5-7 Balanceador de carga
+  5-8 Mais um servidor
+  5-9 Faça como eu fiz: mais um Doguito Server
+  5-10 Nosso balanceador de cargas
+  5-11 Para saber mais: introdução aos load balancers
+  5-12 Balanceador de cargas
+  5-13 O que aprendemos?
+  5-14 Conclusão
+

@@ -1,0 +1,41 @@
+https://cursos.alura.com.br/formacao-oracle-cloud-infraestructure-one
+
+
+Oracle Cloud Infrastructure - ONE
+Formação de OCI
+
+
+Cloud computing, ou computação na nuvem, possibilita o acesso a sistemas, arquivos e processamento de dados pela internet. Esta tecnologia só cresce e tem se expandido além de profissionais especializados em infraestrutura.
+
+A formação Oracle Cloud Infrastructure vai te ajudar a criar seus primeiros serviços na nuvem da Oracle.
+
+E aí, vamos juntos?
+
+Esta formação faz parte do programa ONE, parceria de Alura + Oracle
+
+
+Com quem você irá aprender
+
+    Tiago Lage Payne de Pádua
+
+    
+Passo a passo
+
+1 - Conhecendo o OCI
+
+Nesta etapa você vai aprender os conceitos básicos de computação em nuvem e compreenderá a arquitetura da Oracle Cloud. Você criará seus primeiros serviços na nuvem da Oracle como redes virtuais e um load balancer. Você aprenderá a criar e configurar um compute para hospedar uma aplicação.
+
+2-1 Curso Oracle Cloud Infrastructure: implantação de uma aplicação na nuvem
+https://cursos.alura.com.br/course/oracle-cloud-infrastructure-aplicacao-nuvem
+
+2-2 Curso Oracle Cloud Infrastructure: banco de dados e infraestrutura como código
+https://cursos.alura.com.br/course/oracle-cloud-infrastructure-dados-infraestrutura-codigo
+
+2-3 Podcast Java, Oracle e Cloud – Hipsters Ponto Tech #279
+https://cursos.alura.com.br/extra/hipsterstech/java-oracle-e-cloud-hipsters-ponto-tech-279-a1280
+
+2-4 Podcast Cloud, transformação e vanguarda com Alexandre Maioral, CEO da Oracle Brasil
+https://cursos.alura.com.br/extra/likeaboss/cloud-transformacao-e-vanguarda-com-alexandre-maioral-ceo-da-oracle-brasil-a1595
+
+2-5 Video OCI com Pedro Christo | Pílulas ONE - YouTube
+https://www.youtube.com/watch?v=SG0VBQG1O7o

@@ -1,0 +1,442 @@
+https://cursos.alura.com.br/course/oracle-cloud-infrastructure-aplicacao-nuvem/section/13788/tasks
+
+Evernote: devweb - alumni-2_cloud_1
+
+Curso Oracle Cloud Infrastructure: implantação de uma aplicação na nuvem
+Instrutor Tiago Lage Payne de Pádua
+
+
+Aula 3 - Arquitetura da OCI | 0 / 12 | 18min
+
+  3-1 Visão geral da OCI *
+  3-2 Para saber mais: infraestrutura da OCI
+  3-3 Compartments *
+  3-4 Para saber mais: compartments à fundo
+  3-5 Faça como eu fiz: criando compartimentos
+  3-6 Usuários *
+  3-7 Para saber mais: IAM na OCI
+  3-8 Faça como eu fiz: criando um usuário
+  3-9 Cloud Shell *
+  3-10 Faça como eu fiz: configurando o Cloud Shell
+  3-11 Compartments
+  3-12 O que aprendemos?
+
+
+3-1 Visão geral da OCI *
+
+
+Transcrição
+
+[00:00] A arquitetura do OCI vai se dividir entre uma gama muito grande de serviços, serviço de infraestrutura, entre outros.
+
+[00:08] Dentre esses serviços podemos destacar aqui o serviço de computação que vai permitir que criemos diversas instâncias. Essas instâncias vão nos permitir criar máquinas virtuais dedicadas, configurar essas instâncias, criar pools de instâncias, redes de cluster, entre outras.
+
+[00:27] Aqui na área de armazenamento vamos tratar da parte de, como se fosse HD, temos aqui o nosso armazenamento em blocos, volumes do disco rígido, temos aqui propriedade para armazenamento de arquivos, entre outros.
+
+[00:42] Na área de redes podemos criar redes virtuais que são redes gerenciadas via software, determinar faixa de IPs por essas redes, entre outras características.
+
+[00:54] Aqui na parte de banco de dados temos o Oracle Database, temos uma série de tipos de banco de dados. Até entre os bancos de dados autônomos, como Autonomous Data Warehouse, banco de dados do JSON, JSON Database, entre outros.
+
+[01:10] Na parte de banco de dados vamos ter os banco de dados mais tradicionais como, por exemplo, o MySQL. Aqui eu posso levantar diretamente um MySQL ou um Oracle NoSQL Database também. Além disso, temos serviços, digamos, de mais alto nível, entre eles funções analíticas e de inteligência artificial para fazer análise de dados, aprendizado de máquinas, entre outros.
+
+[01:36] Depois temos aqui a parte de Serviços ao Desenvolvedor que vai adicionar uma camada de abstração e permitir gerenciarmos clusters de Kubernetes, por exemplo, registrar contêineres, registrar artefatos, entre outras funcionalidades.
+
+[01:52] A parte de Identidade e Segurança nos permite criarmos usuários, zonas de segurança e definirmos grupos e políticas de acesso aos recursos da Cloud. Depois temos a parte de observabilidade e gerenciamento, onde principalmente temos aqui a parte de monitoração e a parte de logs também.
+
+[02:13] Aqui esse menu de Híbrido nos permite algumas soluções um pouco mais avançadas que são Data Centers híbridos. A parte de migração é voltada para a parte de migração de dados. A parte de gerenciamento de faturamento e custo a parte de custos de operacionais. E aqui temos também a parte de Governança e Administração que vai ter aqui algumas políticas, limites, rotas que podemos definir aqui para a nossa governança.
+
+[02:41] Por último temos a parte de Marketplace, que define aqui alguns aplicativos que podem ser criados e compartilhados no Marketplace da própria Oracle Cloud.
+
+
+
+
+
+
+3-2 Para saber mais: infraestrutura da OCI
+
+
+
+A Oracle Cloud é um sistema com diversos conceitos comuns à outras clouds mas também possui alguns conceitos próprios. Para entender como a infraestrutura da Oracle Cloud é dividida e seus conceitos mais fundamentais veja o video (video está em inglês mas possui legendas automáticas em português):
+
+https://youtu.be/JBkT44FSf0o
+
+O conteúdo em video pode apresentar alguns tópicos desatualizados, por isso, todos os detalhes sobre os conceitos básicos e arquitetura da OCI podem ser também encontrados na documentação oficial através dos links:
+
+https://docs.oracle.com/pt-br/iaas/Content/GSG/Concepts/baremetalintro.htm
+
+https://docs.oracle.com/es-ww/iaas/Content/GSG/Concepts/baremetalintro.htm.
+
+
+
+
+
+
+3-3 Compartments *
+
+
+Transcrição
+
+[00:00] Agora que já entendemos os serviços que são fornecidos pela Oracle Cloud, vamos começar de fato a configurar a nossa própria Cloud.
+
+[00:10] Uma das primeiras coisas que temos que fazer aqui para colocar o nosso projeto do Doguito Petshop no ar é criar o que chamamos de compartimento. Se viermos aqui em "Identidade e Segurança" vamos ver que tem uma opção de menu chamada "Compartimentos", nessa opção vamos identificar de cara o nosso "doguitopetshop" como compartimento raiz.
+
+[00:37] Esse compartimento podemos subdividi-lo, para ficar mais claro vamos criar. Vamos criar aqui um compartimento, uma divisão, por exemplo, que vamos chamar de "Desenvolvimento", eu vou colocar que esse aqui vai ser o "Ambiente de desenvolvimento do Doguito Petshop".
+
+[01:03] No mínimo aqui eu posso criar o meu ambiente de desenvolvimento onde vamos ter nossos bancos de dados, nossas instâncias para testar, para desenvolver o software. E eu posso também criar aqui mais um compartimento que vai ser o ambiente de produção, vou chamá-lo de "Producao" e aqui vou chamar de "Ambiente de producao do Doguito Petshop" e vou criar um compartimento. Ele não permite colocar caracteres acentuados, eu vou colocar "Producao".
+
+[01:40] Criou o compartimento. Se esperarmos alguns segundos e atualizar a tela vamos ver que foram criados dois compartimentos, compartimento de Desenvolvimento e compartimento de Produção.
+
+
+
+
+
+
+3-4 Para saber mais: compartments à fundo
+
+
+Em nossa aula vimos os conceitos mais básicos de compartments, mas existem muitos outros detalhes técnicos que são úteis para casos de uso mais complexos. Este video reúne estas informações detalhadas com uma explicação dos por menores dos compartments (video está em inglês mas possui legendas automáticas em português):
+
+https://youtu.be/VJD19vyu6lI
+
+
+O conteúdo em video pode apresentar alguns tópicos desatualizados, por isso, todos os detalhes sobre a utilização de Compartimentos na OCI podem ser também encontrados na documentação oficial, através dos links:
+
+https://docs.oracle.com/pt-br/iaas/Content/Identity/compartments/managingcompartments.htm
+
+https://docs.oracle.com/es-ww/iaas/Content/Identity/compartments/managingcompartments.htm.
+
+
+
+
+
+
+3-5 Faça como eu fiz: criando compartimentos
+
+
+Aprendemos a criar compartimentos, que tem por objetivo promover o isolamento de segurança e controle de acesso dentro da cloud. Eles fazem isso através de um namespace lógico global, onde as políticas de segurança podem ser aplicadas. Por meio da aplicação de políticas, eles fornecem um nível de acesso adequado de acordo com os parâmetros definidos pela organização para gerenciamento de recursos.
+
+Desta forma a criação de compartimentos será a nossa primeira tarefa na OCI antes de dar continuidade ao processo de implantação do Doguito Petshop.
+Opinião do instrutor
+
+Acesse o console da OCI, e na área de menu, clique em “Identidade e Segurança” e na sequência na opção “Compartimentos”:
+
+alt text: Console da OCI com a opção “Identidade e Segurança” selecionada no menu à esquerda e a opção "Compartimentos" ao centro da página. Agora, acesse o compartimento “Raiz” que foi criado automaticamente, o Doguito Petshop:
+
+alt text: Tela de listagem de compartimentos com link para “doguitopetshop (raiz)” ao centro.
+
+Em seguida, clique em “Criar Compartimento”:
+
+alt text: Tela de listagem de subcompartimentos do doguitopetshop com botão para “Criar Compartimento” na área inferior da tela.
+
+No nome, insira: “Desenvolvimento” e na descrição, “Ambiente de desenvolvimento do doguito”:
+
+alt text: Formulário de criação de compartimentos com campo de entrada para “Nome”, “Descrição” e “Compartimento Pai” e botão “Criar Compartimento” no canto inferior da tela.
+
+Crie também o compartimento de “Produção” e insira “Producao” no nome e “Ambiente de produção do doguito” na descrição.
+
+Após os procedimentos descritos, ao entrar novamente na listagem de compartimentos, os dois compartimentos novos devem ser exibidos:
+
+alt text: Tela de listagem de compartimentos do doguitopetshop exibindo os compartimentos que foram criados.
+
+Pronto! Criamos nossos compartimentos e podemos seguir para a aplicação.
+
+
+
+
+
+
+3-6 Usuários *
+
+
+Transcrição
+
+[00:00] Agora que já criamos os compartimentos para subdividir a Cloud do Doguito Petshop, é importante criarmos alguns usuários adicionais. Esse usuário adicional vai ter um papel e um conjunto de restrições maiores com relação ao que se pode fazer na nossa Cloud.
+
+[00:22] Quando logamos aqui pela Cloud com o nosso usuário comum, no caso o "tiagolpadua" que está logado aqui, é usuário administrador. Se entrarmos aqui dentro de "Identidade e Segurança" e entrar aqui em "'Visão Geral" e clicar em "Usuários" vamos conseguir ver que esse usuário "tiagolpadua" é o único usuário que temos no nosso compartimento e ele está no grupo "Administradores".
+
+[00:47] Ele é um usuário com poderes ilimitados e isso não é bom, nem mesmo para o nosso computador local. Em geral, não utilizamos um usuário com super poderes, no caso da Cloud segue também o mesmo princípio.
+
+[01:04] Nosso próximo passo é criar um usuário, vamos fazer a criação desse usuário que ele vai ter um limite maior do que ele pode fazer. Clicando em "Criar usuário" podemos entrar aqui e colocar o nome do usuário, vou colocar aqui que é o "Doguito" e o sobrenome "Admin", vou desmarcar a caixa "Usar o endereço de e-mail como o nome do usuário" porque eu vou reutilizar o meu próprio endereço de e-mail para criar esse usuário.
+
+[01:34] Vou criar aqui e o nome do usuário é "doguito-admin" e o e-mail vou colocar o meu e-mail atual "tiagolpadua@outlook.com" e aí vou clicar aqui em "Criar" usuário. Criei aqui o usuário Doguito Admin.
+
+[01:57] O próximo passo é criar um grupo para colocar esse usuário. Vamos criar um grupo e com esse grupo depois vamos criar uma política especial, mas o primeiro passo é criar o grupo. Clicando em "Criar Grupo" vamos dar um nome para esse grupo, vou colocar aqui "Administradores Doguito", vou colocar aqui em "Descrição" vou colocar "Grupo de Administradores do Doguito". Inclusive, já vou aqui até incluir o usuário, no caso aqui o usuário "Doguito Admin". Criei o grupo e coloquei aqui o usuário "Doguito Admin", cliquei em "Criar".
+
+[02:48] Agora estamos com o usuário e estamos com esse grupo, se eu entrar aqui no grupo vamos ver quais são os usuários que pertencem a esse grupo, se eu entrar em "Usuários" eu consigo ver quais são os grupos que esse usuário pertence, agora falta eu criar uma determinada política para esse usuário.
+
+[03:06] Vamos criar uma nova política, entrando em "Identidade e Segurança" e eu seleciono a opção "Políticas". Clico em "Criar Política" e eu vou colocar a política: "politica-doguito-admin". Nessa política eu vou colocar uma descrição: "Politica para os administradores do Doguito", vou selecionar onde eu quero salvar a política, eu vou salvar no compartimento raiz e vou escolher uma política padrão, podemos escolher: "Permitir que usuários gerenciem configurações da instância do serviço Compute".
+
+[03:51] Vamos alterá-la daqui a pouco. Em "Domínio" vamos deixar Default mesmo, em "Grupos" vamos colocar o grupo "Administradores Doguito" e o "Local" vamos selecionar o compartimento de "Desenvolvimento". E aqui ele criou a política, mas vamos selecionar aqui e vamos editar essa política um pouco.
+
+[04:12] Mudando para o editor manual conseguimos alterar essa política, vou colocar "Allow group 'Default/Administradores Doguito' to manage all resource in compartement Desenvolvimento" que é uma política bem mais ampla do que a política original, no nosso caso de exercício vai funcionar. Clico em "Criar" e a política foi criada.
+
+[04:38] Para que possamos testar a política agora temos que entrar como o usuário e para isso vamos ter que acessar o nosso e-mail e ativar o usuário que criamos agora a pouco.
+
+[04:51] Na sua caixa de e-mail você deve ter recebido um e-mail com um link e clicando nesse link você pode abrir em uma aba privada para não misturar com outro usuário seu que já está logado. Ele vai pedir para você ativar a conta do Doguito Admin. A primeira coisa que vamos ter que fazer é definir uma nova senha, vamos definir uma senha. Ele pede uma senha com 12 caracteres, é uma senha bem comprida, não perca essa senha.
+
+[05:27] Redefinindo essa senha ele vai permitir que você continue e navegue aqui para acessar. Vamos acessar com o nosso Doguito Admin e a senha que criamos. Você vai ver aqui no canto superior direito que agora ele está logado com Doguito admin. Vamos dar uma olhada aqui e navegar nos recursos.
+
+[05:56] Por exemplo, se eu quiser criar uma instância de "Compute" que é uma instância de computação e clicar aqui no botão, vamos ver que ele vai estar mais limitado. Vamos ver aqui as instâncias e vamos ter que escolher aqui um compartimento. Note que eu vou ter que escolher aqui "Desenvolvimento", está vendo que não está aparecendo aqui "Produção", está aparecendo só "Desenvolvimento" porque é onde eu tenho acesso. Agora aqui liberou para eu poder criar uma instância.
+
+[06:23] Não vou concluir a criação é só para ver aqui que realmente ele limitou o meu acesso. Se eu voltar para a raiz ele já vai falar que eu não tenho permissão e eu teria que vir aqui só na parte de desenvolvimento.
+
+[06:38] Para a segurança da nossa Cloud é muito importante criar usuários e criar compartimentos e definir as permissões corretas para aqueles usuários naqueles compartimentos.
+
+
+
+
+
+
+3-7 Para saber mais: IAM na OCI
+
+
+Quando estamos falando de aplicações corporativas, o controle fino de acesso aos recursos é essencial para que não ocorram incidentes como falhas de segurança em nossa aplicação. Para isso, a OCI desenvolveu um modelo avançado de identidade e controle de acesso, que você pode se aprofundar em mais detalhes assistindo a este video (video está em inglês mas possui legendas automáticas em português):
+
+https://youtu.be/8qaQuoJZYvQ
+
+
+O conteúdo em video pode apresentar alguns tópicos desatualizados, por isso, todos os detalhes sobre IAM na OCI podem ser também encontrados na documentação oficial, na seção “Segurança, Identidade e Conformidade”, através dos links:
+
+https://docs.oracle.com/pt-br/iaas/Content/home.htm
+
+https://docs.oracle.com/es-ww/iaas/Content/home.htm.
+
+
+
+
+
+
+3-8 Faça como eu fiz: criando um usuário
+
+
+
+Vimos como criar novos usuários na Oracle Cloud para segregar o nível de acesso à funcionalidades da OCI.
+
+Ao criar sua conta pela primeira vez, você terá apenas um usuário com permissão de administrador raiz (root). Isso significa que você tem controle sobre toda a conta e acesso a todos recursos na OCI. Este usuário deve ser usado para gerenciar outros Usuários, Grupos e Políticas. Assim, criaremos um novo usuário que tenha um conjunto de acessos mais restritos para o compartimento que já temos.
+
+É a sua vez de colocar a mão na massa, crie um usuário doguito-admin que terá acessos somente sobre o compartimento “Desenvolvimento” que criamos anteriormente
+
+
+Opinião do instrutor
+
+Acesse o Console da OCI, e, na área de menu, clique em “Identidade e Segurança” e na opção “Visão Geral” clique em “Usuários”:
+
+alt text: Imagem da tela de Visão geral de “Identidade e Segurança” onde se vê o link "Usuários"
+
+Será exibida uma tela com a listagem dos usuários existentes:
+
+alt text: Lista de usuários onde se vê o botão "Criar usuário"
+
+Clique na opção “Criar Usuário”.
+
+Será exibido um formulário para criação do novo usuário:
+
+alt text: Formulário para preenchimento dos dados do usuário que será criado onde se vê o botão "Criar"
+
+No formulário que é exibido, iremos preencher os nomes do novo usuário:
+
+Nome: Doguito
+Sobrenome: Admin
+Nome do usuário: doguito-admin
+
+Desmarque a opção “Usar o endereço de e-mail como o nome do usuário”.
+
+e-mail: Utilize um e-mail real para validar o usuário e caso precise recuperar a senha. Em seguida, clique em “Criar”.
+
+Se a criação de usuário for bem sucedida, será exibida a tela com os dados do usuário recém-criado:
+
+alt text: Imagem da tela de detalhes do usuário
+
+O próximo passo é a criação de um grupo para incluir este nosso novo usuário.
+
+Voltando à área de “Visão Geral” de “Identidade e Segurança”, agora vamos acionar a opção de “Grupos”. Devemos clicar em “Criar Grupo”:
+
+alt text: Imagem da listagem de grupos onde se vê o botão "Criar Grupo"
+
+No formulário que é exibido, devemos preencher os campos indicados:
+
+alt text: Imagem do formulário de criação de grupo com os campos a serem preenchidos
+
+Nome: Administradores Doguito
+Descrição: Grupo de Administradores do Doguito
+
+Já marque o usuário “Doguito” para que ele seja automaticamente inserido no grupo que será criado.
+
+Se a criação for bem sucedida, será exibida a tela com os detalhes do grupo recém criado:
+
+alt text: Imagem detalhando os dados do grupo recém-criado
+
+Para definir os “poderes” do nosso novo usuário, devemos definir uma nova política para ele e para o grupo ao qual o usuário pertence.
+
+No menu principal da OCI selecione: “Identidade e Segurança” e “Políticas”. Na tela que é exibida, devemos criar no botão “Criar Política”:
+
+alt text: Imagem da lista de políticas atuais
+
+Será exibido um formulário para a criação da política, que deve ser preenchido com os seguintes valores:
+
+Nome: politica-doguito-admin
+Descrição: Política para os administradores do Doguito
+Compartimento: doguitopetshop (raiz)
+Clicar em “Mostrar editor manual” e inserir a seguinte política:
+Allow group ‘Default’/’Administradores Doguito’ to manage all resources in compartment Desenvolvimento
+
+alt text: Imagem do formulário de criação de políticas
+
+Por fim clicamos em “Criar” e a política deve ser criada com sucesso.
+
+Caso tudo corra bem, será exibida a tela com os detalhes da política que foi criada:
+
+alt text: Imagem com detalhes da política que foi criada
+
+Agora você pode acessar o e-mail que foi indicado na criação do usuário, deve haver uma mensagem com um link para que o usuário seja ativado.
+
+No primeiro acesso do novo usuário será necessário definir uma nova senha, guarde-a com segurança pois ela será necessária até o fim deste treinamento.
+
+Vamos validar agora a política de acesso aplicada ao novo usuário.
+
+Para isso logue com o usuário recém-criado:
+
+alt text: Imagem com o formulário de login do novo usuário
+
+Você pode conferir se realmente está logado com o novo usuário clicando na opção “Perfil” no canto superior direito da tela, será exibido o nome do usuário logado:
+
+alt text: Imagem com o nome do usuário logado ao clicar no perfil do usuário
+
+Se estiver tudo certo, acesse o menu principal e clique em “Computação” e em seguida “Instâncias”:
+
+alt text: Console da OCI com a opção “Computação” selecionada no menu à esquerda e a opção "Instâncias" ao centro da página.
+
+Na tela que é exibida, a opção de “Criar Instância” somente deve ser habilitada quando for selecionado o compartimento “Desenvolvimento”, que é o compartimento onde o usuário possui acessos. Clique na opção “Criar Instância”:
+
+alt text: Console da OCI exibindo a lista de instâncias com o botão “Criar Instância” ao centro da tela.
+
+Se a política estiver definida corretamente e tiver sido selecionada o compartimento “Desenvolvimento” deverá ser exibida a tela abaixo:
+
+alt text: Console da OCI exibindo o formulário de criação de instâncias.
+
+Não é necessário criar a instância neste momento, mas se você conseguiu chegar nesta tela significa que o usuário, o grupo e as políticas foram definidos corretamente.
+
+
+
+
+
+3-9 Cloud Shell *
+
+
+Transcrição
+
+[00:00] Veremos agora como podemos configurar o Cloud Shell para ele ser utilizado por outros usuários além do usuário administrador. A primeira coisa que vamos fazer é tentar acessar o Cloud Shell utilizando o nosso novo usuário, o Doguito Admin.
+
+[00:16] Voltando para a nossa tela inicial da Oracle Cloud, nesse momento eu estou logado com o usuário Tiago Pádua e eu vou fazer o logout e vou tentar fazer o login com o usuário "doguito-admin" e tentar acessar aqui a funcionalidade, neste caso vou tentar acessar o Cloud Shell.
+
+[00:41] Como apareceu aqui essa mensagem Policy Missing, "Você não está autorizado a acessar o Cloud Shell, o seu administrador de tenancy deve adicionar uma política para te conceder o acesso". Não adianta ficarmos clicando aqui no retry porque nesse caso o usuário está sem acesso necessário, temos que conceder o acesso.
+
+[01:08] Para fazer isso vamos alterar aquela política que já criamos do Doguito Admin. Novamente vamos voltar para o nosso Oracle Cloud fazer aqui o logout do Doguito Admin, confirmo aqui a saída e vou fazer o login novamente, só que eu vou voltar a logar como usuário administrador, no meu caso "tiagolpadua@outlook.com".
+
+[01:37] Fiz aqui o acesso como usuário administrador e agora eu vou acessar a opção aqui de "Políticas", entro aqui no menu, entro em "Identidade e Segurança" e depois eu entro aqui em "Políticas". Vai listar as políticas atuais e aparece aqui a política do Doguito Admin, posso clicar aqui nessa política, posso editar as declarações de política e vou adicionar uma outra instrução para essa opção.
+
+[02:04] Já deixei salvo aqui a minha política, a política é: "Allow group Default/Administradores Doguito/ to use cloud-shell in tenancy", ou seja, permitir que os usuários do grupo Administradores Doguito usem o Cloud Shell dentro do tenancy. Vou salvar as alterações e após isso eu vou fazer o logout como usuário administrador e tentar novamente fazer o login com o usuário doguito-admin.
+
+[02:37] Já deixei o usuário salvo aqui para facilitar e acesso como doguito-admin. Novamente vou tentar acessar o Cloud Shell, vocês perceberão que dessa vez o acesso ao Cloud Shell funciona. O OCI console ou esse Cloud Shell é pré-configurado com uma versão mais atualizada do OCI CLI, que é a linha de comandos de OCI.
+
+[03:03] Uma coisa que podemos fazer com o OCI, com esse Cloud Shell é entrar nas máquinas que vamos criar. Daqui a pouco vamos começar as criar as instâncias para colocar o servidor do Doguito e vamos fazer o login. Para fazer esse login utilizamos a ferramenta do SSH e o SSH funciona de uma forma muito segura para fazermos o login de uma máquina na outra, neste caso vamos fazer o login do Cloud Shell aqui com a nossa máquina, com o nosso servidor que vamos criar.
+
+[03:35] Para fazer isso de uma forma segura é necessário criarmos um par de chaves público e privado e é isso que vamos fazer aqui agora. Vamos aqui ao Cloud Shell e eu consigo ver aqui qual é o diretório atual que eu estou, aqui estou no Doguito AD, eu estou aqui em um ambiente Linux, os comandos Linux aqui comuns e o primeiro passo que eu vou fazer é criar uma pasta aqui, eu vou criar uma pasta "mkdir .ssh". Nessa pasta é onde vai ficar armazenada as minhas chaves SSH.
+
+[04:09] Agora eu vou acessar essa pasta "cd .ssh" e aí eu vou executar o comando de geração de chave, esse comando ssh -keygen -b 2048 -t rsa cloudshellkey eu vou informar a quantidade de bytes que vai ter essa chave, neste caso o recomendado é 2048, depois eu vou informar qual é o algoritmo criptografo que vou utilizar com a opção "-t", neste caso vou usar o algoritmo "rsa" e aí eu vou colocar aqui qual que é o arquivo que eu quero salvar a minha chave, neste caso vou salvar no arquivo "cloudshellkey".
+
+[04:46] Gerando aqui a chave ele pede uma senha de segurança, no meu caso por simplicidade eu vou deixar vazio e aí gerou a minha chave. Se eu fizer o comando aqui ls -a para listar todos os arquivos ele vai listar os arquivos "cloudshellkey pub" e o "cloudshellkey".
+
+[05:06] Esse arquivo "cloudshell pub" é um arquivo público que tem a parte pública da minha chave criptográfica e vamos pegar o conteúdo dele, quando criarmos uma instância do servidor Doguito vamos colar essa chave pública lá para que consigamos acessar essa instância a partir do Cloud Shell com segurança.
+
+[05:30] Dessa forma tivemos uma visão geral do Cloud Shell e estamos vendo que não precisa instalar ferramentas locais na sua máquina para trabalhar com Oracle Cloud. Só com o Cloud Shell e a interface Web ele já vai nos fornecer todas as ferramentas necessárias para operarmos com segurança aqui a Cloud da Oracle. Muito obrigado e até a nossa próxima aula.
+
+
+
+
+
+
+3-10 Faça como eu fiz: configurando o Cloud Shell
+
+
+
+Nesta aula vimos que para o usuário acessar o Cloud Shell é necessário que ele tenha as políticas definidas adequadamente. Para isso iremos acessar a área de Identidade e Segurança da OCI e criar uma política para permitir que usuários do grupo “Administradores Doguito” possam utilizar o Cloud Shell.
+
+Em seguida, iremos acessar o Cloud Shell com o usuário “doguito-admin” para efetuar a criação das chaves SSH que utilizaremos para logar nas instâncias de compute que criaremos deppis.
+Opinião do instrutor
+
+Primeiramente devemos autorizar o novo usuário a acessar o Cloud Shell. Vamos logar novamente com o usuário raiz, aquele que você criou ao se registrar na Oracle Coud:
+
+alt text: Formulário de login da OCI com o usuário raiz.Acesse novamente a opção de “Políticas” em “Identidade e Segurança”. Identifique a política que criamos anteriormente, e clique nela para visualizá-la:
+
+alt text: Lista de políticas para o compartimento raiz da OCI.
+
+Clique agora no botão “Editar Declarações de Política”:
+
+alt text: Detalhamento da política onde se vê o botão "Editar Declarações de Política" na parte inferior da tela.
+
+Na tela que aparece, vamos clicar no botão “+ outra instrução” para incluir uma nova instrução de política. O texto da política deve ser definido como: Allow group 'Default'/'Administradores Doguito' to use cloud-shell in tenancy
+
+alt text: Formulário para edição de políticas com o botão “+ Outra Instrução” no lado direito da tela.
+
+Por fim clique em “Salvar alterações”.
+
+Caso tudo tenha corrido bem, após salvar as alterações, a política terá sido atualizada e exibirá agora duas instruções:
+
+alt text: Lista atualizada das instruções da política “politica-doguito-admin”.
+
+Agora que o usuário doguito-admin já tem acesso ao Cloud Shell, criaremos as chaves SSH que serão utilizadas no acesso às instâncias de computação que criaremos a seguir.
+
+Para fazer isso, primeiramente você precisa efetuar o logout do usuário atual e logar novamente com o usuário doguito-admin:
+
+alt text: Tela de login com o usuário “doguito-admin” e o botão “Acessar” no centro da tela. Na tela principal da OCI, abra o Cloud Shell para impostar os comandos a seguir:
+
+alt text: Tela inicial da OCI exibindo o Cloud Shell na parte inferior da tela.
+
+Insira o comando abaixo para criar a pasta .ssh na home do usuário:
+
+cd
+mkdir .ssh
+
+Agora vamos acessar a pasta criada e gerar de fato a chave:
+
+cd .ssh
+ssh-keygen -b 2048 -t rsa -f cloudshellkey 
+
+Por simplicidade, deixe as senhas vazias mesmo, só pressione “enter”.
+
+
+
+
+
+3-11 Compartments
+
+Os compartments são um recurso importante da Oracle Cloud e fornecem um namespace lógico global onde políticas podem ser implementadas, como pastas em um sistema de arquivos. Por serem globais, eles se estendem a todas as regiões OCI.
+
+Por exemplo, os compartments podem refletir uma estrutura funcional da organização, onde cada departamento tem um compartment com um administrador designado. Cada compartment de departamento, por sua vez, pode ter subcompartments para diferentes ambientes (Dev, Test, Prod), cada um com seus próprios administradores, se necessário.
+
+O principal objetivo dos compartments é permitir:
+
+A comunicação das instâncias com a Internet.
+  Alternativa incorreta! O elemento da OCI que permite a comunicação das instâncias com a internet é o Internet Gateway.
+
+O controle de acesso e segurança.
+  Alternativa correta! Os compartments permitem controle de acesso e segurança fornecendo um namespace lógico global onde as políticas podem ser aplicadas, como pastas em um sistema de arquivos.
+
+A tolerância a falhas de infraestrutura pelas aplicações.
+  Alternativa incorreta! O elemento da OCI que é direcionado à tolerância de falhas de infraestrutura é o Fault Domain, que é um agrupamento de hardware dentro de um Availability Domain (domínio de disponibilidade).
+
+O acesso de qualquer usuário logado na OCI aos recursos.
+  Alternativa incorreta! O objetivo dos compartments é controlar e restringir o acesso a recursos na OCI e não permitir o acesso irrestrito aos recursos como o item sugere.
+
+
+
+
+
+3-12 O que aprendemos?
+
+  A arquitetura da OCI é composta por uma série de elementos, como as instâncias de Computação, Armazenamento, Rede, Bancos de Dados, Políticas de Identidade e Segurança, entre outros. Eles contribuem para construir um ambiente coeso de cloud;
+  
+  Criamos usuários, grupos e políticas na OCI para controlar o acesso às funcionalidades;
+  
+  Como usar alguns comandos básicos do Cloud Shell e gerar uma chave RSA que nos permite efetuar uma conexão segura com as instâncias de compute que serão criadas na sequência.

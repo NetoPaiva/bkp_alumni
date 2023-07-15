@@ -1,0 +1,271 @@
+https://cursos.alura.com.br/course/oracle-cloud-infrastructure-dados-infraestrutura-codigo/section/13797/tasks
+
+Evernote: devweb | alumni-2_cloud_2
+
+
+Curso de Oracle Cloud Infrastructure: banco de dados e infraestrutura como código
+
+Instrutor Tiago Lage Payne de Pádua
+
+
+
+Aula 1 - Bancos de dados na OCI | 0 / 8 | 17min
+
+  1-1 Apresentação *
+  1-2 Bancos de dados na OCI *
+  1-3 Escolhendo banco de dados
+  1-4 Criando um banco autônomo *
+  1-5 Faça como eu fiz: prepare o banco para Doguito
+  1-6 Para saber mais: bancos de dados Oracle
+  1-7 Para saber mais Bancos de Dados Não Relacionais na OCI
+  1-8 O que aprendemos?
+
+
+1-1 Apresentação *
+
+
+Transcrição
+
+Olá, bem-vindo à segunda parte do nosso treinamento sobre Oracle Cloud. Para que você possa acompanhá-lo, é necessário que já tenha realizado a primeira parte, o curso de Oracle Cloud Infrastructure: implantação de uma aplicação na nuvem, em que aprendemos os conceitos básicos de OCI.
+
+https://cursos.alura.com.br/course/oracle-cloud-infrastructure-aplicacao-nuvem
+
+Naquele primeiro treinamento, implantamos uma rede virtual através do menu da OCI, na lateral esquerda, na área "Rede". Em seguida, criamos as instâncias de computação através no menu "Computação". E nossa última tarefa foi a criação de um load balancer, também na área "Rede", para permitir que nossa aplicação escale horizontalmente.
+
+Agora, vamos continuar nossa missão de implantar o Doguito Pet Shop a partir de onde paramos. Inicialmente, precisamos definir como realizar o armazenamento dos dados dinâmicos do Doguito, o que será feito através de um banco de dados. No menu lateral da OCI, temos as opções "Oracle Database" e "Banco de Dados". Vamos estudar os diferentes tipos de bancos de dados oferecidos pela OCI e verificar qual melhor se encaixa em nossas necessidades.
+
+Em seguida, veremos também as opções de armazenamento à nossa disposição, no menu lateral da OCI, em "Armazenamento" — ou "Storage, caso esteja usando a ferramenta em inglês. Analisaremos as características desses armazenamentos, suas peculiaridades, casos de uso, assim como as possibilidades de uso pela nossa própria aplicação, o Doguito.
+
+Por fim, praticamente toda implementação de ambiente cloud deve ter algum mecanismo de automação e reprodutibilidade para que possamos versionar e implantar com bastante segurança nossa infraestrutura, evitando procedimentos manuais que são bastante propensos a erros. Com esse objetivo, aprenderemos a usar o gerenciador de recursos, que podemos encontrar no menu da OCI na área "Serviços de Desenvolvedor".
+
+Vamos implementar a infraestrutura do Doguito como código através de scripts Terraform.
+
+Espero que você esteja bastante animado para começar esse curso, porque temos bastante a fazer. Vamos lá!
+
+
+
+
+1-2 Bancos de dados na OCI *
+
+
+Transcrição
+
+Olá. Nesta aula, veremos quais os tipos de serviços de banco de dados que a OCI oferece. Clicando no ícone do menu da OCI (no canto superior esquerdo da tela), teremos duas divisões que nos interessam: "Oracle Database" e "Bancos de Dados".
+
+Num primeiro momento, vamos explorar a aba "Oracle Database". Dentro dela, selecionaremos a opção "Bare Metal, VM e Exadata". Em seguida, clicaremos no botão "Criar Sistema de BD" — ainda não faremos a criação, vamos entrar apenas para analisar seu conteúdo.
+
+Nessa nova página, há uma série de campos a serem preenchidos com informações básicas do sistema. Por enquanto, vamos examinar os três tipos de forma que podemos selecionar.
+
+A primeira opção é "Máquina Virtual" (ou Virtual Machine, se estiver navegando em inglês), que nos dá a oportunidade de um provisionamento muito rápido. Nesse caso, o próprio sistema da Oracle gerenciará o volume de dados. A segunda opção é "Bare Metal", que significa que teremos um servidor físico dedicado, resultando numa melhor performance. A terceira opção é o "Exadata", direcionado para sistemas com grande volume de transações. Ele consegue suportar até 2.5 petabytes de dados, com altíssima performance, ou seja, é interessante para grandes clientes, grandes casos de uso.
+
+Vamos voltar ao menu da OCI e selecionar "Oracle Database > Autonomous Database". Em português, bancos de dados autônomos. Em seguida, clicaremos no botão "Criar Autonomous Database". Dessa vez, vamos analisar alguns tipos de carga de trabalho e os tipos de implantação disponíveis.
+
+Esses bancos de dados autônomos utilizam aprendizagem de máquina para otimização do processo de segurança, back-up, atualizações e outras atividades rotineiras que tradicionalmente são feitas pelos administradores de bancos de dados.
+
+Nessa categoria de bancos de dados autônomos, há uma divisão. O "Data Warehouse" serve para fazer análise de dados para grandes volumes de informações. Já "Processamento de Transações" (ATP) é mais operacional, para transações executadas muito rapidamente. Ou seja, o primeiro é mais voltado para volumes e o segundo, para transações. De forma oculta, esses bancos de dados utilizam Exadata — mas, no caso, a própria OCI faz esse gerenciamento.
+
+Quanto aos tipos de implantação, temos duas opções. Com a "Infraestrutura Compartilhada", seremos responsáveis por gerenciar somente o banco de dados autônomo, enquanto a OCI gerenciará a implantação dos dados em si. Com a "Infraestrutura Dedicada", teremos o uso exclusivo do hardware e do Exadata, resultando numa performance mais alta.
+
+Os bancos de dados autônomos são ditos self-driving, porque todo gerenciamento da infraestrutura, incluindo a monitoração e otimização, é automatizada. Eles também são ditos self-securing, significando que esses bancos possuem recursos automáticos que protegem contra ataques externos, usuários maliciosos internos, entre outras questões. Por fim, os bancos de dados autônoms também são ditos self-repairing, o que quer dizer que os bancos se previnem automaticamente de quaisquer indisponibilidades que possam ocorrer.
+
+Desse modo, na aba "Oracle Database", vimos as opções de "Bare Metal, VM e Exadata" e "Autonomous Database". Esses bancos variam em questões de performance, de necessidade de gerenciamento e também de custo — em geral, quanto mais dedicada for a máquina, maior a tarifa de operação.
+
+Além dessas opções, na aba "Bancos de Dados" no menu da OCI, temos como alternativas "MySQL" e "Oracle NoSQL Database". O MySQL será fornecido como um serviço totalmente gerenciado pela OCI e suportado pelo próprio time do MySQL que trabalha na Oracle. Já o NoSQL Database suportará cargas sob demanda, trabalho com tabelas JSON e dados do tipo chave-valor. Além disso, ele tem garantia de transações com latência inferior a 10 milissegundos — algo bem interessante.
+
+Voltando a "Oracle Database > Autonomous Database" e clicando novamente no botão "Criar Autonomous Database", temos o "APEX" que servirá para aplicações de baixo código (ou low code), também com gerenciamento automático. E, por fim, temos o "JSON" que deixamos por último porque é justamente com o qual vamos trabalhar nesse curso — ele é um banco de dados NoSQL que incluiremos na nossa aplicação Doguito Pet Shop.
+
+Focaremos no JSON porque nossa aplicação é feita em Node, que trabalha muito bem essa junção entre NoSQL e JSON, facilitando nossa programação.
+
+
+
+
+1-3 Escolhendo banco de dados
+
+Durante o desenho da arquitetura de um aplicativo bancário, uma equipe levantou a necessidade de escolher uma alternativa de banco de dados para armazenar os dados de clientes; Dentre as alternativas disponíveis na OCI, o Autonomous Database permite às organizações desenvolver e implantar cargas de trabalho independentemente da complexidade, escala ou criticidade.
+
+Selecione 3 alternativas que apresentam características do Autonomous Database:
+
+Suporte somente a bases de dados relacionais.
+  Alternativa incorreta. O Autonomous JSON Database é um serviço de banco de dados de documentos em nuvem que simplifica o desenvolvimento de aplicativos centrados em JSON e suporta bases de dados Não Relacionais.
+
+Automatização da proteção e segurança de dados.
+  Alternativa correta. O Autonomous Database protege dados confidenciais e regulamentados automaticamente, além de corrigir o banco de dados quanto a vulnerabilidades de segurança e impede o acesso não autorizado.
+
+Automatização de provisionamento, ajuste e dimensionamento do banco de dados.
+  Alternativa correta. O Autonomous Database fornece bancos de dados, configurações, ajustes de alta disponibilidade e dimensiona recursos de computação quando necessário.
+
+Automatização da detecção, failover e reparo de falhas.
+  Alternativa correta. O Autonomous Database detecta e protege contra falhas do sistema e erros do usuário automaticamente e fornece failover para bancos de dados com zero perda de dados.
+
+
+
+1-4 Criando um banco autônomo *
+
+Transcrição
+
+Para o caso do Doguito, vamos utilizar o banco de dados no formato JSON, uma API bastante amigável, fácil para desenvolvermos.
+
+Então, vamos criar nosso banco de dados. Partindo da primeira tela da OCI, acessaremos o menu e clicaremos em "Oracle Database > Autonomous Database" e pressionaremos o botão "Criar Autonomous Database".
+
+Na nova tela, vamos fornecer alguns dados. Primeiramente, selecionaremos o compartimento de desenvolvimento. Em seguida, vamos definir "DOGUITODB" tanto como nome de exibição quanto o nome do banco de dados. No tipo de carga de trabalho, vamos selecionar o JSON — criado para desenvolvimento de aplicativos baseados em JSON, APIs de documento amigáveis para o desenvolvedor e armazenamento JSON nativo. Quanto ao tipo de implantação, escolheremos a infraestrutura compartilhada, que é o que temos disponível na nossa conta free trial.
+
+Os próximos dados são as configurações do banco de dados. De início, vamos ativar a opção Always Free e seremos informados de que: "Se o seu Always Free Autonomous Database ficar sem atividade por 7 dias consecutivos, o banco de dados será interrompido automaticamente. Seus dados serão preservados e você poderá reiniciar o banco de dados para continuar utilizando-o. Se o banco de dados ficar parado por 3 meses, ele será recuperado".
+
+No campo "Versão do banco de dados", podemos manter o número padrão, que é a versão 19 da Oracle. A contagem de OCPUs e o volume de armazenamento têm valores travados.
+
+O próximo ponto importante é escolher a senha do usuário. Para fins didáticos, vamos colocar uma senha bem simples, "Doguito12345". Num cenário real, utilizaríamos uma senha mais elaborada, mais segura.
+
+Em seguida, em tipo de acesso à rede, selecionaremos "Acesso seguro de todos os lugares", que permite que usuários com credenciais do banco de dados acessem o banco de dados pela internet. Essa opção nos obriga a fazer um TLS mútuo (mutual TLS), que é interessante, pois poderemos conectar até a nossa máquina local com o próprio sistema da Oracle, desde que tenhamos esse certificado instalado. Isso implica um passo a mais no processo, mas não é muito complicado.
+
+A seguir, vamos manter a licença incluída. Não é preciso preencher o campo de e-mail para contato. Na parte inferior esquerda, temos a possibilidade de definir configurações mais avançadas, por ora não vamos explorar essa parte. Podemos clicar no botão "Criar Autonomous Database".
+
+Seremos direcionados a outra página em que veremos o status de provisionamento, à esquerda. Inicialmente, teremos um quadrado amarelo com o texto "PROVISIONANDO"; após alguns segundos, o status será alterado para "DISPONÍVEL", com um quadrado verde.
+
+    Para avançar, é preciso permitir as janelas pop-ups. Caso estejam bloqueadas no seu navegador, basta clicar no ícone de pop-up à direita da barra de endereço e conceder a permissão para o site da Oracle.
+
+Com o banco provisionado, vamos clicar em "Ações do Banco de Dados". Uma nova aba será aberta e veremos uma variedade de operações disponíveis, como importação de dados, SQL, gráficos etc. No momento, estamos interessados na opção JSON, para gerenciar nosso banco de dados de documentos JSON.
+
+Entrando nessa opção, vamos clicar em "Criar Coleção". No caso de banco de dados NoSQL baseados em JSON, coleções são análogas às tabelas dos bancos de dados convencionais relacionais. Então, criaremos uma coleção com nome "clientes" (note que há um exemplo de dados, porém não é editável) e, em seguida, clicaremos no botão "Criar" ao fim da página.
+
+Está criada a nossa coleção "clientes", como podemos verificar no painel à esquerda. A partir desse momento, já conseguimos incluir dados, pressionando o ícone de "Novo Documento JSON", no topo da página:
+
+{
+    "nome": "Paulo",
+    "email": "paulo@gmail.com"
+}
+
+Após clicar em "Criar", no painel inferior podemos confirmar os documentos gerados. Vamos criar mais um documento JSON:
+
+{
+    "nome": "Tiago",
+    "email": "tiago@gmail.com"
+}
+
+Novamente, podemos verificar a listagem de entidades criadas.
+
+À direita dessa lista, há algumas operações à disposição. A primeira delas é a opção de editar, vamos testá-la modificando o último documento criado:
+
+{
+    "nome": "Tiago Lage",
+    "email": "tiago@gmail.com"
+}
+
+Além disso, por essa interface podemos clonar, exportar e excluir as entidades. A título de exemplo, vamos apagar o documento referente ao cliente "Tiago Lage". Note que, ao clicar na opção de exclusão, será mostrado o ID da entidade em questão.
+
+Nesse vídeo, criamos o nosso banco de dados e já conseguimos fazer algumas manipulações, operando em algumas entidades. Na próxima aula, vamos conectar uma aplicação, porque ficar mexendo no banco de dados diretamente pela interface web não é muito interessante — imagine se tivéssemos centenas ou milhares de usuários! De qualquer modo, podemos entrar, visualizar e fazer operações básicas.
+
+
+
+1-5 Faça como eu fiz: prepare o banco para Doguito
+
+
+
+Aprendemos sobre as opções de bancos de dados presentes na OCI, incluindo as diferenças de performance entre elas e de nível de controle.
+
+Em seguida criamos o banco de dados autônomo JSON que irá guardar as informações do Doguito. Escolhemos esta opção por ser um banco de dados autogerenciado pela OCI e fornecer uma API de comunicação simples e amigável para os desenvolvedores.
+
+Chegou a hora de você praticar o que aprendeu e criar um banco de dados na OCI.
+
+
+Opinião do instrutor
+
+Inicialmente, devemos logar na OCI com o usuário ‘doguito-admin’, em seguida, acionar a opção do menu correspondente aos Bancos de Dados: “Bancos de Dados Oracle” - “Bancos de Dados Autônomos”:
+
+alt text: Imagem da página inicial do site da Oracle Cloud onde se vê o menu da OCI com a opção “Autonomous Database” selecionada.
+
+Na próxima tela serão listados os bancos de dados. No nosso caso, ainda não temos nenhum implantado, clique em “Criar Autonomous Database”:
+
+alt text: Imagem da tela de listagem de bancos de dados autônomos disponíveis sem nenhum banco listado, com o botão “Criar Autonomous Database” no centro da tela.
+
+Nesta tela devemos informar os dados do banco que desejamos criar, em especial:
+
+Compartimento: Desenvolvimento
+Nome para exibição: DOGUITODB
+Nome do banco de dados: DOGUITODB
+Tipo de carga de trabalho: JSON
+Senha do usuário administrador: Doguito12345
+
+Em seguida, clique em “Criar Autonomous Database”.
+
+alt text: Imagem da tela de formulário de criação de banco de dados autônomo com o botão “Criar Autonomous Database” no canto inferior esquerdo da tela.
+
+Aguarde o provisionamento da base de dados, processo que deve demorar alguns minutos. Se tudo correr bem, a tela abaixo será apresentada:
+
+alt text: Imagem da tela de detalhamento do banco de dados que foi criado informando todas suas características e com o botão “Ações do Banco de Dados” no canto superior esquerdo da tela.
+
+Com o banco de dados criado, vamos gerar agora uma coleção de documentos e fazer alguns outros testes. Para isso, clique no botão “Ações do Banco de Dados”. Após alguns segundos, será exibida uma tela com as opções de manipulação da base de dados. Clique na opção “JSON”:
+
+alt text: Imagem da tela de opções de manipulação do banco de dados com o botão “JSON” no centro da tela.
+
+A tela que é exibida permite o gerenciamento dos dados JSON do banco, devemos clicar na opção “Criar Coleção”:
+
+alt text: Imagem da tela de gerenciamento de dados JSON com o botão “Criar Coleção” no centro da tela.
+
+Será exibida uma tela modal onde vamos nomear a coleção como “clientes”. Em seguida, clique em “Criar”:
+
+alt text: Imagem do formulário de criação e coleções com o botão “Criar” no canto inferior direito da tela.
+
+A tela seguinte já mostra a coleção criada e podemos adicionar documentos pressionando o botão “Novo Documento JSON”:
+
+alt text: Imagem da tela de gerenciamento de documentos da coleção, com o botão “Novo Documento JSON” na região central da tela.
+
+No formulário exibido é possível inserir um novo documento JSON. Crie um documento com o seguinte conteúdo:
+
+{
+    "nome": "Paulo",
+    "email": "paulo@gmail.com"
+}
+
+alt text: Imagem do formulário de criação de documento JSON com o botão “Criar” no canto inferior direito.
+
+Os documentos presentes na base são mostrados na tela de gerenciamento de coleção:
+
+alt text: Imagem do formulário de criação de documento JSON com o botão “Criar” no canto inferior direito.
+
+Experimente também as opções de alterar e excluir documentos!
+
+
+
+1-6 Para saber mais: bancos de dados Oracle
+
+
+A Oracle desenvolve um dos bancos de dados mais utilizados no meio corporativo do mundo. Desta forma, é de se esperar que a Oracle Cloud disponibilize muitos tipos de recursos de bancos de dados adequados às diversas necessidades de seus clientes. Este video detalha as características técnicas de cada uma das opções de bancos de dados da Oracle Cloud e é recomendável assisti-lo se você já é um administrador de bancos de dados ou se tem um contato mais profundo com a área:
+
+https://youtu.be/F4-sxIsnbKI
+
+
+O conteúdo em video pode apresentar alguns tópicos desatualizados, por isso, todos os detalhes sobre a utilização de Bancos de Dados na OCI podem ser também encontrados na documentação oficial na seção “Gerenciamento de Dados”, através dos links:
+
+https://docs.oracle.com/pt-br/iaas/Content/home.htm
+
+https://docs.oracle.com/es-ww/iaas/Content/home.htm.
+
+
+
+
+1-7 Para saber mais Bancos de Dados Não Relacionais na OCI
+
+
+
+Além das soluções tradicionais de bancos de dados relacionais, também está disponível na OCI a Oracle Database API para MongoDB.
+
+Com esta API, os desenvolvedores podem usar as ferramentas e drivers de código aberto do MongoDB conectados a um Oracle Autonomous JSON Database mantendo os benefícios de um banco de dados autônomo juntamente com uma API de banco de dados Não Relacional.
+
+Como a API é compatível com o Mongo DB, frequentemente, pouca ou nenhuma alteração é necessária no código nos aplicativos existentes – basta alterar a string de conexão.
+
+A lista de linguagens de programação recomendadas inclui C, C#, Go, Java, Node.js, Ruby, entre outras.
+
+O passo a passo de como utilizar o Oracle Database API para MongoDB encontra-se disponível neste link:
+
+https://docs.oracle.com/en/cloud/paas/autonomous-database/adbsa/mongo-using-oracle-database-api-mongodb.html
+
+
+
+
+1-8 O que aprendemos?
+
+  Quais são os tipos de serviços de bancos de dados oferecidos pela OCI, dentre eles Autonomous Database para DataWarehouse, JSON e processamento de transações, Bare Metal, VM e Exadata, MySQL, NoSQL entre outros. Cada opção de banco de dados oferecida pela OCI têm suas características peculiares em relação à performance, APIs de comunicação e automatização de tarefas;
+  
+  Como criar um Autonomous JSON Database que será utilizado para armazenar os dados do Doguito Petshop;
+  
+  Como inserir, excluir e alterar dados do Autonomous JSON Database utilizando a interface web.

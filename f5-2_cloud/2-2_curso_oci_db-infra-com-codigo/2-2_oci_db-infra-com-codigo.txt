@@ -1,0 +1,91 @@
+https://cursos.alura.com.br/course/oracle-cloud-infrastructure-dados-infraestrutura-codigo
+
+Evernote: devweb | alumni-2_cloud_2
+
+
+DevOps |  Cursos de OCI
+
+Curso de Oracle Cloud Infrastructure: banco de dados e infraestrutura como código
+
+Instrutor
+  Tiago Lage Payne de Pádua
+
+Sabia que esse curso foi criado em conjunto com o time de engenheiros da Oracle?
+
+A Oracle Corporation é uma empresa multinacional de tecnologia e informática norte-americana, especializada no desenvolvimento e comercialização de hardware e softwares e de banco de dados.
+
+A Oracle Cloud abrange 41 regiões geográficas interconectadas, oferecendo um conjunto completo de Oracle Cloud Applications e mais de 100 serviços da Oracle Cloud Infrastructure.
+
+Saiba mais em https://www.oracle.com/br/
+
+
+Faça esse curso de OCI e:
+
+  - Compreenda conceitos de bancos de dados na nuvem
+  - Aprenda a criar e configurar um compute para hospedar uma aplicação NodeJS
+  - Hospede um site estático no Object Storage da Oracle Cloud
+  - Realize a implantação de infraestruturas como código na Oracle Cloud
+
+
+Aulas
+
+1 - Bancos de dados na OCI | 0 / 8 | 17min
+
+  1-1 Apresentação
+  1-2 Bancos de dados na OCI
+  1-3 Escolhendo banco de dados
+  1-4 Criando um banco autônomo
+  1-5 Faça como eu fiz: prepare o banco para Doguito
+  1-6 Para saber mais: bancos de dados Oracle
+  1-7 Para saber mais Bancos de Dados Não Relacionais na OCI
+  1-8 O que aprendemos?
+
+2 - Conectando API e banco de dados | 0 / 9 | 39min
+
+  2-1 Projeto da aula anterior
+  2-2 Conhecendo o Doguito API
+  2-3 Implantando uma API na OCI
+  2-4 Faça como eu fiz: executar o Doguito API na OCI
+  2-5 Testando o Doguito API
+  2-6 Faça como eu fiz: testando a API REST do Doguito
+  2-7 Para saber mais: tecnologias do Doguito
+  2-8 Permitindo o acesso à aplicação
+  2-9 O que aprendemos?
+
+3 - Armazenamento | 0 / 9 | 40min
+
+  3-1 Projeto da aula anterior
+  3-2 Armazenamento na OCI
+  3-3 Doguito no Object Storage
+  3-4 Faça como eu fiz: servindo o site estático do Doguito
+  3-5 SSL no Load Balancer
+  3-6 Faça como eu fiz: Doguito API com SSL
+  3-7 Para saber mais: Object Storage na OCI
+  3-8 Tipo de armazenamento adequado
+  3-9 O que aprendemos?
+
+4 - Infraestrutura como código | 0 / 8 | 38min
+
+  4-1 Projeto da aula anterior
+  4-2 O que é infra como código
+  4-3 O gerenciador de recursos
+  4-4 Nossa primeira IAC
+  4-5 Faça como eu fiz: infraestrutura a partir do código
+  4-6 Para saber mais: automatizando a infraestrutura
+  4-7 Vantagens da IAC
+  4-8 O que aprendemos?
+
+5 - Infra do Doguito como código
+0 / 9
+34min
+
+  5-1 Projeto da aula anterior
+  5-2 Configurando a stack do Doguito
+  5-3 Faça como eu fiz: Doguito como código
+  5-4 Implantando stack na OCI
+  5-5 Faça como eu fiz: implantando o Doguito como código
+  5-6 Para saber mais: Terraform
+  5-7 Implantando recursos como código
+  5-8 O que aprendemos?
+  5-9 Conclusão
+

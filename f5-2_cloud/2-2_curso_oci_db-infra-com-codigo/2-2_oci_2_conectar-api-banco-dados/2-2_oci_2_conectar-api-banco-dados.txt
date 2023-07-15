@@ -1,0 +1,629 @@
+https://cursos.alura.com.br/course/oracle-cloud-infrastructure-dados-infraestrutura-codigo/section/13798/tasks
+
+Evernote: devweb | alumni-2_cloud_2
+
+
+Curso de Oracle Cloud Infrastructure: banco de dados e infraestrutura como código
+
+Instrutor Tiago Lage Payne de Pádua
+
+
+
+Aula 2 - Conectando API e banco de dados | 0 / 9 | 39min
+
+  2-1 Projeto da aula anterior
+  2-2 Conhecendo o Doguito API *
+  2-3 Implantando uma API na OCI *
+  2-4 Faça como eu fiz: executar o Doguito API na OCI
+  2-5 Testando o Doguito API *
+  2-6 Faça como eu fiz: testando a API REST do Doguito
+  2-7 Para saber mais: tecnologias do Doguito
+  2-8 Permitindo o acesso à aplicação
+  2-9 O que aprendemos?
+
+
+2-1 Projeto da aula anterior
+
+ara esta aula usaremos alguns códigos que estarão disponibilizados para a consulta no GitHub.
+
+https://github.com/alura-cursos/doguito-api
+
+
+
+2-2 Conhecendo o Doguito API *
+
+ranscrição
+
+Com o nosso banco de dados criado, é hora de conectar nossa aplicação a ele para que possa consumir os dados disponibilizados nesse banco. O código da aplicação em si é fornecido na plataforma da Alura, você pode baixá-lo no tópico anterior a este vídeo. A seguir, vamos abrir o código no VS Code e dar uma olhada nele.
+
+Trata-se do projeto Doguito API. Nossa aplicação está dividida entre a parte de front-end e a de back-end. O Doguito API, escrito em Node.js, é a parte de back-end, ou seja, é ele que fará as operações relativas ao banco de dados, como a persistência e captura de informações. Toda comunicação será feita por meio do Doguito API.
+
+Primeiramente, vamos abrir o arquivo package.json. Toda aplicação Node.js tem um arquivo central chamado package.json que descreve as dependências. Nesse caso, temos:
+
+// código anterior omitido
+
+"dependencies": {
+    "body-parser": "^1.19.2",
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
+    "ejs": "~2.6.1",
+    "express": "~4.16.1",
+    "express-async-handler": "^1.2.0",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1",
+    "oracledb": "^5.3.0"
+  }
+
+// código posterior omitido
+
+No caso,body-parser, cookie-parser, cors, debug, ejs, express são dependências comuns de uma aplicação Express.js — nossa aplicação é escrita em Node com o framework Express. No momento, a dependência que nos interessa é a oracledb, ou seja, o banco de dados da Oracle.
+
+É neste arquivo que começa nossa aplicação. Na linha 6 do package.json, constatamos que para rodar essa aplicação será executado o comando node ./bin/www (ou npm start). Portanto, no painel à esquerda, vamos em "bin > www".
+
+Analisando esse outro arquivo, compreendemos que a aplicação é iniciada e será feito um require nas dependências dela. Nas linhas seguintes, veremos que tanto a porta do ambiente quanto a porta 3000 podem ser selecionadas. O servidor será criado e diversas outras operações e alterações administrativas serão realizadas. A parte mais importante é a importação de app, na linha 7. Logo, vamos ao arquivo app.js.
+
+Esse arquivo especificará onde estão as views (as telas da aplicação), além de determinar que a aplicação permite a utilização através de cors, ou seja, requisições entre domínios são autorizadas. Ademais, será usado o Express como biblioteca e o bodyParser para processar o corpo das requisições, possuindo também um diretório de conteúdo público (public).
+
+Nas linhas 27 e 28, notamos os roteamentos da aplicação. Assim, temos uma rota para a raiz e outra para clientes, onde se concentrará a maior parte do nosso trabalho nesse curso:
+
+app.use('/', indexRouter);
+app.use('/clientes', clientesRouter);
+
+Mais abaixo, podemos verificar a forma como erros serão tratados e, partir da linha 46, vemos um serviço chamado ClienteService. Quando a aplicação inicia, o ClienteServiceé iniciado e disponibilizado no contexto da aplicação, sob o próprio nome "clienteService". Por outro lado, quando a aplicação vai sair, é chamado o comando closePool(), encerrando o pool de conexões com o banco de dados.
+
+Então, vamos analisar o que o ClienteService faz, indo até "services > cliente-service.js". Quando iniciado, ele coleta algumas informações do ambiente: nome do usuário (DB_USER), senha do usuário (DB_PASSWORD) e a URL de conexão (CONNECT_STRING). Esses são os parâmetros de comunicação com o banco de dados:
+
+// código anterior omitido
+
+    static async init() {
+        console.log(`process.env.DB_USER: ${process.env.DB_USER}`);
+        console.log(`process.env.DB_PASSWORD: ${process.env.DB_PASSWORD}`);
+        console.log(`process.env.CONNECT_STRING: ${process.env.CONNECT_STRING}`);
+
+        console.log('Criando pool de conexões...')
+        await oracledb.createPool({
+            user: process.env.DB_USER,
+            password: process.env.DB_PASSWORD,
+            connectString: process.env.CONNECT_STRING,
+        });
+        console.log('Pool de conexões criado.')
+        return new ClienteService();
+    }
+
+// código posterior omitido
+
+Além disso, da linha 18 a 22, ele cria o pool de conexões. Em geral, trabalhamos com pool de conexões porque não é recomendado fazer uma conexão a cada requisição recebida do cliente. O pool permite um melhor gerenciamento, fazendo com que conexões possam ser reaproveitadas. Ao criar esse pool, são passadas informações de usuário, senha e URL de conexão.
+
+Por fim, será retornada um ClienteService (linha 24).
+
+Mais abaixo, temos uma série de operações interessantes. A primeira delas é o getAll(), que retornará todos os clientes. Vamos analisar esta operação:
+
+    async getAll() {
+        let connection;
+        const result = [];
+
+        try {
+            connection = await oracledb.getConnection();
+
+            const soda = connection.getSodaDatabase();
+            const clienteCollection = await soda.createCollection(CLIENTES_COLLECTION);
+            let clientes = await clienteCollection.find().getDocuments();
+            clientes.forEach((element) => {
+                result.push({
+                    id: element.key,
+                    createdOn: element.createdOn,
+                    lastModified: element.lastModified,
+                    ...element.getContent(),
+                });
+            });
+        } catch (err) {
+            console.error(err);
+        } finally {
+            if (connection) {
+                try {
+                    await connection.close();
+                }
+                catch (err) {
+                    console.error(err);
+                }
+            }
+        }
+        return result;
+    }
+
+A princípio, é criada uma variável chamada connection, que fará uma conexão com oracledb, ou seja, se conectará com o banco de dados. Depois, será criado o .getSodaDatabase(), o principal elemento de comunicação com banco de dados JSON.
+
+Em seguida, temos .createCollection() que tentará criar uma coleção, mas caso ela já exista, retornará a própria coleção existente. Ele utiliza uma constante chamada CLIENTES_COLLECTION que aponta para 'clientes'. Anteriormente, quando criamos o Autonomous Database JSON, geramos uma coleção dentro dele chamada justamente 'clientes' — este é o ponto de ligação.
+
+Nosso código seleciona essa coleção, chama o método .find() e pega todos os documentos (getDocuments()) — seria o mesmo que consultar todos os registros numa base de dados relacional. Para cada um desses documentos, será incluído um objeto JSON com ID, data de criação, data da última modificação e o conteúdo em si.
+
+Caso ocorra algum erro, será exibido uma mensagem por meio do console.error(err) e, finalmente, a conexão será fechada.
+
+Além do getAll(), temos outras operações. Se quisermos buscar pelo ID, usaremos o getById(clienteId), cuja principal diferença é encontrada na linha 68, em que passamos o key com o ID do documento desejado.
+
+Também temos a operação save(cliente) com a qual salvamos um novo cliente. Trata-se de uma persistência. Este método recebe um cliente que será passado como parâmetro em .insertOneAndGet().
+
+Em seguida, temos o update(id, cliente) que recebe um ID e um cliente e, após o .find(), aplica o método .replaceOneAndGet() que atualizará o elemento. O deleteById() fará a remoção a partir do ID informado, chamando o método .remove(). E, por fim, .closePool() será chamado no encerramento do sistema.
+
+Tudo isso está ligado às URLs do sistema pelo sistema de rotas, que podemos encontrar em "routes > clientes.js". Nesse arquivo, veremos, por exemplo, que se for feita uma chamada do tipo GET para a URL base/, será chamado o método getAll() na instância de CLIENTE_SERVICE:
+
+// Lista todos os clientes
+router.get('/', asyncHandler(async (req, res) => {
+  res.send(await res.app.get(CLIENTE_SERVICE).getAll());
+}));
+
+Se quisermos detalhar pelo ID, será chamado o método getById():
+
+// Detalha um cliente
+router.get('/:id', asyncHandler(async (req, res) => {
+    res.send(await res.app.get(CLIENTE_SERVICE).getById(req.params.id));
+}));
+
+Se chamarmos um POST na URL /, será chamado o método save():
+
+// Insere um cliente
+router.post('/', asyncHandler(async (req, res) => {
+  res.status(201).send(await res.app.get(CLIENTE_SERVICE).save(req.body));
+}));
+
+Se fizermos um PUT, será o método update():
+
+// Altera um cliente
+router.put('/:id', asyncHandler(async (req, res) => {
+  res.status(200).send(await res.app.get(CLIENTE_SERVICE).update(req.params.id, req.body));
+}));
+
+Se fizermos um DELETE, será chamado o método deleteById():
+
+// Exclui um cliente
+router.delete('/:id', asyncHandler(async (req, res) => {
+  const deleted = await res.app.get(CLIENTE_SERVICE).deleteById(req.params.id);
+  res.status(deleted.count == 1 ? 204 : 404).end();
+}));
+
+Portanto, este é o código do Doguito API. Lembrando que ele já está pronto, estamos apenas observando seu conteúdo para termos uma ideia de como tudo funciona. Você pode continuar explorando a aplicação para descobrir mais.
+
+Vale lembrar que quando nossa aplicação estiver em execução, ao acessar a porta 3000, veremos a página index. Se colocarmos /clientes ao final do endereço, teremos como retorno a lista de clientes.
+
+Ademais, você pode explorar o site do Node.js, o site do Express e a documentação da biblioteca SODA (Simple Oracle Document Access), que são ferramentas utilizadas nesse projeto.
+
+Na próxima aula, vamos baixar essa aplicação no servidor que já está em execução e fazer a ligação com o nosso banco de dados.
+
+Links:
+
+Node
+https://nodejs.org/en/
+
+
+Express
+https://expressjs.com/pt-br/
+
+
+SODA
+https://docs.oracle.com/en/database/oracle/simple-oracle-document-access/nodejs/
+
+
+
+
+2-3 Implantando uma API na OCI *
+
+Transcrição
+
+Uma vez que compreendemos quais tipos de bancos de dados a OCI oferece, fizemos a criação do nosso Autonomous Database JSON e entendemos as características do Doguito API, é hora de instalarmos e colocarmos o Doguito API para ser executado nas instâncias de compute que já temos.
+
+Na interface inicial da OCI, no menu, vamos clicar em "Computação > Instâncias". Num primeiro momento, vamos colocar o Doguito API em uma instância só, portanto vamos selecionar a dps-vm1. Nessa página, teremos várias informações, em especial o endereço IP público, que usaremos em breve.
+
+Clicaremos no ícone à direita da barra superior para abrir o Cloud Shell. Para acessar a máquina, vamos copiar o endereço IP público (no meu caso, é 132.226.245.137) e utilizá-lo no comando ssh seguido do caminho para o arquivo .ssh, da seguinte forma: ssh opc@132.226.245.137 -i .ssh/cloudshellkey. Assim, estaremos na máquina.
+
+A seguir, colocaremos o código do Doguito API nessa máquina por meio do comando git clone https://github.com/alura-cursos/doguito-api.git, clonando o repositório do Doguito API. Você pode confirmar a URL no material disponibilizado na plataforma.
+
+Vamos nos deparar com um problema: "comando git não encontrado" — ainda não temos o Git instalado nessa máquina. Então, executaremos o comando sudo dnf install git e confirmaremos a operação digitando "yes". O processo de instalação pode demorar alguns segundos.
+
+Com o Git instalado, podemos repetir o comando git clone https://github.com/alura-cursos/doguito-api.git e, em seguida, listaremos os diretórios (com ls) para nos certificar de que o projeto foi clonado.
+
+Vamos acessar o projeto (cd doguito-api/) e instalar as dependências, utilizando o comando npm install. Novamente, teremos um erro: "comando npm não encontrado" — precisamos também instalar o NPM e o pacote do Node. Faremos isso através do comando sudo dnf install @nodejs:16 (ou seja, a versão 16). Essa ação requer uma confirmação, digitaremos "y".
+
+Concluída a instalação, vamos repetir o comando npm install. Dessa vez, o comando é bem-sucedido. Por serem muitas dependências, esse processo pode ser um pouco demorado.
+
+Com as dependências instaladas, agora podemos executar o npm start. Vamos nos deparar com mais um erro, seremos informados de que não foi encontrada a biblioteca cliente do banco de dados Oracle — em outras palavras, precisamos instalar mais alguns softwares. Basicamente, faltam duas bibliotecas adicionais. A primeira será instalada com sudo dnf install oracle-instantclient-release-e18 e a outra com sudo dnf install oracle-instantclient-basic.
+
+Feitas essas instalações, tentaremos executar nosso projeto mais uma vez, com npm start. Vamos obter outro erro: falta a senha, o nome de usuário, a connection string. Essa série de problemas ocorre porque, agora que fizemos todas as instalações necessárias, falta fazer a comunicação, de fato, com a instância do banco de dados.
+
+Para tanto, no menu da OCI, vamos até "Oracle Database > Autonomous Database". Em seguida, acessaremos o DOGUITODB e clicaremos no botão "Conexão do BD" no topo da página. Nessa nova aba, teremos a opção de fazer o download da wallet, que contém os arquivos necessários para fazermos o mutual TLS. O mutual TLS é semelhante ao HTTPS, porém ele reconhecerá tanto um lado como o outro, um lado autenticará o outro (ou seja, é mútuo). Então, basta clicar no botão "Fazer o download da wallet", criar uma senha (podemos usar "Doguito12345" de novo) e baixar.
+
+O próximo passo é colocar esse arquivo na instância. Primeiramente, no Cloud Shell, vamos deslogar da virtual machine utilizando o comando exit. A seguir, acessaremos o menu no canto esquerdo superior do Cloud Shell e selecionaremos a opção "Fazer upload". Vamos arrastar o arquivo Wallet_DOGUITODB.zip do nosso computador para a área de upload e clicar em "Fazer Upload".
+
+Dessa forma, fizemos o upload para o Cloud Shell, mas o arquivo ainda não está na máquina virtual! Para realizar essa transferência, utilizaremos o comando scp, parecido com o ssh, porém usado para cópias. Então, indicaremos o arquivo da chave, o arquivo a ser copiado, o local para onde copiaremos e a pasta-destino: scp -i .ssh/cloudshellkey Wallet_DOGUITODB.zip opc@132.226.245.137:/home/opc. Lembre-se de usar o IP público da sua própria instância.
+
+Feitas essas operações, novamente faremos o login via ssh na nossa máquina virtual e, ao fazer a listagem, veremos a Wallet_DOGUITODB.zip junto do doguito-api. A wallet está na instância.
+
+Agora, precisamos transferir esse arquivo .zip para uma pasta específica da própria Oracle: sudo cp Wallet_*.zip /usr/lib/oracle/21/client64/lib/network/admin. Arquivo copiado, vamos descompactá-lo no destino, com o comando sudo sh -c 'cd /usr/lib/oracle/21/client64/lib/network/admin && unzip -B Wallet_*.zip. Assim, os arquivos serão extraídos.
+
+Se voltarmos à pasta do doguito-api e tentarmos executar o npm start, notaremos que o usuário, a senha e a string de conexão continuam indefinidos. Vamos definir essas variáveis por meio do comando export. Logo, export DB_USER=ADMIN e export DB_PASSWORD=Doguito12345. Quanto à string de conexão, ela estará localizada no arquivo tnsnames.ora. Outra opção é ir até "Oracle Database > Autonomous Database", acessar o DOGUITODB, clicar no botão "Conexão do BD" e copiar um dos nomes TNS. No Cloud Shell, vamos executar export CONNECT_STRING=doguitodb_high.
+
+Mais uma vez, vamos tentar iniciar o serviço e, dessa vez, o processo será bem-sucedido! Serviço criado e em execução, veremos os logs das conexões no Shell.
+
+O próximo passo é fazer a conexão via URL no navegador. No menu da OCI, vamos até "Computação > Instâncias" e copiar o IP público de dps-vm1. Numa nova aba do navegador, vamos colar esse endereço e adicionar a porta 3000 ao final — :3000. Entretanto, a conexão não será concluída.
+
+Anteriormente, quando criamos a instância, foram necessários mais dois passos além desses. O primeiro é liberar a porta 3000 no próprio firewall da máquina. Vamos deixar nosso servidor rodando na porta 3000 mesmo, porque é o default do Express, para não entrar em colisão com o HTPD. Então, vamos liberar a porta 3000 com o comando sudo firewall-cmd --permanent --add-port=3000/tcp e dar um reload com sudo firewall-cmd --reload.
+
+Além disso, temos que incluir a porta 3000 no roteamento da VCN. No menu da OCI, vamos em "Rede > Redes Virtuais na Nuvem". Acessaremos a VCN1, entraremos na VCN pública "Public Subnet-VCN1" e, em seguida, clicaremos na lista de segurança "Default Security List for VCN1". Constataremos que a porta 80 está liberada.
+
+Vamos criar uma nova regra de entrada. O CIDR de origem será 0.0.0.0/0, o mais amplo de todos. Manteremos o intervalo de portas de origem como "Todos" e definiremos intervalos de portas de destino como 3000. Regra adicionada, vamos rodar o npm start mais uma vez.
+
+Agora, conseguimos nos conectar via URL do navegador na porta 3000! Se adicionarmos /clientes ao final do endereço, veremos a lista de clientes atual.
+
+Para confirmar, no menu da OCI, podemos ir a "Oracle Database > Autonomous Database", entrar no DOGUITODB, clicar em "Ações do Banco de Dados", selecionar JSON e verificar a mesma lista de entidades no painel inferior.
+
+Podemos editar e salvar a entidade referente ao cliente Paulo:
+
+{
+    "nome": "Paulo Teste",
+    "email": "paulo@gmail.com"
+}
+
+Recarregando a tela /clientes, teremos a lista atualizada, com "Paulo Teste".
+
+Assim, conseguimos levantar nosso projeto Doguito API e nos comunicar com o banco de dados. Até a próxima aula!
+
+
+
+2-4 Faça como eu fiz: executar o Doguito API na OCI
+
+
+Aprendemos como implantar uma aplicação Node.JS na infraestrutura da OCI. Clonamos o repositório git da aplicação na instância, em seguida instalamos o Node JS, os drivers de bancos de dados e por fim liberamos o firewall e a regra de entrada para que a aplicação ficasse acessível.
+
+Chegou a hora de você praticar o que aprendeu e executar o Doguito API na OCI. Para ter acesso aos códigos, você pode acessar o link do repositório no GitHub!
+
+https://github.com/alura-cursos/doguito-api
+
+
+
+Opinião do instrutor
+
+Inicialmente devemos acessar o menu “Instâncias” na OCI:
+
+alt text: Imagem do menu da OCI com a opção “Instâncias” selecionada na área central da tela.
+
+Em seguida vamos acessar a instância dps-vm1. Clique no link com o nome da instância:
+
+alt text: Imagem da lista de instâncias do compartimento Desenvolvimento.
+
+Copie o ip público da instância, abra o Cloud Shell e execute o comando ssh opc@<ip-publico-da-sua-instancia> -i .ssh/cloudshellkey.
+
+alt text: Imagem do detalhe da instância dps-vm1 com o Cloud Shell em execução.
+
+Depois, instale o git na máquina com o comando sudo dnf install git.
+
+Faça o clone do repositório do projeto e acesse o diretório que foi clonado, cd doguito-api.
+
+Instale o node na instância sudo dnf install @nodejs:16 e as dependências do projeto com o comando npm install. Depois, instalaremos as dependências do banco de dados Oracle com os comandos abaixo:
+
+sudo dnf install oracle-instantclient-release-el8
+sudo dnf install oracle-instantclient-basic
+
+Agora vamos configurar a conexão do Doguito API com nosso banco de dados criado anteriormente. Acesse o menu de Autonomous Database:
+
+alt text: Imagem da página inicial do site da Oracle Cloud onde se vê o menu da OCI com a opção “Autonomous Database” selecionada.
+
+Na tela seguinte será exibido um link para o DOGUITODB, clique neste link:
+
+alt text: Imagem da tela de listagem dos bancos de dados Autonomous do compartimento Desenvolvimento com um link para o DOGUITODB na região central da tela.
+
+Na tela de detalhamento, clique na opção “Conexão do BD”:
+
+alt text: Imagem da tela de detalhamento do banco de dados DOGUITODB onde se vê o botão “Conexão do BD” na parte central superior da tela.
+
+Na modal que será exibida, clique na opção “Fazer download da wallet”, será solicitada uma senha, digite “Doguito12345” e em seguida clique em “Fazer Download”:
+
+alt text: Imagem da modal de download da wallet de conexão com o DOGUITODB.
+
+Após a conclusão do download, volte para o Cloud Shell e encerre a conexão ssh com a instância usando o comando “exit”; Use a opção de “Upload” presente no menu do Cloud Shell para selecionar o arquivo de Wallet que foi baixado para o seu computador e disponibilizá-lo no Cloud Shell:
+
+alt text: Imagem do menu de opções do Cloud Shell com a opção “Upload” selecionada.
+
+Na modal que é exibida selecione o arquivo de Wallet do DOGUITO e clique em “Upload”:
+
+alt text: Imagem da modal de upload de arquivos com o arquivo Wallet_DOBUITODB.zip selecionado.
+
+O próximo passo será copiar o arquivo de Wallet do Cloud Shell para a instância do doguito. Faremos isso com o comando SCP scp -i .ssh/cloudshellkey Wallet_DOGUITODB.zip opc@<ip-publico-da-sua-instancia>:/home/opc.
+
+Então, faremos o login via SSH novamente na instância do Doguito API: ssh opc@<ip-publico-da-sua-instancia> -i .ssh/cloudshellkey.
+
+Agora vamos copiar o arquivo de Wallet para a pasta de administração da Oracle: sudo cp Wallet_DOGUITODB.zip /usr/lib/oracle/21/client64/lib/network/admin/.
+
+Com o arquivo copiado, podemos descompactá-lo na pasta de destino com o comando abaixo:
+
+sudo sh -c 'cd /usr/lib/oracle/21/client64/lib/network/admin/ && unzip -B Wallet_DOGUITODB.zip'
+
+Será necessário exportar variáveis com os parâmetros de conexão com o banco de dados, isso é feito com o comando export:
+
+export DB_USER=ADMIN
+export DB_PASSWORD=Doguito12345
+export CONNECT_STRING=doguitodb_high
+
+Para permitir a conexão oriunda da internet com a nossa instância, vamos liberar a porta no firewall executando os seguintes comandos:
+
+sudo firewall-cmd --permanent --add-port=3000/tcp
+sudo firewall-cmd --reload
+
+A conexão também tem que ser liberada na VCN. Primeiramente acesse o menu “Redes Virtuais na Nuvem” a partir do menu “Redes”:
+
+alt text: Imagem do menu principal da OCI com a opção Rede e Redes Virtuais na Nuvem selecionada.
+
+Na listagem de VCNs, clique na VCN1:
+
+alt text: Imagem da listagem de VCNs com link para VCN1 no centro da tela.
+
+Na tela de detalhamento da VCN, na listagem de sub-redes, clique na sub-rede “Sub-rede Pública-VCN1”:
+
+alt text: Imagem de detalhamento da VCN1 com a lista de sub-redes e link para Sub-rede pública-VCN1 na parte inferior central da tela.
+
+Na tela de detalhamento da sub-rede pública da VCN1, clique em “Default Security List for VCN1”:
+
+alt text: Imagem de detalhamento da sub-rede pública da VCN1 com as listas de segurana e um link para “Default Security List for VCN1” na parte central inferior da tela.
+
+Na tela de detalhamento da lista de segurança padrão da VCN1, clique no botão “Adicionar Regras de Entrada”:
+
+alt text: Imagem de detalhamento da lista padrão de segurança da VCN1 com botão para Adicionar Regras de Entrada na parte inferior central da tela.
+
+No formulário que é exibido preencha os seguintes campos:
+
+CIDR de origem: 0.0.0.0/0
+Intervalo de Portas de Destino: 3000
+Clique em “Adicionar Regras de Entrada”
+
+alt text: Imagem do formulário para inclusão de regras de entrada com o botão Adicionar Regras de Entrada no canto inferior esquerdo da tela.
+
+Agora já podemos executar o nosso projeto via Cloud Shell:
+
+cd doguito-api
+npm start
+
+alt text: Imagem da interface de execução do Cloud Shell com o comando npm start sendo executado.
+
+Se tudo correr bem, será possível acessar a aplicação do Doguito API pelo navegador (lembre-se de utilizar o IP público da sua instância, que será diferente do IP da captura de tela abaixo):
+
+alt text: Imagem do navegador acessando o Doguito API.
+
+Para completar, acesse a URL (http://<ip-publico-da-sua-instancia>:3000/clientes) e veja se os clientes que estão no banco de dados autônomo serão listados.
+
+alt text: Imagem do navegador acessando a listagem de clientes do Doguito API.
+
+Inclua novos clientes via interface Web do Autonomous Database (como fizemos antes) e verifique que a listagem de clientes do Doguito API também será atualizada.
+
+
+
+2-5 Testando o Doguito API *
+
+Transcrição
+
+Agora que estamos com a aplicação implantada no servidor, vamos fazer alguns testes de operações: listar, detalhar, incluir, alterar e excluir dados. Checaremos se tudo está devidamente funcionando.
+
+Existem várias ferramentas distintas para fazer esses tipos de testes, até mesmo na própria linha de comando, usando o Curl. No caso, optamos por um plugin de navegador chamado Boomerang, que é mais visual. Para instalá-lo, basta procurar "Boomerang - SOAP & REST Client" na loja do seu navegador Microsoft Edge ou Google Chrome.
+
+Com o plugin instalado, vamos clicar no botão "Quick Request" e informar a URL, ou seja, o IP público da máquina virtual seguido da porta e /clientes. Essa ferramenta requer que indiquemos o protocolo também (HTTP), então no meu caso o endereço será http://132.226.245.137:3000/clientes. Pressionando o botão "SEND", temos o retorno esperado no painel à direita.
+
+Vamos tentar ver os detalhes do cliente Paulo a partir do seu ID. Ao final da URL, adicionamos uma barra (/) seguida do ID. Clicando em "SEND", obtemos os detalhes desejados.
+
+A seguir, na interface da OCI, vamos encerrar o Cloud Shell e a conexão para ver o que acontece. Voltando ao Boomerang, vamos tentar listar os clientes mais uma vez: http://132.226.245.137:3000/clientes. Dessa vez, temos um erro.
+
+Em realidade, ainda falta um passo após a instalação da aplicação. Precisamos deixá-la rodando como um serviço do Linux para que ela não fique dependente de ser "startada" por uma pessoa e evitar que ela "caia" com o encerramento do Cloud Shell. Além disso, é interessante que seja colocada com um serviço para, quando a instância for iniciada, ele seja levantado junto.
+
+Vamos voltar à OCI e abrir o Cloud Shell, para fazer mais uma alteração no projeto. Primeiro, vamos nos conectar usando o IP público da instância, no meu caso: ssh opc@132.226.245.137 -i .ssh/cloudshellkey. Em seguida, entraremos no projeto Doguito (cd doguito-api/). Há um arquivo chamado doguito-api.service. Para alterá-lo, temos duas opções de editores, o VI (ou Vim) e o Nano.
+
+Com o comando vim doguito-api.service, vamos editá-lo usando o Vim, que não é muito intuitivo, mas resolverá nossos problemas. Para entrar no modo de edição, pressionaremos a tecla "I". Vamos modificar a senha (DB_PASSWORD) para "Doguito12345" e a string de conexão para "doguitodb_high". Para salvar e sair, pressionaremos a tecla "Esc" e, em seguida, digitamos :wq — write and quit.
+
+Para realizar a mesma operação com o Nano, basta usar nano doguito-api.service. Fazer alterações nesse editor é um pouco mais fácil, depois pressionamos "Ctrl + O" para escrever e "Ctrl + X" para sair.
+
+Para conferir que as modificações foram salvas, podemos executar cat doguito-api.service:
+
+# https://docs.oracle.com/en/learn/use_systemd/index.html#introduction
+# https://oracle-base.com/articles/linux/linux-services-systemd#creating-linux-services
+# https://nodesource.com/blog/running-your-node-js-app-with-systemd-part-1/
+
+[Unit]
+Description=Doguito API Service
+After=network.target
+
+[Service]
+Environment="DB_USER=ADMIN"
+Environment="DB_PASSWORD=Doguito12345"
+Environment="CONNECT_STRING=doguitodb_high"
+Type=simple
+User=opc
+ExecStart=/usr/bin/node /home/opc/doguito-api/bin/www
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+
+A seguir, vamos copiar esse arquivo para a pasta do systemd, rodando o comando sudo cp doguito-api.service /lib/systemd/system. Em seguida, daremos um reload no daemon do systemd, para que ele note o novo serviço disponível — sudo systemctl daemon-reload.
+
+Feita essa operação, vamos checar o status do doguito-api.service com o comando sudo systemctl status doguito-api.service. Veremos que está inativo. Se tentarmos enviar uma requisição no Boomerang, ainda não funcionará. Para resolver esse problema, vamos executar o sudo systemctl start doguito-api.service. Agora, nos status, consta como "active (running)". Pressionando o botão "SEND" no Boomerang, voltamos a ter um retorno apropriado.
+
+Assim, temos um controle fácil sobre o serviço. A qualquer momento, podemos ver o status (sudo systemctl status doguito-api.service), parar o serviço (sudo systemctl stop doguito-api.service) e reiniciá-lo (sudo systemctl start doguito-api.service).
+
+Além disso, um bom procedimento que podemos realizar é fazer com que o serviço se inicie automaticamente junto do sistema operacional, com o comando sudo systemctl enable doguito-api.service. Tudo funcionando, podemos mandar requisições pelo Boomerang sem problemas.
+
+Para confirmarmos, vamos executar o exit e encerrar o terminal Cloud Shell. Pressionando o botão "SEND" no Boomerang, verificamos que o serviço continua funcionando. Resta realizarmos os testes que tínhamos começado no início desse vídeo.
+
+Para fazer a listagem, vamos mandar um GET para a URL http://132.226.245.137:3000/clientes. Teremos como retorno um objeto do tipo array.
+
+Para fazer o detalhamento, basta acrescentar / e o ID do usuário. Diferentemente do anterior, o retorno é um objeto só. Se colocarmos um ID que não existe, o retorno será 404, o código de erro HTTP de "não encontrado".
+
+A seguir, criaremos uma entidade. Vamos alternar do método GET para o POST, na caixa de seleção à esquerda da URL que informamos. Logo abaixo, há uma barra com as opções "BODY", "HEADERS", "QUERY STRINGS", "AUTH" e "ASSERTION". Marcaremos o "BODY" como conteúdo do tipo "JSON" e, na área de código, informaremos o objeto:
+
+{
+    "nome": "Tiago",
+    "email":"tiago@gmail.com"
+}
+
+Note que não informamos o ID, pois ele será atribuído automaticamente.
+
+Na aba "HEADERS", informaremos que tipo de conteúdo estamos mandando. Vamos clicar no botão "Add Header" na parte inferior direita e preencher os campos "Name" e "Value" com "Content-Type" e "application/json", respectivamente. Podemos clicar no botão "SEND" para enviar a requisição para a URL, sem ID.
+
+Para confirmar que a entidade foi criada, vamos voltar para o método GET e pressionar "SEND". Perceberemos que agora há duas instâncias. Na própria interface web do gerenciador de banco de dados, ao pressionar o play novamente, teremos duas instâncias também: Tiago e Paulo.
+
+Agora, temos a opção de fazer o detalhamento do usuário Tiago, usando seu ID.
+
+Assim, já testamos a criação, a listagem e o detalhamento. Em seguida, vamos fazer a alteração de dados. Para tanto, mudaremos para o método PUT e manteremos a URL com o ID do usuário Tiago. Na área de código, vamos modificar o e-mail do usuário:
+
+{
+    "nome": "Tiago",
+    "email": "tiago@outlook.com"
+}
+
+Pressionaremos "SEND" e, em seguida, vamos conferir na interface web que as informações do usuário foram devidamente alteradas.
+
+A última operação é a exclusão. Colocaremos o método DELETE e, com a mesma URL, clicaremos em "SEND". Teremos um resultado 204, sem conteúdo, como esperado. Se realizarmos a listagem mais uma vez, notaremos que Tiago não existe mais.
+
+Nesse vídeo, conseguimos avançar em dois passos importantes. Em primeiro lugar, conseguimos rodar nossa aplicação como um serviço do sistema operacional. Agora, toda vez que a máquina for iniciada, o serviço já ficará ativo, não mais vinculado ao Cloud Shell. Depois, realizamos as operações básicas do CRUD (create, read, update, delete). Recomendo bastante o uso desse plugin de navegador, pois facilitará os testes de envio de requisições, mas o comando curl da linha de comando também é uma opção para quem tem mais familiaridade.
+
+Até a próxima aula!
+
+
+
+2-6 Faça como eu fiz: testando a API REST do Doguito
+
+
+
+Testamos a API REST do Doguito utilizando um plugin de navegador. Existem várias opções de plugins de navegadores, mas utilizamos o Boomerang, que está disponível nos links abaixo:
+
+Chrome
+https://chrome.google.com/webstore/detail/boomerang-soap-rest-clien/eipdnjedkpcnlmmdfdkgfpljanehloah?hl=pt-BR
+
+Edge
+https://microsoftedge.microsoft.com/addons/detail/boomerang-soap-rest-c/bhmdjpobkcdcompmlhiigoidknlgghfo
+
+
+Se você usa o Firefox, uma opção é o RESTClient.
+https://addons.mozilla.org/pt-BR/firefox/addon/restclient/
+
+
+Porém, vimos que a execução do Doguito está sendo realizada de forma manual, o que não é ideal, uma vez que se a instância for reiniciada ou ocorrer algum problema, o Doguito não será executado de novo. Para evitar este problema, convertemos o Doguito em um serviço do Systemd.
+
+Agora é com você, faça os ajustes recomendados e teste o Doguito API com um cliente REST. Se tiver alguma dificuldade, use o fórum para conversar com outras pessoas sobre sua dúvida!
+
+
+Opinião do instrutor
+
+Utilizando um cliente REST, liste os clientes do Doguito API pelo endereço (http://<ip-público-da-sua-instância>:3000/clientes):
+
+alt text: Imagem plugin Boomerang listando os clientes do Doguito API.
+
+Detalhe um cliente utilizando o cliente REST pelo endereço http://<ip-público-da-sua-instância>:3000/clientes/<id-do-cliente-no-banco-de-dados>:
+
+alt text: Imagem plugin Boomerang detalhando um cliente do Doguito API.
+
+O próximo passo é tornar o Doguito API um serviço do sistema operacional, para isso, acesse via Cloud Shell a instância do Doguito API: ssh opc@<ip-publico-da-sua-instancia> -i .ssh/cloudshellkey.
+
+Acesse agora a pasta do projeto com cd doguito-api. Edite o arquivo doguito-api.service usando vim doguito-api.service.
+
+Para que o vim entre no modo de “inserção”, você deve pressionar a tecla “i” e aparecerá o texto “-- INSERT --" na tela. No modo de inserção, posicione o cursor com as setas do teclado e ajuste o valor das variáveis “DB_PASSWORD” e “CONNECT_STRING”.
+
+Para salvar o arquivo, tecle “Esc” para sair do modo de inserção do vim e :wq para salvar o arquivo e sair do vim:
+
+alt text: Imagem do Cloud Shell com a tela de edição do arquivo doguito-api.service no vim.
+
+Caso prefira, também é possível editar o arquivo com o comando nano doguito-api.service. Para salvar no nano pressione “Ctrl + O” e para sair, “Ctrl+X”. Faça um cat no arquivo para ver se a edição ficou correta com cat doguito-api.service.
+
+Copie o arquivo de service para a pasta system do systemd usando sudo cp doguito-api.service /lib/systemd/system e faça o reload no deamom do systemd:
+
+sudo systemctl daemon-reload
+
+Verifique o status do serviço do Doguito API com o comando sudo systemctl status doguito-api.service.
+
+Então inicie o serviço do Doguito API e verifique seu status novamente:
+
+sudo systemctl start doguito-api.service 
+sudo systemctl status doguito-api.service 
+
+alt text: Imagem do Cloud Shell exibindo o status do serviço do Doguito API.
+
+Para que o Doguito API inicie automaticamente quando a instância for iniciada, podemos executar o comando abaixo:
+
+sudo systemctl enable doguito-api.service
+
+Uma vez que já ajustamos a questão do serviço, podemos dar continuidade aos testes. Vamos testar a inclusão de um novo cliente no banco de dados acessando a interface do cliente REST que estiver utilizando (Boomerang por exemplo).
+
+Altere o método para POST. Ajuste a URL para http://<ip-público-da-instância>:3000/clientes e altere o tipo de conteúdo no painel direito para “JSON”. Na aba HEADERS, inclua um header do tipo “Content-Type” com o valor “application/json”:
+
+alt text: Imagem da configuração de header a ser enviado para o Doguito API.
+
+No payload inclua um JSON como o exemplo abaixo:
+
+{
+   "nome": "tiago",
+   "email": "tiago@gmail.com"
+}
+
+Por fim clique em “Enviar”. O painel do lado direito deve passar a exibir a resposta da requisição com os dados da entidade que foi criada:
+
+alt text: Imagem da resposta à chamada da API do Doguito API para criar um novo cliente contendo os dados do cliente que foi criado ao lado direito da tela.
+
+Para confirmar se realmente a entidade foi incluída com sucesso, altere o método novamente para GET, o que vai listar os clientes do Doguito API. O novo cliente deve ser listado:
+
+alt text: Imagem da resposta à chamada da API do Doguito API para listar os clientes contendo o cliente que foi incluído na listagem à direita da tela.
+
+Teste também a alteração de um cliente. Altere o método para “PUT” e altere o JSON enviado, por exemplo, com um endereço de e-mail diferente. Inclua na URL o ID do cliente a ser alterado:
+
+URL: http://<ip-público-da-instância>:3000/clientes/<id-do-cliente-a-ser-alterado>
+{
+   "nome": "tiago",
+   "email": "tiago@gmail.com"
+}
+
+alt text: Imagem da resposta à chamada da API do Doguito API para alterar os dados de um cliente contendo o cliente que foi alterado no painel à direita da tela.
+
+Nosso último teste é apagar um cliente da base de dados. Para isso, altere o método HTTP para DELETE e na URL preencha com o ID do cliente a ser excluído:
+
+alt text: Imagem da resposta à chamada da API do Doguito API para excluir um cliente com a resposta HTTP 204 indicando que a exclusão foi bem sucedida.
+
+
+
+2-7 Para saber mais: tecnologias do Doguito
+
+
+Nossa aplicação de exemplo que será implantada na Oracle Cloud é desenvolvida utilizando JavaScript, NodeJS e o framework Express. Para o nosso curso não será necessário conhecimento profundo de desenvolvimento de aplicações usando estas tecnologias, pois focaremos mais na infraestrutura de implantação.
+
+No entanto, caso você se interesse por esta pilha tecnológica ou queira se aprofundar mais nos assuntos, recomendo dar uma olhada na Formação Node.js com Express que também está disponível aqui na plataforma Alura.
+
+https://www.alura.com.br/formacao-node-js-express
+
+
+
+
+2-8 Permitindo o acesso à aplicação
+
+Imagine que implantamos uma aplicação na OCI, mas não conseguimos acessá-la pela internet mesmo sabendo que ela está em execução na instância. O IP simplesmente não responde e também não aparece uma mensagem de erro que informe o que aconteceu. A página fica apenas carregando.
+
+Marque 2 opções abaixo com situações que podem levar a esse sintoma.
+
+Falta de uma regra de saída na lista de segurança da VCN.
+  Alternativa incorreta. Regras de saída bloqueiam comunicações que partem da instância para uma rede externa. No caso, como a aplicação foi aberta no navegador, a comunicação foi iniciada de uma rede fora da rede da instância.
+
+Falta configurar a aplicação como um serviço no systemd.
+  Alternativa incorreta. Apesar de ser importante configurar a aplicação como um serviço para que ela execute automaticamente, no texto foi dito que a aplicação estava em execução, então esta não é uma causa provável do erro observado.
+
+Falta de configuração do firewall da instância.
+  Alternativa correta. Por padrão diversas portas de comunicação são bloqueadas no firewall da instância, para que haja comunicação é necessário habilitar estas portas no firewall.
+
+Falta de uma regra de entrada na lista de segurança da VCN.
+  Alternativa correta. Para que uma VCN receba comunicação de redes externas é necessário habilitar uma regra de entrada para a porta onde se deseja receber comunicação.
+
+
+
+2-9 O que aprendemos?
+
+  Que o Doguito API é uma aplicação que expõe uma API REST escrita em JavaScript utilizando o framework Express.js e que é executada pelo Node.js;
+  
+  Que é necessário instalar o git para clonar nosso projeto para a instância, além de ser necessário instalar o Node para executar o Doguito API e outros drivers de bancos de dados específicos da Oracle;
+  
+  Que fazemos o download da Wallet de conexão do banco de dados para que nossa instância possa acessar o DOGUITODB;
+  Que podemos criar um serviço do systemd para que a aplicação do Doguito API inicie automaticamente com nossa instância;
+  
+  Que é necessário liberar o acesso à porta 3000 no firewall da instância e criar uma regra de acesso na lista de segurança da rede virtual para que possamos acessar o Doguito API;
+  
+  Que podemos utilizar um cliente REST como o Boomerang para acessar nossa API do Doguito.

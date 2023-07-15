@@ -1,0 +1,594 @@
+https://cursos.alura.com.br/course/oracle-cloud-infrastructure-aplicacao-nuvem/section/13790/tasks
+
+Evernote: devweb - alumni-2_cloud_1
+
+Curso Oracle Cloud Infrastructure: implantação de uma aplicação na nuvem
+Instrutor Tiago Lage Payne de Pádua
+
+
+Aula 5 - Compute | 0 / 14 | 45min
+
+  5-1 Criando um Compute *
+  5-2 Faça como eu fiz: nosso primeiro compute
+  5-3 Para saber mais: tudo sobre computes
+  5-4 Configurando um servidor *
+  5-5 Faça como eu fiz: instalando softwares na instância
+  5-6 Múltipla escolha Computes
+  5-7 Balanceador de carga *
+  5-8 Mais um servidor *
+  5-9 Faça como eu fiz: mais um Doguito Server
+  5-10 Nosso balanceador de cargas *
+  5-11 Para saber mais: introdução aos load balancers
+  5-12 Balanceador de cargas
+  5-13 O que aprendemos?
+  5-14 Conclusão *
+
+
+5-1 Criando um Compute *
+
+
+Transcrição
+
+[00:00] Chegou a hora de criarmos de fato o nosso servidor do Doguito Petshop. Para isso precisamos criar aqui uma entidade dentro da OCI chamada Compute, esse serviço de Compute pode nos prover das máquinas virtuais ou servidores que chamamos de bare metal para atender os requisitos da nossa aplicação.
+
+[00:21] Os computes da OCI são muito escaláveis, tem alta performance e um custo bem baixo. A forma ou o shape, que eles chamam, do compute é bastante flexível e significa que podemos escolher quantos núcleos de CPU desejamos e quanto de memória que queremos disponibilizar para a máquina.
+
+[00:40] Além disso, a OCI permite que você escolha até mesmo o tipo de processador que o seu compute vai utilizar. Por exemplo, pode ser AMD, Intel, ARM, tem vários tipos de processadores disponíveis. Uma vez definida a forma do compute podemos criar a instância dele.
+
+[00:57] Vamos começar. A partir da tela inicial da Oracle Cloud, podemos clicar aqui no menu e ir na opção de "Compute", segunda opção do menu. Em compute podemos clicar em "Instances" para ver as nossas instâncias, vamos clicar em "Create instance", lembrando que você deve estar logado com o usuário "doguito-admin".
+
+[01:26] A primeira coisa que vamos ver aqui na instância é o nome dela, vamos dar um nome para ela. Eu vou dar o nome de "dps-vm1", a máquina virtual 1, Doguito Petshop VM1. O segundo ponto que temos que escolher aqui é em qual compartimento que desejamos criar, no caso o nosso usuário tem acesso ao compartimento de "Desenvolvimento", ele até apareceu por default e já vamos deixá-lo preenchido aqui.
+
+[01:59] Uma instância vai residir em uma região, essa região é composta de diversas availlabillity domain ou domínios de disponibilidade. Aqui nessa opção do Placement ele já deixa por default a availlabillity domain que tem aqui que no caso é AD1, o Fault domain que vamos colocar vai ser por default, tem a opção de editar, mas vamos manter os valores default.
+
+[02:30] Cada instância que vamos executar tem um sistema operacional e outros softwares que vão ficar armazenados nesse disco de boot, tem um disco de boot que vai ser definido. Esse sistema operacional que é definido pela imagem vamos escolhê-lo para fazer o boot da nossa instância.
+
+[02:47] Esse disco de boot é um disco virtual de rede, ele não fica diretamente no host da instância. Além disso, você tem um disco de dados que vai armazenar os arquivos e o firewall system ele também vai ficar em driver de rede. Esse disco de sistema operacional e o disco de dados formam em conjunto o que chamamos de volume de bloco. A imagem e a forma já foram escolhidas por padrão, mas podemos clicar aqui em "Editar".
+
+[03:16] Vindo aqui na opção do "Image and shape" eu posso clicar aqui na opção de editar e poderíamos escolher para ver as outras opções. Temos aqui o sistema operacional desse image, é o sistema operacional que eu falei e é o sistema operacional que ele vai dá o boot na instância.
+
+[03:37] Se clicarmos em "Change image" vamos ver que tem algumas opções aqui eu posso escolher, inclusive, as imagens da plataforma, imagens da Oracle, imagens de associados ou até mesmo criar, no caso da empresa, criar a sua própria imagem.
+
+[03:58] Em nosso caso vamos com a opção padrão que é "Oracle Linux", veja que ele também já está com Always Free-elegible, ou seja, é uma opção que sempre vai está no pacote de sempre livre. Aqui ele fala qual vai ser o sistema operacional, vamos deixar tudo como default mesmo. Vou clicar em "Cancelar" porque não fez nenhuma alteração.
+
+[04:21] Agora a nossa opção que temos aqui do shape, se clicarmos em "Change shape" veja que temos aqui várias opções onde eu poderia escolher, no caso, Bare metal machine que é um servidor físico dedicado, mas no nosso caso vamos utilizar a máquina virtual, virtual machine mesmo, veja que ela também está no pacote Always Free. Como o nosso caso é muito simples vamos manter no virtual machine.
+
+[04:52] Podemos ver agora as opções de processador que temos, como eu tinha comentado, AMD, Intel, ARM, entre outras opções. Vamos deixar também aqui no padrão e esse padrão vai permitir que o cliente utilizasse essa instância mesmo após ao final do período de teste.
+
+[05:14] Aqui deixamos no valor padrão, vamos deixar aqui nessa máquina Standard e podemos deixar aqui no Select shape mesmo que vai ficar a mesma opção anterior. Mais abaixo um pouco vamos ver a opção que temos de rede, eu tenho aqui Networking. Veja que por padrão ele já selecionou aqui a nossa VCN1, a VCN1 que tínhamos criado na aula anterior.
+
+[05:40] Temos que prestar atenção aqui também em qual sub-rede que queremos colocar, no caso vou deixar uma sub-rede já existente e vamos escolher aqui a sub-rede pública. É importante colocar que a sub-rede é pública, pois a nossa máquina vai ser acessível a partir da internet. Essa sub-rede pública vai permitir também que tenhamos aqui um IP público, ou seja, é um endereço de IP que vai estar visível para fora também da instância.
+
+[06:09] Além disso, nós também vamos receber um IP privado. Dependendo do caso poderíamos manter só IP privado sem definir o IP público, se fosse um servidor de banco de dados, alguma coisa assim vai depender do caso de uso ali. Para definir a instância, para levantarmos a instância sempre é necessário escolhermos a opção da sub-rede.
+
+[06:31] Mais abaixo um pouco vamos ver que tem a opção para adicionar a chave SSH, ele fala aqui que você pode gerar um par de chave pública e privada, fazer upload ou colar aqui uma chave pública. Se você lembrar de uma aula anterior que já fizemos nós realmente já criamos uma chave pública. Vamos acessar aqui o nosso console novamente, o nosso Cloud Shell, esperar ele instanciar a nossa instância pelo Cloud Shell, vai instanciar no usuário home.
+
+[07:15] Após conectar no Clud Shell podemos acessar novamente aquela pasta cd .ssh que já tínhamos criado anteriormente, listar os arquivos e agora podemos dar aqui um cat para ver o conteúdo do arquivo cat cloudshellkey.pub. Podemos pegar o conteúdo dessa chave pública e colocar no campo adequado. Eu vou selecionar aqui o valor da chave pública, posso vir aqui com o botão direito, copiar e vou voltar na opção e vou colar a chave pública aqui.
+
+[07:58] Temos aqui mais algumas opções abaixo como volume de boot e algumas opções avançadas que nesse momento não precisamos nos preocupar porque o nosso caso de uso é muito simples. Podemos deixar tudo com o valor padrão. Agora podemos clicar aqui no botão "Create" e ele vai fazer a criação dessa instância.
+
+[08:19] Note que durante a criação ele vai deixar essa letra I aqui na cor alaranjada indicando que ele está no processo de criação, ele está provisionando a máquina para nós, isso vai demorar alguns segundos. Nesse meio tempo podemos dar uma olhada em algumas informações interessantes como, por exemplo, o IP público que já foi criado. Está aqui o endereço de IP público que foi criado, aqui temos o endereço do IP privado e algumas outras informações sobre a nossa placa de rede virtual.
+
+[08:52] Outra informação aqui também muito importante é o nome do usuário, aqui usuário OPC, que é o usuário que vamos utilizar para fazer o login. Note também que já foi escolhido aqui um fault domain que neste caso foi escolhido aleatoriamente o fault domain número 3 que é uma subdivisão que tem dentro do domínio de disponibilidade.
+
+[09:14] Com isso agora podemos logar nessa máquina, lembre-se: a instância do Cloud Shell é uma instância só para você utilizá-la como ferramenta para acessar as outras instâncias reais. Agora já criamos uma instância real, note que está a letra I com a cor verde e a máquina está rodando, running. Vamos tentar acessar essa máquina.
+
+[09:38] Vamos acessar essa máquina através do comando SSH, posso clicar aqui no comando copy do Public IP address para copiar o endereço de IP e vou tentar acessar via SSH. ssh aí eu vou colocar aqui o usuário, no caso o usuário opc@, vou colar aqui o endereço de IP público (você deve colocar o IP público da sua instância) e vou colocar aqui o arquivo, vou indicar qual é o arquivo de chave privado e vou colocar aqui o arquivo cloudshellkey. No meu caso, ficará assim: ssh opc@132.226.245.137 -i cloudshellkey.
+
+[10:12] Agora vou dar um "Enter", ele vai pedir aqui uma confirmação, aceitei a confirmação e de fato, estou logado na máquina virtual, agora estou logado nessa máquina aqui. Essa linha de comando refere-se a essa instância.
+
+[10:28] Uma vez que já estamos logado na máquina, para testarmos realmente se ela está funcionando, se ela está acessando internet podemos tentar pingar um site público, por exemplo, eu posso dar aqui um comando de ping e colocar aqui ping www.google.com, fez aqui o ping, conseguiu atingir a máquina da Google.
+
+[10:54] Podemos aqui cancelar e com isso conseguimos criar essa instância, instanciamos um serviço de compute dentro da OCI.
+
+
+
+
+
+
+5-2 Faça como eu fiz: nosso primeiro compute
+
+
+
+Criamos nosso primeiro compute. Computes são a estrutura da OCI para provisionar e gerenciar hosts de computação, conhecidos como instâncias.
+
+Você pode criar instâncias conforme o necessário para atender aos aplicativos que deseja implantar na OCI. Depois de criar uma instância, pode acessá-la com segurança utilizando uma chave SSH, reiniciá-la, anexar e desanexar volumes e encerrá-la. Mas lembre-se de que qualquer alteração feita nas unidades locais da instância são perdidas quando você as encerra.
+
+Para criarmos uma instância, que será um servidor do Doguito Petshop, podemos acessar o menu “Computação” e em seguida “Instâncias”. Vamos lá?
+
+
+Opinião do instrutor
+
+A partir do menu inicial da OCI, selecione a opção “Compute” e em seguida “Instances”:
+
+alt text: Console da OCI com a opção “Computação” selecionada no menu à esquerda e a opção "Instâncias" ao centro da página.
+
+Na tela que aparece, serão listadas as instâncias. No nosso caso, não há nenhuma instância ativa, então devemos clicar em “Criar instância”:
+
+alt text: Tela de listagem de instâncias de computação com botão “Criar instância” no centro da tela.
+
+No formulário que será exibido preencha os seguintes valores:
+
+Em “Nome” digite: dps-vm1. Selecione o compartimento: Desenvolvimento. Na seção “imagem” e “forma”, mantenha os valores padrão.
+
+alt text: Parte superior do formulário de criação de instância com o campo de preenchimento de “Nome” e seleção de compartimento.
+
+Selecione a rede virtual VCN1 que criamos anteriormente e a sub-rede pública, pois esta instância será acessível via internet. Na sessão de chave SSH, marque “Colar uma chave SSH”. Será aberto um campo de entrada.
+
+Abra o Cloud Shell e acesse a pasta ‘.ssh’:
+
+cd .ssh
+cat cloudshellkey.pub
+
+Copie o conteúdo da chave pública e cole no campo de entrada que foi exibido:
+
+alt text: Parte inferior do formulário de criação de instância com o campo de preenchimento de chave “SSH” e botão “Criar” na parte inferior esquerda da tela.
+
+Clique no botão “Criar” e aguarde o fim do processo.
+
+Se todos os passos forem bem sucedidos, deverá ser exibida a tela com os detalhes da instância criada:
+
+alt text: Tela com os detalhes da instância que foi criada, como seu IP Público, IP Privado, domínio de disponibilidade, etc.
+
+Para validar se ela foi criada corretamente, podemos acessá-la via SSH a partir do Cloud Shell. Acesse a lista de instâncias, clique na instância desejada e copie seu IP público:
+
+alt text: Tela com os detalhes da instância que foi criada e com o seu IP Público selecionado.
+
+Em seguida, utilizando o Cloud Shell, acesse a instância via SSH com o comando abaixo e faça um teste de ping:
+
+ssh opc@<ip-publico-da-sua-instancia> -i ~/.ssh/cloudshellkey
+ping www.google.com
+
+alt text: Detalhe da tela do Cloud Shell realizando comando de ping contra o google a partir da instância que foi criada..
+
+Agora já temos nosso primeiro compute.
+
+
+
+
+
+5-3 Para saber mais: tudo sobre computes
+
+
+Como já aprendemos, computes representam as instâncias que de fato vão servir nossas aplicações na cloud. Existem muitas opções para se escolher, que equilibram questões de custo e performance.
+
+Se você se interessou pelo assunto e quer saber todos os detalhes da configuração de computes na OCI, não deixe de ver esta playlist que fala tudo sobre computes na OCI.
+
+https://www.youtube.com/playlist?list=PLKCk3OyNwIzsAjIaUaVsKdXcfBOy6LASv
+
+
+O conteúdo em video pode apresentar alguns tópicos desatualizados, por isso, todos os detalhes sobre Computes na OCI podem ser também encontrados na documentação oficial, na seção “Computes”, através dos links:
+
+https://docs.oracle.com/pt-br/iaas/Content/home.htm
+
+https://docs.oracle.com/es-ww/iaas/Content/home.htm.
+
+
+
+
+
+
+5-4 Configurando um servidor *
+
+
+Transcrição
+
+[00:00] Agora que temos a nossa instância criada, nossa compute, ainda temos alguns preparativos para serem feitos antes de executar de fato o Doguito Petshop. A primeira coisa que precisamos fazer nessa instância que criamos é realizar a instalação de um servidor HTTP.
+
+[00:19] Como, por exemplo, temos o Apache, esse servidor HTTP é o que vai servir as páginas web do Doguito. Para isso, podemos utilizar o próprio Cloud Shell, fazendo a conexão via SSH com a nossa instância. Podemos executar aqui alguns comandos de instalação.
+
+[00:39] Depois de fazer o login via SSH podemos fazer aqui o comando sudo yum -y install httpd. No caso o comando sudo é para executar com root, vamos executar a porta do comando como root, o yum é um instalador que temos aqui no Oracle Linux disponível, é instalador de pacotes aqui do Oracle Linux, -y é para realizar as confirmações automaticamente, se for pedir alguma confirmação, principalmente de uma dependência adicional. install é o comando de instalação e httpd é o programa que queremos instalar, no caso httpd é o Apache Web Server.
+
+[01:27] Teclando aqui "Enter" ele vai fazer o processo de instalação desse pacote. Concluída a instalação do pacote httpd que é o servidor da Apache, o nosso próximo passo é abrir uma porta do firewall. O firewall já vem instalado no próprio sistema operacional, no caso do Oracle Linux, não confundir com o próprio firewall que estamos definindo na VCN. O nosso próximo passo é fazer a liberação dessa porta de firewall do Oracle Linux.
+
+[02:00] Para isso podemos executar aqui um comando de sudo firewall -cmd --permanent --add -port-80/tcp. Ou seja, estamos executando aqui o comando sudo firewall, vamos operar aqui sobre o firewall, essa alteração é classificada como permanente e eu vou adicionar a porta 80 no tcp, ele vai permitir comunicação com a porta 80. Damos aqui o comando "Enter", ele vai proceder a essa alteração e agora precisamos recarregar o sistema do firewall para que isso funcione.
+
+[02:56] sudo firewall -cmd --reload, fazendo aqui o comando do reload ele vai recarregar, vai liberar o firewall. O próximo passo temos que "startar" ou iniciar o servidor do Apache e para isso fazemos aqui o comando sudo systemctl start httpd. Esses comandos podem variar de acordo com a versão do Linux que você estiver utilizando ou do sistema operacional que você estiver utilizando podem alterar um pouco, depende da configuração do sistema operacional.
+
+[03:38] A próxima coisa que precisamos fazer é o seguinte: colocar algum conteúdo em uma página HTML padrão para que consigamos acessar pelo navegador. Isso vai fazer pelo comando sudo su, aqui estou trocando de usuário para usuário root, perceba aqui que no console alterou de opc para root, aqui o nome do usuário e agora eu vou fazer aqui um comando echo. O comando echo basicamente vai ecoar esse texto que vamos colocar.
+
+[04:10] Vamos colocar aqui: echo "Doguito Petshop Server 1" >> /var/www/html/index.html. Os dois símbolos de maior significam que é para concatenar, se já houver o arquivo, para adicionar o final do arquivo. E esse arquivo é o arquivo raiz do servidor, /var/www/html/index.html. Aqui estamos complementando esse arquivo index.html com esse conteúdo Doguito Petshop Server 1.
+
+[04:54] Entro aqui, à priori, pelo que já imaginamos, já deveria estar funcionando. Vamos tentar acessar pelo navegador essa máquina, pelo aqui esse IP público, vou abrir outra aba do navegador e vou colocar aqui o endereço. Note que não está acontecendo nada, ele está rodando, rodando aqui e não vai para lugar nenhum.
+
+[05:21] Aqui podemos fazer uma alteração, vamos ter que lembrar um ponto importante que é a nossa VNC. A nossa VCN precisa estar configurada para permitir esse acesso da máquina. Vamos abrir novamente a nossa VCN, podemos clicar aqui diretamente na rede para detalhá-la e temos uma característica aqui importante da VCN que é a parte de segurança da nossa Security Lists.
+
+[06:00] Clicou aqui no "Security Lists" e clicamos aqui nessa lista de segurança e vamos ver que ele está liberando aqui a porta 22. No tráfego de entrada, ingress, existem três regras: uma regra para ICMP, no caso aqui o ICMP aqui é para o próprio protocolo a TCP e temos aqui a porta 22, estamos liberando aqui só a porta 22.
+
+[06:32] O que eu preciso fazer aqui é adicionar uma nova regra de ingress, vamos colocar aqui a nossa nova regra para permitir a comunicação TCP na por 80. Vou colocar aqui Add Ingress Port Rules e vou definir aqui qual é o tipo de origem, o tipo de origem aqui no caso eu vou defini-lo com CIDR e vou colocar aqui a faixa de IP de origem. Nesse caso vamos colocar a faixa de IP de origem mais ampla que é 0.0.0.0/0.
+
+[07:07] O tipo de protocolo que eu vou trabalhar é TCP, a porta de origem podemos deixar All, a porta de destino vai ser a porta 80. Eu poderia colocar uma descrição, mas por simplicidade vou deixar só dessa forma aqui, clico em "Add Ingress Rules". Coloquei aqui essa forma, vou voltar na minha máquina, voltar no meu "Compute > Instances", vou pegar aqui a minha instância, vou copiar aqui novamente o IP público dela, vou abrir uma nova aba no navegador e colocar aqui o IP.
+
+[07:55] Perceba que agora conseguimos acessar aquele conteúdo que tínhamos feito o echo, uma página HTML muito básica, realmente só com um texto corrido, mas aqui já estamos conseguindo. Ou seja, a partir da internet, posso colocar aqui o IP público que conseguimos aqui no OCI e consigo acessar aqui um conteúdo lá do meu servidor, o conteúdo que colocamos para servir.
+
+[08:23] Com isso temos um servidor HTTP plenamente configurado e ele pode receber de fato as páginas do Doguito.
+
+
+
+
+
+
+5-5 Faça como eu fiz: instalando softwares na instância
+
+
+Realizamos a instalação dos softwares necessários para a execução do Doguito Server na instância criada. Para isso, instalamos o servidor Apache HTTP e criamos uma página HTML muito básica, só mesmo para validar o funcionamento do servidor.
+
+No entanto, para que a instância seja acessível através da porta 80 via internet, faz-se necessária a inclusão de uma nova regra de acesso na lista de segurança da VCN pública.
+
+Após esses passos é possível acessar o servidor através de uma requisição via navegador, utilizando o IP Público como endereço.
+
+Chegou a hora de você realizar tais passos, acesse o Cloud Shell e mãos à obra!
+
+
+Opinião do instrutor
+
+Utilizando o Cloud Shell faça o login na instância utilizando sua chave privada:
+
+ssh opc@<ip-publico-da-sua-instancia> -i ~/.ssh/cloudshellkey
+
+Utilizando o instalador yum, vamos instalar o Apache:
+
+sudo yum install -y httpd
+
+Liberar a porta 80 no firewall
+
+sudo firewall-cmd --permanent --add-port=80/tcp
+sudo firewall-cmd --reload
+
+Iniciar o serviço do Apache:
+
+sudo systemctl start httpd
+
+Criar um conteúdo básico em uma página html:
+
+sudo su
+echo ‘Doguito Petshop Server 1’ >> /var/www/html/index.html
+
+alt text: Tela do Cloud Shell realizando os comandos de instalação dos softwares na instância do compute que criamos. Ainda é necessário configurar a Security List da VCN para permitir o tráfego na porta 80, então, acesse a tela da VCN (a partir do detalhamento da instância clique em “Public VCN”):
+
+alt text: Tela de informações da instância com o link Sub-rede Pública-VCN1 selecionado.
+
+Na tela que será exibida, clique na opção “Default security List for VCN1” para editar esta lista de segurança:
+
+alt text: Tela de informações da VCN com o link com o link “Default Security List for VCN1” na parte central inferior da tela.
+
+Na tela que será exibida, clique em “Adicionar Regras de Entrada” para adicionar uma nova regra:
+
+alt text: Tela de informações da Lista de Segurança associada à Sub-rede Pública-VCN1 com botão “Adicionar Regras de Entrada” na parte inferior da tela.
+
+No formulário que será exibido, preencha com os seguintes valores:
+
+Tipo de origem: selecione CIDR
+CIDR de Origem: 0.0.0.0/0
+Porta de destino: 80
+
+Clique em “Adicionar Regras de Entrada”
+
+alt text: Formulário de inclusão de regra de Entrada com diversos campos a serem preenchidos e botão “Adicionar Regras de Entrada” no canto inferior esquerdo. Após a inclusão, a nova regra deve ser exibida na listagem:
+
+alt text: Listagem de regras de entrada contendo a nova regra de entrada que acabamos de incluir na última posição.
+
+Para validar se tudo funcionou corretamente, você deve conseguir acessar a instância a partir da internet. Siga os seguintes passos:
+
+Acesse os detalhes da instância pelo menu principal em “Computação” e submenu “Instâncias”, clique na instância que foi criada e copie seu IP público;
+
+Acesse este IP público diretamente como um endereço no navegador, deve ser exibido o texto do ‘Doguito Petshop Server 1’:
+
+alt text: Tela do navegador apontando para o endereço do IP público da instância que foi criada exibindo o texto ‘Doguito Pethsop Server 1’.
+
+Pronto! Instalamos os softwares necessários na nossa instância.
+
+
+
+
+
+5-6 Múltipla escolha Computes
+
+Quando realizamos a criação de um Compute na OCI, podemos customizar o Shape (forma do Compute) de acordo com as necessidades do sistema que será implantado.
+
+Selecione as alternativas que indicam opções de customização de Shapes de Computes da OCI:
+
+Quantidade de Memória (GB)
+  Alternativa correta! Ao se criar um compute, a quantidade de memória RAM definida para o Compute irá variar de acordo com a quantidade de OCPUs que foi definida (informações detalhadas neste [link] (https://docs.oracle.com/en-us/iaas/Content/Compute/References/computeshapes.htm))
+
+Tipo de Processador: AMD ou Intel
+  Alternativa incorreta! Ao se criar uma instância de compute, pode-se selecionar o tipo de processador desejado incluindo processadores Ampere que se baseiam na tecnologia ARM;
+
+Tipo de Instância: Máquina Virtual ou Máquina Bare Metal
+  Alternativa correta! Máquina virtual é um ambiente computacional independente que é executado sob um hardware bare metal físico. Já uma instância de computação bare metal permite acesso ao servidor físico dedicado para fins de desempenho mais alto e maior isolamento.
+
+Quantidade de OCPUs
+  Alternativa correta! Ao se criar um compute, pode-se definir a quantidade CPUs virtuais que serão disponibilizadas.
+
+
+
+
+
+5-7 Balanceador de carga *
+
+
+Transcrição
+
+[00:00] Já conseguimos subir uma instância de um servidor que vai hospedar o nosso Doguito Petshot. A nossa esperança é que a aplicação seja um sucesso absoluto e suspeitamos que durante o lançamento dessa aplicação vai ter um grande número de acessos e esse número de acessos pode não ser suportado para uma única instância de nosso servidor.
+
+[00:24] Para evitar esse problema, podemos utilizar um componente da OCI chamado de load balancer. O load balancer nos permite ter uma alta disponibilidade e também escalabilidade na nossa aplicação. Ou seja, ela não vai cair e ela pode suportar um grande número de acessos simultâneos.
+
+[00:44] Um load balancer, às vezes, também é chamado de um proxy reverse e a forma como ele funciona é que ele fica entre o internet gateway e as múltiplas instâncias da nossa aplicação.
+
+[00:56] Vamos ver aqui no menu da OCI que ele vai nos trazer um exemplo dele. Venho aqui em "Load Balancers" e se eu clicar aqui em "Create Load Balancer" ele já nos apresenta esta figura aqui.
+
+[01:08] Vamos entender como ele funciona. O load balancer que este componente aqui ele vai distribuir a carga de requisições entre as instâncias, quando eu tenho aqui múltiplas instâncias, digamos aqui, do nosso servidor esse load balancer que fica aqui no meio vai distribuir a carga.
+
+[01:34] Mesmo que um servidor fique fora do ar, por exemplo, vamos dizer que algum desses servidores aqui fique fora do ar, vamos dizer que eles sejam clones um do outro e um fica do ar, o load balancer vai desviar o tráfego para as outras máquinas que estejam disponíveis. E o usuário final vai continuar conseguindo acessar, pois ele vai ser direcionado para uma instância que estiver operacional.
+
+[01:59] O load balancer também permite uma melhor escalabilidade, pois a medida que o nosso tráfego aumenta, o nosso número de usuários aumenta é possível incluir mais instâncias do seu servidor atrás do load balancer. Aqui temos, digamos três instâncias e se começar a ter muito tráfego, o sistema começou a ficar lento, eu vou adicionando mais instâncias aqui de forma transparente e o load balancer vai sendo reconfigurado para distribuir o tráfego entre essas novas instâncias.
+
+[02:33] Além disso, você também pode utilizar o load balancer para algum recurso mais avançado como, por exemplo, terminação de SSL, podemos configurar o SSL, o HTTPS para encerrar o load balancer, entre outras características.
+
+[02:48] A OCI nos disponibiliza dois tipos de load balancer já pré-configurados, o primeiro é esse que estamos vendo aqui, ele é chamado de um load balancer de nível 7 ou layer 7, o que significa que esse load balancer consegue entender o tráfego HTTP e HTTPS. Esse layer 7 vem da nomenclatura do modelo OSI, se alguém já estudou o modelo OSI vai lembrar sobre as camadas, ele está aqui na camada 7.
+
+[03:21] O segundo modelo aqui de load balancer que é esse aqui é chamado de Network Load Balancer, como o nome diz, ele opera em uma camada mais baixa, ele opera na camada 4 do modelo OSI. Ele consegue compreender TCP, UDP, ICMP, ele é um load balancer, digamos, de nível mais baixo, ele não consegue compreender HTTP, que é um protocolo de aplicação.
+
+[03:49] Por ele trabalhar em um nível mais baixo ele tem também uma performance melhor, ele não tem que ficar abrindo os pacotes HTTP para inspecionar, ele trabalha mais rápido do que um load balancer de nível 7. Por outro lado, o load balancer de nível 7 tem mais inteligência, ele capaz de processos de mais alto nível porque ele consegue olhar pacotes, inspecionar esses pacotes, ver o conteúdo disso e tomar alguma decisão sobre esse pacote.
+
+[04:18] O tipo de load balancer que você vai utilizar depende dos requisitos do seu negócio, no caso do Doguito Petshop, vamos utilizar mesmo o load balancer de nível 7 porque ele mais simples de trabalhar.
+
+
+
+
+
+
+5-8 Mais um servidor *
+
+
+Transcrição
+
+[00:00] Antes de começarmos criar o nosso load balancer a primeira coisa que temos que fazer é criar um outro servidor do Doguito PetShop para que nele possamos ficar fazendo esse balanceamento de carga entre o servidor 1 e o servidor 2.
+
+[00:18] No momento se entrarmos aqui na área de "Compute > Instances" vamos ver que tem somente uma instância. Vamos entrar aqui nessa instância só para confirmar que ela está está funcionando tudo certo, colocando aqui em uma outra aba está aqui "Doguito Petshop Server 1".
+
+[00:38] Temos que criar uma outra instância. Vamos fazer aqui o processo de criação dessa segunda instância, mas vou fazer mais rápido porque vamos fazer exatamente os mesmos passos que já fizemos anteriormente. Aqui tem o "dps-vm1" e vou criar aqui a instância 2.
+
+[00:57] A primeira coisa que eu vou fazer aqui é colocar o nome dela, vou colocar "dps-vm2", ambiente desenvolvimento, aqui vamos deixar no mesmo domain. Vou deixar aqui na shape default, network default também, vai cair na rede pública. E aí eu vou colocar aqui também a questão de colar a chave pública aqui, eu vou voltar lá no meu Shell e a partir desse Shell eu vou pegar a minha chave pública novamente.
+
+[01:30] Lembrando que, em uma situação real, em geral, colocaríamos essas VMs, essas instâncias em uma rede privada e deixaria acessível somente o load balancer, mas para efeito de exemplo aqui vamos fazer de uma forma mais simples, vamos deixar tanto as instâncias do servidor do Doguito PetShop na rede pública quanto o load balancer também.
+
+[01:55] Já entrei aqui no meu Cloud Shell, vou acessar agora aquela mesma pasta ssh/ e vou dar um cat cloudshellkey aqui na parte da chave pública, novamente vou fazer aqui a cópia dessa chave pública, copiei ela aqui e vou colar a chave pública aqui e deixo tudo como default e coloco aqui no Create.
+
+[02:24] Novamente temos que aguardar aqui alguns segundos para fazer essa criação. Decorridos alguns segundos a instância vai ser criada, ela vai ser criada e running. Com essa instância executada, com ela criada o nosso próximo passo vai ser concluir a instalação dos softwares nela, que é o que vamos fazer aqui em seguida.
+
+[02:50] O primeiro ponto que vamos fazer é fazer um SSH para acessar essa máquina, ssh opc e vamos colocar aqui o IP público dela, -i e colocamos aqui o arquivo de chave privada. Colocou aqui, ele vai pedir para aceitarmos, aceitamos e confirmamos. Daí para frente vai fazer a instalação dos softwares que já instalamos na outra instância.
+
+[03:23] O primeiro passo é instalar nela o software que é o daemon do Apache com o comando sudo yun -y install httpd, executamos aqui esse comando e aguarda também alguns minutos até a conclusão da execução deste comando. Após a conclusão da instalação do HTTPD, que é o daemon do Apache, vamos fazer a abertura da porta do firewall da instância, o comando sudo firewall -cmd --permanent --add-port=80/tcp.
+
+[04:03] Com esse comando o firewall vai abrir a porta 80, esse é o firewall da instância. E depois vamos recarregar aqui o firewall para que ele assuma as novas configurações com o comando sudo firewall -cmd --reload.
+
+[04:22] Em seguida, vamos iniciar o serviço do Apache com o comando: sudo systemctl start httpd. Com isso o Apache vai iniciar e podemos trocar aqui para o usuário root com comando sudo su. Troquei aqui para o usuário root com o comando sudo su, agora vamos fazer o último passo que é colocar aquela página inicial, aquela página que indica um HTML bem básico com o conteúdo do Doguito PetShop Server.
+
+[04:59] Nesse caso vamos fazer o comando echo 'Doguito Petshop Server 2' >> /var/wwwhtml/index.html, fazendo aqui esse comando a página já vai ficar carregada. Agora podemos pegar aqui esse IP público e colar aqui no navegador, vamos colocar aqui o IP público do navegador e vamos conseguir acessar. Está aqui: "Doguito Petshop Server 2".
+
+[05:32] Podemos também voltar ali e olhar as outras instâncias que tínhamos, vamos voltar aqui na minha lista de instâncias. Eu tenho essa outra aqui que foi terminada já que era um teste que eu estava fazendo, mas que está executando: "dps-vm2" e "dps-vm1" também em execução.
+
+[05:54] Se eu pegar aqui o IP do "dpm-vm1" e abrir aqui outra aba do navegador e colar eu tenho aqui: "Doguito Petshop Server 1". E do outro lado eu tenho "Doguito Petshop Server 2", em dois IPs públicos distintos.
+
+[06:11] Obviamente que não desejamos que o usuário tenha que ficar trocando de uma instância para outra manualmente pelo IP, é nesse ponto que vamos entrar com a instalação do load balancer, vamos fazer com que o load balancer direcione o tráfego para cada um destes dois servidores.
+
+
+
+
+
+
+5-9 Faça como eu fiz: mais um Doguito Server
+
+
+
+Nossas expectativas em relação ao projeto do Doguito Petshop estão grandes. Portanto, temos que evitar que o site caia bem no lançamento do site, devido a um número muito grande de acessos. Então vamos manter mais de um servidor funcionando e utilizar um balanceador de carga para distribuir a carga entre eles.
+
+Dessa forma, nosso próximo passo será criar mais uma instância do Doguito Petshop Server para em seguida implantar um balanceador de cargas.
+
+A criação deste servidor seguirá exatamente os mesmos passos da primeira vez. No entanto, iremos alterar seu nome (que passará a ser “dps-vm2”) e o texto da página HTML padrão , que deve informar que acessaremos um segundo servidor.
+
+
+Opinião do instrutor
+
+A partir do menu inicial da OCI, selecione a opção “Compute” e em seguida “Instances”.
+
+alt text: Console da OCI com a opção “Computação” selecionada no menu à esquerda e a opção "Instâncias" ao centro da página.
+
+Na tela que aparece, serão listadas as instâncias, no nosso caso, já haverá o dps-vm1, devemos então clicar em “Criar instância”:
+
+alt text: Console da OCI exibindo a lista de instâncias com o botão “Criar Instância” ao centro da tela.
+
+Em seguida será exibido o formulário para a criação de uma instância: Em “Nome” digite: dps-vm2. Selecione o compartimento:
+
+Desenvolvimento. Na parte de imagem e forma, mantenha os valores padrão.
+
+Selecione a rede virtual VCN1 que criamos anteriormente e a sub-rede pública, pois essa instância será acessível via internet.
+
+Na sessão de chave SSH, selecione “Colar uma chave SSH”. Será aberto um campo de entrada.
+
+Abra o Cloud Shell e acesse a pasta ‘.ssh’:
+
+cd .ssh
+cat cloudshellkey.pub
+
+Copie o conteúdo da chave pública e cole no campo de entrada que foi exibido. Depois, clique no botão “Criar” e aguarde o fim do processo:
+
+alt text: Parte inferior do formulário de criação de instância com o campo de preenchimento de chave “SSH” e botão “Criar” na parte inferior esquerda da tela.
+
+Utilizando o Cloud Shell faça o login na instância utilizando sua chave privada:
+
+ssh opc@<ip-publico-da-sua-instancia> -i ~/.ssh/cloudshellkey
+
+Utilizando o instalador yum, vamos instalar o Apache:
+
+sudo yum install -y httpd
+
+Liberar a porta 80 no firewall:
+
+sudo firewall-cmd --permanent --add-port=80/tcp
+sudo firewall-cmd --reload
+
+Iniciar o serviço do Apache:
+
+sudo systemctl start httpd
+
+Criar um conteúdo básico em uma página html:
+
+sudo su
+echo ‘Doguito Petshop Server 2’ >> /var/www/html/index.html
+
+alt text: Tela do Cloud Shell realizando os comandos de instalação dos softwares na instância do compute que criamos.
+
+Para validar que tudo funcionou corretamente, você deve conseguir acessar a instância a partir da internet. Siga os seguintes passos:
+
+Acesse os detalhes da instância pelo menu principal em “Computação” e sub-menu “Instâncias”, clique na instância que foi criada e copie seu IP público. Acesse este IP público diretamente como um endereço no navegador. Deve ser exibido o texto do Doguito Petshop Server 2:
+
+alt text: Tela do navegador apontando para o endereço do IP público da instância que foi criada exibindo o texto ‘Doguito Pethsop Server 2’.
+
+
+
+
+
+5-10 Nosso balanceador de cargas *
+
+
+Transcrição
+
+[00:00] Agora que já temos as duas instâncias de servidores do Doguito Petshop criadas, vamos começar, de fato, a criar o nosso load balancer.
+
+[00:08] Temos aqui a insstância "dps-vm1" ativada e a "dps-vm2" ativada também, executando também. Se estivéssemos trabalhando com vários domínios de disponibilidade até poderíamos colocar cada um desses servidores do Doguito Petshop em um domínio de disponibilidade diferente, isso reduziria o risco de indisponibilidade da nossa aplicação porque, se estivesse falha em um domínio, o outro estaria funcionando e o load balancer automaticamente direcionaria para um e para outro para outra aplicação.
+
+[00:48] E isso nos lembro dos motivos de colocarmos os servidores através de um load balancer, que é permitir primeiro a escala horizontal, assim quanto mais requisições a nossa aplicação tiver mais servidores podemos implantar atrás desse load balancer. O segundo motivo é em relação à disponibilidade, porque se um servidor cair o tráfego pode ser direcionado para o outro servidor.
+
+[01:14] Vamos começar a criação. Para criarmos o nosso load balancer clicamos aqui no "Menu" do OCI, clica em "Networking" e clicamos aqui em "Load Balancers". Aqui não tem nenhum load balancer ativo no momento, eu posso clicar aqui em "Create Load Balancer".
+
+[01:34] Com isso podemos escolher também aqui o primeiro tipo de load balancer que é o layer 7 e criar aqui em "Create Load Balancer". A primeira coisa que ele vai nos pedir nessa próxima tela é para informar um nome para ele, nesse caso ele já deu um nome default, podemos deixar esse nome aqui default mesmo.
+
+[01:58] A próxima questão é se devemos deixar o load balancer como público ou privado. Público significa que ele também vai ter um IP público e o private ele não vai ter um IP público. No caso, um load balancer privado poderia ser utilizado para distribuir o tráfego internamente na minha aplicação.
+
+[02:20] Por exemplo, se eu tiver uma aplicação de back-end e uma camada de persistência e eu quero criar um load balancer entre essas duas camadas, eu poderia criar ali um load balancer privado. No nosso caso, vamos deixar dessa forma, público mesmo, porque esse load balancer vai ter acesso pela internet.
+
+[02:41] O próximo ponto, ele fala para atribuirmos um IP público efêmero ou reservado. No nosso caso aqui, vamos deixá-lo com o efêmero, efêmero quer dizer que ele pode mudar se derrubarmos e levantarmos novamente esse load balancer esse IP pode mudar. No nosso caso não temos um endereço privado. Provavelmente se tivéssemos criando uma aplicação real no mundo internet seria melhor termos um IP reservado para ele.
+
+[03:12] Agora o próximo ponto aqui que ele vai falar é sobre o shape do load balancer. Nesse shape, ele vai determinar aqui qual que é a banda mínima e determinar o número mínimo de recursos que vamos ter no nosso load balancer e também aqui, mais para baixo, o valor máximo de largura de banda que ele vai utilizar. Também nesse caso aqui é opcional, ele vai até 8000 megabytes por segundo, o que seria aproximadamente 8 gigabytes por segundo.
+
+[03:42] Se deixarmos esses dois valores iguais, que é da forma que está aqui, vamos ter um load balancer que chamamos de load balancer fixo. No nosso caso como a nossa conta é uma conta gratuita, é uma conta do free tier, é isso que podemos fazer.
+
+[03:57] O próximo ponto que vamos fazer é escolher uma rede. No nosso caso, criamos a nossa VCN1, vamos atribuir esse load balancer nessa VCN1 e qual que é a sub-rede dentro dessa rede. No caso, vamos escolher aqui a sub-rede pública, essa sub-rede pública vai ser aquela que tem contato com a internet.
+
+[04:23] Nós poderemos ver aqui algumas opções mais avançadas, alguma coisa com relação a network security groups também, mas são opções, como eu falei, um pouco mais avançadas e para o nosso caso já podemos clicar aqui direto no "Next".
+
+[04:35] Clicando aqui no next, a próxima escolha que devemos fazer é com relação ao algoritmo de balanceamento que vamos utilizar. Existem vários algoritmos possíveis, aqui já temos três pré-definidos: o primeiro é a Round Robin, que talvez seja um dos mais comuns. Esse round robin quer dizer que, a cada requisição que chegarem no load balancer, ele vai jogar em uma máquina diferente, ele vai girando por essas máquinas fazendo esse round, esse ciclo aí por essas máquinas.
+
+[05:08] O próximo que temos aqui é o chamado de IP Hash, ele vai fazer o seguinte: ele vai criar um hash de IPs e de acordo com o IP de origem, ele sempre vai jogar em uma mesma máquina de destino. Isso vai assegurar que todas as requisições vindas de um mesmo IP, de uma mesma origem vão para o mesmo servidor de destino, é o que é chamado de sticky-session. Algumas aplicações que mantêm seção do lado do servidor e isso são interessantes e poderia ser utilizada essa opção.
+
+[05:39] A opção mais a direita que é o Least Connections, que vai direcionar o novo tráfego que chegar para o servidor com menos conexões ativas de maneira a distribuir o peso de trabalho. No nosso caso, até por simplicidade, podemos ir com o Round Robin mesmo que é o mais comum.
+
+[06:00] A próxima opção que temos que fazer aqui é adicionar os back-ends. Clicando em "Adicionar Backends", vão ser mostrados os servidores que já criamos, "dps-vn1" e "dps-vn2", os que estão ativos. São para esses servidores que queremos direcionar o tráfego, vamos vir aqui e vamos selecionar os dois servidores que eu quero jogar o tráfego nestas duas máquinas.
+
+[06:26] Lembrando também que essas máquinas elas não precisariam ter IPs públicos, só fizemos isso para um efeito didático e para ficar mais fácil de vermos que os servidores estavam funcionando colocando o IP público diretamente na internet. No dia a dia, em uma aplicação real, essas máquinas não teriam IPs público, porque o load balancer comunica-se com eles através dos IPs privados, seria esse caso.
+
+[06:52] Agora podemos clicar em adicionar servidores do backend que foram selecionados aqui, vão estar aqui selecionados e podemos definir o próximo passo que é definir como vai ser feito o health check. Veja aqui também que ele vai direcionar na porta 80 e aqui vamos definir nessa próxima área aqui o nosso health check.
+
+[07:14] Isso é basicamente um teste que é feito para analisar a disponibilidade dos back-ends, pode ser uma conexão, pode ser uma requisição HTTP e vamos definir alguns atributos, podemos definir alguns atributos como um intervalo entre essas chamadas para ver de quanto em quanto tempo que a máquina vai estar ativa, entre outras questões.
+
+[07:33] Essa política vai monitorar continuamente os servidores. Por ora, podemos deixar os valores padrão mesmo, poderíamos também definir um certificado SSL, mas para o nosso caso de uso também vamos deixar sem essa marca aqui do SSL e nem as opções mais avançadas.
+
+[07:52] Podemos clicar aqui no "Next", aqui ele já vai chegar na próxima opção que é indicar um listener. O listener é a entidade responsável por ouvir o tráfego que chega no IP do balanceador, temos algumas opções aqui, vamos deixar a escolha mais comum que no caso é o HTTP, é a mais básica. E dependendo do caso de uso dessa aplicação você poderia ter outras opções aqui, vamos deixar HTTP a porta 80.
+
+[08:22] Clicamos em "Next", para a última parte, e vamos colocar aqui a parte de log. Essa parte de log ele vai criar aqui um grupo de log para nós, uma retenção de log para conseguirmos ver se vai acontecer algum problema, algum tipo de erro, é uma informação para fazermos verificação depois.
+
+[08:45] Nesse caso também vamos deixar todas as opções aqui default e vamos clicar aqui em "Submit". Com isso, ele vai começar o processo de criação do load balancer e, dentro de alguns segundos, o nosso load balancer deve ser criado. Vamos ver aqui também ao lado de dentro, enquanto ele está fazendo essa criação que ele está olhando aqui o backend sets health, ele está vendo aqui como é que está a saúde dos nossos back-ends.
+
+[09:18] Quando ocorrer a conclusão da criação do load balancer, esse status aqui vai ser alterado para vermos que está ativo. Após alguns segundos, foi carregado aqui a tela, ele está aqui com o status dele como ativo e temos todas as informações aqui dele. A rede privada que ele foi criada, a VCN, a sub-rede, todas as informações aqui estão ativas dele.
+
+[09:46] Ele está aqui verde, verde é ok. Para testar, selecionamos aqui o IP público dele, vou selecionar todo o valor do IP dele, podemos copiar esse IP aqui, rolar em outra aba do navegador e vamos perceber aqui que ele vai cair em um servidor. Agora se eu atualizar a página dando o "F5", eventualmente ele cai em uma máquina, às vezes ele cai na outra. Como estamos no algoritmo de round robin ele vai cair em uma máquina e vai para outra, vai para uma máquina e vai outra.
+
+[10:19] Estamos vendo aqui esse "Doguito Petshop Server 1" e "Server 2" aqui se alternando cada vez que atualizamos a página porque o load balancer está enviando o tráfego para uma máquina ou para outra máquina de acordo com as requisições.
+
+[10:34] Com isso conseguimos implantar com sucesso o load balancer que vai nos garantir a disponibilidade e a escalabilidade da nossa aplicação.
+
+
+
+
+
+
+5-11 Para saber mais: introdução aos load balancers
+
+
+Ao pensarmos em aplicações escaláveis horizontalmente, implantadas tanto em clouds quanto em infraestruturas convencionais, o primeiro componente que nos vêm à mente é um balanceador de cargas. Ele servirá para distribuir as cargas de trabalho entre diferentes instâncias de servidores de acordo com um algoritmo pré-determinado.
+
+Você pode encontrar maiores detalhes sobre os load balancers na OCI vendo este video da própria Oracle:
+
+https://youtu.be/tY2UuVbDElc
+
+O conteúdo em video pode apresentar alguns tópicos desatualizados, por isso, todos os detalhes sobre a utilização de Load Balancers na OCI podem ser também encontrados na documentação oficial, através dos links:
+
+https://docs.oracle.com/pt-br/iaas/Content/Balance/home.htm#top
+
+https://docs.oracle.com/es-ww/iaas/Content/Balance/home.htm#top.
+
+
+
+
+
+
+5-12 Balanceador de cargas
+
+Quando criamos um balanceador de carga, pode ser que exista a necessidade da comunicação de um usuário da aplicação ocorrer sempre com a mesma instância de back-end. Nesse caso, podemos definir um algoritmo.
+
+Selecione a alternativa com o algoritmo correto a ser utilizado na situação.
+
+Round Robin
+  Alternativa incorreta! Esta política distribui o tráfego de entrada sequencialmente para cada servidor em uma lista de conjuntos de backend.
+
+IP Hash
+  Alternativa correta! Esta política distribui o tráfego de entrada sequencialmente para cada servidor em uma lista de conjuntos de back-end.
+
+Route Id
+  Alternativa incorreta! Esta algoritmo não está disponível na lista de algoritmos de Balanceador de Carga da OCI.
+
+Least Connections
+  Alternativa incorreta! Esta política distribui o tráfego de entrada sequencialmente para cada servidor em uma lista de conjuntos de backend.
+
+
+
+
+
+5-13 O que aprendemos?
+
+  Precisaremos de um compute para implantar nossa aplicação do Doguito, pois ele representa o servidor no qual a aplicação será instalada;
+  
+  Para criar e configurar um compute temos que acessar a opção “Computação” e em seguida “Instâncias” do menu da OCI;
+  
+  Balanceador de carga é um componente responsável por distribuir a carga de requisições entre as instâncias de computação. Ele é importante para a aplicação escalar de forma horizontal e a torna mais resiliente a falhas;
+  
+  Para criar um balanceador de carga, precisamos acessar o menu Rede e em seguida a opção “Balanceadores de Carga”. No processo de criação, indicamos quais servidores de back-end serão utilizados;
+  
+  Com um balanceador de cargas conseguimos tornar a infraestrutura do Doguito mais flexível.
+
+
+
+
+
+5-14 Conclusão *
+
+
+Transcrição
+
+[00:00] Parabéns por ter chegado até o final desse curso. Espero que você tenha gostado e esteja bastante motivado para continuarmos o próximo curso, em que vamos concluir a implantação do Doguito Pet Shop no OCI.
+
+[00:14] Não deixe de fazer também todas as atividades indicadas, pois elas são muito importantes para a fixação do seu conhecimento. Em caso de alguma dúvida ou dificuldade, não deixe também de colocar lá no fórum do curso, pois rapidamente nós vamos auxiliá-lo. Você poderá auxiliar outros alunos que estão fazendo o mesmo curso, mantendo assim a nossa comunidade de desenvolvedores cada vez mais forte.
+
+[00:36] Nesse curso, inicialmente criamos a nossa conta do OCI para podermos logar, entendemos a nossa conta free tier, o que conseguimos fazer nela, e entendemos também as características e vantagens de trabalhar em uma Cloud, além dos motivos pelos quais muitas empresas estão migrando para esse ambiente.
+
+[00:54] Em seguida, criamos o usuário "doguito-admin" para evitar trabalharmos com o usuário raiz da Cloud e isso poderia ser um pouco perigoso. Feito isso, vimos também um pouco sobre a interface da OCI, as opções que ela tem aqui, todas as opções que a OCI nos fornece e, além disso, também vimos sobre o Cloud Shell, que é essa ferramenta aqui embaixo, o Shell de linha de comando que nos permite trabalhar com o OCI em um ambiente web totalmente sem necessidade de instalação de nenhum software local.
+
+[01:28] O próximo passo foi a criação da nossa VCN, Virtual Cloud Network. Fomos na opção de Rede, em Virtual Cloud Network e criamos aqui a nossa VCN1. Entre outras coisas, essa VCN vai definir o nível de visibilidade que os nossos servidores terão.
+
+[01:48] Com isso, partimos para a criação de um servidor de fato e, aqui no OCI, é chamado de compute. Fomos à aba "Compute" e criamos as nossas instâncias, criamos no caso duas instâncias para poder fazer aquele balanceamento de carga que é o fato que falamos aqui, como estamos prevendo que vai ter um volume considerável de acesso para a aplicação já criamos o load balancer e vamos distribuir as requisições entre essas duas instâncias.
+
+[02:19] O load balancer criamos na aba "Networking > Load Balancers" e aí criamos e configuramos o nosso load balancer.
+
+[02:28] Por fim, eu peço a você que não se esqueça de nos deixar uma avaliação do curso e também um comentário nos contando o que podemos melhorar. Até a próxima.

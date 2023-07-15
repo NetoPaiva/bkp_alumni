@@ -1,0 +1,407 @@
+https://cursos.alura.com.br/course/oracle-cloud-infrastructure-dados-infraestrutura-codigo/section/13799/tasks
+
+Evernote: devweb | alumni-2_cloud_2
+
+
+Curso de Oracle Cloud Infrastructure: banco de dados e infraestrutura como código
+
+Instrutor Tiago Lage Payne de Pádua
+
+
+
+Aula 3 - Armazenamento | 0 / 9 | 40min
+
+  3-1 Projeto da aula anterior
+  3-2 Armazenamento na OCI *
+  3-3 Doguito no Object Storage *
+  3-4 Faça como eu fiz: servindo o site estático do Doguito
+  3-5 SSL no Load Balancer *
+  3-6 Faça como eu fiz: Doguito API com SSL
+  3-7 Para saber mais: Object Storage na OCI
+  3-8 Tipo de armazenamento adequado
+  3-9 O que aprendemos?
+
+
+3-1 Projeto da aula anterior
+
+Para esta aula usaremos alguns arquivos que estarão disponibilizados para download neste link.
+
+https://caelum-online-public.s3.amazonaws.com/2487-oracle-cloud-infrastructure-dados-infraestrutura-codigo/05/doguito-site-object-storage.zip
+
+
+
+3-2 Armazenamento na OCI *
+
+
+Transcrição
+
+Olá, tudo bem? Chegou o momento de entendermos um pouco melhor como fazer o armazenamento de arquivos dentro da OCI. Você pode estar se perguntando: não basta criar uma instância de compute e salvar os arquivos? Sim, esta é uma possibilidade, porém ela torna o gerenciamento bastante complicado. Por isso, neste vídeo, vamos aprender sobre algumas opções bem mais avançadas para gerenciamento de arquivos dentro da OCI. Essas opções estão no menu da OCI, no tópico "Armazenamento" (em inglês, Storage).
+
+Para escolhermos qual tipo de armazenamento é mais conveniente para nosso projeto, precisamos compreender as características dos dados que pretendemos armazenar, por exemplo, se é uma informação persistente ou não (ou seja, se é necessário fazer back-up ou se poderá ser descartada).
+
+Além disso, é interessante conhecer o tipo de dados que será armazenado, se é um banco de dados, um arquivo de vídeo ou de áudio, uma fotografia ou um texto etc.
+
+Ademais, o tipo de performance também é importante: precisamos de um armazenamento mais rápido ou pode ser um pouco mais lento? É preciso pesar as necessidades, visto que uma melhor performance está diretamente ligada a um maior custo.
+
+Também devemos pensar na capacidade de armazenamento, quantos gigabytes precisaremos.
+
+Outros pontos importantes para considerar antes de escolher o tipo de armazenamento são quantas operações de input e output serão necessárias para nossos arquivos e qual taxa de transferência (velocidade de transferência de dados) queremos.
+
+Mais um passo relevante é a durabilidade, que define quantas cópias dos dados vamos manter. Nesse cenário, a persistência significa armazenar os dados de forma segura, e a durabilidade refere-se à quantidade de cópias — caso uma delas apresente algum problema, temos outra por segurança.
+
+A forma de conectividade com a instância de dados também é importante. Podemos definir, por exemplo, se preferimos uma conectividade como um HD local ou como um armazenamento de rede. Quanto aos protocolos, temos opções como bloco, file ou HTTP.
+
+É essencial analisarmos esses requisitos para decidir qual tipo de storage utilizar.
+
+O primeiro tipo de armazenamento disponibilizado pela OCI é o NVMe, que basicamente é uma instância de um HD dentro do data center, ligada fisicamente ao servidor — semelhante aos nossos computadores locais, nas nossas casas, com o HD ligado fisicamente à máquina. Na OCI, esse HD é um SSD de altíssima performance, destinado a ser utilizado por aplicações mais sensíveis e que necessitam de uma performance muito alta.
+
+A segunda opção, o armazenamento em blocos, seria como se pegássemos esse HD que está fisicamente na máquina e o movêssemos para outra máquina dentro do mesmo data center, de modo que seria um HD num servidor dedicado, não mais ligado fisicamente à máquina. A vantagem desse tipo de storage é que podemos ter a persistência e a durabilidade independentes do compute ao qual o HD estava ligado inicialmente, há uma maior flexibilidade. Separando o HD da máquina, ela tem total controle sobre a partição criada (formatação, particionamento, montagem do file system etc).
+
+Observando no menu da OCI, abaixo do tópico de "Armazenamento em Blocos" em que temos todo o controle sobre a partição que estará em outra unidade de rede, temos a opção de armazenamento de arquivos (file storage). Trata-se de uma alternativa semelhante à anterior, dado que o armazenamento estará em outra instância no mesmo data center, porém o file storage pode ser compartilhado entre duas instâncias de compute. Então, por exemplo, se temos duas instâncias de compute que precisam usar os mesmos arquivos, o armazenamento de arquivos permite esse compartilhamento (o que não é possível no armazenamento em bloco). Assim, todas as instâncias com acesso a esse armazenamento de arquivos podem ler e escrever. Nesse caso, o nível de gerenciamento que a máquina tem é sobre arquivos e diretórios, não gerenciamos partições — apenas montamos o file system e a instância estará pronta para uso. Ou seja, está em um nível um pouco mais alto de abstração.
+
+Por fim, o elemento de maior nível de abstração é o object storage, destinado justamente ao armazenamento para web, no qual armazenamos fotos, vídeos, arquivos de log, arquivos de texto. A vantagem dele é ser acessível através de HTTP, ou seja, não é um ponto de montagem como as duas opções anteriores, não é necessário montar o file system.
+
+O object storage pode nos servir para simplificar o Doguito, em especial a parte do front-end. Podemos implantar no object storage nossos arquivos .html, .css e .js que farão depois a comunicação com a API. Ele é uma plataforma de armazenamento de alta performance, direcionado para o uso pela internet. Os dados são gerenciados como objetos, ideal para dados não-estruturados — diferente, por exemplo, de um banco de dados relacional. Então, para arquivos em geral (como textos, fotos e vídeos) o object storage é um tipo de armazenamento bem adequado. O acesso ao conteúdo pode ser público ou privado, além de outros recursos mais avançados.
+
+A seguir, vamos ver alguns casos de uso do object storage. Como foi comentado anteriormente, ele pode ser utilizado para dados estruturados e semi-estruturados, Big Data, Analytics, servidor de back-up e os arquivos serão salvos como objetos.
+
+No menu da OCI, vamos em "Armazenamento > Serviços Object Storage and Archive Storage" para criar um object storage. Na nova página, clicaremos no botão "Criar Bucket". Mais adiante, veremos detalhes dessa criação; por ora, apenas pressionaremos o botão "Criar" ao final da página, sem modificar nada. Agora, os conteúdos já podem ser armazenados como objetos.
+
+Objetos são elementos compostos por uma chave (nome do arquivo) e um valor (conteúdo do arquivo). Além disso, eles também podem ter alguns metadados customizados. Os objetos serão armazenados no que chamamos buckets que, por sua vez, têm nome único.
+
+É interessante apontar que é utilizada a estrutura de arquivos plana, ou seja, como se fosse um HD com todos os arquivos na raiz. Apesar disso, temos como "imitar" uma estrutura de pastas e, ao visualizá-a, constataremos que as pastas serão prefixos dos arquivos. Em resumo, usa-se a estrutura plana, mas conseguimos "imitar" uma estrutura de pastas. Veremos isso mais adiante.
+
+Ademais, há o conceito de namespace, que é um contêiner de nível superior para todos esses buckets e que também possui um nome único.
+
+A seguir, vamos entrar no bucket que acabamos de criar, clicando sobre seu nome. Descendo um pouco a página, na área "Objetos", pressionaremos o botão "Fazer upload". Vamos subir um arquivo bem básico, somente a título de exemplo: basta arrastar o arquivo favicon.ico e clicar em "Fazer upload" na parte inferior da tela. Na sequência, podemos clicar no botão "Fechar", também na parte inferior.
+
+Feito o upload, vamos exibir os detalhes desse novo objeto. Podemos copiar a URL onde ele está disponível e, numa nova aba do navegador, acessá-la. Note que o caminho dessa URL é composta por várias divisões: a região onde estamos, o namespace, o bucket que criamos e, por fim, o objeto.
+
+Observando o conteúdo da página, veremos uma mensagem de que o bucket não foi encontrado, explicando que ou ele não existe nesse namespace, ou não temos autorização para acessá-lo. Obtemos esse resultado porque esse bucket, por padrão, tem a visibilidade privada. Voltando à página de informação do bucket, na parte superior, clicaremos no botão "Editar Visibilidade" e alterar para a opção "Público". Em seguida, podemos voltar à aba anterior e recarregá-la. Dessa vez, conseguiremos acessar a imagem.
+
+Desse modo, já que conseguimos colocar um arquivo de ícone, bem simples, talvez possamos subir todo o nosso front-end! É esse processo que realizaremos na próxima aula: subir um site estático no object storage.
+
+
+
+
+3-3 Doguito no Object Storage *
+
+
+Transcrição
+
+Nosso próximo objetivo é implantar o front-end do Doguito Pet Shop em um object storage. O front-end é composto por arquivos estáticos, como .html, .css, .js e imagens, que são armazenados no servidor e retornados em sua forma nativa, sem nenhum tipo de processamento.
+
+No menu da OCI, vamos em "Armazenamento > Serviços Object Storage and Archive Storage" e pressionaremos o botão "Criar Bucket" para criar uma área de armazenamento, como se fosse uma pasta. Daremos um nome para esse bucket, vamos chamá-lo de "site".
+
+Em seguida, temos várias opções — desta vez, vamos analisá-la com mais calma. A primeira configuração é relativa à camada de armazenamento padrão e nela temos níveis, por exemplo, padrão e arquivo compactado.
+
+O nível padrão (standard, em inglês) define que todos os dados recuperados sejam retornados de forma instantânea. Ele é bastante consistente: cada vez que as informações forem atualizadas, sempre serão retornadas cópias mais recentes.
+
+Há também o acesso infrequente, para dados críticos que não têm acesso instantâneo, por exemplo, arquivos de back-up. Nessa categoria de armazenamento, os dados devem ser guardados por, no mínimo, 31 dias. A principal vantagem desse nível é ser 60% mais barato que o armazenamento padrão, portanto, dependendo da velocidade que precisamos e do tempo pelo qual armazenaremos os dados, faremos uma escolha que vai interferir no custo — optar pela opção mais rápida torna seu sistema mais caro. No caso do armazenamento infrequente, a taxa cobrada é aquela de quando se faz a recuperação dos dados.
+
+O último nível é o de arquivo, direcionado para dados que não precisamos imediatamente, que funciona como se fosse um armazenamento mais antigo (que chamávamos armazenamento em fita), porém na Cloud há mais recursos. O tempo mínimo de retenção dos arquivos é de 90 dias. Nesse caso, há um processo de restauração dos arquivos (que demora, no mínimo, uma hora) e, em seguida, podemos fazer o download.
+
+Por ora, deixaremos no "Padrão".
+
+Ademais, existe uma feature interessante chamada auto-tiering, que observa nossos arquivos e faz a movimentação entre as camadas standard e infrequent access, conforme o uso. Em outras palavras, se guardamos um arquivo no standard porém não o acessamos por um tempo, ele será automaticamente movido para um nível mais barato de armazenamento; caso voltemos a usá-lo, ele retornará ao nível standard. Essa é uma ótima maneira, (automática e sem custos adicionais) de otimizar e reduzir o custo de utilização do storage. Para ativar essa feature, vamos selecionar "Ativar Armazenamento Automático em Camadas".
+
+Em seguida, temos a opção de ativar o controle de versão de objetos. Dessa forma, os dados sempre serão versionados automaticamente, em vez de serem substituídos — quando enviarmos um arquivo com o mesmo nome, ele será versionado, de modo que podemos recuperá-lo posteriormente. Não vamos selecionar essa opção agora.
+
+A encriptação dos dados também é importante, visto que a nuvem pode ter dados bastante sensíveis. No nosso bucket, os dados sempre são encriptados automaticamente e, no caso, nem sequer temos a opção de não encriptá-los. Vamos manter a primeira opção selecionada.
+
+Essas configurações bastam, podemos pressionar no botão "Criar" ao final da aba. Em seguida, entraremos nesse bucket, clicando sobre seu nome, e subiremos os arquivos. Para este próximo passo, é necessário que você faça o download e descompacte o arquivo doguito-site-object-storage.zip, disponibilizado no próximo tópico desta aula.
+
+Na área "Objetos" desta página, vamos clicar no botão "Fazer Upload", arrastar o arquivo index.html para a área de upload e pressionar "Fazer Upload". Esse processo deve ser bem rápido. Em seguida, vamos repetir esse processo com o arquivo favicon.ico.
+
+Agora, faremos o upload de arquivos que estão dentro de pastas. Na pasta que descompactamos, existe um diretório chamado css, portanto vamos preencher o campo "Prefixo do Nome do Objeto" com "css/", arrastar o arquivo styles.css para a área de upload e clicar em "Fazer Upload".
+
+Depois, faremos o mesmo para images: o prefixo será "images/" e subiremos o arquivo doguitoadm.svg. Perceba que, na área "Objetos" da página, a estrutura de pastas está sendo montada. Por fim, faremos o upload do arquivo scripts.js, na pasta js (ou seja, usaremos o prefixo "js/").
+
+Pronto, já podemos acessar os arquivos. À direita do nome index.html, podemos clicar para exibir os detalhes, copiar o caminho do URL e abrir em uma nova aba do navegador. A princípio, obtemos um erro relativo à autorização de acesso (o mesmo que vimos em uma aula anterior). Basta editarmos a visibilidade, tornando o bucket público.
+
+Ao tentar abrir aquela URL mais uma vez, a página inicial será carregada (o front-end está funcionando), porém surgirá uma mensagem do navegador. Note que os clientes não estão listados na página. Precisamos apontar qual o endereço do nosso servidor de API. Para tanto, em nosso computador, vamos editar o arquivo scripts.js. Você pode usar o seu editor de preferência; caso não tenha nenhum, o Bloco de Notas será suficiente.
+
+Abrindo o arquivo, na segunda linha, veremos 'http://???:3000/clientes' — precisamos substituir essas interrogações pelo IP da nossa instância. No menu da OCI, vamos em "Computação > Instâncias" e copiaremos o IP público da dps-vm1, que é onde subimos o Doguito. Podemos abrir em outra aba, acessando a porta 3000, para nos certificar de que está funcionando. Em seguida, vamos substituir as interrogações por esse IP e salvar o arquivo.
+
+Agora, é necessário substituir o arquivo scripts.js no object storage. No menu da OCI, vamos em "Armazenamento > Buckets" e entraremos em "site". Vamos excluir o arquivo scripts.js existente e fazer o upload do arquivo atualizado, usando o prefixo "js/".
+
+Vamos tentar acessar o index.html de novo. Veremos que a lista de clientes ainda não foi carregada e, desta vez, a mensagem é diferente: falha ao fazer o fetch.
+
+No navegador, pressionaremos a tecla "F12" para abrir o console de desenvolvedor. Podemos consultar a aba "Console" e pressionar a tecla "F5" para recarregar a página. Veremos um aviso de que essa página index.html foi carregada com HTTPS, porém fez uma requisição para um conteúdo inseguro em HTTP (o /clientes da API) e foi bloqueado. Este conteúdo deve ser carregado por HTTPS também.
+
+Em outras palavras, o site abriu — o HTML, o CSS, o JS e as imagens carregaram normalmente —, entretanto, no momento em que esse front-end tentou se comunicar com o back-end ocorreu um problema. O front-end foi carregado sobre HTTPS, um protocolo seguro, e por esse motivo não podemos fazer requisições AJAX para um site inseguro, via HTTP. O navegador vai bloquear. Então, apesar de termos conseguido carregar o front-end do Doguito corretamente, ainda não conseguimos fazer a comunicação com o servidor de back-end. Vamos corrigir essa questão na próxima aula!
+
+
+
+
+3-4 Faça como eu fiz: servindo o site estático do Doguito
+
+
+Aprendemos a criar um bucket público de um Object Storage que nos permitiu servir o site estático do Doguito, ou seja, arquivos HTML, CSS e JavaScript de forma muito simples e prática.
+
+É a sua vez de fazer o mesmo! Para isso, será necessário baixar o arquivo do curso “doguito-site-object-storage.zip” em zip, criar um bucket e fazer o upload dos arquivos.
+
+https://caelum-online-public.s3.amazonaws.com/2487-oracle-cloud-infrastructure-dados-infraestrutura-codigo/05/doguito-site-object-storage.zip
+
+
+Opinião do instrutor
+
+Acesse o menu “Armazenamento” e a opção “Serviços Object Storage” no menu principal da OCI:
+
+alt text: Imagem do menu da OCI exibindo o menu Armazenamento e o sub-menu Serviços Object Storage selecionado na parte central superior da tela.
+
+Em seguida, na tela que será exibida, clique em “Criar Bucket”:
+
+alt text: Imagem da listagem de Buckets do compartimento com o botão “Criar Bucket” na parte central superior da tela.
+
+Será exibido o formulário para criação de bucket, então preencha o nome com a palavra “site” e marque a opção “Ativar Armazenamento Automático em Camadas”:
+
+alt text: Imagem do formulário de criação de Bucket com o botão “Criar” no canto inferior esquerdo da tela.
+
+Após a criação, será exibida novamente a tela de listagem de buckets. No entanto, desta vez o bucket que foi criado será exibido. Clique no link com o nome do bucket que foi criado:
+
+alt text: Imagem da listagem de Buckets do compartimento exibindo o bucket recém criado.
+
+Será exibida a tela com os detalhes do bucket, clique em “Fazer Upload”:
+
+alt text: Imagem do detalhamento do bucket mostrando o botão “Fazer Upload” no centro da tela.
+
+No próximo passo faremos o upload dos arquivos estáticos do site. Descompacte o arquivo “doguito-site-object-storage.zip” em seu computador e faça o upload de todos os arquivos mantendo a mesma estrutura de pastas. Para colocá-los na raiz do bucket basta não preencher o “Prefixo do Nome do Objeto”:
+
+alt text: Imagem do formulário de upload de arquivos para o bucket com o botão “Fazer Upload” no canto inferior esquerdo da tela.
+
+Para colocar o arquivo em uma pasta do bucket, preencha o “Prefixo do Nome do Objeto” com o nome da pasta desejada incluindo uma / no fim:
+
+alt text: Imagem do formulário de upload de arquivos para o bucket com o botão “Fazer Upload” no canto inferior esquerdo da tela e o campo “Prefixo do Nome do Objeto” preenchido com js/.
+
+Faça o mesmo para os arquivos nas pastas “images” e “css”. Ao fim do processo, seu bucket deve ficar parecido com a imagem abaixo:
+
+alt text: Imagem do detalhamento do bucket incluindo todos os arquivos que foram carregados em suas respectivas pastas.
+
+Nesta mesma tela de detalhes do bucket, altere a visibilidade do bucket de “privado” para “público” e clique em “Salvar Alterações”:
+
+alt text: Imagem do formulário de alteração de visibilidade do bucket com a opção “Público” selecionado.
+
+Agora precisamos descobrir a URL onde nossos arquivos estão disponibilizados. Clique nos 3 pontos verticais no lado direito do arquivo index.html. No menu suspenso que será exibido, clique em “Exibir Detalhes do Objeto”:
+
+alt text: Imagem do menu suspenso com a opção “Exibir Detalhes do Objeto” selecionada.
+
+Na tela exibida, clique na URL do arquivo para abri-lo em uma nova aba:
+
+alt text: Imagem do detalhamento do objeto exibindo sua URL de acesso.
+
+Se tudo tiver dado certo, será exibido o site do Doguito Petshop com um alerta de erro, que corrigiremos mais adiante:
+
+alt text: Imagem do navegador acessando o site do Doguito Petshop servido através do Object Storage.
+
+
+
+
+3-5 SSL no Load Balancer *
+
+
+Transcrição
+
+Terminamos nossa última aula com um problema: carregamos os arquivos estáticos do front-end (HTML, CSS, JS) do Doguito através do object storage, que serve esse conteúdo por meio do protocolo HTTPS. No entanto, o nosso back-end (nossa API) é servido através do protocolo HTTP e o navegador não permite que, a partir de uma página com HTTPS, faça requisições HTTP. A seguir, descobriremos como resolver essa questão.
+
+Teremos que colocar um certificado HTTPS e o primeiro passo é criá-lo. Para tanto, no Cloud Shell, vamos executar o comando openssl req -x509 -newkey rsa:4096 -keyout key.pen -out cert.pen -sha256 days 365 para criar um certificado com o algoritmo sha256 válido por 365 dias. Este certificado é autoassinado e não tem muito valor. Em geral, emitimos por uma entidade certificadora para, de fato, ter melhor validade. Mas, no nosso caso, este serve.
+
+Será pedida uma senha, podemos colocar "doguito", e na sequência teríamos que preencher mais algumas informações. No nosso contexto, podemos deixar tudo em branco e só apertar a tecla "Enter" até finalizar. Rodando o ls no diretório, veremos que foram criados os arquivos cert.pen e key.pen.
+
+Agora, veremos como criar esse acesso HTTPS. Poderíamos entrar no servidor que está servindo na porta 3000 e configurá-lo para HTTPS, no entanto, no dia a dia, a terminação do HTTPS é feita no load balancer. Portanto, para já nos acostumarmos com cenários reais, vamos ativar o HTTPS no load balancer. A requisição chegará ao load balancer em HTTPS e, em seguida, fluir em HTTP para a nossa máquina virtual em execução.
+
+No menu da OCI, vamos em "Rede > Balanceadores de carga", onde já temos um load balancer configurado — vamos acessá-lo. A primeira alteração será importar o certificado na aba "Certificados": selecionaremos a opção "Certificado Gerenciado pelo Balanceador de Carga" e clicaremos no botão "Adicionar Certificado". Colocaremos o nome "doguito-cert".
+
+Precisamos arrastar o arquivo para fazer upload, porém ele está no Cloud Shell, então, no canto esquerdo superior desse console, vamos clicar em "Fazer download" e informar o nome do arquivo cert.pen e repetir o processo com key.pen. Em seguida, basta arrastar o arquivo cert.pen para a área de upload do "certificado SSL", depois selecionar a opção "Especificar Chave Privada" e arrastar o arquivo key.pen para a área de upload de "Chave Privada". Abaixo dessa área, teremos que informar a senha "doguito". Por fim, clicamos em "Adicionar Certificado" ao final da página. Haverá uma mensagem de confirmação.
+
+Na aba "Certificados", podemos verificar o certificado disponível. Às vezes, ele pode demorar um pouco para ser carregado. Além disso, não podemos nos esquecer de selecionar a opção "Certificado Gerenciado pelo Balanceador de Carga".
+
+Agora, é necessário fazer um ajuste no load balancer para que ele também aceite conexões HTTPS. Neste momento, se copiarmos o IP público do balanceador de carga, o abrirmos em uma nova aba do navegador e adicionarmos https:// ao início da URL, a página não será carregada. Vamos resolver essa questão a seguir.
+
+Na aba "Listeners", veremos que já temos um listener para a porta 80. Vamos criar mais um, clicando no botão "Criar Listener". Daremos o nome "listener-https", especificaremos o protocolo como "HTTPS" e manteremos a porta 443. A seguir, vamos selecionar "Certificado Gerenciado pelo Balanceador de Carga" e automaticamente o doguito-cert será escolhido. Depois, vamos definir o conjunto de back-end para o qual o tráfego deve ser direcionado (só há uma opção) e finalmente clicaremos no botão "Criar Listener" ao final da página. Haverá uma mensagem de confirmação. Na aba "Listeners", podemos verificar o novo listener disponível.
+
+Vamos tentar novamente acessar o IP público do load balancer com o certificado HTTPS. Ainda não está funcionando, porque configuramos nossa VCN para aceitar entrada de tráfego na parte pública somente da porta 80. No menu da OCI, em "Rede > Redes Virtuais na Nuvem", vamos entrar na VCN1 e ajustá-la. Na área "Listas e Segurança", entraremos em "Default Security List for VCN1" e clicaremos no botão "Adicionar Regras de Entrada". No campo "CIDR de Origem", colocaremos 0.0.0.0/0. Quanto à porta de destino, definiremos 443.
+
+Após fazer a ativação, vamos recarregar a aba com o IP público do load balancer. Aparecerá uma mensagem: "Sua conexão não é privada". Como fomos nós mesmos que emitimos o certificado, é necessário autorizarmos o browser. Clicaremos no botão "Avançado" e permitiremos que ele continue.
+
+Conseguimos acessar, porém, se adicionarmos /clientes ao final da URL, haverá um erro "Not Found" (não encontrado). Isso acontece porque a página Doguito Petshop Server 1 (e Doguito Petshop Server 2) é exibida pelo serviço do Apache, na porta 80, ou seja, todo tráfego de entrada chegando no load balancer é redirecionado para a porta 80. Precisamos redirecionar para a porta 3000, onde está a API do Doguito.
+
+No menu da OCI, entraremos em "Rede > Balanceadores de Carga" e acessaremos o nosso load balancer. Em seguida, em "Conjuntos de Backend", vamos entrar na única opção que temos e, na aba "Backends", veremos que há dois backends registrados — um de final 173 e o outro 77. Ambos direcionados para a porta 80.
+
+Nós instalamos o Node em apenas uma das instâncias, a dps-vm1, cujo IP termina em 173. Então, por ora, vamos excluir do balanceador de carga a instância de final 77. Basta selecioná-la e, no menu "Ações", clicar em "Excluir".
+
+Feito esse procedimento, no backend restante, precisamos mudar a porta 80. Com ele selecionado, no menu "Ações" clicaremos em "Editar Porta" e definiremos a porta 3000, que é onde está rodando o Node.
+
+Agora, vamos acessar o IP do balanceador de carga e conseguiremos ver a página do Doguito API, com o protocolo HTTPS. Se adicionarmos /clientes ao final da URL, será retornada a lista de clientes. Portanto, é este IP do load balancer que usaremos, devemos atualizar essa URL no arquivo scripts.js.
+
+Na interface da OCI, no bucket "site", vamos apagar o arquivo scripts.js. Em nosso computador, vamos abrir o scripts.js e, na segunda linha, alterar o caminho da URL para conferir com o IP do load balancer, com protocolo HTTPS e final /clientes. Salvaremos o arquivo e faremos o upload novamente, para a pasta js..
+
+Acessando mais uma vez o front-end, desta vez a lista de clientes será carregada. A comunicação entre o front-end e o back-end foi bem-sucedida. Uma vez que o back-end também está em HTTPS, o browser não bloqueou a comunicação.
+
+
+
+
+3-6 Faça como eu fiz: Doguito API com SSL
+
+
+
+Vimos que para que nosso front-end possa se comunicar com a API é necessário que ambos utilizem protocolo HTTPS. Dessa forma, precisamos de um meio para acessar a API do Doguito via HTTPS.
+
+A forma mais comum de fazer isso é um certificado HTTPS no balanceador de cargas, então é necessário criar um certificado, importá-lo no balanceador e em seguida incluir um listener para a porta 443 no balanceador. Por fim, fazemos ajustes para que as requisições do balanceador sejam direcionadas para o back-end na porta 3000.
+
+Ajustado esse primeiro passo, em seguida devemos alterar o arquivo scripts.js, que passará a apontar para o IP público do balanceador de cargas e utilizar o protocolo HTTPS. Agora é sua vez de fazer a ativação.
+Opinião do instrutor
+
+O primeiro passo para ativar o HTTPS é criar um certificado. Abra o Cloud Shell e execute o comando abaixo: openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -sha256 -days 365.
+
+Quando for perguntada a senha, digite “doguito”, depois pressione “Enter” e deixe as outras opções em branco. Serão criados os arquivos “cert.pem” e “key.pem”.
+
+Em seguida, acesse a opção “Balanceadores de Carga” do menu “Rede”:
+
+alt text: Imagem do menu da OCI exibindo a opção Rede e a sub-opção “Balanceadores de Carga” selecionada na parte central esquerda da tela.
+
+Na tela que será exibida, clique no balanceador de cargas que criamos anteriormente para detalhá-lo:
+
+alt text: Imagem da listagem de balanceadores de carga com um link para o balanceador de cargas que criamos anteriormente no centro da tela.
+
+Na tela de detalhamento clique no menu “Certificados”:
+
+alt text: Imagem da tela de detalhamento do balanceador de carga com a opção de menu de “Certificados” selecionada.
+
+Em seguida, altere a opção de “Recurso de Certificado” selecionando a opção “Certificado Gerenciado pelo Balanceador de Carga” e clique em “Adicionar Certificado”:
+
+alt text: Imagem da tela de detalhamento de certificados do balanceador de cargas com o botão “Adicionar Certificado” no centro da tela.
+
+Agora precisamos fazer o download dos arquivos cert.pem e key.pem que geramos anteriormente no Cloud Shell, para isso, clique no menu do Cloud Shell na opção “Download”:
+
+alt text: Imagem do menu do Cloud Shell com a opção “Download” selecionada.
+
+No formulário exibido, preencha o nome do arquivo como “cert.pem” e repita o procedimento para o arquivo “key.pem”:
+
+alt text: Imagem do formulário de download de arquivo do Cloud Shell com o botão “Download” no canto inferior esquerdo.
+
+Retorne à tela de inclusão de certificado. No nome do certificado, preencha: “doguito-cert”. Inclua o arquivo que você fez o download no passo anterior - cert.pem no Certificado SSL e o arquivo key.pem na Chave Privada. Digite a senha “doguito” no campo indicado:
+
+alt text: Imagem do formulário de inclusão de arquivos de certificado com o botão “Adicionar Certificado” no canto inferior esquerdo da tela.
+
+Se tudo der certo, será exibida uma tela de “Solicitação de Serviço Submetida” e após alguns segundos o status deve passar para “Bem-sucedido”:
+
+alt text: Imagem da tela de solicitação de serviço submetida com o botão “Fechar” no canto inferior esquerdo.
+
+Mas para que o balanceador de cargas responda uma chamada HTTP, é necessário criar um listener específico. Para isso, na tela de detalhes do balanceador de cargas, selecione a opção “Listeners” e clique em “Criar Listener”:
+
+alt text: Imagem da tela de detalhamento do balanceador de cargas com a opção “Listeners” selecionada.
+
+Para criar um novo listener, preencha o formulário com os seguintes valores:
+
+Nome: listener-https
+Protocolo: HTTPS
+Recurso de Certificado: Selecione “Certificado Gerenciado pelo Balanceador de Carga”
+Nome do Certificado: doguito-cert
+Conjunto de Backend: Selecione o conjunto de backend padrão
+
+Clique em “Criar Listener”.
+
+alt text: Imagem do formulário de criação de Listener com o botão “Criar Listener” no canto inferior esquerdo da tela.
+
+Em seguida será exibida a tela de solicitação de serviço submetida e após alguns segundos, o status deve alterar para “Bem-sucedido”:
+
+alt text: Imagem da tela de solicitação de serviço submetida com o botão “Fechar” no canto inferior esquerdo da tela.
+
+Porém, para que o balanceador de cargas receba requisições na porta 443 (que é a porta padrão do protocolo HTTPS), ainda precisaremos incluir uma regra de entrada nova na lista de segurança da VCN. Acesse as opções “Redes > Redes Virtuais na Nuvem > VCN1 > Sub-rede Pública-VCN1 > Default Security List for VCN1 > Adicionar Regras de Entrada”:
+
+alt text: Imagem do formulário de inclusão de regra de entrada com o botão “Adicionar Regras de Entrada” no canto inferior esquerdo da tela.
+
+Com a regra de entrada inclusa, temos que direcionar o fluxo padrão do balanceador de carga para a porta 3000 da instância do Doguito API. Selecione: “Redes > Balanceadores de Carga” e clique no nome do balanceador que você criou. Ao fim, clique na opção “Conjuntos de Backends” e no back-end padrão para detalhá-lo:
+
+alt text: Imagem da listagem de conjuntos de backends do balanceador de cargas com um link para o conjunto de backends padrão no centro da tela.
+
+Na tela, clique na opção “Backends” e selecione o IP privado da instância do dps-vm2. Para identificar qual é o IP privado do dps-vm2, você pode acessar o menu “Computação > Instância”. Exclua a instância do dps-vm2 da lista de back-ends uma vez que ela não tem o Doguito API instalado:
+
+alt text: Imagem da listagem de backends do balanceador de cargas com menu de opções e a opção “Excluir” selecionada.
+
+Agora, selecione o dps-vm1 e cliente em “Editar Porta” no menu de Ações:
+
+alt text: Imagem da listagem de backends do balanceador de cargas com menu de opções e a opção “Excluir” selecionada.
+
+Altere no formulário o número da porta de 80 para 3000 e clique em “Salvar Alterações”:
+
+alt text: Imagem do formulário de alteração de porta do backend com o botão “Salvar Alterações” no canto inferior esquerdo da tela.
+
+Será exibida a tela de solicitação de serviço submetida. Após alguns segundos o status deve ser alterado para “Bem-sucedido”:
+
+alt text: Imagem da tela de solicitação de serviço submetida com o botão fechar no canto inferior esquerdo da tela. Nesse momento já deve ser possível acessar o endereço do balanceador de cargas via HTTPS, porém, como nosso certificado é autoassinado, será necessário autorizar o navegador no primeiro acesso.
+
+Sendo assim, acesse o endereço do balanceador no navegador utilizando o protocolo HTTPS. Para descobrir qual é o IP público, você pode acessar a opção “Rede > Balanceadores de Carga” e clicar no balanceador de cargas criado anteriormente.
+
+https://<ip-público-do-balanceador-de-cargas>
+
+alt text: Imagem da tela do navegador autorizando o acesso ao endereço do balanceador via HTTPS.
+
+Após autorizar o acesso, deve ser exibida a página inicial do Doguito API:
+
+alt text: Imagem da tela do navegador exibindo a tela inicial do Doguito API.
+
+Agora já podemos ajustar o endereço do arquivo scripts.js do nosso site estático, para se comunicar com o Doguito API via HTTPS, isso será feito na opção de menu Armazenamento -> Serviços de Object Storage -> Clique no link “site” -> localize o arquivo “scripts.js”, abra o menu de opções e selecione “Excluir”:
+
+alt text: Imagem da tela de listagem dos objetos do bucket com o menu de opções e a opção “Excluir” no lado direito da tela selecionada.
+
+Em seguida podemos editar localmente o arquivo “scripts.js” e ajustar o IP para o do balanceador de cargas (note que não é necessário utilizar a porta 3000). Use, por exemplo, o bloco de notas ou qualquer outro editor de texto simples:
+
+alt text: Imagem do bloco de notas com o arquivo script.js aberto e a primeira linha alterada para o IP público do balanceador de cargas.
+
+Salve as alterações do arquivo e faça novamente o upload do arquivo alterado para o bucket na mesma pasta anterior:
+
+alt text: Imagem do formulário de upload do arquivo scripts.js atualizado com o botão “Fazer Upload” no canto inferior esquerdo da tela.
+
+Acesse novamente o arquivo index.html hospedado no Object Storage. Dessa vez a lista de clientes deve ser carregada com sucesso:
+
+alt text: Imagem do navegador exibindo o site do Doguito hospedado no Object Storage e listando os clientes pela API.
+
+
+
+3-7 Para saber mais: Object Storage na OCI
+
+
+Object Storage é um conceito novo que tem se popularizado em diversos fornecedores de Cloud. Isso se deve à sua facilidade de criação e baixa necessidade de manutenção. Seus usos podem variar desde a utilização para upload de conteúdo de usuários até mesmo persistência de configuração das aplicações. Para saber um pouco mais se Object Storagm, assista a este video da Oracle que explica muitas características do Object Storage:
+
+https://youtu.be/IePCpBGza0k
+
+O conteúdo em video pode apresentar alguns tópicos desatualizados, por isso, todos os detalhes sobre a utilização de Armazenamento na OCI podem ser também encontrados na documentação oficial na seção “Armazenamento”, através dos links:
+
+https://docs.oracle.com/pt-br/iaas/Content/home.htm
+
+https://docs.oracle.com/es-ww/iaas/Content/home.htm
+
+
+
+
+3-8 Tipo de armazenamento adequado
+
+A OCI oferece diversos tipos de armazenamento para cada caso de uso e necessidade. Quando criamos uma instância, ela está associada a um volume de inicialização que possui a imagem do sistema operacional para realizar o boot. Caso essa instância necessite expandir seu armazenamento ou caso desejarmos manter arquivos que serão preservados mesmo se a instância for destruída, devemos utilizar um tipo de armazenamento específico para isso.
+
+Selecione a alternativa que corresponde ao armazenamento mais adequado neste caso.
+
+Buckets.
+  Alternativa incorreta. Um bucket é uma subdivisão do armazenamento de objetos, sendo assim, também não é indicado para o caso de uso citado.
+
+Armazenamento de arquivos.
+  Alternativa incorreta. O armazenamento de arquivos é indicado para casos de uso onde se deseja acessar os arquivos utilizando um drive de rede, não é adequado para expansão de armazenamento de instâncias.
+
+Armazenamento de objetos.
+  Alternativa incorreta. O armazenamento de objetos é direcionado ao armazenamento de dados não-estruturados potencialmente para o acesso via internet e não para o caso de uso indicado.
+
+Volume em blocos.
+  Alternativa correta. O serviço de volume de blocos permite provisionar e gerenciar dinamicamente volumes de armazenamento em bloco como se fossem uma unidade de disco rígido comum. Você também pode desconectar um volume e anexá-lo a outra instância sem perda de dados. Esta é a opção mais adequada para expandir a capacidade de armazenamento de uma instância.
+
+
+
+3-9 O que aprendemos?
+
+  Que a OCI oferece diversos tipos de armazenamento para sua aplicação, como o armazenamento em blocos, armazenamento de arquivos e o Object Storage. Cada categoria apresenta diversas características de performance e durabilidade, devendo ser avaliadas as necessidades específicas de cada caso de uso;
+  
+  Que o Object Storage permite acesso HTTPS direto aos recursos, a partir da definição de um namespace e de um bucket;
+  
+  Que podemos utilizar o Object Storage para armazenar e servir o front-end do Doguito Petshop, sendo uma forma simplificada para servir um site via HTTPS;
+  
+  Que quando o front-end é servido em HTTPS é necessário que o backend também seja servido em HTTPS para que o navegador aceite realizar requisições AJAX entre os domínios.

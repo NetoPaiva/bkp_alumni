@@ -1,0 +1,190 @@
+https://cursos.alura.com.br/course/oracle-cloud-infrastructure-aplicacao-nuvem/section/13786/tasks
+
+Evernote: devweb - alumni-2_cloud_1
+
+Curso Oracle Cloud Infrastructure: implantação de uma aplicação na nuvem
+Instrutor Tiago Lage Payne de Pádua
+
+
+Aula 1 - Computação em nuvem | 0 / 7 | 16min
+
+  1-1 Apresentação *
+  1-2 Doguito Petshop *
+  1-3 Computação em nuvem *
+  1-4 Por que usamos Clouds
+  1-5 Faça como eu fiz: iniciando na Cloud
+  1-6 Para saber mais: conceitos de Cloud
+  1-7 O que aprendemos?
+
+
+1-1 Apresentação *
+
+
+Transcrição
+
+[00:00] Olá, meu nome é Tiago Pádua e vou te acompanhar no curso de Oracle Cloud Infrastructure. Se você que está iniciando os seus estudos sobre Cloud e quer saber como funciona a Cloud da Oracle, esse curso é para você.
+
+[00:13] Oracle Cloud é um conjunto de serviços em nuvem que se complementam e permitem criar e executar vários tipos de aplicação em um ambiente de alta disponibilidade. Oracle Cloud, conhecida como OCI, oferece recurso de computação de alto desempenho e combina a elasticidade e a utilidade de uma nuvem pública com controle e segurança de uma infraestrutura local, como se fosse um data center privado.
+
+[00:38] Isso tudo para oferecer serviços de infraestrutura de alto desempenho bastante econômicas. Vamos ver as características da OCI, suas tecnologias e fundamentos. E, para fixar nossos conhecimentos, vamos criar um projeto prático que será implantado na nuvem da Oracle.
+
+[00:55] Sou o professor Tiago e quero dar-lhes as boas-vindas ao nosso curso.
+
+
+
+
+
+
+1-2 Doguito Petshop *
+
+
+Transcrição
+
+[00:00] Antes de começarmos a trabalhar diretamente com a Oracle Cloud, vamos entender um pouco o contexto da aplicação com que vamos trabalhar, que vamos implantar na Oracle Cloud.
+
+[00:14] A aplicação que vamos implantar é o Doguito Pet shop. Ela é bem simples (bem simples mesmo), no momento ela basicamente permite incluir um cliente novo. Por exemplo, vou colocar o nome "Tiago" e o e-mail "tiagolpadua@yahoo.com". Clicando em "Cadastrar", o cadastro é realizado com sucesso e voltamos para a lista de clientes. A aplicação também permite que façamos a exclusão desse cliente.
+
+[00:50] Então, essa é a aplicação que vamos migrar para a Oracle Cloud. Vamos entender um pouco mais a parte técnica dessa aplicação. Ela é escrita em JavaScript, tem uma parte do site (do front-end, do HTML) e tem também uma parte de back-end. A aplicação é dividida entre o front-end e a API, que permite fazer a inclusão e a exclusão das entidades.
+
+[01:24] Essa aplicação é baseada em Node, no entanto, não é necessário um conhecimento profundo em Node para conseguirmos seguir o nosso treinamento. Caso você queira fazer o download dessa aplicação e instalar em sua máquina, executar localmente em sua máquina, você pode fazer. Existem instruções no arquivo README.md, no entanto, não é um passo obrigatório.
+
+[01:49] Na sequência, vamos dar continuidade ao nosso entendimento da Oracle Cloud.
+
+
+
+
+
+
+1-3 Computação em nuvem *
+
+
+Transcrição
+
+[00:00] Para entendermos qual é a vantagem de implantarmos o Doguito Pet Shop na Cloud, é necessário entendermos um pouco melhor o que é a computação em nuvem.
+
+[00:13] A computação em nuvem é a oferta de serviços de computação como servidores, armazenamento, banco de dados, rede e outros softwares, através da internet que chamamos de Cloud.
+
+[00:29] O Doguito Pet Shop poderia ser implantado, por exemplo, em uma infraestrutura de data center privado, principalmente quando tratamos de uma empresa média ou grande. Por que essa empresa, em vez de implantar e utilizar um data center privado, optaria por utilizar uma computação em nuvem, uma computação na Cloud? Vamos ver quais são algumas dessas vantagens.
+
+[01:01] A primeira vantagem é relativa ao custo. A computação em nuvem reduzirá o custo com a compra de hardwares e softwares, quando comparamos com a configuração e execução de um data center físico, local da empresa.
+
+[01:19] Porque, nesse data center físico, você terá que fazer a instalação física de servidores, mexer mesmo com o hardware, colocar os computadores para funcionar, instalação elétrica, refrigeração, back-up de energia e todas as outras questões necessárias para manter um data center. Não só os custos físicos, há também os custos dos especialistas que você contratará para gerenciar essa infraestrutura.
+
+[01:50] Outra vantagem da utilização da Cloud é relativa à velocidade. A maior parte dos serviços em nuvem de computação é fornecida sobre a forma de um autosserviço e sob demanda, isso permite que até as grandes quantidades de recursos de computação possam ser provisionados em minutos.
+
+[02:13] Normalmente, com apenas alguns cliques, você vai à interface do serviço e consegue provisionar, disponibilizar esses recursos, fornecendo às empresas bastante flexibilidade e aliviando a necessidade de planejamento, de capacidade (porque serão necessárias reuniões, compras de software etc).
+
+[02:32] Se você imaginar que, em um data center físico, local, a empresa precisaria fazer todo um processo para comprar mais máquinas, o data center via Cloud parece uma boa estratégia. Em uma oferta via Cloud, isso poderia ser feito em poucos minutos, com alguns cliques e logo já teria um novo hardware disponível.
+
+[02:51] Temos também a vantagem de escala. Um dos benefícios da computação em nuvem inclui essa capacidade de dimensionamento elástico. Tanto como falamos anteriormente com relação ao crescimento, se eu preciso em certo momento aumentar a minha capacidade computacional, vou em uma oferta de serviço em Cloud, dou um clique e eu consigo aumentar essa oferta.
+
+[03:15] O mesmo vale quando quisermos reduzir, por exemplo, se eu não precisar mais de tanto hardware. No data center físico, tradicional, isso é muito complicado — como é que você vai desfazer as vendas das máquinas que você já comprou? Uma vez que você comprou e instalou, é muito inelástica a sua oferta de hardware.
+
+[03:36] A Cloud fornecerá uma quantidade de recursos adequada de TI, assim como a potência de computação maior ou menor, largura de banda, armazenamento, sempre que for necessário e até mesmo para uma localização geográfica correta. As empresas que fornecem serviços de Cloud têm, em geral, serviços espalhados geograficamente para que a empresa consiga solicitar um serviço de Cloud na região geográfica mais próxima.
+
+[04:06] Isso traz bastante ganho em termos de produtividade, os data centers locais normalmente vão exigir uma pilha de equipamentos e implementação como, por exemplo, configuração de hardware, softwares e outras tarefas que são demoradas do gerenciamento de TI e necessitam de um profissional, vai gastar recurso para isso, vai dar trabalho para manter isso.
+
+[04:30] A computação em nuvem vai remover a maior parte da necessidade dessas tarefas para que essas equipes de TI possam investir seu tempo na obtenção de metas comerciais ligadas ao negócio da empresa e não a configuração de hardware físico.
+
+[04:47] Há a questão também de desempenho. Os maiores serviços de computação em nuvem são executados em uma rede mundial de data centers e esses eles são muito seguros, são autorizados regularmente com relação à geração dehardware, software também, e permite uma computação rápida e eficiente. Na empresa tradicional, nos data centers tradicionais, a empresa teria que estar constantemente comprando dispositivos de hardware mais novos e mais potentes, o que também seria um grande trabalho para a empresa.
+
+[05:21] Isso vem também trazer a questão da confiabilidade. A computação em nuvem vai facilitar e reduzir os custos de back-up de dados, recuperação de desastres e continuidade do negócio, já que os dados podem ser espelhados em diversos sites redundantes de um mesmo provedor de nuvem. Um provedor possui diversos sites diferentes e você pode fazer esse espelhamento entre esses sites distintos.
+
+[05:47] Com isso também vem a questão da segurança, os provedores de nuvem eles vão fornecer um amplo conjunto de políticas, tecnologias e controles que vão fortalecer bastante a postura geral de segurança da empresa para proteger os dados ainda mais nesses tempos que vemos tantos ataques e ameaças ocorrendo.
+
+[06:08] Outro ponto que também temos que entender é quais são os tipos de nuvem. Existem vários tipos de nuvens e nem todas são iguais e não há um tipo de computação em nuvem que seja ideal para todas as empresas. Existem vários modelos de serviços e eles foram evoluindo para oferecer a solução certa para a necessidade da empresa.
+
+[06:31] Primeiro, precisamos determinar o tipo de implantação de software e a arquitetura de computação em nuvem no qual os serviços são necessários para serem implementados.
+
+[06:42] Há basicamente três maneiras diferentes de implantar esses serviços em nuvem. Existem as nuvens públicas que têm o serviço de provedor terceirizado e são administradas por ele, em geral pela internet. É um serviço que você tem que você vai acessar pela internet, por exemplo, temos Azure, Google, AWS que são muito conhecidos por terem nuvens públicas.
+
+[07:12] Todo o hardware, os softwares, a infraestrutura e o suporte são de propriedade e gerenciados pelo provedor de nuvem. Você vai acessar esse serviço, gerenciar uma conta utilizando o navegador da web.
+
+[07:25] Outro tipo de nuvem que temos é a chamada nuvem privada, que se refere ao recurso de computação em nuvem utilizados exclusivamente por uma única empresa ou organização. A nuvem privada pode estar localizada fisicamente no data center local da empresa, a empresa pode pegar o próprio data center que ela já tem e evoluir para fornecer uma oferta mais dinâmica de serviços para a própria empresa.
+
+[07:53] Muitas vezes, a empresa também quer experimentar esse serviço em nuvem, saber como vai funcionar e ela pode partir para esse modelo inicialmente de uma nuvem privada para se adaptar aos processos internos que ela já tem e já trabalha.
+
+[08:08] Depois disso, ela pode ter também uma nuvem que chamamos de nuvem hibrida, que vai combinar a nuvem pública e a privada ligadas por algum tipo de tecnologia que vai permitir que os dados sejam compartilhados entre elas.
+
+[08:24] Temos que entender também quais são os tipos de serviços que são disponibilizados em nuvem. A maioria dos serviços de computação em nuvem vai enquadrar-se em uma dessas quatro categorias que vamos ver agora. IaaS (infraestrutura como serviço), PaaS (plataforma como serviço), SaaS (software como serviço) e Serverless (que seria algo como "sem servidor"). Vamos falar um pouco sobre cada uma delas.
+
+[08:52] O IaaS, infraestrutura como serviço, é uma das categorias mais básicas do serviço de computação em nuvem. Com IaaS, é como se você estivesse alugando uma infraestrutura de TI, isso inclui servidores, máquinas virtuais, armazenamento, redes, sistema operacional, isso você vai alugar de um provedor de serviço e o pagamento em geral vai ser relativo ao uso que você faz desse serviço.
+
+[09:17] Depois disso temos o PaaS que é "plataforma como serviço". A plataforma como serviço refere-se ao serviço de computação em nuvem que vai fornecer o ambiente sob demandas de desenvolvimento, teste e fornecimento, gerenciamento de aplicação de software.
+
+[09:32] O PaaS, em geral, é criado para facilitar os desenvolvedores a criar aplicativos móveis ou aplicativos web de uma maneira bastante rápida, sem se preocupar muito com a configuração ou gerenciamento da infraestrutura de servidores. Armazenamento, rede ou banco de dados tudo isso você não precisa configurar nessa modalidade.
+
+[09:52] Depois temos o software como serviço que é um nível de abstração ainda mais alto. O software como serviço é um método que você tem a distribuição de aplicativo de software pela internet sob demanda e normalmente baseado no modelo de assinatura, você vai lá e assina aquele software e você utiliza-o pelo tempo que você quiser e não se preocupa em nada com relação à implantação, a configuração daquele software, pois ele já vem pronto.
+
+[10:20] O SaaS os provedores de nuvem hospedam e gerenciam aplicativo de software e a infraestrutura subjacente que vão fazer as manutenções, atualizações e testes de segurança. Os usuários vão comunicar-se nesse aplicativo pela internet, normalmente é um aplicativo web ou através do PC.
+
+[10:38] A última categoria que o Serverless, que é a computação sem servidor, ela vai concentrar-se na criação de funcionalidades de aplicativos sem perder tempo, sem que o desenvolvedor perca tempo com o gerenciamento desses servidores e da infraestrutura. O provedor em nuvem vai cuidar da configuração, planejamento, capacidade e do gerenciamento de servidores para que você desenvolva o mais rápido possível.
+
+[11:05] Essas arquiteturas sem servidor em geral são altamente escaláveis e controladas por eventos. A cada evento, cada vez que você for criar uma função você ao invés de hospedar um aplicativo você vai hospedar uma função e essa função vai ser chamada através de um evento, por exemplo, uma requisição de rede. Cada vez que um evento desses ocorrer isso vai ter uma pequena tarifa e você em geral vai ser tarifado só quando ocorrer um daqueles eventos.
+
+[11:32] O Oracle Cloud Infrastructure é um conjunto de serviços que inicialmente vai atender pelo lado do IaaS ou a infraestrutura como serviço, mas ele também vai fornecer uma série de outros recursos que também vão estar ligados tanto ao Paas, ao SaaS e ao Serveless também. Ele vai ser bastante amplo e englobar todas essas categorias de serviço, ele começa com a infraestrutura como serviço, IaaS.
+
+[12:03] Agora que já entendemos como o nosso aplicativo Doguito vai entrar na Cloud, quais são as vantagens de colocarmos o Doguito Pet Shop na Cloud, é hora de começarmos a utilizar o Oracle Cloud Infrastructure.
+
+
+
+
+
+
+1-4 Por que usamos Clouds
+
+A empresa onde trabalhamos está avaliando se deve ou não passar a utilizar clouds para a implantação de novas aplicações. Para contribuir na discussão, você listou algumas vantagens da utilização de Clouds em relação à utilização de data centers próprios.
+
+Assinale as alternativas que trazem essas vantagens.
+
+Maior produtividade.
+  Alternativa correta! A computação em nuvem remove a necessidade de muitas tarefas relacionadas à manutenção que ocorrem em data centers locais. Assim as equipes de TI podem investir tempo na obtenção de objetivos de negócio mais importantes.
+
+Melhor escalabilidade.
+  Alternativa correta! A computação em nuvem permite a escalabilidade elástica de recursos.
+
+Custo aumentado.
+  Alternativa incorreta! A computação em nuvem reduz os custos com a compra de hardware e software quando comparamos com a configuração e execução de datacenters locais.
+
+Maior confiabilidade.
+  Alternativa correta! A computação em nuvem facilita e reduz os custos de backup de dados, recuperação mediante desastres e continuidade dos negócios, já que os dados podem ser espelhados em diversos sites redundantes na rede do provedor em nuvem.
+
+
+
+
+
+1-5 Faça como eu fiz: iniciando na Cloud
+
+
+Nesta aula conhecemos as características básicas da aplicação que implantaremos na cloud. Como ela já está totalmente implementada, podemos focar na configuração da infraestrutura para sua implantação e não em sua codificação. A Doguito Petshop é escrita em JavaScript e possui um front-end HTML e um back-end que fará acesso a uma base de dados e disponibilizará uma API para que o front-end se comunique.
+
+Vimos também sobre as características mais importantes da computação em nuvem, suas vantagens, os tipos de serviços disponibilizados em nuvem e uma introdução à OCI - Oracle Cloud Infrastructure.
+
+
+Opinião do instrutor
+
+Não deixe de sanar suas dúvidas antes de dar continuidade ao curso. No fórum da Alura é possível compartilhar suas questões e conhecimentos com a comunidade, até mesmo respondendo as dúvidas de colegas.
+
+
+
+
+
+
+1-6 Para saber mais: conceitos de Cloud
+
+Quando começamos a estudar sobre cloud nos deparamos com uma série de conceitos e siglas que num primeiro momento podem soar estranhos aos nossos ouvidos, no entanto, é importante compreendê-los para podermos ter uma visão ampla de como a Cloud é estruturada e quais são seus princípios. Para te ajudar nesse caminho, temos este artigo que resume muito bem estes conceitos relacionados à Cloud.
+
+https://www.alura.com.br/artigos/o-que-e-cloud-e-seus-principais-servicos
+
+
+
+
+1-7 O que aprendemos?
+
+  Que as vantagens da computação em nuvem são a redução de custos, maior velocidade, escala, produtividade, desempenho e ganho de desempenho quando comparada a utilização de datacenters tradicionais;
+  
+  Os tipos de clouds mais comumente disponibilizados no mercado são a pública, privada e a híbrida;
+  
+  Os serviços normalmente oferecidos neste tipo de computação são, por exemplo, IaaS, Paas, Saas e Serverless;
+  
+  A Oracle Cloud é inicialmente mais focada em infraestrutura, porém possui várias categorias de serviços que irão atender às mais diversas demandas.

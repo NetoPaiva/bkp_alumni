@@ -1,0 +1,240 @@
+https://cursos.alura.com.br/course/oracle-cloud-infrastructure-aplicacao-nuvem/section/13787/tasks
+
+Evernote: devweb - alumni-2_cloud_1
+
+Curso Oracle Cloud Infrastructure: implantação de uma aplicação na nuvem
+Instrutor Tiago Lage Payne de Pádua
+
+
+Aula 2 - Conta Free Tier na OCI | 0 / 8 | 17min
+
+  2-1 Criação de conta na OCI *
+  2-2 Para saber mais: modo gratuito (Free Tier)
+  2-3 Modo gratuito (Free Tier)
+  2-4 Faça como eu fiz: criando uma conta na OCI
+  2-5 Conhecendo o Console da OCI *
+  2-6 Faça como eu fiz: navegando no Console da OCI
+  2-7 Características da Free Tier *
+  2-8 O que aprendemos?
+
+
+2-1 Criação de conta na OCI *
+
+
+Transcrição
+
+[00:00] O primeiro passo para cadastrarmos, para implantarmos a nossa aplicação do Doguito Pet Shop na Oracle Cloud é fazer o registro lá no site da Oracle. Para isso acessamos: www.oracle.com/cloud e clicamos na opção: "Try Oracle Cloud for free".
+
+[00:18] Clicando nessa opção, vamos para essa segunda tela onde temos a opção do "Start for free", que podemos iniciar aqui a nossa avaliação do serviço da Oracle. Clicando no "Start for free" temos acesso a dois serviços, uma gama de serviços é chamada de always-free que como o próprio nome diz, são os serviços que vão ser para sempre gratuitos que são: Banco de Dados Autônomo, Máquinas virtuais, Armazenamento de objetos.
+
+[00:48] Além disso, temos acesso a 300 dólares em créditos que são válidos por 30 dias. Vamos conseguir acessar alguns serviços que seriam também pagos e utilizamos esse crédito, se os créditos acabarem não temos mais acesso ao serviço ou se passar também os 30 dias.
+
+[01:08] No entanto, para a nossa aplicação do Doguito Pet Shop, os serviços que são essenciais que são os serviços que estão na categoria de cima, vão ser suficientes para fazermos o cadastramento da nossa aplicação, implantar a nossa aplicação na Cloud e fazer o nosso estudo.
+
+[01:26] Agora vamos cadastrar. A primeira coisa que vamos colocar é o país que estamos, no caso o Brasil, vamos colocar o primeiro e o segundo nome. Sempre recomendo colocar os dados corretos para alguma verificação, vamos colocar aqui o nosso e-mail também e nesse e-mail vamos receber o link de verificação. Com esse link de verificação vamos poder dar continuidade ao processo de cadastramento. O link é enviado e podemos prosseguir com o processo de cadastramento.
+
+[01:59] Após receber o e-mail de confirmação, preencha com seus dados pessoais. A primeira coisa é colocar aqui uma senha, cadastrar uma senha válida para o serviço da Oracle Cloud, você confirma essa mesma senha. Não coloca o nome da empresa senão ele vai pedir dados de CNPJ e o nome da conta da Cloud vamos trocar para "doguitopetshop".
+
+[02:27] Pode ser que quando você vá fazer, peça para colocar um nome diferente aí é só colocar um número na frente só para diferenciar. Aí você vai escolher a sua região local, a região do Data Center que você preferir que seja mais próxima dos seus clientes para ser mais rápida a conexão deles. Neste caso temos o Data Center da Oracle em São Paulo, escolheremos esse, e clicamos em "Continuar".
+
+[02:53] Após isso vai pedir para colocarmos os nossos dados de faturamento, onde vamos colocar o dado do endereço, coloque o seu endereço pessoal. Sempre recomendo colocar os dados verídicos porque eventualmente eles utilizarão esses dados para fazer algum tipo de confirmação, de validação, por isso coloque os dados corretos. Em seguida o nome da cidade, a UF, o código postal da sua residência, o seu CPF também que colocar e na próxima sequência colocamos o nosso telefone de contato.
+
+[03:33] Antes de fazermos o contrato vamos clicar em "Continuar" e adicionar uma forma de pagamento. Essa forma de pagamento vai servir para validar a sua conta, ele vai fazer uma pequena cobrança no cartão de crédito e depois ele vai estornar esse valor, não vai cobrar nada de você, mas é obrigatório colocar um cartão de crédito que seja válido. Clicamos em "Adicionar método de verificação de pagamento" e vai pedir para você digitar clicando em cartão de crédito, pedir para você digitar os dados do seu cartão de crédito.
+
+[04:11] Já vai aparecer aqui pré preenchido os dados dos faturamentos anteriores, escolha a bandeira do seu cartão de crédito, coloque o número do seu cartão de crédito, tem que ser o número correto para ele poder validar, coloque o mês e o ano do vencimento do cartão de crédito e o código verificador do cartão. Confirmando após alguns segundos ele vai mostrar a mensagem de agradecimento, volta para a tela anterior onde podemos clicar que estamos de acordo com os termos do contrato e iniciar o nosso prazo de avaliação gratuita.
+
+[04:55] Lembrando que essa avaliação é gratuita e temos aqueles 300 dólares de crédito, mas existe uma série de serviços que são os serviços sempre gratuitos. Enquanto isso tem que aguardar o processo de finalização de configuração da conta.
+
+[05:11] Após isso vai aparecer essa tela de confirmação da Oracle Cloud e já vai pedir para você logar com o seu nome de conta da Oracle Cloud. Vamos continuar o nosso processo aqui, vamos fazer o login com a conta que criamos anteriormente, no caso "doguitopetshop", clicamos em "Next" e aí esperamos aqui ele criar o nosso domínio.
+
+[05:42] Vamos criar também um usuário local, um usuário para fazer o login aqui. Vou colocar "tiagolpadua@outlook.com" e colocar aqui uma senha para acesso.
+
+[05:58] Pronto, agora ele já está logando aqui a nossa conta da Oracle. Vai aparecer aqui alguma mensagem no caso de navegador, eu estou usando aqui o Edge, mas tudo bem, era uma pergunta aqui bem básica sobre qual o seu interesse no momento com a Oracle Cloud, podemos responder qualquer coisa, o interesse por Hobbyist mesmo e clicamos aqui no "Salvar", vai concluir e vamos ter acesso ao painel inicial, a nossa primeira visão do console de administração web da Oracle.
+
+
+
+
+
+
+2-2 Para saber mais: modo gratuito (Free Tier)
+
+Se você quiser conhecer todos os detalhes dos limites de uso da conta Free Tier, recomendo que veja este link para informações sobre o modo gratuito da Oracle Cloud, nele você terá uma visão minuciosa de tudo que pode ser feito com a conta Free Tier assim como o Free Trial.
+
+https://www.oracle.com/br/cloud/free/
+
+
+
+
+
+2-3 Modo gratuito (Free Tier)
+
+O Modo Gratuito (free tier) disponibilizado pela Oracle Cloud nos permite utilizar diversos serviços por tempo ilimitado. Durante nosso treinamento somente utilizaremos serviços disponibilizados neste modo, então você pode ficar despreocupado pois utilizar a cloud não gerará custos. No entanto, a conta free tier possui algumas características e particularidades.
+
+Indique 2 alternativas corretas sobre a conta free tier da OCI.
+
+É adequada para a implantação de aplicativos em sua fase de testes.
+  Alternativa correta! A conta free tier é adequada para testar novos aplicativos, em especial para empresas que estejam avaliando a migração para o ambiente de nuvem.
+
+Possui limite de uso de 30 dias.
+  Alternativa incorreta! A conta free tier permite a utilização dos serviços da OCI por tempo ilimitado.
+
+Permite a implantação de serviços de computação e armazenamento
+  Alternativa correta! A conta free tier inclui duas instâncias de computação, armazenamento em bloco com tecnologia SSD, armazenamento de objetos, armazenamento de arquivos e balanceamento de carga.
+
+Possui limitação de créditos de $ 300 por mês.
+  Alternativa incorreta! A conta free tier não possui limite de gastos mensais. Nos primeiros 30 dias de uso, teremos $ 300 de crédito para utilizar em outros serviços, porém, ao fim do período, a conta continuará ativa.
+
+
+
+
+
+2-4 Faça como eu fiz: criando uma conta na OCI
+
+
+No vídeo nós fizemos a criação da conta na OCI no modo free tier. Usaremos a conta para realizar a implantação de nosso aplicativo, o Doguito Petshop, de forma gratuita.
+
+Agora é sua vez de praticar e garantir a criação de sua conta antes de partir para o próximo vídeo. Vamos lá?
+
+
+Opinião do instrutor
+
+Acesse o link e clique na opção “Experimente a Oracle Cloud Gratuitamente”:
+
+https://www.oracle.com/br/cloud/
+
+alt text: Imagem da página inicial do site da Oracle Cloud onde se vê o botão “Experimente a Oracle Cloud gratuitamente”
+
+Em seguida, clique na opção “Comece já gratuitamente”:
+
+alt text: Imagem da página do site da Oracle Cloud onde se vê o botão “Comece já gratuitamente”
+
+Durante o cadastramento é necessário informar um cartão de crédito, no entanto, a utilização da conta no modo free tier não implica em custos, pode ficar tranquilo!
+
+Após a criação da sua conta na Oracle Cloud, guarde bem a sua senha, pois iremos precisar fazer login diversas vezes durante o treinamento.
+
+
+
+
+
+
+2-5 Conhecendo o Console da OCI *
+
+
+Transcrição
+
+[00:00] Agora que já criamos uma conta na Oracle Cloud e já temos acesso aos serviços, já temos usuários, já conseguimos fazer o login é hora de darmos continuidade à implantação do Doguito Pet Shop aqui no ambiente da Oracle Cloud.
+
+[00:14] Para isso temos que compreender bem como funciona, pelo menos, os recursos básicos da interface web da Oracle Cloud. Para isso vamos voltar à tela inicial da "www.oraclecloud/cloud", clicar em "Try Oracle Cloud for free" e eu posso fazer aqui agora o sign in ao invés de fazer o iniciar para criar um usuário que já fizemos, vamos na opção do "Sign in" que seria para fazer o login.
+
+[00:41] Vamos colocar aqui o nosso nome de usuário, no caso "doguitopetshop", vamos clicar em "Next" acessar com o usuário e senha que já tínhamos cadastrado anteriormente no passo de cadastro de usuário. Fazendo isso vamos entrar aqui e vamos cair direto na interface do Oracle Cloud web, o console de administração do Oracle Cloud.
+
+[01:06] Esse console de administração é dividido em várias áreas, a primeira dessas áreas é a área de menu que fica aqui no canto superior esquerdo. Nessa área de menu temos acesso a Home, Computação, Armazenamento, Rede, ou seja, praticamente todos os recursos da Oracle Cloud estão disponíveis aqui no menu.
+
+[01:26] Cada vez que clicamos em um menu desse aparece aqui um subgrupo de opções à direita, por exemplo, eu posso vir aqui em "Computação" e ver as instâncias de computação que tem disponíveis, por exemplo. Nesse caso ainda não tem nenhuma, ainda não criamos nenhuma instância de computação. Além disso, eu sempre posso voltar para a tela inicial clicando aqui no Oracle Cloud.
+
+[01:51] Na sequência temos essa área de busca onde eu posso buscar por diversos serviços, por exemplo, eu posso buscar aqui a parte de log. Cliquei aqui em "Log" e apareceu "Loading..." está em destaque. Log são os registros de tudo o que aconteceu na utilização da Oracle Cloud, tem aqui todas as operações com data, hora, tudo o que aconteceu aqui durante a utilização da Oracle Cloud.
+
+[02:19] Na sequência, ao lado direito no canto superior, temos a região que nos encontramos. Neste caso vamos utilizar somente uma região geográfica, só um Data Center aqui da Oracle. No entanto, para casos maiores, para empresas maiores ela pode ter acesso a mais regiões e aí pode fazer replicações e assim por diante. Para o nosso exemplo que é bem básico conseguimos ficar aqui direto só em uma região mesmo.
+
+[02:49] Na sequência temos Cloud Shell que é uma ferramenta muito interessante, ele é o ambiente de linha de comando que quando clicamos a Oracle vai instanciar uma máquina virtual com o ambiente Linux e com todas as ferramentas de linha de comando que podemos utilizar para ter acesso ao Oracle Cloud. Basicamente todas as operações que conseguimos realizar pela interface de menus conseguimos fazer aqui também pela linha de comando.
+
+[03:25] Essa instância que é aberta aqui não é uma máquina virtual que vai cobrar você utilização, não estamos instanciando uma máquina virtual para utilizarmos aqui no Doguito Petshop, é uma máquina que existe simplesmente para que consigamos emitir comandos e não precisa instalar nada localmente na nossa estação local.
+
+[03:45] Por exemplo, aqui eu posso emitir alguns comandos, aqui é um ambiente Linux convencional, eu posso colocar aqui um uname -a, vou ver que é um ambiente Linux e eu posso fazer alguns comandos que são os comandos do OCI. Se eu colocar aqui ocI --version vai aparecer a versão do OCI atualmente instalada e eu consigo fazer algumas operações aqui do OCI como, por exemplo, oci iam user list para listar os usuários que estão cadastrados aqui na ferramenta.
+
+[04:19] Posso expandir aqui também a área e ele vai me mostrar, no caso os usuários da minha conta é só o `tiagolpadua@outlook.com`. Isso vai variar de usuário para usuário. A ferramenta é muito interessante e muito útil para evitar que tenhamos que instalar ferramentas complicadas na nossa máquina local. Terminando o uso podemos clicar aqui no "Encerrar".
+
+[04:45] Na sequência podemos clicar aqui, ver aqui os anúncios, tem alguns alertas, alguns avisos que a Oracle pode emitir que vão estar presentes aqui. Temos também aqui uma área de ajuda onde podemos fazer algum tipo de solicitação, como o nosso caso é a conta free não temos acesso ao suporte imediato, temos mais acesso ao fórum, a documentação textual.
+
+[05:12] Outra opção que temos aqui é para selecionar o idioma da interface web, neste caso está Brasil e aí você pode escolher português ou inglês, fica a seu critério. E aqui mais a direita temos o acesso ao menu do perfil, onde eu tenho acesso aos meus dados de perfil, entre outras opções que vamos ter aqui e eu consigo também fazer o log off.
+
+[05:34] Neste caso vou fazer o log off para sair do sistema e eu posso fazer aqui o Signed out. E aí se quisermos acessar novamente é só clicar em "Acessar". Isso resume bem as características que temos no console web do OCI.
+
+
+
+
+
+
+2-6 Faça como eu fiz: navegando no Console da OCI
+
+
+
+No vídeo nós navegamos por várias opções do console Web da OCI e também acessamos o Cloud Shell.
+
+Tire um tempinho para conhecer e se acostumar com o console da OCI, ele será a principal ferramenta que utilizaremos por todo o restante curso para interagir com a Oracle Cloud.
+
+
+Opinião do instrutor
+
+Após concluir a criação de sua conta, acesse o link e clique na opção “Experimente a Oracle Cloud Gratuitamente”:
+
+alt text: Imagem da página inicial do site da Oracle Cloud onde se vê o botão “Experimente a Oracle Cloud gratuitamente”
+
+Em seguida, clique na opção “Efetue login na Oracle Cloud”:
+
+alt text: Imagem da página inicial do site da Oracle Cloud onde se vê o botão Efetue login na Oracle Cloud”
+
+Agora, utilize o nome de usuário da conta Cloud que foi criado anteriormente - “doguitopetshop” e clique em “Next”:
+
+alt text: Imagem da tela de login da Oracle Cloud onde se vê o botão "Next"
+
+Preencha agora seu usuário e senha da Oracle Cloud:
+
+alt text: Imagem da tela de login da Oracle Cloud onde se vê o botão "Acessar" e os campos de input de nome de usuário e senha
+
+Você deve ter chegado nesta tela:
+
+alt text: Imagem da tela inicial da Oracle Cloud onde se vê o dashboard com as informações básicas da OCI
+
+Invista um tempo para se familiarizar com o console, como navegar pelo menu, telas de ajuda e o processo de login e logout.
+
+O console web da OCI será nossa ferramenta central de trabalho durante o curso, praticamente não precisaremos fazer nada “localmente” em nosso computador. Isso facilita muito nosso trabalho e evita a necessidade de configurar ambientes locais complexos.
+
+
+
+
+
+
+2-7 Características da Free Tier *
+
+
+Transcrição
+
+[00:00] Agora que já criamos a nossa conta, já entendemos um pouco como que é o console da Oracle Cloud, é importante entendermos quais são as características dessa conta que criamos para trabalharmos. Essa conta que criamos na Oracle Cloud é uma conta chamada Oracle Free Tier.
+
+[00:23] Essa conta vai fornecer vários serviços que serão sempre gratuitos, ou seja, esses serviços que estão associados a essa conta Free Tier são sempre gratuitos, eles não vão vencer. Porém, junto com essa criação da nossa conta Free Tier criamos também uma conta chamada Free Trial.
+
+[00:49] Para cadastrarmos o Doguito Petshop, para implantarmos o Doguito Petshop temos que entender a diferença entre esse free tier e o free trial para não termos problemas.
+
+[01:01] O free trial que veio junto vai nos permitir utilizarmos 300 dólares de crédito em qualquer serviço da Oracle Cloud pelo período de até 30 dias, isso é chamado de free trial. Os serviços do free tier vão estar sempre disponíveis por tempo indeterminado. Já os serviços do free trial que é essa avaliação gratuita, podem ser utilizados até que os seus 300 dólares de créditos gratuitos sejam consumidos ou tenha passado 30 dias, o que acontecer primeiro.
+
+[01:38] A nossa conta, o nosso projeto do Doguito Petshop vai se enquadrar nessa conta do free tier. O free tier vamos conseguir cadastrar sem problemas o nosso projeto do Doguito Petshop.
+
+[01:53] Os serviços do Oracle free tier são destinados praticamente a todos os usuários, seja você um desenvolvedor que está criando ou testando um aplicativo, um aplicativo novo ou se você está iniciando um startup, uma empresa procurando testar algum projeto para ser colocado na Cloud e no nosso cas também somos estudantes, estamos aprendendo sobre Cloud, aprendendo sobre Oracle Cloud o free tier vai atender muito o nosso caso de uso.
+
+[02:21] Um ponto que é importante destacarmos é que o Oracle Cloud free tier não inclui SLA. O SLA é sigla de Service Level Agreement, ou seja, acordo de nível de serviço. Caso a sua aplicação já esteja em uma fase de fornecimento para o usuário final, o usuário que chamamos de produção, é importante que você migre para uma das modalidades pagas da Oracle Cloud para que haja um SLA adequado.
+
+[02:49] Apesar do free tier permitir acessarmos vários serviços e com conseguirmos desenvolver o nosso Doguito Petshop até o final, se fôssemos implantá-lo em produção de verdade para usuários finais, seria importante evoluirmos para uma modalidade paga para que tenhamos um acordo de nível de serviço mínimo da Oracle.
+
+[03:10] Todos esses serviços estão disponíveis, não vou ler um por um porque seria muito maçante, mas temos tanto serviços de compute que são instâncias de computação com armazenamento, com object storage também, com armazenamento de objetos, com armazenamento de arquivos, redes, bases não relacionais, entre outros serviços. Tem vários serviços disponíveis que conseguimos utilizar.
+
+[03:39] Com o serviço da Oracle Cloud Infrastructure você também tem o essencial para criar e testar aplicativos em nuvem, isso vai incluir também até mesmo armazenamento de SSD, que é aquele armazenamento bem rápido dos computadores. E a tráfico de objetos com largura de banda alta, armazenamento de arquivos, entre outras tecnologias.
+
+[04:01] Agora que já entendemos o que é a conta free tier podemos dar continuidade a implantação do nosso projeto.
+
+
+
+
+
+
+2-8 O que aprendemos?
+
+  Podemos utilizar a versão gratuita ou free tier das contas na OCI;
+  
+  Existem opções no console da OCI para realizarmos a criação de computes, armazenamento, rede e até bancos de dados que nos permitirão a implantação do Doguito Petshop;
+  
+  Navegamos pelo console da OCI através do menu principal, pesquisa e cloud shell para nos familiarizarmos com o ambiente;
+  
+  Com a conta free tier podemos usar diversos recursos por tempo ilimitado e assim conhecê-los e testá-los sem custos;
+  
+  A conta free tier é diferente do período free trial. Durante este período, podemos utilizar diversos recursos que não estão incluídos na conta free tier por 30 dias ou atingir o limite de $ 300,00.

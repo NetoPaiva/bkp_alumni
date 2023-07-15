@@ -1,0 +1,835 @@
+https://cursos.alura.com.br/course/oracle-cloud-infrastructure-dados-infraestrutura-codigo/section/13801/tasks
+
+Evernote: devweb | alumni-2_cloud_2
+
+
+Curso de Oracle Cloud Infrastructure: banco de dados e infraestrutura como código
+
+Instrutor Tiago Lage Payne de Pádua
+
+
+
+Aula 5 - Infra do Doguito como código | 0 / 9 | 34min
+
+  5-1 Projeto da aula anterior
+  5-2 Configurando a stack do Doguito *
+  5-3 Faça como eu fiz: Doguito como código
+  5-4 Implantando stack na OCI *
+  5-5 Faça como eu fiz: implantando o Doguito como código
+  5-6 Para saber mais: Terraform
+  5-7 Implantando recursos como código
+  5-8 O que aprendemos?
+  5-9 Conclusão *
+
+
+5-1 Projeto da aula anterior
+
+Para esta aula usaremos alguns códigos que estarão disponibilizados para a consulta no GitHub.
+
+https://github.com/alura-cursos/doguito-site-orm
+
+
+
+5-2 Configurando a stack do Doguito *
+
+Transcrição
+
+Neste momento, estamos com aquela pilha básica de exemplo implantada na OCI. Podemos acessar o menu da OCI, entrar em "Serviços ao Desenvolvedor > Gerenciador de Recursos > Pilhas" e ver a pilha devidamente implantada e ativa. A seguir, faremos ajustes para rodar o Doguito.
+
+Na conta gratuita, temos uma limitação de quantidade de máquinas que podemos executar simultaneamente, portanto será necessário destruir essa pilha para implantar o Doguito. Na página de detalhes da pilha, vamos clicar no botão "Destruir" e confirmar, pressionando "Destruir" novamente ao final da página. O quadrado à esquerda ficará laranja, enquanto essa ação é executada.
+
+Nesse meio-tempo, vamos começar os ajustes nos arquivos do Terraform para configurar a execução do Doguito. Precisaremos do doguito-site.service e do orm-dps.zip (compartilhados na plataforma). Vamos descompactar o arquivo .zip, renomear a pasta resultante para "orm-dps-v2" e abri-la no VS Code ou seu editor de texto de preferência — o Bloco de Notas também é uma opção. A seguir, vamos efetuar algumas adaptações nos arquivos para que a nossa versão do Doguito funcione adequadamente.
+
+De início, acessaremos compute.tf e faremos algumas alterações para deixar o conteúdo um pouco mais semântico. A primeira modificação será definir um nome mais significativo para a primeira instância: na linha 6, substituiremos "web-01" por "dps-server-01", repetindo o processo na linha 9 (o display_name):
+
+# código anterior omitido
+
+resource "oci_core_instance" "dps-server-01" {
+  availability_domain = data.oci_identity_availability_domains.ADs.availability_domains[var.AD -1]["name"]
+  compartment_id      = var.compartment_ocid
+  display_name        = "dps-server-01"
+  shape               = var.instance_shape
+
+# código posterior omitido
+
+Nas linhas 29 e 32, vamos alterar o nome e o display_name da segunda instância para "dps-server-02":
+
+# código anterior omitido
+
+ resource "oci_core_instance" "dps-server-02" {
+   availability_domain = data.oci_identity_availability_domains.ADs.availability_domains[var.AD -1]["name"]
+   compartment_id      = var.compartment_ocid
+   display_name        = "dps-server-02"
+   shape               = var.instance_shape
+
+# código posterior omitido
+
+O arquivo compute.tf está pronto. Em seguida, vamos abrir o loadBalancer.tf e alterá-lo conforme a necessidade. Começaremos definindo um nome mais semântico para o balanceador de carga: na linha 3, em lugar de "Demo-Web-LB", colocaremos "DPS-LB" — ou seja, D*oguito *Pet S*hop *Load Balancer:
+
+resource "oci_load_balancer" Load_Balancer {
+  compartment_id = var.compartment_ocid
+  display_name = "DPS-LB"
+  shape          = "flexible"
+  subnet_ids = [
+    oci_core_subnet.subnet.id,
+  ]
+  shape_details {
+      #Required
+      maximum_bandwidth_in_mbps = var.load_balancer_max_band
+      minimum_bandwidth_in_mbps = var.load_balancer_min_band
+    }
+}
+
+# código posterior omitido
+
+Nesse trecho, temos também algumas configurações de largura de banda. A próxima alteração é relativa à porta do health_checker que, no momento, está testando na porta 80. Como levantamos o Doguito na porta 3000, mudaremos de 80 para 3000, na linha 17. Assim, o funcionamento do servidor será checado.
+
+Mais abaixo nesse arquivo, a partir da linha 29, ajustaremos os back-ends. Podemos manter os nomes "dps-vm1" e "dps-vm2", porém vamos direcionar o tráfego para a porta 3000, onde o Doguito será executado: nas linhas 36 e 46, substituiremos 80 por 3000.
+
+Ademais, precisamos mudar os ip_address para corresponder com o novo nome das instâncias de compute. Na linha 34, definiremos ip_address = oci_core_instance.dps-server-01.private_ip e, na linha 44, ip_address = oci_core_instance.dps-server-02.private_ip:
+
+# código anterior omitido
+
+resource "oci_load_balancer_backend" dps-vm1 {
+  backendset_name  = oci_load_balancer_backend_set.web-servers-backend.name
+  backup           = "false"
+  drain            = "false"
+  load_balancer_id = oci_load_balancer.Load_Balancer.id
+  ip_address       = oci_core_instance.dps-server-01.private_ip
+  offline          = "false"
+  port             = "3000"
+  weight           = "1"
+}
+resource "oci_load_balancer_backend" dps-vm2 {
+  backendset_name  = oci_load_balancer_backend_set.web-servers-backend.name
+  backup           = "false"
+  drain            = "false"
+  load_balancer_id = oci_load_balancer.Load_Balancer.id
+  ip_address       = oci_core_instance.dps-server-02.private_ip
+  offline          = "false"
+  port             = "3000"
+  weight           = "1"
+}
+
+# código posterior omitido
+
+Quanto ao listener (linhas 49 a 63), não precisamos modificá-lo — vamos mantê-lo na porta HTTP 80, pois a porta HTTP de entrada é a 80 e internamente o fluxo será direcionado para a porta 3000.
+
+O próximo arquivo que alteraremos é o network.tf. Da linha 48 a 56, temos uma regra de ingress que permite o acesso na porta 80, que chegará ao load balancer. Da linha 58 a 67, consta outra regra de ingress, desta vez na porta 22, para fazer o acesso via SSH nas máquinas. A seguir, vamos incluir mais uma regra, na porta 3000:
+
+# código anterior omitido
+
+  ingress_security_rules {
+    protocol = "6"
+    source   = "0.0.0.0/0"
+
+    tcp_options {
+      min = 80
+      max = 80
+    }
+  }
+
+  ingress_security_rules {
+    protocol = "6"
+    source   = "0.0.0.0/0"
+
+    tcp_options {
+      min = 22
+      max = 22
+    }
+  }
+
+  ingress_security_rules {
+    protocol = "6"
+    source   = "0.0.0.0/0"
+
+    tcp_options {
+      min = 3000
+      max = 3000
+    }
+  }
+
+Em resumo, modificamos alguns detalhes dos arquivos compute.tf, loadBalancer.tf e network.tf. São esses todos os ajustes necessários nos arquivos Terraform.
+
+Agora, a principal mudança será no arquivo cloud-init.yaml. Os arquivos de Terraform servem para criar os recursos da OCI, já o cloud-init.yaml contém uma série de comandos que serão executados quando a instância for levantada, ou seja, da primeira vez em que o compute for executado.
+
+Assim sendo, vamos abrir o cloud-init.yaml e ajustá-lo à nossa maneira. A princípio, focaremos nos packages. Em vez do httpd(o Apache), utilizaremos o Git: na linha 12, vamos comandar a instalação do pacote do Git. Na sequência, realizaremos a instalação do Node:
+
+packages:
+  - git
+  - nodejs
+
+Anteriormente, quando levantamos a máquina, instalamos alguns softwares de conexão com o banco de dados. A seguir, vamos repetir esses processos: o primeiro pacote a ser instalado é o oracle-instantclient-release-el8, que servirá para nos comunicarmos com o banco de dados JSON da Oracle. O segundo é o oracle-instantclient-basic:
+
+runcmd:
+  - [dnf, -y, install, oracle-instantclient-release-el8]
+  - [dnf, -y, install, oracle-instantclient-basic]
+
+  - [sh, -c, echo "<html>Web Server IP `hostname --ip-address`</html>" > /var/www/html/index.html]
+  - [firewall-offline-cmd, --add-service=https]
+  - [firewall-offline-cmd, --add-service=http]
+  - [systemctl, enable, httpd]
+  - [systemctl, start, httpd]
+  - [systemctl, restart, firewalld]
+
+Note que alguns pacotes são instalados em packages e outros podemos rodar em runcmd. No caso, dnf comanda a instalação do pacote e -y faz a confirmação, depois temos install, que é o comando de instalação e, por fim, o pacote desejado.
+
+A seguir, vamos clonar o projeto do Doguito nessa máquina, por meio do git clone:
+
+runcmd:
+  - [dnf, -y, install, oracle-instantclient-release-el8]
+  - [dnf, -y, install, oracle-instantclient-basic]
+  - [git, -C, /home/opc, clone, https://github.com/tiagolpadua/doguito-site-orm.git]
+
+  - [sh, -c, echo "<html>Web Server IP `hostname --ip-address`</html>" > /var/www/html/index.html]
+  - [firewall-offline-cmd, --add-service=https]
+  - [firewall-offline-cmd, --add-service=http]
+  - [systemctl, enable, httpd]
+  - [systemctl, start, httpd]
+  - [systemctl, restart, firewalld]
+
+Por partes: o -C serve para indicar a pasta onde queremos clonar (/home/opc), clone executa o comando de clonagem em si e, por fim, temos o endereço do repositório.
+
+Em seguida, precisamos acessar a pasta onde será feito o clone do Doguito e rodar o npm install, para que as dependências sejam instaladas:
+
+runcmd:
+  - [dnf, -y, install, oracle-instantclient-release-el8]
+  - [dnf, -y, install, oracle-instantclient-basic]
+  - [git, -C, /home/opc, clone, https://github.com/tiagolpadua/doguito-site-orm.git]
+  - [bash, -c, 'cd /home/opc/doguito-site-orm && npm install']
+
+  - [sh, -c, echo "<html>Web Server IP `hostname --ip-address`</html>" > /var/www/html/index.html]
+  - [firewall-offline-cmd, --add-service=https]
+  - [firewall-offline-cmd, --add-service=http]
+  - [systemctl, enable, httpd]
+  - [systemctl, start, httpd]
+  - [systemctl, restart, firewalld]
+
+Vale lembrar que todos esses comandos serão executados somente quando a máquina for levantada da primeira vez. Para que o Doguito continue em execução, caso a máquina reinicie ou ocorra algo nesse sentido, colocaremos um service. Entre os arquivos disponibilizados na plataforma, você terá o doguito-site.service, que é um template de um serviço que utilizaremos.
+
+Portanto, no arquivo cloud-init.yaml, precisamos descobrir uma maneira de acessar o doguito-site.service para instalá-lo na instância. Para tanto, usaremos o serviço de armazenamento da OCI. Entrando em "Armazenamento > Buckets", clicaremos em "Criar Bucket". Daremos o nome "internal" e pressionaremos "Criar" ao final da página. Acessando o bucket, vamos editar a visibilidade. Por motivos didáticos, deixaremos o bucket com acesso público, mas em casos reais o ideal é que seja privado.
+
+A seguir, na área "Objetos", vamos fazer o upload do arquivo doguito-site.service — não há necessidade de preencher o campo de prefixo. À direita do objeto, podemos exibir os detalhes e copiar a URL do arquivo.
+
+Voltando ao nosso projeto, no arquivo cloud-init.yaml, utilizaremos o comando wget para colocar o doguito-site.service na máquina, fazendo uso da URL que acabamos de copiar:
+
+runcmd:
+  - [dnf, -y, install, oracle-instantclient-release-el8]
+  - [dnf, -y, install, oracle-instantclient-basic]
+  - [git, -C, /home/opc, clone, https://github.com/tiagolpadua/doguito-site-orm.git]
+  - [bash, -c, 'cd /home/opc/doguito-site-orm && npm install']
+
+  - [wget, https://objectstorage.us-phoenix-1.oraclecloud.com/n/axnv318jdswe/b/internal/o/doguito-site.service, -P, /lib/systemd/system]
+
+  - [sh, -c, echo "<html>Web Server IP `hostname --ip-address`</html>" > /var/www/html/index.html]
+  - [firewall-offline-cmd, --add-service=https]
+  - [firewall-offline-cmd, --add-service=http]
+  - [systemctl, enable, httpd]
+  - [systemctl, start, httpd]
+  - [systemctl, restart, firewalld]
+
+Note que a URL varia de acordo com o usuário, com o namespace, ou seja, você deve usar o endereço do URL que consta nos detalhes do seu objeto doguito-site.service. Dessa forma, rodaremos o comando wget e faremos o download do serviço em /lib/systemd/system.
+
+Por fim, precisamos reiniciar (reload), depois ativar e inicializar o doguito-site.service (enable e start). São os mesmos comandos que realizamos anteriormente, porém desta vez estamos na infraestrutura como código:
+
+runcmd:
+  - [dnf, -y, install, oracle-instantclient-release-el8]
+  - [dnf, -y, install, oracle-instantclient-basic]
+  - [git, -C, /home/opc, clone, https://github.com/tiagolpadua/doguito-site-orm.git]
+  - [bash, -c, 'cd /home/opc/doguito-site-orm && npm install']
+
+  - [wget, https://objectstorage.us-phoenix-1.oraclecloud.com/n/axnv318jdswe/b/internal/o/doguito-site.service, -P, /lib/systemd/system]
+  - [systemctl, daemon-reload]
+  - [systemctl, enable, doguito-site.service]
+  - [systemctl, start, doguito-site.service]
+
+  - [sh, -c, echo "<html>Web Server IP `hostname --ip-address`</html>" > /var/www/html/index.html]
+  - [firewall-offline-cmd, --add-service=https]
+  - [firewall-offline-cmd, --add-service=http]
+  - [systemctl, enable, httpd]
+  - [systemctl, start, httpd]
+  - [systemctl, restart, firewalld]
+
+Assim, as configurações do service estão prontas, vamos prosseguir.
+
+A linha em que fazemos o echo com o index.html não é mais necessária, podemos apagá-la. Além disso, a ativação dos serviços HTTP e HTTPS do firewall também não nos servem mais, pois teremos uma porta específica. Vamos remover essas linhas e adicionar a porta com o comando firewall-offline-cmd, --add-port=3000/tcp:
+
+runcmd:
+  - [dnf, -y, install, oracle-instantclient-release-el8]
+  - [dnf, -y, install, oracle-instantclient-basic]
+  - [git, -C, /home/opc, clone, https://github.com/tiagolpadua/doguito-site-orm.git]
+  - [bash, -c, 'cd /home/opc/doguito-site-orm && npm install']
+
+  - [wget, https://objectstorage.us-phoenix-1.oraclecloud.com/n/axnv318jdswe/b/internal/o/doguito-site.service, -P, /lib/systemd/system]
+  - [systemctl, daemon-reload]
+  - [systemctl, enable, doguito-site.service]
+  - [systemctl, start, doguito-site.service]
+  - [firewall-offline-cmd, --add-port=3000/tcp]
+
+  - [systemctl, enable, httpd]
+  - [systemctl, start, httpd]
+  - [systemctl, restart, firewalld]
+
+Também não usaremos o httpd, então tiraremos os comandos de ativação e inicialização:
+
+runcmd:
+  - [dnf, -y, install, oracle-instantclient-release-el8]
+  - [dnf, -y, install, oracle-instantclient-basic]
+  - [git, -C, /home/opc, clone, https://github.com/tiagolpadua/doguito-site-orm.git]
+  - [bash, -c, 'cd /home/opc/doguito-site-orm && npm install']
+
+  - [wget, https://objectstorage.us-phoenix-1.oraclecloud.com/n/axnv318jdswe/b/internal/o/doguito-site.service, -P, /lib/systemd/system]
+  - [systemctl, daemon-reload]
+  - [systemctl, enable, doguito-site.service]
+  - [systemctl, start, doguito-site.service]
+  - [firewall-offline-cmd, --add-port=3000/tcp]
+  - [systemctl, restart, firewalld]
+
+Na última linha, mantemos o restart do firewall. Desse modo, do comando wget em diante temos o service configurado.
+
+Falta ainda um item importante. Anteriormente, quando subimos o Doguito Pet Shop, baixamos um arquivo de wallet que contém as configurações de conexão com o banco de dados. Logo, vamos seguir uma estratégia semelhante ao que fizemos com o arquivo doguito-site.service: armazenaremos o arquivo de wallet no bucket "internal".
+
+Caso você não tenha o arquivo da wallet no seu computador, você pode baixá-lo indo em "Oracle Database > Autonomous JSON Database", acessando "DOGUITODB", clicando no botão "Conexão do BD" e pressionando "Fazer download da wallet". Na sequência, vamos movê-lo para nosso object storage.
+
+No menu da OCI, vamos acessar o bucket "internal" e fazer o upload do Wallet_DOGUITODB.zip. Depois, exibiremos os detalhes desse novo objeto, copiaremos o caminho do URL e, de volta ao arquivo cloud-init.yaml, construiremos o comando wget com essa URL:
+
+runcmd:
+  - [dnf, -y, install, oracle-instantclient-release-el8]
+  - [dnf, -y, install, oracle-instantclient-basic]
+  - [git, -C, /home/opc, clone, https://github.com/tiagolpadua/doguito-site-orm.git]
+  - [bash, -c, 'cd /home/opc/doguito-site-orm && npm install']
+
+  - [wget, https://objectstorage.us-phoenix-1.oraclecloud.com/n/axnv318jdswe/b/internal/o/Wallet_DOGUITODB.zip, -P, /usr/lib/oracle/21/client64/lib/network/admin]
+
+  - [wget, https://objectstorage.us-phoenix-1.oraclecloud.com/n/axnv318jdswe/b/internal/o/doguito-site.service, -P, /lib/systemd/system]
+  - [systemctl, daemon-reload]
+  - [systemctl, enable, doguito-site.service]
+  - [systemctl, start, doguito-site.service]
+  - [firewall-offline-cmd, --add-port=3000/tcp]
+  - [systemctl, restart, firewalld]
+
+Lembrando que esse caminho é distinto para cada usuário, é essencial que você use a URL que você mesmo copiou. Assim, baixaremos o arquivo de wallet compactado para /usr/lib/oracle/21/client64/lib/network/admin. O próximo passo é entrar no local de download e descompactar a wallet (unzip):
+
+runcmd:
+  - [dnf, -y, install, oracle-instantclient-release-el8]
+  - [dnf, -y, install, oracle-instantclient-basic]
+  - [git, -C, /home/opc, clone, https://github.com/tiagolpadua/doguito-site-orm.git]
+  - [bash, -c, 'cd /home/opc/doguito-site-orm && npm install']
+
+  - [wget, https://objectstorage.us-phoenix-1.oraclecloud.com/n/axnv318jdswe/b/internal/o/Wallet_DOGUITODB.zip, -P, /usr/lib/oracle/21/client64/lib/network/admin]
+  - [sudo, sh, -c, 'cd /usr/lib/oracle/21/client64/lib/network/admin/ && unzip -B Wallet_*.zip']
+
+  - [wget, https://objectstorage.us-phoenix-1.oraclecloud.com/n/axnv318jdswe/b/internal/o/doguito-site.service, -P, /lib/systemd/system]
+  - [systemctl, daemon-reload]
+  - [systemctl, enable, doguito-site.service]
+  - [systemctl, start, doguito-site.service]
+  - [firewall-offline-cmd, --add-port=3000/tcp]
+  - [systemctl, restart, firewalld]
+
+Finalmente, nossas configurações estão prontas, vamos salvar todas essas modificações. Em seguida, vamos zipar a pasta orm-dps-v2. Este é nosso arquivo de stack, pronto com as configurações do Terraform.
+
+Na próxima aula, vamos subir essa stack na OCI.
+
+
+
+5-3 Faça como eu fiz: Doguito como código
+
+
+
+Está pronto para criar uma pilha customizada para implantar o Doguito de maneira extremamente simples e prática?
+
+Bom, serão necessários alguns passos, são eles:
+
+    Ajustar o arquivo “compute.tf” customizando o nome das instâncias;
+    Ajustar o arquivo loadbalancer.tf customizando o nome do balanceador de cargas e as portas de conexão;
+    Ajustar o arquivo “network.tf” incluindo uma regra de ingress para a porta 3000;
+    Criar um novo bucket chamado internal e faça o upload dos arquivos “doguito-site.service” e “Wallet_DOGUITODB.zip”;
+    Alterar o “arquivo cloud-init.yaml” instalando o git, o Node.js e os drivers de conexão com o banco de dados Oracle. Inserir um comando no arquivo para fazer o download e configurar o service do Doguito, além de fazer o download da Wallet e descompactá-la no local adequado, liberando a porta 3000 no firewall;
+
+Por fim, temos que compactar novamente o arquivo “orm-dps-vm2” em um arquivo zip que será utilizado para inicializar a pilha do Doguito. Vamos lá?
+
+Não deixe de entrar em contato com outras pessoas no fórum da Alura caso tenha alguma dúvida ou dificuldade com a atividade!
+Opinião do instrutor
+
+Inicialmente descompacte o arquivo “orm-dps.zip” em seu computador e renomeie a pasta de destino para “orm-dps-v2”. Para a alteração dos arquivos, deve ser utilizado um editor de textos, como por exemplo o Visual Studio Code ou mesmo o bloco de notas. A vantagem do Visual Studio Code é que ele permite a exibição da pasta como um todo.
+
+Altere o arquivo “compute.tf” customizando o nome das instâncias na seção “resource” em “display_name” para “dps-server-01” e “dps-server-02” respectivamente. Ao fim das alterações o arquivo deve ficar com o seguinte conteúdo:
+
+# Compute Instances
+data "template_file" "user_data" {
+  template = file("cloud-init.yaml")
+}
+
+resource "oci_core_instance" "dps-server-01" {
+  availability_domain = data.oci_identity_availability_domains.ADs.availability_domains[var.AD -1]["name"]
+  compartment_id      = var.compartment_ocid
+  display_name        = "dps-server-01"
+  shape               = var.instance_shape
+
+  create_vnic_details {
+    subnet_id = oci_core_subnet.subnet.id
+    display_name = "primaryvnic"
+  }
+  source_details {
+    source_type             = "image"
+    source_id               = lookup(data.oci_core_images.compute_images.images[0], "id")
+    boot_volume_size_in_gbs = "50"
+  }
+
+  metadata = {
+    ssh_authorized_keys = var.ssh_public_key
+    user_data = base64encode(data.template_file.user_data.rendered)
+  }
+
+}
+
+ resource "oci_core_instance" "dps-server-02" {
+   availability_domain = data.oci_identity_availability_domains.ADs.availability_domains[var.AD -1]["name"]
+   compartment_id      = var.compartment_ocid
+   display_name        = "dps-server-02"
+   shape               = var.instance_shape
+
+   create_vnic_details {
+     subnet_id = oci_core_subnet.subnet.id
+     display_name = "primaryvnic"
+   }
+   source_details {
+     source_type             = "image"
+     source_id               = lookup(data.oci_core_images.compute_images.images[0], "id")
+     boot_volume_size_in_gbs = "50"
+   }
+
+   metadata = {
+     ssh_authorized_keys = var.ssh_public_key
+     user_data = base64encode(data.template_file.user_data.rendered)
+   }
+
+ }
+
+O próximo arquivo a ser alterado é o “loadbalancer.tf”. Altere o display_name para “DPS-LB”. Na seção de “health_checker”, altere o valor de port para “3000”. Mude também o número da porta nas seções “resource”, tanto para “dps-vm1” quanto para o resource “dps-vm2”. Em port deve ser alterado o valor para “3000”.
+
+Nessa mesma seção, altere o valor de ip_address de ambos os resources para “oci_core_instance.dps-server-01.private_ip” e “oci_core_instance.dps-server-02.private_ip” respectivamente.
+
+Ao fim das alterações o arquivo deve ficar com o seguinte conteúdo:
+
+resource "oci_load_balancer" Load_Balancer {
+  compartment_id = var.compartment_ocid
+  display_name = "DPS-LB"
+  shape          = "flexible"
+  subnet_ids = [
+    oci_core_subnet.subnet.id,
+  ]
+  shape_details {
+      #Required
+      maximum_bandwidth_in_mbps = var.load_balancer_max_band
+      minimum_bandwidth_in_mbps = var.load_balancer_min_band
+    }
+}
+resource "oci_load_balancer_backend_set" web-servers-backend {
+  health_checker {
+    interval_ms         = "10000"
+    port                = "80"
+    protocol            = "HTTP"
+    response_body_regex = ""
+    retries             = "3"
+    return_code         = "200"
+    timeout_in_millis   = "3000"
+    url_path            = "/"
+  }
+  load_balancer_id = oci_load_balancer.Load_Balancer.id
+  name             = "web-servers-backend"
+  policy           = "ROUND_ROBIN"
+}
+resource "oci_load_balancer_backend" dps-vm1 {
+  backendset_name  = oci_load_balancer_backend_set.web-servers-backend.name
+  backup           = "false"
+  drain            = "false"
+  load_balancer_id = oci_load_balancer.Load_Balancer.id
+  ip_address       = oci_core_instance.dps-server-01.private_ip
+  offline          = "false"
+  port             = "3000"
+  weight           = "1"
+}
+resource "oci_load_balancer_backend" dps-vm2 {
+  backendset_name  = oci_load_balancer_backend_set.web-servers-backend.name
+  backup           = "false"
+  drain            = "false"
+  load_balancer_id = oci_load_balancer.Load_Balancer.id
+  ip_address       = oci_core_instance.dps-server-02.private_ip
+  offline          = "false"
+  port             = "3000"
+  weight           = "1"
+}
+resource "oci_load_balancer_listener" lb-listeners {
+  connection_configuration {
+    backend_tcp_proxy_protocol_version = "0"
+    idle_timeout_in_seconds            = "60"
+  }
+  default_backend_set_name = oci_load_balancer_backend_set.web-servers-backend.name
+  hostname_names = [
+  ]
+  load_balancer_id = oci_load_balancer.Load_Balancer.id
+  name             = "lb-listeners"
+  port     = "80"
+  protocol = "HTTP"
+  rule_set_names = [
+  ]
+}
+
+Agora vamos alterar o arquivo network.tf. Criaremos uma nova regra de ingress para permitir o acesso à porta 3000. Faça isso copiando um bloco de regra de ingress existente e alterando a porta em “min” e “max” para “3000”.
+
+Ao fim das alterações, o arquivo deve ficar com o seguinte conteúdo:
+
+resource "oci_core_virtual_network" "vcn" {
+  compartment_id = var.compartment_ocid
+  cidr_block     = var.vcn_cidr
+  dns_label      = var.vcn_dns_label
+  display_name   = var.vcn_dns_label
+}
+
+# Internet Gateway
+resource "oci_core_internet_gateway" "igw" {
+  compartment_id = var.compartment_ocid
+  display_name   = "${var.vcn_dns_label}igw"
+  vcn_id         = oci_core_virtual_network.vcn.id
+}
+
+# Public Route Table
+resource "oci_core_route_table" "PublicRT" {
+  compartment_id = var.compartment_ocid
+  vcn_id         = oci_core_virtual_network.vcn.id
+  display_name   = "${var.vcn_dns_label}pubrt"
+
+  route_rules {
+    destination       = "0.0.0.0/0"
+    network_entity_id = oci_core_internet_gateway.igw.id
+  }
+}
+
+resource "oci_core_subnet" "subnet" {
+  availability_domain = ""
+  compartment_id      = var.compartment_ocid
+  vcn_id              = oci_core_virtual_network.vcn.id
+  cidr_block          = cidrsubnet(var.vcn_cidr, 8, 1)
+  display_name        = var.dns_label
+  dns_label           = var.dns_label
+  route_table_id      = oci_core_route_table.PublicRT.id
+  security_list_ids   = [oci_core_security_list.securitylist.id]
+}
+
+resource "oci_core_security_list" "securitylist" {
+  display_name   = "SL_public"
+  compartment_id = var.compartment_ocid
+  vcn_id         = oci_core_virtual_network.vcn.id
+
+  egress_security_rules {
+    protocol    = "all"
+    destination = "0.0.0.0/0"
+  }
+
+  ingress_security_rules {
+    protocol = "6"
+    source   = "0.0.0.0/0"
+
+    tcp_options {
+      min = 80
+      max = 80
+    }
+  }
+
+  ingress_security_rules {
+    protocol = "6"
+    source   = "0.0.0.0/0"
+
+    tcp_options {
+      min = 22
+      max = 22
+    }
+  }
+
+  ingress_security_rules {
+    protocol = "6"
+    source   = "0.0.0.0/0"
+
+    tcp_options {
+      min = 3000
+      max = 3000
+    }
+  }
+}
+
+Vamos criar um novo bucket no Object Storage que irá armazenar alguns arquivos para serem utilizados na criação das instâncias. A partir do menu inicial da OCI acesse: “Armazenamento > Buckets” e clique em “Criar Bucket”, no formulário exibido, altere o nome do bucket para “internal” e clique em “Criar”:
+
+alt text: Imagem do formulário de criação de bucket com o botão “Criar” no canto inferior esquerdo da tela.
+
+Agora devemos clicar no nome do bucket para abrir seu detalhamento e clicar em “Editar Visibilidade”, altere a visibilidade para “Público” e clique em “Salvar Alterações”:
+
+alt text: Imagem do formulário de alteração de visibilidade do bucket com o botão “Salvar Alterações” no canto inferior esquerdo da tela.
+
+O próximo passo é fazer o upload no bucket do arquivo “doguito-site.service” (disponível nos arquivos do curso):
+
+alt text: Imagem do formulário de upload de objetos no bucket com o botão “Fazer Upload” no canto inferior esquerdo da tela.
+
+Após o upload do arquivo, devemos copiar sua URL de acesso, no menu à direita do nome do arquivo, clique em “Exibir Detalhes do Objeto” e copie a URL do objeto:
+
+alt text: Imagem dos detalhes do objeto doguito-site.sevice contendo a URL do recurso armazenado no bucket.
+
+Siga os mesmos passos para fazer o upload do arquivo de Wallet do banco de dados do Doguito e copie a URL de seu Object Storage;
+
+Chegou a vez de alterar o arquivo “cloud-init.yaml”. Na seção de “packages” remova “httpd” e inclua:
+
+    git
+    nodejs
+
+Na seção “runcmd” inclua um comando para a instalação dos drivers de conexão com o banco de dados oracle:
+
+    [dnf, -y, install, oracle-instantclient-release-el8]
+    [dnf, -y, install, oracle-instantclient-basic]
+
+Inclua também um comando git para clonar o repositório do código fonte do projeto:
+
+    [git, -C, /home/opc, clone, https://github.com/???/doguito-site-orm.git]
+
+E um comando para instalar as dependências do node após o clone do projeto:
+
+    [bash, -c, 'cd /home/opc/doguito-site-orm && npm install']
+
+O arquivo do doguito-site.service será baixado do Object Storage, pelo link que obtivemos no passo anterior:
+
+    [wget, <link-do-object-storage-do-doguito-site.service>, -P, /lib/systemd/system]
+
+Após o download do arquivo de service é necessário fazer o reload do systemd, ativar o serviço e iniciá-lo:
+
+    [systemctl, daemon-reload]
+    [systemctl, enable, doguito-site.service]
+    [systemctl, start, doguito-site.service]
+
+Inclua um comando para realizar o download do arquivo de Wallet que foi disponibilizado no Object Storage e outro para descompactá-lo no local adequado:
+
+    [wget, <link-do-object-storage-do-Wallet_DOGUITODB.zip>, -P, /usr/lib/oracle/21/client64/lib/network/admin/]
+    [sudo, sh, -c, 'cd /usr/lib/oracle/21/client64/lib/network/admin/ && unzip -B Wallet_DOGUITODB.zip']
+
+Remova a linha que faz o comando “echo” para o arquivo “index.html”:
+
+- [sh, -c, echo "<html>Web Server IP hostname --ip-address`</html>" > /var/www/html/index.html]
+
+Remova também as linhas de habilitação da porta http e https do firewall:
+
+    [firewall-offline-cmd, --add-service=https]
+    [firewall-offline-cmd, --add-service=http]
+
+Adicione as linhas abaixo para liberar a porta 3000 no firewall das instâncias:
+
+    [firewall-offline-cmd, --add-port=3000/tcp]
+    [systemctl, restart, firewalld]
+
+Remova também as linhas de ativação e início do httpd:
+
+    [systemctl, enable, httpd]
+    [systemctl, start, httpd]
+
+Ao fim das modificações o arquivo deve ficar com o seguinte conteúdo:
+
+#cloud-config
+yum_repos:
+    epel-testing:
+        baseurl: https://yum.oracle.com/repo/OracleLinux/OL7/developer_EPEL/$basearch/
+        enabled: true
+        failovermethod: priority
+        gpgcheck: true
+        gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
+        name: EPEL ($basearch)
+
+packages:
+  - git
+  - nodejs
+
+runcmd:
+  - [dnf, -y, install, oracle-instantclient-release-el8]
+  - [dnf, -y, install, oracle-instantclient-basic]
+  - [git, -C, /home/opc, clone, https://github.com/???/doguito-site-orm.git]
+  - [bash, -c, 'cd /home/opc/doguito-site-orm && npm install']
+
+  - [wget, <link-do-object-storage-do-doguito-site.service>, -P, /lib/systemd/system]
+  - [systemctl, daemon-reload]
+  - [systemctl, enable, doguito-site.service]
+  - [systemctl, start, doguito-site.service]
+
+  - [wget, <link-do-object-storage-do-Wallet_DOGUITODB.zip>, -P, /usr/lib/oracle/21/client64/lib/network/admin/]
+  - [sudo, sh, -c, 'cd /usr/lib/oracle/21/client64/lib/network/admin/ && unzip -B Wallet_DOGUITODB.zip']
+
+  - [firewall-offline-cmd, --add-port=3000/tcp]
+  - [systemctl, restart, firewalld]
+
+Concluídos os ajustes nos arquivos, salve todas as alterações e compacte a pasta “orm-dps-v2” em um arquivo zip chamado “orm-dps-v2.zip”. No sistema operacional Windows, basta clicar com o botão direito do mouse sobre o nome da pasta e selecionar a opção “Enviar Para > Pasta Compactada”.
+
+
+
+5-4 Implantando stack na OCI *
+
+
+Transcrição
+
+Agora que criamos e configuramos os arquivos do Doguito, vamos subir uma stack. No menu da OCI, vamos em "Serviços ao Desenvolvedor > Gerenciador de Recursos > Pilhas".
+
+No início do vídeo anterior, comandamos a destruição daquela pilha básica para testes e, com esse processo finalizado, podemos excluí-la da nossa lista, para não gerar confusão. Basta expandir as opções à direita do seu nome, clicar em "Excluir" e confirmar a ação.
+
+Além disso, em "Computação > Instâncias", verificaremos que não há nenhuma instância ativa no momento.
+
+Voltando à área de Pilhas, faremos o upload da nossa nova stack, clicando no botão "Criar Pilha". Em "Origem da configuração do Terraform", vamos selecionar a opção "Arquivo .zip" e, em seguida, arrastar o orm-dps-v2.zip para a área de upload. Mais abaixo, vamos escolher a versão 0.14.x do Terraform e clicar em "Próximo".
+
+Em "SSH Key Configuration", selecionaremos "Colar Chaves SSH". Vamos acessar o Cloud Shell e, a partir da raiz, executaremos o comando cat ~/.ssh/cloudshellkey.pub para pegar a parte pública da chave. Basta copiar o retorno e colar no campo "SSH Public Key". Podemos manter o resto das configurações com os valores default e clicar em "Próximo", ao final da página. Em seguida, pressionaremos "Criar". Veremos o quadrado verde à esquerda com a legenda "Ativo", indicando que a pilha foi criada.
+
+A seguir, vamos clicar no botão "Planejar". A princípio, teremos à esquerda um quadrado laranja com legenda "Aceito", enquanto é feita a verificação dos arquivos. Após alguns segundos, o quadrado ficará verde com a legenda "Bem-sucedido" e teremos o logs da execução.
+
+Voltando aos detalhes da pilha, podemos clicar em "Aplicar", depois em "Aplicar" mais uma vez para confirmar. Novamente, teremos um quadrado laranja, enquanto a ação é processada. Esse passo demora vários minutos, nesse meio-tempo daremos uma olhada em algumas informações interessantes dessa página.
+
+Vamos observar o log (ele pode demorar alguns segundos para carregar, depois do início da execução). Nele, podemos verificar que estamos selecionando a última versão do template da OCI, por exemplo. Em seguida, podemos acompanhar a criação dos componentes: primeiro, é criada a sub-rede; depois o load balancer e temos a informação do tempo que esse processo levou (no meu caso, foram 45 segundos); e, na sequência, serão gerados os back-end servers.
+
+Ao final, o processo será bem-sucedido e podemos ir a "Computação > Instâncias" e verificar que temos duas máquinas em execução. Vamos copiar o IP público de uma delas e tentar acessá-la na porta 3000, em uma nova aba do navegador. Notaremos que ainda não está funcionando, porque a instância foi levantada, mas os softwares ainda não foram instalados.
+
+Existe uma forma de acompanhar o processo de execução da instância. Para tanto, precisamos do IP público da máquina — no meu caso, é 140.238.238.46. No Cloud Shell, vamos rodar o comando ssh opc@140.238.238.46 -i ~/.ssh/cloudshellkey. Digitaremos "yes" para confirmar e nos conectar à instância. Após fazer o login, podemos acompanhar os processos de instalação da máquina por meio do comando tail -f /var/log/cloud-init-output.log.
+
+Esses processos são aqueles comandos que configuramos no vídeo anterior, de instalação do Node e do Git, por exemplo, que ocorrem na primeira inicialização da máquina. A depender do consumo de recursos, esse procedimento pode demorar de 5 a 10 minutos. Caso ocorra algum problema, ele será exibido nesse log também.
+
+Haverá uma primeira verificação, depois ocorrerá a instalação do Node, do NPM e do Git. Em seguida, serão instalados os drivers da própria Oracle, inclusive o relativo à conexão com banco de dados. Depois, o doguito-site-orm será clonado. Note que, nesse repositório, juntamos a parte estática e a parte da API no mesmo projeto, devido a nossa limitação na quantidade de máquinas. Na sequência, será executado o npm install e serão baixados o doguito-site.service e o arquivo de wallet. Ao final, receberemos uma mensagem de que a configuração do cloud-init foi concluída.
+
+Agora, vamos copiar o IP público de uma das máquinas e acessá-la na porta 3000, em uma nova aba no navegador. Desta vez, estará funcionando. Podemos testar a outra instância, também estará tudo em ordem.
+
+Nosso acesso, de fato, ocorrerá pelo load balancer, portanto, vamos até "Rede > Balanceadores de Carga". A integridade geral do balanceador deve estar OK, se tivéssemos acessado mais cedo estaria marcado como "Falha". Entraremos no "DPS-LB", em seguida clicaremos em "Conjuntos de Backend" na lateral esquerda. Vamos acessar "web-servers-backend" e pressionar "Backends" na lateral esquerda, novamente. Assim, podemos consultar que eles estão apontando corretamente para a porta 3000.
+
+Voltando aos detalhes do load balancer, copiaremos o IP público dele e o acessaremos (sem a porta 3000) em outra aba no navegador, confirmando que está funcionando corretamente.
+
+A seguir, vamos testar. Na página do Doguito, clicaremos em "Novo Cliente" e cadastraremos o usuário "Tiago", com o e-mail "tiago@alura.com.br". Voltando para a lista de clientes, podemos verificar o cadastro realizado com sucesso.
+
+Como última confirmação, vamos ao menu da OCI, em "Oracle Database > Autonomous JSON Database". Acessaremos o DOGUITODB, clicaremos em "Console de Serviço" e veremos toda a atividade, indicando que está tudo funcionando conforme esperado.
+
+Nos detalhes do DOGUITODB, podemos clicar em "Ações do BD", selecionar "JSON" e verificar o dado que acabamos de salvar persistido no banco de dados.
+
+Desse modo, nosso sistema Doguito Pet Shop está rodando corretamente, tanto a parte de front-end quanto a de back-end, na porta 3000. Além disso, o balanceador de carga está fazendo sua função de distribuição entre as instâncias. Conseguimos fazer todas as configurações do início ao fim.
+
+
+
+
+5-5 Faça como eu fiz: implantando o Doguito como código
+
+
+
+Temos o arquivo “orm-dps-v2.zip” e agora é hora de implantá-lo como uma pilha na OCI. Para isso utiliozamos a opção de Serviços ao Desenvolvedor e o Gerenciador de Recursos.
+
+O processo será muito semelhante ao que fizemos anteriormente, mas utilizaremos o arquivo “orm-dps-v2.zip” que acabamos de gerar para subir uma pilha customizada para o Doguito.
+
+Vamos lá? Espero que tudo dê certo e sua pilha seja implantada com sucesso, mas se tiver algum problema, você pode conversar com outros colegas no fórum e até responder as dúvidas que souber.
+Opinião do instrutor
+
+Acesse o menu de Serviços ao Desenvolvedor e Gerenciador de Recursos na OCI. Depois clique na opção “Pilhas” e serão listadas as pilhas implantadas no momento. Clique na pilha que implantamos na aula anterior:
+
+alt text: Imagem da listagem de pilhas implantadas com um link para a pilha implantada na aula anterior no centro da tela.
+
+Devemos primeiramente descartar a pilha que foi implantada na aula anterior clicando no botão “Destruir” e depois em “Destruir” novamente na tela de confirmação exibida:
+
+alt text: Imagem da tela de confirmação de destruição de pilha com botão “Destruir” no canto inferior direito da tela.
+
+O comando de destruição demora alguns minutos para ser completado, aguarde até que seja concluído e seja exibida uma tela parecida com a seguinte:
+
+alt text: Imagem da tela de confirmação de destruição de pilha.
+
+Para evitar confusão, clique na opção “Pilhas”, e no menu suspenso ao lado direito do nome da pilha e clique em “Excluir” para excluir a pilha anteriormente implantada:
+
+alt text: Imagem da tela de confirmação de exclusão da pilha com o botão “Excluir” no centro da tela.
+
+Crie agora uma nova pilha com o arquivo orm-dps-v2.zip que foi criado na atividade anterior. Para isso, clique no botão “Criar Pilha”, selecione a opção “Arquivo .zip”, envie o arquivo orm-dps-v2.zip, mude a versão do terraform para 0.14.x e clique em “Próximo”.
+
+Na tela seguinte, cole novamente a chave SSH, clique em “Próximo” e por fim “Criar”. Na tela de detalhamento da pilha que será exibida, clique em “Planejar” e por fim em “Aplicar” para que a pilha seja criada. O processo de criação leva em torno de 10 minutos para concluir.
+
+Após a conclusão, acesse no menu da OCI a opção Rede e Balanceadores de Carga. Aguarde até a integridade geral aparecer com o status “Ok”. A estabilização das instâncias pode demorar de 20 a 30 minutos para concluir.
+
+    Observação: Caso fique com alguma dúvida sobre o processo de criação de pilha, reveja o conteúdo da aula anterior.
+
+Para validar que tudo funcionou como deveria, copie o IP público do balanceador e cole-o na barra de endereços do navegador, deve ser exibido o site do Doguito com a listagem de clientes:
+
+alt text: Imagem do navegador exibindo a tela do Doguito após sua implantação na OCI.
+
+
+
+
+5-6 Para saber mais: Terraform
+
+
+Neste treinamento nosso foco é no aprendizado de utilização da Oracle Cloud para casos práticos, no entanto, você deve ter visto que falamos sobre várias ferramentas auxiliares que podemos usar para trabalhar em uma Cloud.
+
+O Resource Manager da OCI é uma destas ferramentas e que internamente utiliza scripts Terraform para automatizar a implantação de infraestrutura.
+
+Se você se interessou pelo Terraform e quer aprender mais sobre ele, dê uma olhada no curso sobre Terraform que temos disponível na plataforma da Alura.
+
+https://www.alura.com.br/curso-online-terraform
+https://cursos.alura.com.br/course/terraform
+
+Pré-requisitos para o curso Terraform:
+
+Para aproveitar melhor esse curso, sugerimos que você tenha conhecimentos em:
+
+Linux I: conhecendo e utilizando o terminal
+https://cursos.alura.com.br/course/linux-ubuntu?preRequirementFrom=terraform
+
+Linux II: programas, processos e pacotes
+https://cursos.alura.com.br/course/linux-ubuntu-processos?preRequirementFrom=terraform
+
+Amazon EC2: alta disponibilidade e escalabilidade em uma aplicação
+https://cursos.alura.com.br/course/amazon-ec2-alta-disponibilidade-escalabilidade-aplicacao?preRequirementFrom=terraform
+
+Redes: dos conceitos iniciais à criação de uma intranet
+https://cursos.alura.com.br/course/redes-conceitos-iniciais-criacao-intranet?preRequirementFrom=terraform
+
+
+
+5-7 Implantando recursos como código
+
+Para facilitar a implantação do Doguito e permitir que esta implantação seja versionada e facilmente evoluída, utilizamos a funcionalidade da OCI chamada gerenciador de recursos. Ele nos possibilita criar uma nova pilha que pode definir determinados tipos de recursos computacionais.
+
+Selecione as alternativas que correspondem a esses recursos.
+
+Redes Físicas.
+  Alternativa incorreta. A OCI permite a definição de Redes Virtuais. A implantação de Redes Físicas depende da instalação física de equipamentos e por isso não pode ser realizada via Gerenciador de Recursos.
+
+Instâncias de computação.
+  Alternativa correta. As instâncias de computação podem ser configuradas como parte de uma pilha no arquivo compute.tf.
+
+Balanceadores de carga.
+  Alternativa correta. Os balanceadores de carga podem ser configurados como parte de uma pilha no arquivo loadbalancer.tf.
+
+Gateways.
+  Alternativa correta. Os gateways podem ser configurados como parte de uma pilha no arquivo network.tf.
+
+
+
+5-8 O que aprendemos?
+
+  Que podemos customizar os arquivos Terraform para criar diversos tipos de recursos computacionais de uma pilha de implantação;
+  
+  Que utilizamos o arquivo cloud-init.yaml para customizar a instalação de softwares diversos nas instâncias computacionais criadas a partir de uma pilha;
+  
+  Que usamos o Armazenamento de Objetos para guardar arquivos de configuração que serão utilizados na implantação de nossas pilhas de recursos.
+
+
+
+5-9 Conclusão *
+
+
+Transcrição
+
+Chegamos à conclusão do nosso curso!
+
+Nossos principais objetivos eram conhecer as características da OCI e aplicar esses conhecimentos na implantação o Doguito Pet Shop num ambiente de cloud.
+
+Nossa primeira tarefa era realizar a conexão do Doguito com uma base de dados. Analisamos as alternativas disponibilizadas pela OCI e optamos pela utilização do banco de dados autônomos baseado em JSON, por sua simplicidade e facilidade de uso.
+
+A seguir, estudamos o funcionamento do Doguito para conectá-lo a esse banco de dados. Percebemos trata-se de uma aplicação NodeJS, escrita em JavaScript e que utiliza o framework ExpressJS, fornecendo uma API para acessarmos as funcionalidades do Doguito. Com base nesse conhecimento, implantamos o Doguito na OCI e configuramos sua conexão com o banco.
+
+Entretanto, ao testar, notamos que o Doguito não era iniciado automaticamente com a máquina virtual. Como solução, configuramos nossa aplicação como um serviço do próprio sistema operacional.
+
+Em seguida, o colocamos no load balancer e o acessamos pelo navegador, diretamente na API. Visto que era mais interessante implantar uma interface para navegar pelas funcionalidades, analisamos as possibilidades de armazenamento e escolhemos o object storage para servir nosso site estático de uma maneira bem simples. Houve, no entanto, um problema de comunicação com a API, porque o object storage roda em SSL por default, diferente do Doguito não estava utilizando o SSL. Por isso, configuramos o SSL no load balancer.
+
+Por fim, visando converter o Doguito para um modelo DevOps, mais moderno e avançado, utilizamos a metodologia da infraestrutura como código. Começamos implantando uma estrutura básica de testes e, depois, ajustamos os scripts do Terraform para que o Doguito se tornasse facilmente implantado e versionado, sem precisarmos realizar comandos manuais repetitivos. Basta subirmos a stack atualizada e a OCI implantará os componentes da maneira esperada.
+
+Espero que você tenha gostado deste treinamento, preparado com bastante dedicação pela equipe da Alura. Até mais e bons estudos!

@@ -1,0 +1,231 @@
+https://cursos.alura.com.br/course/oracle-cloud-infrastructure-aplicacao-nuvem/section/13789/tasks
+
+Evernote: devweb - alumni-2_cloud_1
+
+Curso Oracle Cloud Infrastructure: implantação de uma aplicação na nuvem
+Instrutor Tiago Lage Payne de Pádua
+
+
+Aula 4 - Redes | 0 / 7 | 20min
+
+  4-1 Introdução à Virtual Cloud Network - VCN *
+  4-2 Criando a VCN *
+  4-3 Faça como eu fiz: uma VCN para instâncias
+  4-4 Roteamento e segurança *
+  4-5 Para saber mais: redes na OCI
+  4-6 A VCN
+  4-7 O que aprendemos?
+
+
+4-1 Introdução à Virtual Cloud Network - VCN *
+
+
+Transcrição
+
+[00:00] A partir de agora, entenderemos como funcionam as redes dentro da Oracle Cloud. É importe sabermos como elas funcionam porque são necessárias para instanciarmos o nosso servidor.
+
+[00:15] As redes dentro da Oracle Cloud são chamadas de VCNs, Virtual Cloud Network. O primeiro item que temos que fazer é entender o que é a Virtual Cloud Network. Essa rede é uma rede privada criada por software e é utilizada para fazer uma comunicação segura, por isso é uma rede definida por software não é uma rede física com placas de rede, é uma rede, digamos, virtual, como o próprio nome diz.
+
+[00:45] Essa rede é utilizada para que as instâncias se comuniquem entre si, entre os ambientes e entre as regiões e também para que as instâncias consigam comunicar-se até mesmo com a internet. Essa rede virtual vai residir em uma região, em uma region, ela é definida como um serviço regional. Essa VCN é via software, mas ela possui alta disponibilidade, é altamente escalável e altamente segura também.
+
+Diagrama de Virtual Cloud Network (VCN). À esquerda, há uma área quadrada grande denominada VCN, que possui um IP X.X.X.X/X. Dentro dela, há duas *subnets*, uma pública e outra privada, cada uma com um IP X.X.X.X/X. À direita, há dois elementos: internet e Oracle Services Network. Ligando a área VCN à internet, há duas setas — uma bidirecional denominada IG (internet gateway) e outra da esquerda para direita denominada NAT (NAT gateway). Ligando a área VCN à Oracle Services Network há uma seta, da esquerda para direita, denominada SG (Service Gateway).
+
+[01:17] Antes de nos aprofundarmos em alguns detalhes da VCN, vamos entender alguns básicos que estão envolvidos. O primeiro conceito que VCN possui é um espaço de endereçamento que é definido utilizando uma anotação, essa é uma anotação CIDR. A rede é definida aqui com essa faixa aqui de endereço, vamos definir uma faixa de endereço para ela.
+
+[01:46] Para esse nosso caso que é básico não vamos precisar mexer em nenhuma configuração adicional, mas é interessante sabermos que temos essa faixa de endereço da VCN e dentro dessa VCN vão sendo criadas algumas sub-redes, como essas sub-redes aqui dentro da VCN, e essas sub-redes vão estar dentro de um espaço de endereçamento definido aqui por esse endereço principal.
+
+[02:12] É justamente nessas sub-redes, nessas Public Subnet que vamos instanciar as nossas máquinas, isso vai definir o próprio IP da máquina e vai definir também que tipo de serviço que essa máquina vai conseguir acessar. Dependendo da sub-rede que utilizarmos para instanciar a máquina ela vai assumir um IP dessa faixa dessa sub-rede.
+
+[02:36] Agora falando sobre comunicação, existem diversos mecanismos dentro de uma VCN para realizar comunicação. A primeira noção que temos que entender é a noção do chamado internet gateway, esse IG aqui, esse IG que é o internet gateway. Ele é utilizado para a comunicação de qualquer coisa, qualquer elemento que temos dentro dessa sub-rede para ele se comunicar com a internet é necessário que ele passe por esse internet gateway.
+
+[03:06] Por exemplo, se tivemos uma servidor web e queremos que ele se comunique com outros servidores, com outros web sites vamos utilizar, vamos atravessar a comunicação por esse internet gateway. Ou seja, estamos definindo isso para a comunicação que chamamos de bidirecional. Se você olhar aqui a seta é uma seta que tem a ponta saindo e tem a ponta entrando aqui do internet gateway. Esse é o primeiro elemento de roteamento que temos.
+
+[03:35] Outro componente que temos é o chamado de NAT gateway, que é esse elemento aqui, esse NAT gateway aqui. Ele é utilizado para prover NAT como serviço e significa que ele permite tráfego somente unidirecional. Olha como é a seta dele, o tráfego dele é unidirecional, ele só sai aqui e vai para a internet. Ele permite que haja tráfego, mas entre a sua instância e a internet, porém a internet não consegue acessar essa instância, ele é tráfego para um lado só.
+
+[04:13] O último dos roteadores que temos aqui é o chamado service gateway, esse SG aqui. O objetivo dele é permitir que recursos de uma VCN acessassem os serviços da OCI como, por exemplo, armazenamento de objetos, mas sem usar a internet ou nat gateway. A própria OCI fornece vários serviços de rede, Oracle Services Network, mas não vamos fazer essa comunicação com os serviços da Oracle Services Network nem através de NAT e nem do internet gateway, vamos fazer através do services gateway.
+
+[04:49] Esses são os três principais cenários de acesso externo que temos, acesso: o internet gateway para tráfego direcional por internet, o nat gatway para tráfego unidirecional, somente na direção da sua instância para a internet,e o service gateway para comunicação com os serviços da própria OCI.
+
+
+
+
+
+
+4-2 Criando a VCN *
+
+
+Transcrição
+
+[00:00] Nosso próximo passo é a criação da VCN para que possamos levantar as nossas instâncias do Doguito Petshop. Para isso vamos entrar novamente no console do OCI e devemos está logado como "doguito-admin". Para conferir você pode clicar no "Profile" e você vai verificar que está logado como o "doguito-admin".
+
+[00:23] Esse usuário já configuramos antes e demos todos os acessos necessários para ele naquele compartimento do desenvolvimento, é nesse compartimento que vamos criar a nossa VCN. O próximo passo que vamos realizar é entrar no menu, vamos clicar na opção de "Networking" de rede e vamos notar que existem diversas opções distintas, gerenciamento de IP, de DNS, conectividade de clientes, entre outras.
+
+[00:51] Vamos acessar o "Virtual Cloud Networks". Acessando essa opção você vai ver que permite que possamos criar aqui manualmente o Create VCN ou utilizar aqui um Wizard que vai facilitar para nós. Vamos clicar aqui "Start VCN Wizard" para utilizar o Wizard.
+
+[01:13] Clicando aqui para utilizar o Wizard ele vai nos mostrar essa tela com essa imagem que define todas as características dessa conectividade que vamos criar, dessa VCN que vamos criar. Essa VCN tem acesso à internet, tem um internet gateway que vai permitir acesso bidirecional entre a internet e os meus hosts que estiverem nessa subnet pública, ele tem acesso também NAT, tem acesso via service gatway para os serviços da Oracle também.
+
+[01:47] Essa segunda opção que temos aqui continua tendo acesso à internet, mas ela inclui também outro serviço que é o chamado "Site-to-Site" VPN. Em geral, é para casos de usos mais avançados onde o usuário, a empresa ela vai ter o ambiente on-promise e quer fazer a conectividade com esse ambiente.
+
+[02:07] No nosso caso do Doguito Petshop é um caso bastante simples e podemos utilizar a primeira opção mesmo. Selecionamos aqui a primeira opção e clica em "Start VCN Wizard" e vamos ser direcionados aqui para essa tela. Nessa tela vamos dar um nome aqui para a nossa VCN, vamos chamá-la de "VCN1", de forma bem simples.
+
+[02:31] Ele pergunta qual é o compartimento que queremos salvar, queremos o compartimento do Desenvolvimento, onde o nosso usuário tem acesso. Depois ele vem aqui e fala sobre uma configuração da VCN e das sub-redes, aqui ele nos indica um bloco CIDR. Esse bloco aqui vamos deixar dessa mesma forma que está, a forma padrão, e ele já indica aqui duas sub-redes, uma chamada de sub-rede pública e outra como a sub-rede privada.
+
+[03:04] Ele tem também aqui uma formatação de um bloco CIDR também. O importante é que não haja sobreposição entre esse bloco e esse bloco aqui, essa definição da sub-rede dessa definição aqui. Nesse caso vamos deixar do jeito default que já está configurado corretamente.
+
+[03:25] É importante saber também que quando criarmos uma instância e a instância for colocada em uma subnet pública essa instância vai poder se comunicar com a internet de forma bidirecional. Quando colocarmos uma instância na subnet privada essa instância não vai receber um IP público, o único meio de essa instância comunicar-se com a internet vai ser utilizando o que chamamos de NAT gateway ou ela também pode se comunicar com serviços da Oracle pelo service gatway.
+
+[03:55] Agora podemos clicar aqui na opção "Next" e ele vai permitir uma tela que possamos rever todo o conteúdo. Ele vai falar aqui o nome da VCN que está sendo criada, em qual compartimento, qual que é o bloco CIDR dela, o label que ela vai ter, quais são as subnets que estão sendo criadas. Está sendo criada aqui uma subnet pública, está sendo criada aqui também uma subnet privada, ele vai falar qual é o bloco CIDR dessas duas sub-redes.
+
+[04:26] Além disso, ele vai falar para nós quais são gateways que estão sendo criados. Eu tenho três gateways, eu tenho o internet gateway, eu tenho o NAT gateway e eu tenho service gateway. Estão aqui e ele aponta aqui para qual das subnets que está utilizando cada um desses gateways.
+
+[04:44] Por fim, ele vai trazer aqui informações de segurança, Security Lists, para as regras da minha primeira sub-rede e aqui as regras para a sub-rede privada também serão exibidas aqui. E por fim, ele fala aqui também as tabelas de roteamento que tem aqui, nesse caso ele vai direcionar esse bloco aqui, dá esse IP, vai para o internet gateway. Nesse outro aqui vai para o NAT gateway também para fazer a comunicação com o ambiente externo.
+
+[05:14] Estando satisfeitos com essas opções, podemos clicar aqui no botão "Create" e a nossa sub-rede, a nossa VCN vai ser criada depois de alguns segundos. Esperamos um pouco, ele vai atualizando a tela com as informações e podemos clicar aqui em "View Virtual Cloud Network" e temos aqui as informações dessa nossa rede virtual.
+
+[05:40] Novamente, aquelas mesmas informações que utilizamos para fazer a criação vão estar aqui disponíveis para que possamos detalhar, caso seja nosso desejo.
+
+
+
+
+
+
+4-3 Faça como eu fiz: uma VCN para instâncias
+
+
+
+Antes de criarmos nossas instâncias de compute, que serão os servidores do Doguito Petshop, precisamos criar uma rede virtual na nuvem (VCN) onde o compute será ligado.
+
+Uma VCN é uma rede definida por software que você configura nos data centers do Oracle Cloud Infrastructure em determinada região. Esta rede pode conter sub-redes, que são uma subdivisão de uma VCN.
+
+Para isso devemos acessar o menu “Rede”, “Redes Virtuais na Nuvem” e iniciar o assistente de criação de redes que nos auxiliará nesta tarefa. Vamos à prática?
+
+
+Opinião do instrutor
+
+Para criar uma VCN, primeiramente acesse o menu Rede a partir do menu principal da OCI e na subopção “Redes Virtuais na Nuvem”:
+
+alt text: Console da OCI com a opção “Rede” selecionada no menu à esquerda e a opção "Redes Virtuais na Nuvem" ao centro da página.
+
+Na tela que é exibida, iremos escolher a opção de”Iniciar Assistente de VCN”, que irá facilitar bastante o processo para VCNs simples:
+
+alt text: Listagem das VCNs existentes e a opção "Iniciar Assistente de VCN" ao centro da página.
+
+Em seguida, escolha a opção de “Criar VCN com Conectividade de Internet” e clique no botão “Iniciar Assistente de VCN”:
+
+alt text: Tela do assistente de criação de VCN com a opção “Criar VCN com Conectividade de Internet” no centro da tela.
+
+Preencha somente o campo “Nome” do formulário com o valor “VCN1” e confira se o compartimento selecionado é o “Desenvolvimento”. Deixe os demais campos com os valores padrão:
+
+alt text: Formulário de configuração da VCN com campos de “Nome da VCN”, “Compartimento” e o botão “Próximo” no canto inferior esquerdo da tela.
+
+Na próxima tela, revise as informações e confirme a criação da VCN e da rede virtual clicando no botão “Criar”:
+
+alt text: Tela de confirmação de criação de rede virtual com o botão “Criar” no canto inferior esquerdo.
+
+Se a criação da rede for bem sucedida, será exibida ao final do processo, uma tela com os detalhes da VCN que foi criada:
+
+alt text: Tela detalhes da VCN que foi criada.
+
+Pronto! Criamos uma VCN para nossas instâncias.
+
+
+
+
+
+
+4-4 Roteamento e segurança *
+
+
+Transcrição
+
+[00:00] Agora que criamos a nossa VCN, precisamos entender o básico de dois assuntos muito importantes, que é a questão de roteamento e a questão de segurança.
+
+[00:09] Existe um conceito chamado Tabela de Roteamento, que conseguimos acessar através do console da OCI. Na nossa lista de VCNs, podemos clicar em VCN1 e, depois, nessa opção "Route Tables", para ver as tabelas de roteamento.
+
+[00:27] Vemos que foram criadas duas tabelas de roteamento. A VCN vai utilizar essas tabelas de roteamento para enviar um tráfego para internet, alguma rede on premise, entre outras opções. Clicando nessa primeira tabela "Route Table for Private Subnet VCN1", vamos ver os detalhes criados.
+
+[00:51] Temos o "Destination" e o "Target". O destination é definido através dessa máscara de IP que tem esse código CDIR, se for para 0.0.0.0/0, ele vai para o NAT Gateway. Se você lembrar, o NAT Gateway é aquele gateway que permite o tráfego de saída para a internet, mas não permite o tráfego de entrada.
+
+[01:17] Outro ponto também importante sabermos é que o tráfego entre duas sub-redes da VCN vai ser automaticamente gerenciado pelo próprio roteador local da VCN. Estamos vendo que essa tabela tem esse primeiro destino o 0.0.0.0/0 e o segundo destino com All GRU Services in Oracle Services Network, esse destino aqui.
+
+[01:38] Quando um novo tráfego é gerado a VCN vai olhar para essa tabela de rotas e a rota que for mais específica vai ter prioridade, porque essa rota 0.0.0.0/0 é uma rota extremamente genérica, ou seja, qualquer endereço vai dar match com essa rota aqui.
+
+[01:57] O que vai acontecer é, se tentarmos acessar algum tipo de serviço da Oracle services network, que vamos tentar acessá-lo por um determinado IP, ele vai dar match com esse destino aqui e ele vai para esse gateway específico aqui que é o gateway de serviços.
+
+[02:14] Qualquer outro endereço vai bater aqui no NAT Gateway e ele vai para internet, para algum endereço externo. Se voltarmos na nossa lista de tabelas, podemos dar uma olhada nessa segunda tabela, que é "Default Route Table for VCN1", e veremos que ela é um pouco diferente — ela tem 0.0.0.0/0, dando um match com tudo 0, e ele vai mandar para Internet Gateway. Ou seja, esse tráfego vai para a internet.
+
+[02:41] Quando olhamos aqui, percebemos que esse aqui não tem o roteamento para os serviços da Oracle. Ou seja, somente aquela primeira Route Table for Private Subnet VCN1 tem acesso aos serviços da Oracle Network.
+
+[02:56] Voltando para a lista de VCNs, nessa lista anterior que vai mostrar a lista das VCNs, posso clicar na "Public Subnet VCN1" e eu vejo aqui qual que é a tabela de roteamento que está associada para ela. A "Public Subnet-VC1" que é aquela que consegue ter acesso à internet e a internet consegue acessar essa rede, ela está aqui com essa tabela de roteamento "Default Route Table for VCN1" que é justamente aquela que tem acesso ao internet gateway.
+
+[03:27] Se olharmos aqui para a nossa segunda subnet, "Private Subnet", vamos ver que ela tem a tabela associada a "Route Table for Private Subnet-VCN1". Essa subnet vai ter acesso aos serviços da Oracle e vai ter acesso à internet somente através do NAT Gateway que não vai permitir a comunicação de tráfego oriundo da internet para atingi-la aqui.
+
+[03:51] Outro ponto também que temos que é muito importante é com relação a parte de segurança, esse Security Lists aqui. Ele vai funcionar de uma forma uma pouco parecida, em uma VCN temos esse conceito de Security Lists e elas vão funcionar como regras de firewall, que vão estar associada a uma sub-rede e aplicadas a todas as instâncias dentro dessa sub-rede.
+
+[04:23] O firewall é um mecanismo que temos para barrar a comunicação em geral para impedirmos comunicação que seja indevida ou comunicação errada. Se lembrarmos, a tabela de roteamento também faz isso, bloqueia algumas comunicações e determina algumas comunicações, mas ela não tem um foco em segurança e ela também não determina as portas que podem comunicar-se. A lista de segurança tem o objetivo um pouco diferente.
+
+[04:53] Se entrarmos aqui e detalhar essa primeira lista de segurança, vamos ver que ela também consiste em uma lista de regras que determinam o que pode entrar e o que pode sair da sub rede. Isso se aplica a qualquer instância que estiver conversando uma com a outra dentro da VCN ou outra máquina fora da VCN.
+
+[05:14] Essas regras podem ser como Stateful e Stateless, aqui, como estamos vendo, ela é NO por isso ela não é stateless vai ser stateful e ela dividida também entre regras de Ingress e regras de Egress. O ingress são as regras para entrada e o egress são as regras de saída. Quando uma regra é de stateful que dizer que se um tráfego é permitido entrar por uma determinar porta, ele também vai poder sair por essa determinada porta.
+
+[05:46] Aqui conseguimos ver que tem as regras de entrada e saída, nas regras de entrada eu tenho que todos aqui vão ser Stateless No. Por exemplo, vamos dar uma olhada nessa primeira regra "Security List for Private Subnet-VCN1", perceba que ele está permitindo a entrada da comunicação a partir dos IPs na faixa 10.0.0.0/16, que é da própria rede interna. E a regra de saída dele é para o destino 0.0.0.0.0, ele está permitindo tráfego para todas as portas.
+
+[06:23] Se voltarmos ao "Security List Details" e eu vir aqui na VCN1, eu venho no "Security Lists" e eu vou olhar "Default Security List for VCN1" que é a regra para VCN1 e aqui podemos ver que ela é um pouco diferente, veja que o tráfego de origem vai permitir dar 0.0.0.0/0, ou seja, de qualquer endereço ele está permitindo que atinja a porta 22. Essa aqui como regra de entrada e essa aqui como regra de saída.
+
+[06:57] Voltando ao "Security Lists" eu volto aqui para a minha VCN1 e eu consigo ver nas minhas sub-redes, se eu clicar na sub-rede que é a pública, conseguimos ver qualquer que é até a security lists que está associada a ela aqui também. Aqui eu consigo ver qual é a tabela de roteamento e aqui eu vejo qual é a security list. Sabe-se que security lists eu posso utilizar múltiplas listas de segurança para esse caso aqui. Vou voltar só para vermos a dois e também tem aqui a lista de segurança associada e a tabela de roteamento.
+
+[07:37] Essas duas caracterísiticas vão ser muito importantes na hora que levantarmos o nosso servidor do Doguito para conseguir justamente liberar a comunicação via porta HTTP da internet, via o nosso servidor web com a internet e para que o Doguito Petshop possa ser acessado.
+
+
+
+
+
+
+4-5 Para saber mais: redes na OCI
+
+
+Quando falamos de infraestrutura em Cloud, uma de nossas primeiras tarefas é estruturar uma rede. Em geral estas redes são conhecidas como redes virtuais pois são definidas via software ao invés de dispositivos físicos de hardware. Estas redes virtuais possuem diversos conceitos elaborados que você pode se aprofundar assistindo aos videos desta playlist (video está em inglês mas possui legendas automáticas em português).
+
+https://youtube.com/playlist?list=PLvlciYga5j3z7biGjV7-fywS-xEJ3W6Pp
+
+
+O conteúdo em video pode apresentar alguns tópicos desatualizados, por isso, todos os detalhes sobre a utilização de Redes na OCI podem ser também encontrados na documentação oficial, através dos links:
+
+https://docs.oracle.com/pt-br/iaas/Content/Network/Concepts/landing.htm#top
+
+https://docs.oracle.com/es-ww/iaas/Content/Network/Concepts/landing.htm#top.
+
+
+
+
+
+
+4-6 A VCN
+
+Uma VCN é uma rede definida por software que configuramos em determinada região nos data centers do Oracle Cloud Infrastructure. Uma VCN é dividida em sub-redes públicas e privadas. Precisamos definir um serviço para para que uma instância de compute em uma sub-rede possa acessar a internet, mas não fique acessível a partir da internet.
+
+Selecione a opção correspondente ao serviço que devemos utilizar.
+
+Firewall
+  Alternativa incorreta! Um firewall é utilizado para restringir o tráfego de entrada e saída em portas específicas, para o caso citado, o NAT Gateway é a solução mais indicada.
+
+Internet Gateway
+  Alternativa incorreta! O internet gateway possibilita a comunicação entre os hosts da OCI com a internet, assim como de hosts da internet com os hosts da OCI.
+
+Service Gateway
+  Alternativa incorreta! O service gateway é utilizado para comunicação dos hosts com serviços da OCI e não com a internet.
+
+NAT Gateway
+  Alternativa correta! O NAT gateway permite que recursos de nuvem sem endereços IP públicos acessem a internet sem expor esses recursos a conexões de entrada na internet.
+
+
+
+
+
+4-7 O que aprendemos?
+
+  As VCNs - Redes Virtuais em Nuvem - controlam a comunicação dos componentes da Cloud com a internet e com os serviços da Oracle através de sub-redes virtuais que possuem suas próprias tabelas de roteamento, listas de segurança e gateways;
+  
+  Criamos uma VCN com uma sub-rede pública e outra privada na OCI utilizando o Wizard em poucos passos;
+  
+  Como é definido o roteamento e a segurança nas VCNs e como estes atributos irão restringir e tornar segura a comunicação das instâncias que criaremos para nossa aplicação.

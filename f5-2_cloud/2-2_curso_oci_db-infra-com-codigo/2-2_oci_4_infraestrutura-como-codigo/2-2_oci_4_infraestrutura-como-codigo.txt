@@ -1,0 +1,336 @@
+https://cursos.alura.com.br/course/oracle-cloud-infrastructure-dados-infraestrutura-codigo/section/13800/tasks
+
+Evernote: devweb | alumni-2_cloud_2
+
+
+Curso de Oracle Cloud Infrastructure: banco de dados e infraestrutura como código
+
+Instrutor Tiago Lage Payne de Pádua
+
+
+
+Aula 4 - Infraestrutura como código | 0 / 8 | 38min
+
+  4-1 Projeto da aula anterior
+  4-2 O que é infra como código *
+  4-3 O gerenciador de recursos *
+  4-4 Nossa primeira IAC *
+  4-5 Faça como eu fiz: infraestrutura a partir do código
+  4-6 Para saber mais: automatizando a infraestrutura
+  4-7 Vantagens da IAC
+  4-8 O que aprendemos?
+
+
+4-1 Projeto da aula anterior
+
+Para esta aula usaremos alguns arquivos que estarão disponibilizados para download neste link.
+
+https://caelum-online-public.s3.amazonaws.com/2487-oracle-cloud-infrastructure-dados-infraestrutura-codigo/04/2022-03-15%2002.19.44%20-orm-dps.zip
+
+
+
+ 
+
+4-2 O que é infra como código *
+
+
+Transcrição
+
+Para entendermos o conceito de infraestrutura como código, primeiro temos que compreender o histórico de desenvolvimento das aplicações e como ele evoluiu com o tempo.
+
+Inicialmente, tínhamos aplicações que chamávamos de monolito — até hoje há quem siga essa filosofia, essa estratégia. Em aplicações monolíticas, todas as funcionalidades estão empacotadas juntas, como um grande programa executável. Assim, temos a parte de usuários, de produtos, de vendas dentro de uma única unidade.
+
+Com o passar do tempo e com a necessidade de escalar as aplicações, percebeu-se que existem algumas desvantagens no uso desse modelo. Quando um componente falha, por exemplo, todo o pacote falha. Se tivermos um problema na compilação ou execução da parte de usuários, o aplicativo inteiro deixa de funcionar.
+
+Já para escalar a aplicação, no modelo monolítico, é necessário escalar todas as funcionalidades. Se temos um número de usuários maior e queremos replicar a aplicação, teríamos que replicá-la como um todo (usuário, produtos, vendas), mesmo que a necessidade seja em apenas um dos módulos. Esse processo seria um desperdício de recursos.
+
+Além disso, para construirmos e implantarmos a aplicação no modelo de monolito, todo o pacote deve ser implantado. Assim, quanto maior for a aplicação (pois ao longo do desenvolvimento inserimos mais e mais recursos), mais difícil fica essa implantação.
+
+Outra questão é relativa à linguagem de desenvolvimento. Como a aplicação é um grande monolito, todo o pacote deve ser escrito em uma mesma linguagem de programação. Por exemplo, se utilizamos Java para codar a parte de usuários, somos obrigados a usar Java para produtos e vendas também. Atualmente, com o aumento da diversidade de tecnologias, muitas vezes existe uma linguagem mais apropriada para cada um desses módulos, mas no modelo monolítico temos essa restrição.
+
+Por causa de todas essas desvantagens, surgiu a arquitetura de microsserviços, em que cada microsserviço possui uma tarefa simples. Então, por exemplo, a parte de usuários ficará responsável somente por processos relacionados a usuário (cadastrar, listar, excluir usuários etc); a parte de produtos trabalhará apenas com produtos (cadastrar, alterar, excluir produtos etc) e assim por diante. Ou seja, em vez de ter uma única aplicação, um monolito, teremos várias aplicações pequenas, cada qual realizando um pequeno serviço, um microsserviço.
+
+Os microsserviços se comunicam através de um protocolo leve, como uma API REST. Ademais, cada funcionalidade pode ser escalada de forma independente. Por exemplo: se sabemos que, na Black Friday, teremos maior pressão sobre o módulo de vendas, podemos levantar novas instâncias somente desse módulo, para atender mais usuários. No modelo monolítico, seria necessário escalar toda a aplicação, gerando desperdício de recursos.
+
+Outra característica notável dos microsserviços é que são desacoplados, permitindo que a aplicação mantenha a disponibilidade mesmo que ocorra uma falha em um dos seus componentes. Supondo que haja um problema no cadastramento de usuário, que a comunicação com o banco de dados esteja comprometida, o resto da aplicação (como cadastramento de produtos ou realização de vendas) permanece funcionando, pois são desacoplados.
+
+Existem ainda muitos outros benefícios e, por causa disso, a arquitetura de microsserviços tem evoluído rapidamente e tem sido adotada amplamente pelas empresas.
+
+Entretanto, surgem também alguns desafios. Uma vez que não implantaremos somente um monolito, mas, sim, várias aplicações (o que gera mais trabalho), há um aumento da complexidade geral do sistema, por isso, precisamos ter em mente algumas considerações.
+
+Por exemplo, trabalhando nesse modelo de microsserviços, em geral, temos lidar com infraestrutura como código, em que tratamos os recursos de infraestrutura (disponibilidade do disco rígido, quantidade de CPUs, entre outros) como um código escrito. Então, teremos algum tipo de programa ou documento digital que descreverá a infraestrutura.
+
+A vantagem é que, da mesma forma que podemos versionar um sistema em desenvolvimento, temos a opção de fazer o mesmo com a infraestrutura. Como a descrevemos de forma digital, podemos replicá-la e implantá-la automaticamente por meio de uma ferramenta que realize esse processo por nós, sem a necessidade de irmos à interface e escolhermos as configurações uma a uma. Simplesmente aplicamos um código-fonte que descreve essa infraestrutura e ela será montada. Esse recurso também facilita o compartilhamento do documento descritivo com outros times, caso precisem de uma referência.
+
+A utilização de contêineres, como Docker e Kubernetes, é outro ponto interessante dos microsserviços, em especial a questão de portabilidade. Um mesmo contêiner pode ser implantado em várias infraestruturas diferentes, na própria máquina do desenvolvedor ou num ambiente de cloud, facilitando a adoção da filosofia de DevOps.
+
+Em outras palavras, para uma mesma infraestrutura, um mesmo sistema operacional, rodamos o Docker e nele colocamos várias aplicações, que podem ser os microsserviços.
+
+Outro item importante desse modelo é o API Gateway. Os microsserviços precisam se comunicar entre si e também com o mundo externo, então é essencial considerarmos a questão de segurança. Anteriormente, trabalhamos com gateways durante a criação da VCN: um para se comunicar com a internet, outro para serviços. Nesse caso, criaremos um gateway para comunicar os microsserviços e fazer reforços de políticas de segurança.
+
+Existem mais pontos importantes relativos aos microsserviços, mas de modo geral, no que tange a adoção das empresas, esses três pontos são os mais destacados: implantação de infraestrutura como código, conteinerização das aplicações e o API gateway.
+
+No menu da OCI, no item "Serviços ao Desenvolvedor", podemos ver o que a OCI pode oferecer para facilitar a nossa jornada de desenvolvimento. Temos opções como "Gerenciamento de Recursos" que trabalha a infraestrutura como código; "Funções", que lida com a parte de Serverless, caso nosso objetivo seja trabalhar sem um servidor, com o Lambda; "Contêineres e Artefatos", onde encontramos o Container Engine for Kubernetes (OKE) e funcionalidade de registros de contêineres e artefatos (nossos binários); e, por fim, "Gerenciamento de API", que inclui os API Gateways, gerenciando a parte de comunicação entre nossos microsserviços e a internet.
+
+Com essas ferramentas à nossa disposição, nosso caminho para trabalhar com microsserviços e uma arquitetura mais desacoplável e mais escaláveis se torna muito mais simples.
+
+
+
+
+4-3 O gerenciador de recursos *
+
+
+Transcrição
+
+Nas aulas passadas, criamos uma instância do Doguito API. Vamos acessá-la. No menu da OCI, em "Computação > Instâncias", vamos copiar o IP público da dps-vm1 e colá-lo em uma nova aba do navegador, acrescentando a porta 3000. Também podemos acessar a lista de clientes, adicionando /clientes ao final da URL.
+
+Fizemos a configuração e a instalação do Node, do Git e do próprio código-fonte do Doguito apenas na instância dps-vm1. Será que conseguiríamos, de cor, fazer todos esses passos de novo na dps-vm2? Podemos até tentar, mas há uma chance de esquecermos um passo ou realizá-lo de forma errada. Para evitar esse problema, nosso próximo será converter a infraestrutura do Doguito API para código, de forma que seja facilmente replicável. Assim, poderemos criar mais de uma instância do Doguito API de modo simples, em vez de fazer esse processo manualmente. No caso, faremos apenas duas instâncias, mas num cenário real poderiam ser dezenas e ficaria praticamente inviável!
+
+Além disso, imagine que a aplicação fez muito sucesso, temos 50 instâncias do Doguito Pet Shop e estamos trabalhando com uma versão específica do Node. Em dado momento, o Doguito é atualizado e passa a utilizar uma nova versão do Node. Nesse caso, teríamos que atualizar cada máquina manualmente! Esse processo é muito propenso a falhas.
+
+Para converter a infraestrutura do Doguito para código, utilizaremos um recurso da OCI chamado "Gerenciador de Recursos". No menu da OCI, vamos em "Serviços ao Desenvolvedor > Gerenciador de Recursos".
+
+O gerenciador de recursos nos auxiliará a tratar a infraestrutura do Doguito como código e também na instalação, configuração e gerenciamento de novos recursos, sempre usando a metodologia da infraestrutura como código. O gerenciador de recursos, em realidade, é um serviço gerenciado do Terraform.
+
+O Terraform é uma aplicação que funciona de modo independente da OCI e é a ferramenta que, de fato, fará a implementação da infraestrutura como código. A ideia é justamente descrevermos os componentes da nossa infraestrutura usando uma sintaxe e uma definição de alto nível. Não é necessário escrever detalhe por detalhe, basicamente vamos descrever o que queremos e o próprio sistema cuida de fazer a implantação.
+
+Terraform:
+https://www.terraform.io/
+
+
+Esse processo permite que tenhamos um projeto arquitetural, como se fosse a planta de uma casa (no caso, da nossa infraestrutura), que pode ser versionada e gerenciada semelhante a um código-fonte. Ademais, podemos criar de forma simples a nossa pilha de infraestrutura de software, sem precisar realizar processos manuais e decorar o passo a passo.
+
+Na prática, para fazer essa conversão, precisamos seguir um fluxo na OCI. O primeiro é passo é criar os arquivos de configuração e fazer o upload de um pacote de configurações, que são os códigos escritos no padrão do Terraform. Em seguida, criaremos uma pilha (stack, em inglês) e rodar as ações do Terraform sobre ela.
+
+O nosso código Terraform pode estar num determinado Git, em uma pasta, em um bucket do object storage (como fizemos com o site estático), em um compartimento, pode ser um template ou até um arquivo .zip. A partir desse arquivo, geramos uma pilha (no gerenciamento de recursos) que definirá um conjunto de recursos de cloud dentro do compartimento do Doguito. Em seguida, executaremos os jobs, que são um conjunto de comandos Terraform que podem ser executados em uma pilha. Esses jobs são os comandos padrões do Terraform, como plan, apply e, eventualmente quando não precisarmos mais desses recursos, o destroy, para liberá-los.
+
+Após executar essas ações, será gerado um arquivo de estado Terraform, gerenciado de forma segura pelo próprio gerenciador de recursos. Ele será usado pelo Terraform e garantirá que haja uma única fonte da verdade para o estado atual da infraestrutura — o arquivo especificará o que foi criado, qual a versão dos softwares instalados, quais passos foram seguidos e assim em diante. Essa é uma das principais vantagens do Terraform em relação a fazer as operações manualmente. Desta última forma, podemos esquecer de alguns detalhes, enquanto o Terraform consegue manter esse arquivo de estado com todas as informações necessárias.
+
+De forma bastante resumida, vimos que o gerenciador de recursos é um serviço gerenciado pelo Terraform que nos auxiliar muito na implantação da infraestrutura do Doguito como código.
+
+
+
+4-4 Nossa primeira IAC *
+
+Transcrição
+
+Chegou a hora de começarmos a transformar o Doguito em uma infraestrutura como código (IaC). Para começar, precisamos fazer o download do arquivo chamado orm-dps.zip, no tópico "Projeto da aula anterior". Trata-se de uma infraestrutura básica, pronta para fazermos testes. Num primeiro momento, vamos levantar essa infraestrutura simples para testar, depois repetiremos o processo com o Doguito.
+
+No menu da OCI, vamos em "Serviços ao Desenvolvedor > Gerenciador de Recursos > Visão Geral". Na área "Conceitos Básicos", clicaremos em "Criar uma Pilha" (stack, em inglês). No topo da página, veremos uma definição do conceito de pilha e, mais abaixo, serão apresentadas diversas opções de configuração. Vamos manter "Minha configuração" selecionado.
+
+Em "Origem da configuração do Terraform", escolheremos "Arquivo .zip" e arrastaremos o arquivo orm-dps.zip para a área de upload. Mais abaixo, podemos manter o nome padrão e nos certificar de que o compartimento escolhido é "Desenvolvimento". Quanto à versão do Terraform, vamos defini-la como 0.14.x, a versão compatível com esse arquivo. Em seguida, clicaremos no botão "Próximo", no canto esquerdo inferior da página.
+
+Agora, temos algumas variáveis configuráveis na hora da criação da pilha, como a largura mínima e máxima do load balancer, que manteremos como 10. Em "Compute Shape", por termos uma conta gratuita, precisamos selecionar "VM.Standard.E2.1.Micro".
+
+Em "SSH Key Configuration", vamos escolher a opção "Colar Chaves SSH". Acessaremos o Cloud Shell e consultaremos a chave pública por meio do comando cat .ssh/cloudshellkey.pub. Vamos copiá-la e, em seguida, colá-la no campo "SSH Public Key".
+
+Mais abaixo nessa página, temos a área "Virtual Cloud Network Configuration", onde podemos definir o nome da VCN, a barra de endereço da VCN e o nome da subnet — vamos manter tudo como está, no padrão. Por fim, clicaremos no botão "Próximo", ao final da página.
+
+Por enquanto, não vamos selecionar a opção "Executar Aplicação" (que seria o apply). Basta clicar em "Criar", no canto esquerdo inferior da tela.
+
+A criação da pilha é um processo rápido, feito imediatamente. À esquerda, já consta o quadrado verde com a legenda "Ativo". Vamos seguir para o próximo passo: planejar.
+
+Clicaremos no botão "Planejar" no topo da tela. Deixaremos o nome padrão, sem modificá-lo, e selecionaremos "Planejar" ao final da página. Esse procedimento é um pouco mais demorado. Assim como os demais componentes, o quadrado laranja à esquerda (com a legenda "Em andamento") demonstra que ainda está em processamento. Nesse meio tempo, vamos explorar as configurações dentro de orm-dps.zip.
+
+Descompactando e abrindo a pasta, veremos uma série de arquivos da OCI, no formato Terraform. Eles descrevem nossa infraestrutura. Em um editor de textos — no caso, estou usando o Visual Studio Code, você pode usar outro de sua preferência ou até mesmo o Bloco de Notas —, vamos abrir o arquivo compute.tf. Nele veremos a descrição dos computes, por exemplo: na linha 9, temos o nome do primeiro compute ("Web-Server-01"); na linha 14, sabemos a qual placa de rede ele vai se conectar ("primaryvnic"); e, na linha 23, consta a chave SSH (var.ssh_public_key). Nas linhas 32, 37 e 46 encontraremos o nome, a placa de rede e a chave SSH do segundo compute.
+
+    Na Alura, temos um curso específico sobre Terraform, caso seja de seu interesse entender mais a fundo o conteúdo desses arquivos de configuração.
+
+A seguir, vamos abrir o arquivo loadBalancer.tf, que descreve a configuração do balanceador de carga. Na linha 3, temos o nome do load balancer. Nas linhas 10 e 11, podemos visualizar as definições de largura de banda. Das linhas 15 a 24, dispomos de detalhes relativos ao health check, na porta 80. Na linha 27, descobrimos que o algoritmo de balanceamento usado será o Round Robin. Nas linhas 36 e 46, respectivamente, sabemos a porta que será direcionada para a máquina 1 e a máquina 2. A partir da linha 49, temos a descrição dos listeners e assim por diante. Basicamente, são as configurações que fizemos em tela.
+
+Por fim, vamos explorar o arquivo network.tf, responsável pela configuração da rede. A partir da linha 8, temos a descrição do internet gateway, que terá um label. Na sequência, veremos a tabela de roteamento público (Public Route Table). Entre as linhas 27 e 36, há configurações da sub-rede, incluindo a faixa de endereços dessa subnet. A partir da linha 38, temos a criação e descrição da security list, bem como regras de entrada, e assim por diante.
+
+Além desses três arquivos, temos o output.tf que definirá a saída, ou seja, finalizando a execução do comando apply, o output.tf determina que seja exibido o endereço de IP do load balancer, através do qual acessaremos as máquinas.
+
+Ademais, há o comando de inicialização da cloud (cloud-init.yaml) que especifica quais pacotes precisam ser instalados, qual repositório Yum deve ser acessado e quais são os comandos disponíveis:
+
+# Linhas 14 a 20 do arquivo cloud-init.yaml
+
+runcmd:
+  - [sh, -c, echo "<html>Web Server IP `hostname --ip-address`</html>" > /var/www/html/index.html]
+  - [firewall-offline-cmd, --add-service=https]
+  - [firewall-offline-cmd, --add-service=http]
+  - [systemctl, enable, httpd]
+  - [systemctl, start, httpd]
+  - [systemctl, restart, firewalld]
+
+Por exemplo, na linha 15, temos um comando que criará um arquivo index.html em cada uma das instâncias de compute, selecionando o endereço de IP da instância e "jogando" o arquivo /var/www/html/index.html. Na linha 16 e 17, serão adicionados os serviços de HTTPS e HTTP no firewall. Na linha 18 e 19, o serviço httpd será ativado e iniciado. Por fim, na linha 20, o firewall é reiniciado para que ele reconheça as novas configurações.
+
+Temos as configurações de datasources.tf que define a origem de algumas informações importantes. Além disso, há o arquivo schema.yaml que basicamente nos informa sobre as variáveis que podemos alterar quando criamos a instalação. A partir da linha 73, por exemplo, temos a possibilidade de escolher a shape da máquina que utilizaremos. Já da linha 92 até o final do arquivo, dispomos dos campos em que informamos a chave SSH.
+
+Por fim, no arquivo variables.tf, são criadas algumas variáveis que serão utilizadas dentro dos próprios arquivos do Terraform.
+
+Ótimo, já conhecemos o conteúdo dos arquivos, podemos voltar à OCI e verificar que o nosso plan job foi executado com sucesso. O quadrado à esquerda está verde, com a legenda "Bem-sucedido". Mais abaixo nessa página, na área "Logs", podemos consultar uma série de informações. Algumas delas foram obtidas durante esse processo de planejamento das atividades que serão executadas; outras serão obtidas após a execução do apply, por exemplo, o próprio IP.
+
+Voltando aos detalhes da pilha, falta apenas fazermos o comando apply (aplicar). Vamos clicar no botão "Aplicar", em seguida, em "Aplicar" novamente, no final da página. O processo do apply é mais demorado, pode levar alguns minutos.
+
+No nosso caso, o processo de apply falhou. O quadrado à esquerda ficou vermelho, com a legenda "Com falha". Para descobrirmos o problema, vamos consultar o log mais abaixo nesta página.
+
+Encontraremos o seguinte aviso: "Error: 400-LimitExceeded". O limite de instâncias e do load balancer foram excedidos. Isso ocorre porque a nossa conta é gratuita, portanto possui uma limitação da quantidade de recursos que podemos alocar. Como já temos um servidor e um load balancer alocados, o apply não foi aceito. Então, precisaremos destruir o serviço que fizemos antecipadamente, mas não se preocupe, depois será bem mais fácil de refazermos.
+
+A destruição de elementos deve obedecer uma sequência para que dê certo; do contrário, a exclusão dos recursos será recusada. Primeiramente, vamos excluir o load balancer.
+
+No menu da OCI, vamos em "Rede > Balanceamento de Carga". À direita do nome do load balancer, vamos expandir o menu de opções e selecionar "Encerrar". Haverá uma mensagem de confirmação, podemos clicar em "Encerrar" mais uma vez e o status mudará para "Excluindo". Devemos esperar até que o processo seja concluído — podemos recarregar a página algumas vezes — e, assim que o balanceador de carga desaparecer da tela, a exclusão foi realizada com sucesso e podemos seguir para o próximo passo.
+
+Agora, excluiremos as instâncias de compute. No menu, em "Computação > Instâncias", começaremos apagando a dps-vm1. Na linha referente à dps-vm1, à direita, vamos expandir as opções e pressionar "Encerrar". Haverá uma mensagem de confirmação, é muito importante marcar o checkbox "Excluir permanentemente o volume de inicialização anexado", pois existe também um limite nesses volumes e, caso não façamos essa exclusão agora, posteriormente precisaremos apagá-los manualmente. Em seguida, podemos clicar em "Encerrar Instância".
+
+Repetiremos essa sequência para a dps-vm2 e, assim como o load balancer, esperaremos alguns instantes até que as instâncias estejam definitivamente encerradas, antes de proceder para os próximos passos.
+
+Em seguida, apagaremos nossa rede virtual, em "Rede > Redes Virtuais na Nuvem". Começando pela VCN1, vamos expandir as opções e clicar em "Encerrar". Na mensagem de confirmação, pressionaremos "Encerrar" novamente e, finalizado o processo, vamos repeti-lo com a VCN2.
+
+Com o load balancer, as instâncias e as redes virtuais encerradas, vamos voltar a "Serviços ao Desenvolvedor > Gerenciador de Recursos > Pilhas" e acessar a nossa pilha, para tentar fazer o apply mais uma vez. Vamos clicar em "Aplicar", depois, em "Aplicar" ao final da página, e esperar o processamento, que pode demorar alguns minutos.
+
+Dessa vez, veremos o quadrado à esquerda verde, com a legenda "Bem-sucedido", indicando que deu tudo certo. Podemos consultar o log para verificar tudo que foi criado e, ao final do log, teremos o endereço de IP do load balancer, como especificamos no arquivo output.tf.
+
+Na sequência, vamos confirmar a criação de todos os recursos. No menu da OCI, em "Rede > Balanceador de Carga", veremos que existe um novo load balancer, "Demo-Web-LB". A integridade geral estará marcada como crítica porque o balanceador ainda não conseguiu validar os back-ends, mas em pouco tempo isso será resolvido automaticamente.
+
+Já em "Computação > Instâncias", vamos constatar que dois novos computes foram criados: "Web-Server-01" e "Web-Server-02", cada qual com um IP público e outro privado. Note que as máquinas demoram cerca de 5 minutos para subir, então, se copiarmos o IP público e tentarmos abrir em uma nova aba do navegador, talvez a página não carregue de imediato.
+
+Passados esses 5 minutos, conseguiremos fazer o acesso pelo IP público das instâncias. Uma vez bem-sucedido, podemos voltar à página de detalhes do balanceador de carga e observar que está ativo e com a integridade OK. Além disso, podemos copiar o IP público do load balancer e acessá-lo no navegador. Pressionando a tecla F5, teremos o efeito do Round Robin, em que os servidores internos são alternados.
+
+Desse modo, conseguimos fazer um teste da utilização da infraestrutura como código, para entendermos o processo de implantação. Na nossa próxima aula, vamos adaptar o projeto do Doguito para executar na nossa infraestrutura.
+
+
+
+4-5 Faça como eu fiz: infraestrutura a partir do código
+
+
+
+Realizamos a criação de nossa primeira infraestrutura a partir do código utilizando o gerenciador de recursos da OCI.
+
+Inicialmente foi necessário remover os recursos já utilizados para não ultrapassar os limites de uso da conta free tier.
+
+Realizamos então a remoção do balanceador de cargas, das duas instâncias de computação e da rede virtual.
+
+Em seguida, já conseguimos implantar nossa primeira infraestrutura como código com o arquivo “orm-dps.zip”, que tem uma infraestrutura básica de balanceador de carga, rede virtual e duas instâncias.
+
+Siga os passos realizados no vídeo para implantar a infraestrutura como código e se tiver problemas, acione o fórum do curso para obter o auxílio, bons estudos!
+Opinião do instrutor
+
+Para que nosso limite de uso da conta free tier não seja excedido, precisaremos remover alguns recursos que criamos anteriormente, sendo o primeiro deles o balanceador de cargas. Para isso, acesse a opção “Rede > Balanceadores de Carga” e selecione “Encerrar” no menu suspenso:
+
+alt text: Imagem da listagem de balanceadores de carga com o menu suspenso e a opção “Encerrar” selecionada no lado direito da tela.
+
+Aguarde alguns segundos até que o balanceador não seja mais exibido na listagem:
+
+alt text: Imagem da listagem de balanceadores de carga sem nenhum item sendo exibido.
+
+Agora devemos excluir as instâncias de computação. Acesse o menu “Computação > Instâncias”, clique no menu de opções da instância e em “Encerrar”:
+
+alt text: Imagem da listagem de instâncias com o menu suspenso e a opção “Encerrar” selecionada no lado direito da tela.
+
+Na tela de confirmação de encerramento da instância, selecione “Excluir permanentemente o volume de inicialização anexado”. Caso não faça a exclusão, o limite de volumes pode ser excedido e será necessário excluir posteriormente na opção “Armazenamento > Volumes em Blocos > Volumes de Inicialização”:
+
+alt text: Imagem da tela de confirmação de encerramento da instância com a opção de exclusão permanente do volume de inicialização selecionada.
+
+Encerre ambas as instâncias, o “dps-vm1” e o “dps-vm2”. Aguarde a conclusão do encerramento, quando deverá ser exibida uma listagem conforme a imagem abaixo:
+
+alt text: Imagem da tela de listagem de instâncias com todas as instâncias com status de “Encerrado”.
+
+O próximo passo é excluir a rede virtual, o que será feito na opção “Rede > Redes Virtuais” na nuvem:
+
+alt text: Imagem da tela de listagem de redes virtuais na nuvem, com o menu suspenso exibido e a opção “Encerrar” selecionada no lado direito da tela.
+
+Confirme o encerramento clicando em “Encerrar Tudo” na tela que será exibida:
+
+alt text: Imagem da tela de confirmação de encerramento da rede virtual com o botão “Encerrar Tudo” no canto inferior direito da tela.
+
+Agora que liberamos os recursos, podemos implantar nossa infraestrutura como código. Baixe o arquivo do curso chamado “orm-dps.zip”. Acesse a opção “Serviços ao Desenvolvedor” e depois “Gerenciador de Recursos”:
+
+https://caelum-online-public.s3.amazonaws.com/2487-oracle-cloud-infrastructure-dados-infraestrutura-codigo/05/orm-dps.zip
+
+alt text: Imagem do menu da OCI com a opção Serviços ao Desenvolvedor e Gerenciador de Recursos selecionada no centro da tela.
+
+Clique na opção “Criar uma Pilha”:
+
+alt text: Imagem da tela de serviços ao desenvolvedor com a opção “Criar uma Pilha” no centro da tela.
+
+Na tela que será exibida, selecione “Arquivo .zip” e envie o arquivo “orm-dps.zip”. Em seguida altere a versão do Terraform para 0.14 e clique em “Próximo”:
+
+alt text: Imagem da tela de criação de pilha com o botão “Próximo” exibido no canto inferior esquerdo da tela.
+
+Na próxima tela, selecione “Colar Chaves SSH”, abra o seu Cloud Shell e exiba o conteúdo do arquivo de chave pública com o comando: cat ~/.ssh/cloudshellkey.pub.
+
+Copie e cole o conteúdo da chave no campo adequado, em seguida clique em “Próximo”:
+
+alt text: Imagem da tela de configuração de pilha com o botão “Próximo” exibido no canto inferior esquerdo da tela.
+
+Na tela de “Revisão” mantenha todos os valores padrão e clique em “Criar”:
+
+alt text: Imagem da tela de revisão de pilha com o botão “Criar” exibido no canto inferior esquerdo da tela.
+
+Após a criação será exibida a tela com os detalhes da pilha, clique em “Planejar” e na modal exibida clique em “Planejar” novamente:
+
+alt text: Imagem da tela de detalhe da pilha com o botão “Planejar” exibido no centro superior da tela.
+
+O planejamento deve ser concluído de forma bem sucedida, sendo exibida uma tela semelhante à tela abaixo:
+
+alt text: Imagem da tela de sucesso do planejamento da pilha.
+
+Clique na opção “Detalhes da Pilha” para voltar à tela anterior e em “Aplicar” e confirme clicando no botão “Aplicar” novamente:
+
+alt text: Imagem da tela de detalhe da pilha com o botão “Aplicar” exibido no centro superior da tela.
+
+Após alguns minutos, o comando de “Aplicar” deve ser bem sucedido e aparecerá uma tela semelhante à seguinte:
+
+alt text: Imagem da tela de sucesso da execução do comando “Aplicar”.
+
+Verifique que foram criadas duas instâncias de computação acessando o menu “Computação > Instâncias”:
+
+alt text: Imagem da tela de listagem de instâncias de computação exibindo as duas novas instâncias recém criadas.
+
+Acesse a lista de balanceadores de carga e aparecerá o balanceador recém-criado:
+
+alt text: Imagem da tela de listagem de balanceadores de carga exibindo o balanceador de carga recém criados.
+
+    Observação: Pode ocorrer que a “Integridade Geral” seja exibida como “Crítica”. Nesse caso, aguarde alguns minutos até que altere para “Ok”.
+
+Então, copie o IP público do balanceador de cargas e acesse pelo navegador. Deverá ser exibida uma página básica como a da imagem abaixo, indicando que a execução da pilha foi concluída com sucesso e as instâncias estão respondendo requisições HTTP:
+
+alt text: Imagem do navegador acessando o IP público do balanceador de cargas e exibindo o conteúdo da página que mostra o IP da instância de computação.
+
+
+4-6 Para saber mais: automatizando a infraestrutura
+
+A infraestrutura necessária para a execução de nossas aplicações tem se tornado cada vez mais complexa. Além disso, também temos o conceito de infraestrutura elástica, que consiste em adequar nossa infraestrutura implantada ao volume de trabalho de um determinado momento. Para isso, surge a necessidade de automatização de implantação, que deve deixar de ser um processo manual para ser um processo automático e reproduzível.
+
+Como vimos, o Resource Manager da OCI é nosso aliado nesta tarefa, e este video traz muitas informações complementares para aprofundarmos nosso conhecimento sobre o Resource Manager:
+
+https://youtu.be/btnRgK36LnE
+
+O conteúdo em video pode apresentar alguns tópicos desatualizados, por isso, todos os detalhes sobre a utilização do Resource Manager na OCI podem ser também encontrados na documentação oficial através dos links:
+
+https://docs.oracle.com/pt-br/iaas/Content/ResourceManager/home.htm#top
+
+https://docs.oracle.com/es-ww/iaas/Content/ResourceManager/home.htm#top.
+
+
+
+
+4-7 Vantagens da IAC
+
+Infraestrutura como código é uma abordagem muito adotada atualmente, em especial quando se utilizam práticas de DevOps nas organizações. Isso porque há vantagens reais nesta forma de gerenciamento e provisionamento em comparação à implantação manual de infraestruturas, Marque as alternativas com as opções que correspondem aos benefícios da IAC.
+
+Reprodutibilidade da infraestrutura.
+  Alternativa correta. O código que representa uma infraestrutura pode ser novamente executado um número indefinido de vezes tornando a infraestrutura facilmente reproduzível.
+
+Melhor performance das instâncias.
+  Alternativa incorreta. Apesar de haver melhoria na velocidade do provisionamento, a performance final das instâncias não é influenciada pela utilização de infraestrutura como código quando se compara ao provisionamento manual.
+
+Controle de versão da infraestrutura.
+  Alternativa correta. Com a infraestrutura como código, o código que representa a infraestrutura pode ser versionado utilizando as ferramentas convencionais de versionamento como o Git.
+
+Automatização do provisionamento.
+  Alternativa correta. A principal vantagem de se utilizar infraestrutura como código é a automatização do provisionamento, eliminando praticamente todo o processo manual e passível de erro de implantação de infraestrutura.
+
+
+
+4-8 O que aprendemos?
+
+  Que as aplicações têm evoluído sua arquitetura de construção de monolitos para microsserviços;
+  
+  Que a utilização de microsserviços acelera a necessidade de se trabalhar com automatização de provisionamento de infraestrutura e infraestrutura como código;
+  
+  Que a OCI disponibiliza diversas soluções de suporte ao desenvolvimento através da opção “Serviços ao Desenvolvedor”, por exemplo: Kubernetes, Registro de Artefatos, Gateway de API e Gerenciamento de Recursos (IaaS);
+  
+  Que o Gerenciador de Recursos é um serviço do Terraform e permite a definição de infraestruturas como código, colaborando para que a infraestrutura possa ser facilmente replicada e versionada.
