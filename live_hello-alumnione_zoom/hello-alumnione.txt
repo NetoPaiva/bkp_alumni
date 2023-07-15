@@ -1,0 +1,156 @@
+Anotações sobre a live Hello ONE
+
+
+===========================
+Mensagem do primeiro email:
+===========================
+
+ Olá, Carlos!
+
+Em breve teremos nosso evento incrível, o HelloONE, então vem conferir a data e o horário para ficar por dentro das novidades!
+
+Durante o evento vamos compartilhar mais informações sobre sua trajetória como um(a) aluno(a) graduado(a), com várias dicas e detalhes importantes para seu desenvolvimento. E atente-se: vamos divulgar um benefício muito importante para quem se interessa por OCI – Oracle Cloud Infrastructure, que ficara disponível somente para os alunos que participarem do evento.
+
+Não perca essa oportunidade! Participe em 06 de julho, às 19h.
+
+JÁ está habilitada a inscrição! acesse clicando a continuação:
+
+Quero participar -> https://e.customeriomail.com/e/c/eyJlbWFpbF9pZCI6ImRnU3Y4d1lEQUt2TUFhck1BUUdKQTF0cHRpdFJWOFpTUlJkdHdZdz0iLCJocmVmIjoiaHR0cHM6Ly9vcmFjbGUuem9vbS51cy93ZWJpbmFyL3JlZ2lzdGVyL1dOX1MyRThsTFhiUkotdHhXVVVfOWVxc2cjL3JlZ2lzdHJhdGlvbiIsImludGVybmFsIjoiYWZmMzA2MDBhYWNjMDFhYmNjMDEiLCJsaW5rX2lkIjo2NTkxfQ/7839bd1748e2599496b396191327c516bc60b2d46785768876a12ff242a748df
+
+
+LEVE EM CONSIDERAÇÃO AS SEGUINTES INFORMAÇÕES:
+
+No formulário de inscrição, preencha os seguintes campos com as informações abaixo: 
+
+    ORGANIZAÇÃO / EMPRESA: Oracle Next Education
+    CARGO: Estudante ONE
+
+
+
+
+=====================================
+Mensagem do email da gravação da Live
+=====================================
+
+
+Olá, Carlos!
+
+Nós do ONE estamos muito felizes com sua participação em nossa comunidade AlumniONE!
+
+Essa semana tivemos o evento Hello, AlumniONE!, onde explicamos com mais detalhes as formações dessa nova jornada e liberamos um benefício exclusivo aos participantes.
+
+Se você decidiu aproveitar o benefício e começar a estudar por Oracle Cloud Infrastructure, você pode acessar o Free Tier OCI aqui. Basta realizar seu registro com o mesmo e-mail que usou para se inscrever no evento (outros endereços de e-mail não funcionarão!).
+
+
+Link Tier OCI (link exclusivo)
+==============================
+
+https://e.customeriomail.com/e/c/eyJlbWFpbF9pZCI6ImRnU3Y4d1lEQUt2TUFhck1BUUdKUC1vbGtfWm1feUk1OEQ0R0haMD0iLCJocmVmIjoiaHR0cHM6Ly93d3cub3JhY2xlLmNvbS9ici9jbG91ZC9mcmVlLyIsImludGVybmFsIjoiYWZmMzA2MDBhYWNjMDFhYmNjMDEiLCJsaW5rX2lkIjo3MDI3fQ/953a15be10fb78f7c4ca4fd20eb33bb36102f298d79a470f39a13565bb4a5b93
+
+ 
+
+Entretanto, se você não pôde participar do evento ou gostaria de assistir novamente, acesse a gravação aqui:
+
+QUERO VER A GRAVAÇÃO →
+
+https://e.customeriomail.com/e/c/eyJlbWFpbF9pZCI6ImRnU3Y4d1lEQUt2TUFhck1BUUdKUC1vbGtfWm1feUk1OEQ0R0haMD0iLCJocmVmIjoiaHR0cHM6Ly92aWRlb2h1Yi5vcmFjbGUuY29tL21lZGlhLyU1Qk9ORSUyMEJSJTVEJTIwSGVsbG8lMkMlMjBBbHVtbmlPTkUhLzFfMTlpbDhpaHYiLCJpbnRlcm5hbCI6ImFmZjMwNjAwYWFjYzAxYWJjYzAxIiwibGlua19pZCI6NzAyOH0/30174a41fd92791caaaea732776cc5a1e5c38601d72ceadf9d9a5d21690a36b6
+
+
+Com a sua inscrição, você pode realizar seu registro no Free Tier a qualquer momento. A partir do registro no site Oracle, você terá 30 dias de acesso ao benefício.
+ 
+========================================================
+🚨 IMPORTANTE: Como avisamos no e-mail de convite ao evento, só é possível liberar o benefício às pessoas que se inscreveram para o Webinar.
+=========================================================
+
+Esperamos que tenha aproveitado o evento!
+
+Abraços,
+Equipe Oracle Next Education
+
+
+
+
+
+================
+Conteúdo da Live
+================
+
+
+    Aprender tecnologia vale muito,
+    mas não precisa custar nada!
+    (Slogan ONE)
+
+
+AlumniONE
+  - apenas formados nas trilhas Front e Back
+
+
+Networking
+  - Discord - AlumniONE / Alura
+  
+Webinars e eventos
+  - reciclagem
+  - novos conhecimentos
+  - workshops
+
+Conteúdos exclusivos
+  - AlumniONE
+
+Newsletters mensais
+  - novidades / dicas
+
+Trilhas Oracle
+  - tecnologias (líder de mercado)
+  - 4 meses de acesso liberado (junho a setembro)
+  - Oportunidade / empregabilidade
+  
+  - MySQL
+    - instalar / acessar banco de dados
+    - realizar / filtrar consultas
+    - criar tabelas
+    
+  - Cloud
+    - conceitos de nuvem
+    - configurar / utilizar OCI
+    - projetos práticos
+    
+  - Pythom
+    - linguagem / bibliotecas correlatas
+    - criação de aplicações
+    - machine learning
+    - inteligência artificial
+
+Desconto Alura
+  - 1437 cursos
+
+Certificação Oracle
+  - programa gratuito
+  - serão liberadas ao longo do tempo
+  - OCI / SAS / ...
+    - OCI está aberta certificação até 31 de agosto
+  - divulgará por email / Discord
+
+Oracle Cloud Free Tier
+  - plataforma Oracle
+  - praticar conteúdo das aulas OCI
+  - exclusivo para Alumnis inscritos na Live Zoom
+  - disponível por 30 dias
+  - link será enviado por email
+    Com a sua inscrição, você pode realizar seu registro no Free Tier a qualquer momento. A partir do registro no site Oracle, você terá 30 dias de acesso ao benefício.
+
+  - como acessar:
+    - a partir de 10 julho (segunda-feira)
+    - abertura para inscrição na plataforma OCI Free Tier
+    - prazo de 30 dias de acesso após inscrição na plataforma
+    - não tem prazo para ativar os 30 dias
+    - usar mesmo email usado na inscrição da Live Zoom
+    - receberá acesso por email.
+    - apenas os inscritos na Live Zoom
+    - após os 30 dias, informando cartão de crédito, tem acesso ao uso gratuito, atenção com serviços pagos
+
+
+Pontos de atenção da Live
+  - benefícios Free Tier OCI / 30 dias
+  - 4 meses acesso liberado para as 3 trilhas AlumniONE
+  - Comunicação por email
+  - Interação pelo Discord
