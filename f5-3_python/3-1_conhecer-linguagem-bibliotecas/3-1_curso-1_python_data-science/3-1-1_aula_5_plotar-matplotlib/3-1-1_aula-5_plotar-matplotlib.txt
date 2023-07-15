@@ -1,0 +1,302 @@
+https://cursos.alura.com.br/course/python-intro
+
+note: devweb - Alumni-3_Python_1-1 (3-1-1)
+
+
+Curso de Python para Data Science
+
+Instrutor Guilherme Lima
+  Linkedin
+  https://www.linkedin.com/in/guilherme-lima-458925178/
+
+
+Aula 5 - Plotando com Matplotlib | 0 / 7 | 13min
+
+  5-1 Código da aula anterior
+  5-2 Criando um gráfico *
+  5-3 Faça como eu fiz na aula
+  5-4 Lógica e valor final
+  5-5 O que aprendemos?
+  5-6 Conclusão *
+  5-7 Parabéns
+
+
+5-1 Código da aula anterior
+
+
+Projeto da aula anterior
+
+Aqui você pode baixar o zip da aula 04 ou acessar os arquivos no Github. Tenha certeza de que tudo está certo antes de continuar.
+
+: )
+
+https://github.com/guilhermeonrails/logica_programacao_python_DS/archive/aula_4.zip
+
+https://github.com/guilhermeonrails/logica_programacao_python_DS/blob/aula_4/L%C3%B3gica_de_programa%C3%A7%C3%A3o_Aula_4.ipynb
+
+
+
+
+5-2 Criando um gráfico *
+
+Transcrição
+
+Vimos no último vídeo que quando queremos utilizar um gerador de pseudo números aleatórios inteiros, podemos importar uma biblioteca para a nossa aplicação, como fizemos com a random, da qual importamos a funçao randrange() para utilizarmos no nosso projeto.
+
+O mesmo acontece quando queremos gerar um gráfico. Existem inúmeras bibliotecas em Python para geração de gráficos, e utilizaremos a Matplotlib. Não se preocupe se você ainda não sabe o nome das bibliotecas que utilizará, quais são melhores para cada problema e assim por diante, já que você adquirirá esses conhecimentos ao longo do tempo, conforme for estudando Data Science e Python e descobrindo outras bibliotecas.
+
+Queremos importar o Matplotlib e gerar, ou "plotar", um gráfico de linha com as notas do aluno A ideia é termos as 8 provas no eixo X e as notas de 0 a 10 no eixo Y. Para cada prova, colocaremos um ponto no gráfico na respectiva nota do aluno.
+
+A primeira coisa que faremos, mantendo o código da nossa aplicação bem organizado, será criar uma célula de texto com o título "Matplotlib. Em seguida, usaremos a instrução import matploblib para importarmos a biblioteca. Porém, para conseguirmos visualizar nossos gráficos, queremos importar um módulo específico, chamado pyplot.
+
+import matplotlib.pyplot
+
+Aqui existe um ponto importante: por convenção, sempre que utilizamos o Matplotlib ou qualquer outro import, podemos atribuir um apelido. No caso do Matplotlib, o apelido convencional é plt, que inclusive é sugerido pelo Colab.
+
+import matplotlib.pyplot as plt
+
+Sempre que quisermos exibir um gráfico ou utilizar outra função desse módulo, o faremos a partir do plt, que está chamando o matplotlib.pyplot. Isso não é uma regra obrigatória, mas, sendo uma convenção, é bem comum encontrar dessa forma. Existem várias outras convenções para nomes de imports que você conhecerá ao longo dos seus estudos.
+
+Agora precisamos pensar nos eixos do nosso gráfico. No eixo X, queremos conseguir visualizar as nossas 8 provas. Portanto, em uma nova célula, atribuiremos a uma variável x uma lista list() que receberá a chamada de range(1, 9), que por sua vez nos gerará uma sequência de 8 números sequenciais. Chamando essa variável, conseguiremos visualizar esses valores.
+
+x = list(range(1,9))
+x
+
+    [1, 2, 3, 4, 5, 6, 7, 8]
+
+Para as notas das provas de matemática que serão representadas pelo eixo Y, em uma nova célula, criaremos a variável y recebendo o conteúdo de notas_matematica. Também visualizaremos o conteúdo de y.
+
+y = notas_matematica
+y
+
+    [8, 7, 7, 8, 9, 3, 2, 8]
+
+De posse desses valores, para organizarmos melhor, vamos mantê-los em uma única célula.
+
+x = list(range(1,9))
+y = notas_matematica
+
+Podemos plotar um gráfico utilizando a função plt.plot(), que recebe como argumentos um eixo X, que no nosso caso tem uma lista de provas, e um eixo Y, que serão as notas de matemática.
+
+x = list(range(1,9))
+y = notas_matematica
+plt.plot(x, y)
+
+Ao executarmos, geraremos um gráfico de linha da maneira como gostaríamos.
+
+gráfico de linhas com as provas no eixo X, numeradas de 1 a 8, e as notas no eixo Y, numerado de 2 a 9 em intervalos de 1. o gráfico decresce inicialmente entre as provas 1 e 2, caindo de 8 para 7; mantém-se estável entre 2 e 3; cresce até 9 entre 3 e 5; decresce até 3 na prova 6; decresce até 2 na prova 7 e cresce novamente para 8 na prova 8.
+
+Nosso gráfico está um pouco estranho, pois aparece <matplotlib.lines.Line2D at 0x7f80f8768e10> no seu topo, um valor que está sendo armazenado na memória a partir da geração desse gráfico. Seria melhor se, ao invés disso, tivéssemos o título do gráfico. Para isso, chamaremos a função plot.title() e passaremos entre aspas o texto "Notas de matemática".
+
+x = list(range(1,9))
+y = notas_matematica
+plt.plot(x, y)
+plt.title('Notas de matemática')
+
+Ao gerarmos o gráfico novamente, o título que definimos será exibido no topo. Entretanto, agora o retorno também passou a mostrar uma propriedade do texto que estamos utilizando: Text(0.5, 1.0, 'Notas de matemática'). Para não exibirmos isso, chamaremos a funçãpo plt.show().
+
+x = list(range(1,9))
+y = notas_matematica
+plt.plot(x, y)
+plt.title('Notas de matemática')
+plt.show()
+
+Agora conseguiremos exibir somente o gráfico. Queremos adicionar também os rótulos "provas" e "notas" em seus respectivos eixos. Para isso, usaremos a função plt.xlabel() passando o texto "Provas" como argumento. Repetiremos o processo para o eixo Y, dessa vez com plt.ylabel() e o texto "Notas".
+
+x = list(range(1,9))
+y = notas_matematica
+plt.plot(x, y)
+plt.title('Notas de matemática')
+plt.xlabel('Provas')
+plt.ylabel('Notas')
+plt.show()
+
+O gráfico gerado passará a contar com os rótulos que definimos. Existem outros artifícios que podem ser utilizados para identificarmos melhor qual foi a nota de cada prova. Por exemplo, em nosso gráfico inicial, cada ponto no gráfico é representado por uma bolinha que indica, por exemplo, que na terceira a prova a nota foi 6 (ou um valor próximo deste).
+
+Para incluirmos isso em nosso gráfico, na chamada de plt.plot() adicionaremos o atributo marker recebendo 'o'.
+
+x = list(range(1,9))
+y = notas_matematica
+plt.plot(x, y, marker='o')
+plt.title('Notas de matemática')
+plt.xlabel('Provas')
+plt.ylabel('Notas')
+plt.show()
+
+Ao executarmos, o gráfico passará a representar cada par ordenado no gráfico com uma bolinha, permitindo a fácil identificação de qual nota corresponde a qual prova. Uma coisa que podemos apreender desse gráfico é que o aluno estava mantendo notas bem regulares e, a partir da quinta prova, na qual tirou nota 9, achou que não precisava estudar mais e teve uma queda para 3 na nota seguinte.
+
+Isso também pode ser percebido na nossa lista notas_matematica. Após o aluno voltar a estudar, sua nota sobe para 8. Assim é o dia-a-dia de um profissional de data science - claro, com bem mais informações que o nosso exemplo de notas de matemática, por exemplo com dados da saúde, dados financeiros e assim por diante. No seu trabalho, um profissional de data science precisa escolher as informações que deseja analisar e mostrar, além de entender as informações nos gráficos que gerar.
+
+Nesse exemplo utilizamos a biblioteca Matplotlib, mas existem outras bibliotecas para geração de gráficos, análise de dados e, posteriormente, machine learning, deep learning e assim por diante. Aqui nosso objetivo foi mostrar como importar uma biblioteca para o código e como gerar um gráfico simples com as principais informações.
+
+Nós definimos os eixos X e Y, atribuímos um título e rótulos aos nossos eixos, passamos os dados e geramos um gráfico. Isso após termos gerado uma sequência de pseudo números aleatórios (e entendemos o porquê desse nome por meio do SEED). 
+
+
+
+
+5-3 Faça como eu fiz na aula
+
+
+Imports
+
+No Python, existem inumeros módulos, libs, métodos que resolvem diferentes problemas. Quando plotar um gráfico, por exemplo, podemos usar o Matplolib.
+
+    Sabendo disso, importe o módulo matplotlib.pyplot, dando a ele o apelido plt geralmente dado pela comunidade Python. Em seguida, plote o gráfico das 8 notas de matemática, de forma que o eixo x indique as provas e no eixo y as notas, incluindo o título Notas de matemática.
+
+
+Opinião do instrutor
+
+Vamos importar o módulo e dar o apelido(alias) plt através do comando as, como ilustra o código abaixo:
+
+import matplotlib.pyplot as plt
+
+Agora vamos criar a uma sequência de 1 a 8 atribuindo na variável x para indicar as provas e atribuindo as notas das provas na variável y:
+
+x = list(range(1, 9))
+y = notas_matematica
+
+Para plotar o gráfico, vamos usar o comando plt.plot, passando como parâmetro as variáis x e y:
+
+plt.plot(x, y)
+
+Vamos criar um título e alterar as labels dos eixos x e y respectivamente:
+
+plt.title('Notas de matemática')
+plt.xlabel('Provas')
+plt.ylabel('Notas')
+
+Para estilizar nosso plot, podemos indicar incluir um círculo na nota de cada prova:
+
+plt.plot(x, y, marker='o')
+
+Nosso código final ficou assim:
+
+x = list(range(1, 9))
+y = notas_matematica
+plt.plot(x, y, marker='o')
+plt.title('Notas de matemática')
+plt.xlabel('Provas')
+plt.ylabel('Notas')
+plt.show()
+
+Ao executar nosso código, temos esse gráfico como resultado:
+
+imagem do plot da imagem
+Em casos de dúvidas...
+
+Podemos te ajudar pelo nosso fórum.
+
+Caso não encontre uma solução nas perguntas feitas por alunos e alunas deste curso, para comunicar erros e tirar dúvidas de forma eficaz, clique neste link e saiba como utilizar o fórum da Alura da melhor forma .
+Não tem dúvidas?
+
+    Que tal ajudar alguém no fórum? Compartilhe conhecimento e torne nossa comunidade ainda melhor.
+
+: )
+
+
+
+
+5-4 Lógica e valor final
+
+Para comparar o desempenho escolar de um determinado aluno, a escola decidiu criar um gráfico para cada matéria, como ilustra o código abaixo:
+
+  import matplotlib.pyplot as plt
+
+  notas_matematica = ['Matemática',8,7,6,6,7,7,8,10]
+  notas_portugues = ['Português',9,9,9,8,5,6,8,5]
+  notas_geografia = ['Geografia',10,10,6,7,7,7,8,7]
+
+  notas = [notas_matematica, notas_portugues, notas_geografia]
+
+Sabendo disso, qual alternativa abaixo irá gerar um gráfico para cada matéria?
+
+  for nota in notas:
+   x = list(range(1, 9))
+   y = nota[1:]
+   plt.plot(x, y, marker='o')
+   plt.xlabel('Provas')
+   plt.ylabel('Notas')
+   plt.show()
+Quase… O gráfico é gerado sem o título.
+
+  for nota in notas:
+   x = list(range(1, 10))
+   y = nota
+   plt.plot(x, y, marker='o')
+   plt.xlabel('Provas')
+   plt.ylabel('Notas')
+   plt.title(nota[0])
+   plt.show()
+Quase… Observe que o gráfico gerado com este código mostra que a primeira nota é o nome da matéria com y = 0. Isso acontece porque cada nota possui 9 elementos e o primeiro elemento, que armazena o nome da matéria não deveria ser atribuído na variável y.
+
+  for nota in notas:
+   x = list(range(1, 9))
+   y = nota[1:]
+   plt.plot(x, y, marker='o')
+   plt.xlabel('Provas')
+   plt.ylabel('Notas')
+   plt.title(nota[0])
+   plt.show()
+Certo! Observe que a variável y irá armazenar a nota de cada matéria a partir do índice 1 e o título, armazenado no índice 0 será incluso no gráfico.
+
+
+
+
+
+5-5 O que aprendemos?
+
+Nesta aula:
+
+  Aprendemos como importar a "Matplotlib" conforme a convenção como "plt";
+
+  Vimos que é possível criar listas a partir do código "range";
+
+  Aprendemos como criar gráficos, definindo título, rótulos e marcador, além de ocultar outros detalhes indesejáveis.
+
+Projeto final do Curso
+
+  Aqui você pode baixar o zip da aula 05 ou acessar os arquivos no Github. Tenha certeza de que tudo está certo antes de finalizar o curso.
+
+https://github.com/guilhermeonrails/logica_programacao_python_DS/archive/aula_5.zip
+
+https://github.com/guilhermeonrails/logica_programacao_python_DS/blob/aula_5/L%C3%B3gica_de_programa%C3%A7%C3%A3o_Aula_5.ipynb
+
+
+
+
+5-6 Conclusão *
+
+Transcrição
+
+Parabéns, você concluiu o curso de lógica de programação em Python! Aprendemos a criar nossos primeiros códigos por meio de funções, parâmetros, condicionais, conversões de tipo, listas e muitos outros conteúdos interessantes.
+
+Realizamos importações de módulos para gerar valores randômicos e criar gráficos visuais das notas de um aluno.
+
+Há ainda muito o que descobrir na linguagem Python, portanto não encerre seus estudos por aqui, continue explorando a plataforma Alura na carreira de data science e Python para se desenvolver ainda mais.
+
+Um abraço!
+
+
+
+
+
+5-7 Parabéns
+
+
+Chegou o momento de celebrar sua grande conquista!
+
+Neste treinamento, todas as barreiras foram vencidas, e você aprendeu os principais fundamentos do Python, desenvolvendo sua lógica de programação com ênfase em ciência de dados.
+
+Você aprendeu na prática, o que são variáveis e seus diferentes tipos, funções, parâmetros, condicionais, listas, imports e até plotou um gráfico usando o Matplotlib.
+
+Nossa, quanta coisa legal!
+
+    Agora, dê a nota do curso, pegue seu certificado e comemore bastante essa conquista.
+
+"Quando a situação for boa, desfrute-a. Quando a situação for ruim, transforme-a. Quando a situação não puder ser transformada, transforme-se" (Viktor Frankl)
+
+Parabéns!!!
+
+Guilherme Lima
+https://linktr.ee/guilimadev
+

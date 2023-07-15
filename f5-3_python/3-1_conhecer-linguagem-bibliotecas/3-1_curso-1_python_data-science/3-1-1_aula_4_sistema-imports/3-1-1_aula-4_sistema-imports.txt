@@ -1,0 +1,275 @@
+https://cursos.alura.com.br/course/python-intro
+
+note: devweb - Alumni-3_Python_1-1 (3-1-1)
+
+
+Curso de Python para Data Science
+
+Instrutor Guilherme Lima
+  Linkedin
+  https://www.linkedin.com/in/guilherme-lima-458925178/
+
+
+Aula 4 - O sistema de imports | 0 / 8 | 13min
+
+  4-1 Código da aula anterior
+  4-2 Tipos em uma lista *
+  4-3 Imports *
+  4-4 Faça como eu fiz na aula
+  4-5 Listas no Python
+  4-6 Importando libs e módulos
+  4-7 Para saber mais: Open Source
+  4-8 O que aprendemos?
+
+
+4-1 Código da aula anterior
+
+
+Projeto da aula anterior
+
+Aqui você pode baixar o zip da aula 03 ou acessar os arquivos no Github. Tenha certeza de que tudo está certo antes de continuar.
+
+: )
+
+https://github.com/guilhermeonrails/logica_programacao_python_DS/archive/aula_3.zip
+
+https://github.com/guilhermeonrails/logica_programacao_python_DS/blob/aula_3/L%C3%B3gica_de_programa%C3%A7%C3%A3o_Aula_3.ipynb
+
+
+
+
+
+4-2 Tipos em uma lista *
+
+Transcrição
+
+Aprendemos um novo tipo nas aulas anteriores: o booleano. Também aprendemos a trabalhar com listas, mas ainda temos uma questão: será que é possível armazenar em uma lista tipos diferentes, como strings e inteiros?
+
+Criaremos uma nova lista que conterá um nome, idade, um tipo booleano e um número do tipo string. Para cada elemento desta lista faremos um print() para exibir o tipo de cada elemento.
+
+lista = ['Guilherme', 28, True, '18']
+
+for elemento in lista: 
+  print(f'O elemento {elemento} é do tipo: ', type(elemento))
+
+Teremos como resultado:
+
+o elemento Guilherme é do tipo: <class 'str'>
+o elemento 28 é do tipo: <class 'int'>
+o elemento True é do tipo: <class 'bool'>
+o elemento 18 é do tipo: <class 'str'>
+
+Temos todos os tipos especificados. Poderíamos chamar essa nossa lista de pessoa, e armazenar dados sobre um indivíduo. É interessante que quando definirmos um tema para a nossa lista, ele seja mantido para evitar ruído na compreensão. Por exemplo, se o nome da nossa lista é pessoa e inserirmos os nomes Guilherme e Luis, podemos gerar confusão.
+
+Com isso, aprendemos que podemos armazenar tipos diferentes em uma lista.
+
+
+
+
+4-3 Imports *
+
+Transcrição
+
+Nosso próximo desafio é criar uma lista para armazenar as notas de matemática de um determinado aluno. Tais notas serão de 0 até 10 e serão geradas de maneira aleatória pelo computador.
+
+Para realizarmos o procedimento de gerar números, importaremos uma biblioteca para nossa aplicação. Coletaremos um trecho de código pronto e o incluiremos no notebook
+
+Faremos uma pesquisa simples no Google por "random Python". Notaremos que trata-se de um gerador de "pseudo números aleatórios", segundo o Wikipedia, entenderemos melhor esse termo logo mais. Esta biblioteca contém a função randrange() para a geração de números inteiros.
+
+Para realizar a importação, escreveremos:
+
+from random import randrange
+
+Agora todo o código está disponível para utilizarmos em nossa aplicação. Ao começarmos a escrever randrange() em uma nova célula, veremos que esta função exige alguns parâmetros para operar.
+
+Precisaremos definir o valor inicial da sequência (start), e optaremos por 0, o limite será 11, isto é, o parâmetro stop. Inserimos o valor 11 pois o contador opera um número anterior ao explicitado, como aprendemos ao estudar listas.
+
+randrange(0,11)
+
+Feito isso, criaremos uma lista vazia que chamaremos de notas_matematica, em que acrescentaremos números randomicamente gerados de 0 a 10. Como ano letivo possui quatro bimestres, inseriremos 8 notas, pensando em um número razoável de provas durante o ano.
+
+notas_matematica = []
+
+for notas in range(8):
+    notas_matematica.append([randrange(0,11)])
+
+Como resultado teremos:
+
+[2, 9, 9, 9, 4, 5, 10, 7]
+
+Para verificarmos se de fato há 8 notas na lista, podemos utilizar len(notas_matematica) e teremos o retorno de 8, como esperávamos.
+
+Nossa lista está criada, mas voltemos ao conceito de "pseudo números" que entramos em contato anteriormente. Esse termo é utilizado porque a sequência de números gerada pode ser manipulada de formas diferenes.
+
+Existe na biblioteca random uma função chamada seed(), em que podemos configurar o número inicial e sempre obter os mesmos valores na sequência.
+
+Se escrevermos, depois da importação do seed():
+
+seed(10)
+
+teremos sempre a o mesmo número aleatório gerado a partir deste valor inicial, que no caso será 9. Podemos utilizar o seed() para gerar valores diferentes pra nossa lista de notas, inclusive.
+
+Na próxima aula aprenderemos a gerar um gráfico para as notas deste aluno.
+
+
+
+
+4-4 Faça como eu fiz na aula
+
+Imports
+
+Ao importar do módulo random o randrange, estamos importando um método que poderá ser usado no nosso programa. Podemos verificar o seu tipo conforme ilustra o código abaixo:
+
+from random import randrange
+type(randrange)
+
+Nossa saída será: method, indicando que importamos o método para ser usado no nosso programa.
+
+    Sabendo disso, importe os métodos randrange e seed, crie 8 notas de 0 a 10, armazenando seu conteúdo numa variável chamada notas_matematica. Como os números gerados são chamados de pseudo aleatórios, utilize o método seed escolhendo um valor de referência.
+
+
+Opinião do instrutor
+
+Vamos importar os métodos randrange e seed do módulo random com o seguinte código:
+
+Agora vamos atribuir um valor inicial através da função seed, para gerar a mesma sequência de valores pseudo aleatórios:
+
+seed(11)
+
+Podemos testar o valor da nota entre 0 e 10 com o seguinte código:
+
+randrange(0,11)
+
+Vamos criar a lista chamada notas_matematica e criar um loop for atribuindo a lista com o append, o valor da nota de 0 a 10:
+
+notas_matematica = []
+
+for notas in range(8):
+  notas_matematica.append(randrange(0,11))
+
+notas_matematica
+
+Para verificar a quantidade de notas geradas, vamos utilizar a função len passando como parâmetro a lista:
+
+len(notas_matematica)
+
+    Informação importante: Para garantir que os valores das notas sejam os mesmos, ao definir o valor inicial do seed com valor 11 e testar uma única vez exibindo a nota 7, a próxima execução deve ser feita no loop atribuindo os valores das notas na lista notas_matematica.
+
+Mesmo escolhendo o valor seed 11, caso eu execute o teste 2 ou mais vezes, o valor das notas gerados não será o mesmo apresentado no video da aula pelo instrutor.
+Em casos de dúvidas...
+
+Podemos te ajudar pelo nosso fórum.
+
+Caso não encontre uma solução nas perguntas feitas por alunos e alunas deste curso, para comunicar erros e tirar dúvidas de forma eficaz, clique neste link e saiba como utilizar o fórum da Alura da melhor forma .
+Não tem dúvidas?
+
+    Que tal ajudar alguém no fórum? Compartilhe conhecimento e torne nossa comunidade ainda melhor.
+
+: )
+
+
+
+
+4-5 Listas no Python
+
+Uma lista é representada como uma sequência de objetos separados por vírgula e dentro de colchetes []. No Python, uma lista pode armazenar elementos de diferentes tipos, como ilustra o código abaixo:
+
+  lista = ['int', False, True, '18', 2020]
+
+Para descobrir o tipo de cada elemento, podemos criar um loop, como mostra o código abaixo:
+
+  for elemento in lista:
+   print(type(elemento))
+
+Sabendo disso, qual será o resultado da execução dos códigos acima?
+
+  <class int>
+  <class 'bool'>
+  <class 'bool'>
+  <class 'str'>
+  <class 'int'>
+Quase… O primeiro elemento por estar entre aspas, é uma palavra e não um inteiro.
+
+  <class 'str'>
+  <class 'bool'>
+  <class 'bool'>
+  <class 'str'>
+  <class 'int'>
+Certo! O primeiro elemento da lista é a palavra int do tipo string. O segundo e terceiro elemento da lista são do tipo booleano. O quarto elemento uma string, pois está entre aspas e o quinto elemento é um valor inteiro
+
+  <class str>
+  <class 'False'>
+  <class 'bool'>
+  <class 'str'>
+  <class 'int'>
+O segundo elemento é do tipo booleano. Um tipo boleano pode ser True ou False(verdadeiro ou falso respectivamente).
+
+
+
+
+
+
+4-6 Importando libs e módulos
+
+Como vimos em aula, é possível importar libs ou módulos incorporando em nossa aplicação, possibilitando utilizar códigos para resolver nossos problemas.
+
+Em relação a esses imports no Python, analise as afirmações abaixo e marque a verdadeira.
+
+
+O Colab não permite importar mais de dois pacotes.
+  No Colab, podemos importar dois ou mais de dois pacotes.
+
+Importar pacotes, módulos e trechos de códigos, só funcionam no Python. Em nenhuma outra linguagem, existe essa ideia de import.
+  Importar pacotes ou módulos, é uma atividade muito comum na maiorias das linguagens de programação e não exclusiva do Python.
+
+É possível importar mais de um módulo do mesmo pacote.
+  Certo! Conforme vimos em aula, do pacote random, importamos os módulos randrange' e 'seed.
+
+
+
+
+
+4-7 Para saber mais: Open Source
+
+
+Projeto Open Source
+
+Python é uma linguagem de programação popular de código aberto (Open Source). Isso significa que o Python é desenvolvido sob uma licença de código aberto aprovada pela OSI, tornando-o livremente utilizável e distribuível, mesmo para uso comercial. A licença do Python é administrada pela Python Software Foundation.
+
+Para mais informações sobre código aberto, clique neste link.
+
+Para mais informações sobre por que computadores NÃO PODEM gerar números aleatórios e sim pseudo aleatórios.
+
+: )
+
+
+OSI
+https://pt.wikipedia.org/wiki/Open_Source_Initiative
+
+
+Python Software Foundation
+https://pt.wikipedia.org/wiki/Python_Software_Foundation
+
+
+Código aberto
+https://pt.wikipedia.org/wiki/Software_de_c%C3%B3digo_aberto
+
+
+Não podem gerar números aleatórios
+https://www.youtube.com/watch?v=LqXnpIn2Uxs&feature=youtu.be
+
+
+
+
+
+4-8 O que aprendemos?
+
+Nesta aula:
+
+  Vimos que é possível armazenar elementos de diferentes tipos em uma lista;
+
+  Aprendemos como importar o método randrange para gerar números inteiros aleatórios entre 0 e 10.
+
+Na próxima aula
+
+  Vamos importar um módulo para criar nosso primeiro gráfico!

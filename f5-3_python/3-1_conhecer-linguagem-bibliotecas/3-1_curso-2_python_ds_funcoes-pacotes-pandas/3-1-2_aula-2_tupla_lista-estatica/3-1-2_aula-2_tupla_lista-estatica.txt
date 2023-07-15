@@ -1,0 +1,523 @@
+https://cursos.alura.com.br/course/python-funcoes-pacotes-pandas/section/9318/tasks
+
+note: estudo - t5_aAlimni-3_Python_1-2
+
+
+Curso de Python para Data Science: Funções, Pacotes e Pandas
+
+Instrutor Rodrigo Fernando Dias
+
+
+Aula 2 - Listas estáticas: Tuplas | 0 / 10 | 18min
+
+  2-1 Projeto da aula anterior
+  2-2 Conhecendo as tuplas *
+  2-3 Formas de se criar uma tupla
+  2-4 Seleções em tuplas *
+  2-5 Selecionando itens em tuplas
+  2-6 Iterando em tuplas *
+  2-7 Laços for com tuplas
+  2-8 A função zip()
+  2-9 Consolidando o seu conhecimento
+  2-10 O que aprendemos?
+
+
+2-1 Projeto da aula anterior
+
+Caso queira, você pode baixar aqui o projeto do curso no ponto em que paramos na aula anterior.
+
+https://caelum-online-public.s3.amazonaws.com/1480-pythondatascience/01/python-data-science-parte-2-aula-1-completa.zip
+
+
+
+
+2-2 Conhecendo as tuplas *
+
+Transcrição
+
+Continuando com o treinamento básico de Python para Data Science que começamos no curso anterior, conheceremos agora uma nova estrutura de dados trabalhada no Python: as tuplas, sequências utilizadas para armanzear coleções de itens, assim como as listas que aprendemos no curso anterior. A diferença básica entre elas é que, diferentemente das listas, as tuplas são imutáveis - ou seja, não é possível modificá-las.
+
+É importante conhecer as tuplas pois, como cientista de dados, você precisará trabalhar com conjuntos de informações. Portanto, faz sentido termos estruturas de dados onde é possível armazenar esse tipo de coleção.
+
+Também é importante ressaltar que a maioria das built-in functions (funções nativas) do Python, principalmente as que retornam mais de um valor, têm como retorno uma tupla. Ao final do treinamento passaremos por alguns exemplos disso e, inclusive, criaremos nossas próprias funções que retornam tuplas.
+
+No notebook Python do curso (que pode ser baixado no exercício anterior), deixamos alguns exemplos de como é possível criar uma tupla:
+
+- Utilizando um par de parênteses: ( )
+- Utilizando uma vírgula à direita: x,
+- Utilizando um par de parênteses com itens separados por vírgulas: ( x, y, z )
+- Utilizando: tuple() ou tuple(iterador)
+
+Começaremos pelo primeiro. Ao abrirmos e fecharmos parênteses em uma célula (()) e pressionarmos "Shift + Enter", teremos como retorno:
+
+    ()
+
+Ou seja, uma tupla vazia. Já se digitarmos uma sequência de números separados por vírgula, como 1, 2, 3, receberemos uma tupla populada com esses valores:
+
+    (1, 2, 3)
+
+Isso também pode ser feito com variáveis. Nesse exemplo, criaremos as variáveis nome e valor recebendo 'Passat' e 153000, respectivamente. Em seguida, passaremos ambas as variáveis dentro de um par de parênteses.
+
+nome = 'Passat'
+valor = 153000
+(nome, valor)
+
+Teremos criado uma tupla com as informações desejadas:
+
+    ('Passat', 153000)
+
+Note que as tuplas, assim como as listas, podem armazenar tipos variados de dados, como strings, dados numéricos, listas ou mesmo outras tuplas. A última forma de criarmos tuplas é usando a função tuple(). Para testarmos, criaremos uma variável nomes_carros para qual atribuiremos a chamada dessa função, que por sua vez receberá como parâmetro uma lista com nomes de carros.
+
+nomes_carros = tuple(['Jetta Variant', 'Passat', 'Crossfox', 'DS5'])
+nomes_carros
+
+Ao executarmos, receberemos a tupla criada:
+
+    ('Jetta Variant', 'Passat', 'Crossfox', 'DS5')
+
+Por último, sabemos que a função type() nos permite verificar o tipo de um dado no Python. Faremos isso com a variável nomes_carros.
+
+type(nomes_carros)
+
+Logicamente, receberemos como resposta que o dado é do tipo tupla (tuple).
+
+    tuple
+
+No próximo vídeo aprenderemos a acessar as informações dentro de uma tupla.
+
+
+
+
+2-3 Formas de se criar uma tupla
+
+Tuplas são sequências imutáveis, que são utilizadas para armazenar coleções de itens.
+
+Dentre as alternativas abaixo, quais mostram formas de se criar uma tupla?
+
+Selecione 3 alternativas corretas
+
+  tupla( [ 1, 2, 3 ] )
+Alternativa errada! O nome tupla não é definido na linguagem Python. O correto seria tuple( [ 1, 2, 3 ] ).
+
+  ( 1, 2, 3 )
+Alternativa correta! Podemos criar uma tupla utilizando parênteses, com os seus itens separados por vírgulas.
+
+  tuple( [ 1, 2, 3 ] )
+Alternativa correta! O tipo tuple permite criar tuplas, utilizando como argumento algum tipo de iterador. Neste caso, foi utilizada uma lista do Python.
+
+  1, 2, 3
+Alternativa correta! Não é preciso utilizar os parênteses para se definir uma tupla, basta definir os elementos e separá-los por vírgulas.
+
+
+
+
+
+2-4 Seleções em tuplas *
+
+Transcrição
+
+No treinamento anterior aprendemos a fazer seleções em listas do Python e em arrays Numpy. Uma boa notícia é que o processo com tuplas é exatamente o mesmo, ou seja, se você fixou bem o conteúdo, não terá dificuldades nesse passo. Para nossos testes, inicializaremos novamente a variável nomes_carros, uma tupla com quatro nomes de veículos.
+
+nomes_carros = tuple(['Jetta Variant', 'Passat', 'Crossfox', 'DS5'])
+nomes_carros
+
+    ('Jetta Variant', 'Passat', 'Crossfox', 'DS5')
+
+Estamos trabalhando com uma sequência ordenada, da mesma forma que nas listas. Como a indexação se inicia no 0, sabemos que o primeiro item da tupla, "Jetta Variant", recebe esse índice. Por consequência, "Passat" recebe o índice 1; "Crossfox" o índice 2; "DS5" o índice 3; e assim por diante, caso tivéssemos uma tupla com mais itens.
+
+Para acessarmos uma posição da tupla, podemos passar o nome da variável, nesse caso nomes_carros, seguido de colchetes e a posição que desejamos verificar.
+
+nomes_carros[0]
+
+    'Jetta Variant'
+
+Podemos repetir esse processo com o segundo item.
+
+nomes_carros[1]
+
+    'Passat'
+
+Já aprendemos a acessar facilmente o último elemento de uma lista, e o procedimento é o mesmo para tuplas - ou seja, índices negativos começando pelo -1.
+
+nomes_carros[-1]
+
+    'DS5'
+
+Também aprendemos a fazer fatiamentos ("slices") nas listas, lembrando que o ponto de início indicado é incluído no fatiamento (inclusive), mas o ponto de parada não (exclusive). Isso também ocorre com as tuplas. Em nosso exemplo, queremos que a tupla resultante mostre apenas os carros intermediários, "Passat" e "Crossfox". Para isso passaremos, depois da variável, [1:3] - ou seja, colchetes contendo a posição inicial do nosso fatiamento, o caractere dois pontos (:) e a posição final não-inclusiva (também chamada de exclusiva).
+
+nomes_carros[1:3]
+
+No retorno teremos exatamente os valores esperados.
+
+    ('Passat', 'Crossfox')
+
+Como vimos anteriormente, se tivéssemos passado nomes_carros[1:2], receberíamos somente a posição 1.
+
+nomes_carros[1:2]
+
+    ('Passat')
+
+Em resumo, o primeiro item que passamos no fatiamento aparecerá na tupla resultante, mas o último não. Prosseguindo, é possível termos tuplas que contêm, em si, outras tuplas.
+
+nomes_carros = ('Jetta Variant', 'Passat', 'Crossfox', 'DS5', ('Fusca', 'Gol', 'C4'))
+nomes_carros
+
+    ('Jetta Variant', 'Passat', 'Crossfox', 'DS5', ('Fusca', 'Gol', 'C4'))
+
+Se quisermos acessar uma informação dentro da tupla interior, pegaremos o último item da exterior com [-1].
+
+nomes_carros[-1]
+
+    ('Fusca', 'Gol', 'C4')
+
+Queremos o segundo item dessa tupla. Para isso, passaremos um novo par de colchetes contendo a sua posição, ou seja, 1.
+
+nomes_carros[-1][1]
+
+Como retorno, teremos o valor esperado:
+
+    'Gol'
+
+No próximo vídeo faremos iterações com tuplas, varrendo informações de forma automática.
+
+
+
+
+2-5 Selecionando itens em tuplas
+
+Em nosso primeiro treinamento de Python para Data Science, nós aprendemos como fazer seleções de itens em listas e em arrays Numpy. O procedimento para seleções em tuplas funciona da mesma forma. Considere a seguinte tupla:
+
+carros = (
+    (
+        'Jetta Variant',
+        'Motor 4.0 Turbo',
+        2003,
+        False,
+        ('Rodas de liga', 'Travas elétricas', 'Piloto automático')
+    ),
+    (
+        'Passat',
+        'Motor Diesel',
+        1991,
+        True,
+        ('Central multimídia', 'Teto panorâmico', 'Freios ABS')
+    )
+)
+
+Considere também os seguintes códigos de seleção:
+
+1) carros[0][3]
+
+2) carros[-1][-1][-1]
+
+3) carros[0][-1][:2]
+
+Assinale a alternativa que mostra o resultado obtido com os códigos de seleção acima.
+
+Selecione uma alternativa
+
+1) False
+2) 'Freios ABS'
+3) ('Rodas de liga', 'Travas elétricas')
+  Alternativa correta! É a mesma técnica que aprendemos com listas e arrays Numpy.
+
+1) False
+2) 'Freios ABS'
+3) 'Piloto automático'
+  Alternativa errada! Note que, no item 3, temos um fatiamento no último par de colchetes.
+
+1) 2003
+2) 'Freios ABS'
+3) 'Piloto automático'
+  Alternativa errada! Dois pontos devem ser observados: a indexação tem origem no zero e no último par de colchetes do item 3, temos um fatiamento.
+
+1) 2003
+2) 'Freios ABS'
+3) ('Rodas de liga', 'Travas elétricas')
+  Alternativa errada! Lembre-se que a indexação é iniciada no 0 (zero).
+
+
+
+
+2-6 Iterando em tuplas *
+
+Transcrição
+
+Já aprendemos a fazer iterações em listas, e as iterações em tuplas não são diferentes. Nesse vídeo trabalharemos um recurso que nos auxiliará quando estivermos usando funções, principalmente as que retornam mais de um valor, e também com alguns tipos de iterações.
+
+Começaremos inicializando a tupla nomes_carros.
+
+nomes_carros = ('Jetta Variant', 'Passat', 'Crossfox', 'DS5')
+nomes_carros
+
+Para iterarmos por seus itens, usaremos a instrução for, atribuiremos um nome válido a cada item encontrado (por exemplo item) e continuaremos com in seguido do nome da tupla (nomes_carros). Não podemos nos esquecer de finalizar a linha com dois pontos (:) e da indentação na linha seguinte. Nesse exemplo simplesmente imprimiremos cada um dos item encontrados usando a função print().
+
+for item in nomes_carros:
+  print(item)
+
+    Jetta Variant Passat Crossfox DS5
+
+Conseguimos varrer cada um dos itens e imprimi-los. O próximo conceito que iremos abordar é o desempacotamento de tuplas, o recurso que citamos anteriormente. Basicamente, é possível atribuirmos cada valor dentro de uma tupla a uma variável específico. Nesse primeiro exemplo, usaremos as variáveis carro_1, carro_2, carro_3 e carro_4 separadas por vírgula. Essa sequência receberá o conteúdo de nomes_carros.
+
+carro_1, carro_2, carro_3, carro_4 = nomes_carros
+
+Como temos quatro carros e quatro variáveis, cada uma delas receberá um dos valores na tupla, na ordem que definimos. Podemos verificar isso mostrando o conteúdo das nossas variáveis:
+
+carro_1
+
+    'Jetta Variant'
+
+carro_2
+
+    'Passat'
+
+carro_3
+
+    'Crossfox'
+
+carro_4
+
+    'DS5'
+
+Esse é o desempacotamento de tuplas, algo útil, por exemplo, quando uma função nos retorna mais de um valor dentro de uma tupla e queremos utilizá-los de formas variadas no nosso programa, separando-os em variáveis diferentes.
+
+Prosseguiremos para outra situação interessante: imagine que uma função nos retorna quatro valores, mas queremos utilizar somente dois deles. Nesse caso, queremos somente o segundo e o último valor da tupla nomes_carros (a primeira posição e a terceira). Para isso, podemos usar o recurso do underscore (ou "underline"), da mesma forma que vimos nas listas.
+
+_, A, _, B = nomes_carros
+
+Aqui usamos as variáveis A e B para recebermos os valores das posições desejadas, e os underscores para delimitar as posições que não desejamos salvar em variáveis específicas, ignorando os seus valores.
+
+A
+
+    'Passat'
+
+B
+
+    'DS5'
+
+Em outra situação, queremos somente um valor da nossa tupla, mas nenhum outro. Imagine se tivéssemos uma tupla com 60 itens e só gostaríamos de salvar o segundo. Com a sintaxe que acabamos de aprender, seria bastante trabalhoso recuperarmos esse valor.
+
+Para simplificar, podemos ignorar o primeiro valor com underscore, receber o segundo com uma variável (por exemplo C) e finalizar com asterisco seguido de underscore (*_). Dessa forma ignoraremos todos os valores posteriores.
+
+_, C, *_ = nomes_carros
+
+Com isso, recuperaremos somente o valor da primeira posição (ou o segundo item).
+
+C
+
+    Passat
+
+Existe também uma nova função nativa do Python, chamada zip(), que cria um iterador com tuplas (de maneira semelhante à função range()), e vamos entender como ela funciona. Para nossos testes, inicializaremos duas listas: carros, contendo os modelos de alguns veículos; e valores, com seus preços.
+
+carros = ['Jetta Variant', 'Passat', 'Crossfox', 'DS5']
+carros
+
+valores = [88078.64, 106161.94, 72832.16, 124549.07]
+valores
+
+Chamaremos então a função zip() passando como parâmetros nossas duas listas.
+
+zip(carros, valores)
+
+Teremos um retorno que significa simplesmente que nosso iterador foi criado com sucesso.
+
+    zip at 0x7fb74e671dc8
+
+Com o auxílio da função list(), podemos transformar esse iterador em uma lista de modo a visualizá-lo.
+
+list(zip(carros, valores))
+
+    [('Jetta Variant', 88078.64), ('Passat', 106161.94), ('Crossfox', 72832.16), ('DS5', 124549.07)]
+
+Repare que, interessantemente, nosso iterador pegou o primeiro elemento de cada lista e criou uma tupla; depois o segundo elemento de cada lista, criando uma segunda tupla; e assim sucessivamente até o final da lista. Isso nos traz a possibilidade de, por exemplo, iterar o nome e o valor de um veículo ao mesmo tempo.
+
+Faremos isso usando a instrução for que irá iterar pelo resultado de zip(carros, valores). Por enquanto apenas imprimiremos as tuplas resultantes.
+
+for item in zip(carros, valores):
+  print(item)
+
+    ('Jetta Variant', 88078.64) ('Passat', 106161.94) ('Crossfox', 72832.16) ('DS5', 124549.07)
+
+Acabamos de aprender a fazer o desempacotamento de tuplas, e podemos fazer isso também com o for. Aqui, ao invés de item, passaremos dois nomes separados por vírgula: carro e valor. Também passaremos a imprimir ambas as variáveis (lembrando que o print() aceita mais de um argumento).
+
+for carro, valor in zip(carros, valores):
+  print(carro, valor)
+
+Com isso, conseguiremos separar cada carro e valor individualmente em todas as tuplas desse iterador.
+
+    Jetta Variant 88078.64 Passat 106161.94 Crossfox 72832.16 DS5 124549.07
+
+Isso nos traz diversas outras possibilidades de análise. Por exemplo, podemos incluir uma condicional if que imprime somente os carros cujo valor é maior do que 100000.
+
+for carro, valor in zip(carros, valores):
+  if(valor > 100000):
+    print(carro)
+
+Como resultado, teremos apenas os dois carros que atendem a essa condição.
+
+    Passat DS5
+
+No próximo capítulo avançaremos para um novo conteúdo: os dicionários, outro tipo de mapeamento utilizado no Python!
+
+
+
+
+2-7 Laços for com tuplas
+
+O procedimento de iteração em tuplas é o mesmo que aprendemos com listas, no treinamento anterior. Utilizamos a tupla como iterador de um laço for simples, ou alinhado, e conseguimos acesso a cada item individualmente.
+
+Para responder esta questão, considere a mesma tupla da atividade anterior:
+
+carros = (
+    (
+        'Jetta Variant',
+        'Motor 4.0 Turbo',
+        2003,
+        False,
+        ('Rodas de liga', 'Travas elétricas', 'Piloto automático')
+    ),
+    (
+        'Passat',
+        'Motor Diesel',
+        1991,
+        True,
+        ('Central multimídia', 'Teto panorâmico', 'Freios ABS')
+    )
+)
+
+Observe que se trata de uma tupla (1º nível) com duas tuplas, que representam um conjunto de dados de dois veículos (2º nível), e que uma destas informações (acessórios) vêm também dentro de uma tupla (3º nível). O que precisamos é iterar na tupla carros e imprimir todos os acessórios que aparecem. O resultado desejado é o seguinte:
+
+Rodas de liga
+Travas elétricas
+Piloto automático
+Central multimídia
+Teto panorâmico
+Freios ABS
+
+Assinale a alternativa com o código que produz este resultado.
+
+Selecione uma alternativa
+
+  for tupla in carros:
+    print(tupla)
+Alternativa errada! O laço acima imprime as duas tuplas de informações dos veículos. O que precisamos é somente imprimir os acessórios de cada veículo.
+
+  for tupla in carros:
+    print(tupla[-1])
+Alternativa errada! Com o código acima, obtemos todos os acessórios da tupla carros, mas o resultado permanece dentro de tuplas. Não é isso que o problema pede. Talvez seja necessário utilizar um loop aninhado.
+
+  for tupla in carros:
+    for item in tupla:
+      print(item)
+Alternativa errada! O código acima imprime todos os itens das duas tuplas de informações dos veículos. Precisamos imprimir somente os acessórios.
+
+  for tupla in carros:
+    for item in tupla[-1]:
+      print(item)
+Alternativa correta! Note que no segundo laço for, utilizamos as listas de acessórios como iterador.
+
+
+
+
+2-8 A função zip()
+
+Duas ferramentas bastante utilizadas quando iteramos com tuplas são o desempacotamento de tuplas e a built-in function zip().
+
+Com o desempacotamento de tuplas, é possível fazer declarações conjuntas de variáveis e utilizar cada variável individualmente. Por exemplo:
+
+nome, valor = ('Passat', 100000.0)
+
+A função zip() permite gerar um iterador de tuplas, como no exemplo abaixo:
+
+In [1]:
+
+nomes = ['Passat', 'Crossfox']
+valores = [100000.0, 75000.0]
+list(zip(nomes, valores))
+
+Out [1]:
+
+[('Passat', 100000.0), ('Crossfox', 75000.0)]
+
+Considerando as duas listas abaixo:
+
+nomes = ['Passat', 'Crossfox', 'DS5', 'C4', 'Jetta']
+kms = [15000, 12000, 32000, 8000, 50000]
+
+E utilizando o ferramental apresentado acima, marque a alternativa com o código que possibilita a impressão dos nomes dos veículos com quilometragem abaixo de 20.000 km.
+
+Selecione uma alternativa
+
+Alternativa A:
+
+  for km, nome in zip(nomes, kms):
+    if(km < 20000):
+      print(nome)
+
+  Alternativa errada! Observe que neste código, a ordem em que os dados estão sendo passados para a função zip() está invertida. Para funcionar, devemos inverter também o desempacotamento de tuplas:
+
+  for nome, km in zip(nomes, kms):
+    if(km < 20000):
+      print(nome)
+
+Alternativa B:
+
+  for item in zip(nomes, kms):
+    if(kms < 20000):
+      print(nomes)
+
+  Alternativa errada! Veja que neste caso, as variáveis kms e nomes continuam sendo listas e não valores únicos.
+
+Alternativa C:
+
+  for nome, km in zip(nomes, kms):
+    if(km < 20000):
+      print(nome)
+
+  Alternativa correta! Observe que na construção do laço for (1ª linha do código), utilizamos o desempacotamento de tuplas e a função zip(). O output deste código deve ser o seguinte:
+
+  Passat
+  Crossfox
+  C4
+
+Alternativa D:
+
+  for nome, km in [nomes, kms]:
+    if(km < 20000):
+      print(nome)
+
+  Alternativa errada! O iterador que está sendo passado para o laço for ([ nomes, kms ]) não é um iterador de tuplas. Para que esse código tenha um resultado correto, devemos utilizar a função zip().
+
+
+
+2-9 Consolidando o seu conhecimento
+
+
+Chegou a hora de você seguir todos os passos realizados por mim durante esta aula. Caso já tenha feito, excelente. Se ainda não, é importante que você execute o que foi visto nos vídeos para poder continuar com a próxima aula.
+
+
+Opinião do instrutor
+
+Continue com os seus estudos, e se houver dúvidas, não hesite em recorrer ao nosso fórum!
+
+
+
+
+
+2-10 O que aprendemos?
+
+
+Nesta aula, aprendemos:
+
+  O que são as tuplas;
+  
+  Formas de criação de uma tupla;
+  
+  Técnicas de seleção de itens e fatiamento com tuplas do Python;
+  
+  Formas de iterar por uma tupla;
+  
+  A técnica conhecida como desempacotamento de tuplas;
+  
+  A utilizar a built-in function zip().
+

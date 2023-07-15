@@ -1,0 +1,154 @@
+https://cursos.alura.com.br/formacao-data-science-oci-oracle-one
+
+note: devweb - alumni-geral
+
+
+# Python, Data Science no OCI e Oracle Analytics - ONE
+
+
+## Aprenda Python com foco em Data Science e conheça as ferramentas Oracle para trabalhar com Análise de Dados!
+
+
+Python para Data Science
+
+Com o avanço da tecnologia, é cada vez maior a quantidade de dados disponíveis para análises avançadas. Desta forma, a área de Ciência de Dados floresceu auxiliando empresas e profissionais em suas tomadas de decisões. A principal ferramenta utilizada por cientistas de dados é a linguagem Python, com sua simplicidade e crescimento em diversos segmentos, além de Data Science, Python se consolidou como uma das principais linguagem de programação da atualidade.
+
+
+- Por que aprender Python?
+
+A linguagem Python está entre as 5 linguagens mais populares no mundo, segundo pesquisa da RedMonk. Essa popularidade se dá principalmente por sua característica de exigir poucas linhas de código e permitir uma leitura fácil, além da hegemonia da linguagem, quando o assunto é ciência de dados. No mundo particular dos dados Python se destaca em diversas frentes, na análise de dados, na computação gráfica, nos processos de Big Data, na computação científica, nas técnicas tradicionais de Machine Learning e principalmente em Deep Learning.
+
+
+- O que você vai aprender na formação?
+
+Nesta formação você vai aprender a versão 3 dessa linguagem na prática e focada em Data Science. Se você tem pouco conhecimento em programação, não há problema, preparamos cursos para você dar os primeiros passos na linguagem até criar seu primeiro modelos de Machine Learning, você vai conhecer as principais bibliotecas na área como Pandas, Matplotlib, Seaborn e SKLearn e ter contato com diversas frentes da ciência de dados.
+
+Você também terá oportunidade de conhecer e se aprofundar nos Serviços para Análise de Dados na Nuvem Oracle e com o software Oracle Analytics, ferramentas Oracle para trabalhar com dados.
+
+Se você quer trabalhar com Data Science, esta formação será seu primeiro passo para te preparar para tópicos mais avançados da profissão.
+
+E aí, vamos juntos?
+
+Esta formação faz parte do programa ONE, parceria de Alura + Oracle
+
+
+Com quem você irá aprender:
+
+  Guilherme Silveira
+  https://cursos.alura.com.br/user/guilherme-silveira
+  
+  Daniel Siqueira
+  https://cursos.alura.com.br/user/danpsiqueira
+  
+  Pedro Henrique Campagna Moura da Silva
+  https://cursos.alura.com.br/user/pedrohcmds
+  
+  Igor Nascimento Alves
+  https://cursos.alura.com.br/user/igor-nascimento-flipe
+  
+  Rodrigo Fernando Dias
+  https://cursos.alura.com.br/user/rnandodias
+  
+  Guilherme Lima
+  https://cursos.alura.com.br/user/guilhermelima
+  
+  Afonso Augusto Rios
+  https://cursos.alura.com.br/user/afonsosr2
+  
+
+Passo a passo
+
+1 Conhecendo a linguagem e principais bibliotecas
+
+Dê os seus primeiros passos na linguagem, aprendendo desde lógica até suas primeiras análises com dados reais. Veja como Python pode ser útil no dia a dia de um profissional da área!
+
+Nesta primeira parte, você irá conhecer Python e seus principais aspectos, focado em ciência de dados. Você irá do primeiro “Hello World” até seu primeiro contato com Pandas, Matplotlib e Seaborn! Vamos começar?
+
+Curso Python para Data Science
+https://cursos.alura.com.br/course/python-intro
+
+Video O que é Data Science? #HipstersPontoTube - YouTube
+https://www.youtube.com/watch?v=5b9Z8toVaAU
+
+Curso Python para Data Science: Funções, Pacotes e Pandas
+https://cursos.alura.com.br/course/python-funcoes-pacotes-pandas
+
+
+2 Avançando em Pandas
+
+Aprofunde seu conhecimento, agora você irá focar em solucionar problemas com Pandas, uma das mais utilizadas bibliotecas da área, pois fornece ferramentas de análise de dados de alta performance e fáceis de usar.
+
+Curso Python Pandas: tratando e analisando dados
+https://cursos.alura.com.br/course/introducao-python-pandas
+
+Podcast Data Science e Política na Operação Serenata de Amor – Hipsters #62
+https://cursos.alura.com.br/extra/hipsterstech/data-science-e-politica-na-operacao-serenata-de-amor-hipsters-62-a524
+
+
+3 Visualização de dados
+
+Agora que você conheceu melhor o Pandas e como ele pode facilitar o processo de análise e transformação de dados, chegou a hora de deixar seus gráficos mais elegantes e simples de analisar. Seu foco será trabalhar melhor suas visualizações e para isso vamos estudar de modo mais abrangente a visualização de dados e bibliotecas como Seaborn.
+
+Curso Data Visualization: explorando com Seaborn
+https://cursos.alura.com.br/course/data-visualization-com-seaborn
+
+Alura+ Data Visualization: tipos de visualização
+https://cursos.alura.com.br/extra/alura-mais/data-visualization-tipos-de-visualizacao-c1409
+
+
+4
+Machine Learning
+
+Chegou a hora de ter seu primeiro contato com o famoso Machine Learning, você irá conhecer diversos problemas do dia a dia que podem ser solucionados com a aprendizagem de máquina.
+
+Aprenda como você pode ajudar a sua empresa ou seu negócio a crescer: por exemplo, classificando clientes em categorias que logo irão servir como indicador de produtos que podem ser oferecidos. Analise resultados e compare diferentes algoritmos de uma maneira válida e use o poder do machine learning para otimizar seus processos.
+
+Descubra como melhorar a eficiência dos nossos algoritmos com o GridSearchCV e como validar o modelo escolhido com técnicas de cross validation.
+
+Esse passo está repleto de desafios, então prepare seus equipamento porque o mergulho será cheio de desafios!
+
+Podcast Machine Learning – Hipsters #89
+https://cursos.alura.com.br/extra/hipsterstech/machine-learning-hipsters-89-a496
+
+Artigo Conhecendo os tipos de aprendizado de máquina | Alura
+https://www.alura.com.br/artigos/conhecendo-os-tipos-de-aprendizado-de-maquina
+
+Curso Machine Learning: classificação com SKLearn
+https://cursos.alura.com.br/course/machine-learning-introducao-a-classificacao-com-sklearn
+
+Artigo Desmistificando termos em Machine Learning | Alura
+https://www.alura.com.br/artigos/desmistificando-termos-machine-learning
+
+Artigo Classificando textos com Python | Alura
+https://www.alura.com.br/artigos/classificando-textos-com-python
+
+Podcast Big Data e Data Science: pra quê afinal? – Hipsters #73
+https://cursos.alura.com.br/extra/hipsterstech/big-data-e-data-science-pra-que-afinal-hipsters-73-a513
+
+Curso Machine Learning parte 1: otimização de modelos através de hiperparâmetros
+https://cursos.alura.com.br/course/machine-learning-otimizacao-de-modelos-atraves-de-hiperparametros
+
+
+
+5 Ciência de Dados na Nuvem Oracle e Oracle Analytics
+
+Agora é momento de você conhecer e se aprofundar nos Serviços para Análise de Dados na Nuvem Oracle, através da biblioteca ADS (Advanced Data Science) você desenvolverá projetos de análise de dados no ambiente Oracle.
+
+Também você aprenderá a utilizar o Oracle Analytics, uma ferramenta para desktop que permite realizar análises e construir dashboards e gráficos para uma correta visualização de dados.
+
+Curso Oracle ADS: análise de dados na nuvem
+https://cursos.alura.com.br/course/oracle-ads-analise-dados-nuvem
+
+Curso Machine Learning com Oracle ADS: produtividade na criação de modelos
+https://cursos.alura.com.br/course/machine-learning-oracle-ads-criacao-modelos
+
+Curso Oracle Analytics: visualizando dados
+https://cursos.alura.com.br/course/oracle-analytics-visualizando-dados
+
+Video O que é a Oracle Digital Assistant? - YouTube
+https://www.youtube.com/watch?v=GpVDEjbpFpw
+
+Video Python para Data Science com Rafael Dias e Isabella Alvarez | Pílulas ONE - YouTube
+https://www.youtube.com/watch?v=Osulpg2Y-lA
+
+

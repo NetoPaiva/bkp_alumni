@@ -1,0 +1,165 @@
+https://cursos.alura.com.br/course/introducao-python-pandas
+
+note: oestudo - t5_Alumni-3_Python_2-1
+
+Data Science | Cursos de Data Science
+
+
+Curso de Python Pandas: tratando e analisando dados
+
+
+Formação com esse curso: Data Science
+https://cursos.alura.com.br/formacao-data-science
+
+
+Instrutor: Rodrigo Fernando Dias
+
+  Linkedin
+  https://www.linkedin.com/in/rodrigo-fernando-dias-118181120/
+
+  Rodrigo é estatístico e especialista em Big Data com forte interesse em geoprocessamento, desenvolvimento web, web scraping, machine learning e Data Science. É instrutor e tech lead da escola de dados da Alura.
+
+
+Mais sobre o curso
+
+Veja as perguntas frequentes
+https://cursos.alura.com.br/course/introducao-python-pandas/faq
+
+Fórum do curso
+https://cursos.alura.com.br/forum/curso-introducao-python-pandas/todos/0
+
+
+
+Faça esse curso de Data Science e:
+
+  Importar dados e exportar dataframes
+  Limpando e tratar dados faltantes
+  Remover outliers e criar novas variáveis
+  Selecionar e gerar frequencias dos dados
+  Usar Python Pandas, Matplotlib, Jupyter e Anaconda
+
+
+
+Aulas
+
+1 - Conhecendo Jupyter | 0 / 6 | 19min
+
+  1-1 Introdução
+  1-2 Instalação Anaconda
+  1-3 Ambiente Virtual
+  1-4 Sobre ambiente virtual
+  1-5 Consolidando o seu conhecimento
+  1-6 O que aprendemos?
+
+
+2 - Importando dados | 0 / 10 | 29min
+
+  2-1 Download dos arquivos
+  2-2 Importando a base
+  2-3 Conhecendo o Jupyter
+  2-4 Conhecendo a base de dados
+  2-5 Informações de um DataFrame
+  2-6 Para saber mais
+  2-7 (Extra) Importando outras fontes
+  2-8 Funções para obtenção de dados
+  2-9 Consolidando o seu conhecimento
+  2-10 O que aprendemos?
+
+
+3 - Series e Index | 0 / 11 | 26min
+
+  3-1 Projeto da aula anterior
+  3-2 Removendo valores repetidos
+  3-3 Utilizando métodos no pandas
+  3-4 Redefinindo o index
+  3-5 Índice das linhas de um DataFrame
+  3-6 (Extra) Criando dataframes
+  3-7 (Extra) Concatenando dataframes
+  3-8 Conhecendo melhor as estruturas de dados
+  3-9 Formas de criação de um DataFrame
+  3-10 Consolidando o seu conhecimento
+  3-11 O que aprendemos?
+
+
+4 - Filtrando dados | 0 / 10 | 19min
+
+  4-1 Projeto da aula anterior
+  4-2 Imóveis residenciais
+  4-3 Determinando seleções
+  4-4 Exportando base de dados
+  4-5 Revisando o que aprendemos
+  4-6 (Extra) Organizando dataframes
+  4-7 O funcionamento do sort_index
+  4-8 Mais sobre classificações
+  4-9 Consolidando o seu conhecimento
+  4-10 O que aprendemos?
+
+
+5 - Frequências de imóveis | 0 / 11 | 21min
+
+  5-1 Projeto da aula anterior
+  5-2 Seleções e frequências
+  5-3 DataFrame para os próximos exercícios
+  5-4 Seleção (nível 1)
+  5-5 Seleção (nível 2)
+  5-6 Seleção (nível 3)
+  5-7 (Extra) Formas de seleções
+  5-8 Seleção (nível 4)
+  5-9 Seleção (nível 5)
+  5-10 Consolidando o seu conhecimento
+  5-11 O que aprendemos?
+
+
+6 - Tratando de dados faltantes | 0 / 9 | 22min
+
+  6-1 Projeto da aula anterior
+  6-2 Tirando valores nulos
+  6-3 Conhecimentos básicos sobre missing values
+  6-4 Tratamento condicional
+  6-5 Revisando o processo
+  6-6 (Extra) Métodos de interpolação
+  6-7 Preenchendo dados faltantes
+  6-8 Consolidando o seu conhecimento
+  6-9 O que aprendemos?
+
+
+7 - Novas variáveis | 0 / 9 | 18min
+
+  7-1 Projeto da aula anterior
+  7-2 Criando novas variáveis
+  7-3 Identifique o erro na criação de variáveis
+  7-4 Excluindo variáveis
+  7-5 Métodos de exclusão de variáveis
+  7-6 (Extra) Contadores
+  7-7 Testando moedas
+  7-8 Consolidando o seu conhecimento
+  7-9 O que aprendemos?
+
+
+8 - Estatísticas descritivas | 0 / 9 | 28min
+
+  8-1 Projeto da aula anterior
+  8-2 Criando agrupamentos
+  8-3 Sumarizando informações
+  8-4 Estatísticas descritivas
+  8-5 Selecionando as estatísticas descritivas
+  8-6 (Extra) Criando faixas de valor
+  8-7 Conhecendo a função cut()
+  8-8 Consolidando o seu conhecimento
+  8-9 O que aprendemos?
+
+
+9 - Removendo Outliers | 0 / 11 | 36min
+
+  9-1 Projeto da aula anterior
+  9-2 Identificando e Removendo Outliers
+  9-3 Estatísticas do box plot
+  9-4 Identificando e Removendo Outliers por Grupo
+  9-5 Sobre o box plot
+  9-6 (Extra) Mais sobre gráficos
+  9-7 A biblioteca matplotlib
+  9-8 Consolidando o seu conhecimento
+  9-9 Projeto do curso
+  9-10 Conclusão
+  9-11 O que aprendemos?
+

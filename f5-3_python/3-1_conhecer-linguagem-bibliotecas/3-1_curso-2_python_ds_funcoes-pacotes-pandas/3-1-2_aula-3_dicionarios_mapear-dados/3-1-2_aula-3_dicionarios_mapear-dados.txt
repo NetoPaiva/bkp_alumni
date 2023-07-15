@@ -1,0 +1,633 @@
+https://cursos.alura.com.br/course/python-funcoes-pacotes-pandas/section/9319/tasks
+
+note: estudo - t5_aAlimni-3_Python_1-2
+
+
+Curso de Python para Data Science: Funções, Pacotes e Pandas
+
+Instrutor Rodrigo Fernando Dias
+
+
+Aula 3 - Mapeando dados: Dicionários | 0 / 12 | 23min
+
+  3-1 Projeto da aula anterior
+  3-2 Criando dicionários *
+  3-3 Lista e mapeamentos
+  3-4 Forma simples de criação de dicionários
+  3-5 Operações com dicionários *
+  3-6 Operações básicas com dicionários
+  3-7 Métodos de dicionários *
+  3-8 Conhecendo os métodos de dicionários
+  3-9 Iterando em dicionários *
+  3-10 Iterando em dicionários de dicionários
+  3-11 Consolidando o seu conhecimento
+  3-12 O que aprendemos?
+
+
+3-1 Projeto da aula anterior
+
+Caso queira, você pode baixar aqui o projeto do curso no ponto em que paramos na aula anterior.
+
+https://caelum-online-public.s3.amazonaws.com/1480-pythondatascience/02/python-data-science-parte-2-aula-2-completa.zip
+
+
+
+
+3-2 Criando dicionários *
+
+
+Transcrição
+
+[00:00] Vamos começar uma seção nova, conhecer uma nova estrutura de dados que o Python utiliza e que eu sei que você vai utilizar muito nos seus projetos, que são os dicionários.
+
+[00:16] Vimos que as listas são coleções sequenciais ordenadas que utilizam índices para acessar seus valores. Os dicionários são coleções um pouco diferentes que representam um tipo de mapeamento, e mapeamento são coleções de associações entre dados e valores, em que o primeiro elemento é conhecido como chave e o segundo valor.
+
+[01:07] Temos uma lista chamada carros com os dados ordenados. Só que fica mais fácil acessar essas informações em um lugar só. Se eu tivesse uma estruturada que já fizesse o mapeamento entre carro e valor, seria mais simples. É isso que o dicionário proporciona para nós.
+
+[03:23] Vou chamar nosso dicionário de dados, e vou abrir e fechar chaves. Dentro vou colocar os valores. Assim não preciso acessar por índices. Acesso pela chave.
+
+[04:37] Outra forma mais simples é com o zip. Vou usar dict, que é uma building function, e passo o zip para ele. É outra forma de criar dicionários.
+
+[06:00] No próximo vídeo começamos a falar de operações com dicionário.
+
+
+
+
+
+3-3 Lista e mapeamentos
+
+
+ESTA QUESTÃO ESTÁ COM RESPOSTA ERRADA
+link da postagem no Fórum:
+https://cursos.alura.com.br/forum/topico-editado-311502
+
+
+
+Sobre listas e mapeamentos, avalie as afirmativas abaixo:
+
+1) Listas são estruturas de dados que representam um tipo básico de sequência.
+
+2) Mapeamentos são coleções sequenciais ordenadas, que utilizam índices para acessar os valores
+
+Qual(is) afirmativa(s) está(ão) correta(s)?
+
+Nenhuma das afirmativas está correta
+  Alternativa errada! Avalie melhor as afirmativas acima. Em nosso notebook, temos um pequeno material de consulta com referência para a documentação da linguagem.
+
+Todas as afirmativas estão corretas.
+  Alternativa correta! Estas são as definições corretas para lista e mapeamentos. Como exemplo de mapeamento podemos citar os dicionários que possuem o par chave e valor em sua construção
+
+Apenas a afirmativa 1 está correta.
+  Alternativa errada! Avalie melhor as afirmativas acima, verificando melhor cada um dos conceitos apresentados em aula.
+
+Apenas a afirmativa 2 está correta.
+  Alternativa errada! Avalie melhor as afirmativas acima, verificando melhor cada um dos conceitos apresentados em aula.
+
+
+
+
+3-4 Forma simples de criação de dicionários
+
+
+Vimos em nossa última aula algumas maneiras de se criar um dicionário.
+
+Tendo como base as duas listas abaixo:
+
+nomes = ['Passat', 'Crossfox', 'DS5', 'C4', 'Jetta']
+kms = [15000, 12000, 32000, 8000, 50000]
+
+Marque a alternativa que mostra uma das formas de se criar dicionários a partir de listas.
+
+Selecione uma alternativa
+
+Alternativa A:
+
+  list(zip(nomes, kms))
+
+  Alternativa errada! Utilizando este código, teremos uma lista de tuplas e não um dicionário:
+
+  [('Passat', 15000),
+   ('Crossfox', 12000),
+   ('DS5', 32000),
+   ('C4', 8000),
+   ('Jetta', 50000)]
+
+Alternativa B:
+
+  zip(nomes, kms)
+
+  Alternativa errada! Este código gera apenas um iterador de tuplas.
+
+Alternativa C:
+
+  {nomes: kms}
+
+  Alternativa errada! Este procedimento gera um erro durante a execução do código. Não é possível realizar este tipo de operação em Python.
+
+Alternativa D:
+
+  dict(zip(nomes, kms))
+
+  Alternativa correta! Com a função zip(), conseguimos criar dicionários de forma simples e com pouco código.
+
+
+
+3-5 Operações com dicionários *
+
+Transcrição
+
+Agora que conhecemos e criamos dicionários, é importante aprendermos a acessar informações dentro deles, incluir e deletar itens (já que eles são mutáveis), dentre outras operações. Esse é justamente o foco desse vídeo. Para facilitar nossos estudos, inicializaremos a variável dados com o dicionário que criamos no vídeo anterior.
+
+dados = {'Jetta Variant': 88078.64, 'Passat': 106161.94, 'Crossfox': 72832.16}
+dados
+
+    {'Crossfox': 72832.16, 'Jetta Variant': 88078.64, 'Passat': 106161.94}
+
+Aqui as chaves são os nomes veículos, e os valores são os seus respectivos preços. Quando queremos acessar uma informação dentro desse dicionário, como o preço do "Passat", utilizamos a sintaxe dict[key], ou seja, o nome do dicionário seguido da chave entre colchetes.
+
+dados['Passat']
+
+    106161.94
+
+Existe um teste importante para verificarmos se determinada chave está presente naquele dicionário. Claro, nesse caso é possível visualizarmos diretamente que a chave "Passat" está presente, mas podem existir situações em que trabalharemos com uma quantidade muito maior de dados. Nesses casos, a sintaxe key in dict (a chave desejada seguida da instrução in e o nome do nosso dicionário) servirá de auxílio.
+
+`Passat' in dados
+
+    True
+
+Se buscarmos por uma chave que não está presente no dicionário, o retorno será False.
+
+'Fusca' in dados
+
+    False
+
+Da mesma forma, se utilizarmos a sintaxe key not in dict, conseguiremos verificar se determinada chave não está no dicionário.
+
+'Fusca' not in dados
+
+    True
+
+A função len(), ao receber um dicionário como parâmetro, consegue nos devolver o tamanho (número de itens) de um dicionário.
+
+len(dados)
+
+    3
+
+Nesse caso, o retorno da função é 3, e não 6, pois ela não conta o número de itens no conjunto dados, mas sim o número de pares chave-valor.
+
+Existem algumas formas de incluirmos itens em dicionários, e abordaremos algumas delas ao longo do curso. A primeira que conheceremos é a sintaxe dict[key] = value, ou seja, passamos o nome do dicionário seguido de colchetes contendo o nome da nova chave e atribuímos a ela um valor.
+
+dados['DS5'] = 124549.07
+dados
+
+Feito isso, nosso dicionário passará a conter quatro pares chave-valor.
+
+    {'Crossfox': 72832.16, 'DS5': 124549.07, 'Jetta Variant': 88078.64, 'Passat': 106161.94}
+
+Podemos eliminar uma entrada no dicionário usando a instrução del, na sintaxe del dict[key] - ou seja, simplesmente passamos a instrução del seguida do nome do dicionário e, entre colchetes, a chave a ser deletada.
+
+del dados['Passat']
+dados
+
+A entrada deletada deixará de ser exibida no nosso conjunto.
+
+    {'Crossfox': 72832.16, 'DS5': 124549.07, 'Jetta Variant': 88078.64}
+
+No próximo vídeo conversaremos sobre métodos, inclusive um para adição de valores em um dicionário. 
+
+
+
+
+3-6 Operações básicas com dicionários
+
+Utilize o dicionário dados para responder a questão:
+
+  dados = {
+      'Passat': {
+          'ano': 2012,
+          'km': 50000,
+          'valor': 75000,
+          'acessorios': ['Airbag', 'ABS']
+      }, 
+      'Crossfox': {
+          'ano': 2015,
+          'km': 35000,
+          'valor': 25000
+      }
+  }
+
+Note que dados tem dois itens, onde a chave (key) é o nome do veículo e o valor (value) é um dicionário com informações sobre este veículo (ano, quilometragem, valor e acessórios). Nossa tarefa nesta atividade é aprender como acessar as informações de um dicionário dentro de outro dicionário.
+
+Queremos o seguinte:
+
+1) Testar se a chave acessorios existe no dicionário de informações do carro Crossfox (Resposta: False)
+
+2) Testar se a chave acessorios existe no dicionário de informações do carro Passat (Resposta: True)
+
+3) Obter o valor do carro Crossfox (Resposta: 25000)
+
+4) Acessar o último acessório do carro Passat (Resposta: 'ABS')
+
+Assinale a alternativa que mostra os códigos corretos para retornar e acessar as informações acima (Dica: utilize um notebook para verificar os códigos desta atividade):
+
+Selecione uma alternativa
+
+Alternativa A:
+
+  1) 'acessorios' in dados['Crossfox']
+
+  2) 'acessorios' in dados['Passat']
+
+  3) dados['Crossfox']['valor']
+
+  4) dados['Passat']['acessorios']
+
+  Alternativa errada! O último item está incorreto. Note que queremos acessar o último acessório do carro Passat (ABS). Com o este código, acessamos todos os acessórios (lista). Falta apenas fazer uma seleção dentro de uma lista:
+
+  dados['Passat']['acessorios'][-1]
+
+Alternativa B
+
+  1) 'acessorios' in 'Crossfox'
+
+  2) 'acessorios' in 'Passat'
+
+  3) dados['Crossfox']['valor']
+
+  4) dados['Passat']['acessorios'][-1]
+
+  Alternativa errada! Os itens 1 e 2 estão incorretos. Precisamos indicar um dicionário para realizar o teste:
+
+  'acessorios' in dados['Crossfox']
+
+Alternativa C:
+
+  1) 'acessorios' in dados['Crossfox']
+
+  2) 'acessorios' in dados['Passat']
+
+  3) dados['valor']
+
+  4) dados['acessorios'][-1]
+
+  Alternativa errada! Os itens 3 e 4 não estão corretos. O dicionário dados não possui as chaves valor e acessorios:
+
+  dados['Crossfox']['valor']
+
+Alternativa D:
+
+  1) 'acessorios' in dados['Crossfox']
+
+  2) 'acessorios' in dados['Passat']
+
+  3) dados['Crossfox']['valor']
+
+  4) dados['Passat']['acessorios'][-1]
+
+  Alternativa correta! Note que é bem simples acessar informações de um dicionário dentro de outro dicionário. Primeiro, precisamos acessar a chave que possui como valor um dicionário, e depois é só acessar a chave que desejamos. Isso pode ser feito para vários níveis:
+
+  In [1]:
+
+  dados['Passat']
+
+  Out [1]:
+
+  {'ano': 2012, 'km': 50000, 'valor': 75000, 'acessorios': ['Airbag', 'ABS']}
+
+  In [2]:
+
+  dados['Passat']['acessorios']
+
+  Out [2]:
+
+  ['Airbag', 'ABS']
+
+  In [3]:
+
+  dados['Passat']['acessorios'][-1]
+
+  Out [3]:
+
+  'ABS'
+
+
+
+
+3-7 Métodos de dicionários *
+
+Transcrição
+
+Nós aprendemos a realizar algumas operações simples com dicionários, e agora conheceremos alguns métodos que podem nos auxiliar bastante no nosso trabalho com essas estruturas de dados: update(), copy(), pop() e clear().
+
+O método update() permite a realização de atualizações em um dicionário, como inclusões ou alterações nos dados inclusos nele. Terminamos o vídeo anterior eliminando a chave "Passat" do dicionário dados, resultando no seguinte conjunto:
+
+dados
+
+    {'Crossfox': 72832.16, 'DS5': 124549.07, 'Jetta Variant': 88078.64}
+
+Queremos que a entrada "Passat" retorne ao nosso dicionário, e faremos isso usando o update(), que receberá como parâmetro a informação {'Passat': 106161.94}.
+
+dados.update({'Passat': 106161.94})
+dados
+
+Ao visualizarmos, a entrada terá sido incluída novamente.
+
+    {'Crossfox': 72832.16, 'DS5': 124549.07, 'Jetta Variant': 88078.64, 'Passat': 106161.94}
+
+O método update() também nos permite passar mais de uma informação ou atualizarmos um dado que já está presente no dicionário. Por exemplo, iremos, ao mesmo tempo, alterar o valor de "Passat" para 106161.95 (uma mudança de um centavo) e incluir um novo veículo, "Fusca", com o valor 150000.
+
+dados.update({'Passat': 106161.95, 'Fusca': 150000})
+dados
+
+    {'Crossfox': 72832.16, 'DS5': 124549.07, 'Fusca': 150000, 'Jetta Variant': 88078.64, 'Passat': 106161.95}
+
+Note que a informação foi atualizada com sucesso e o novo carro também foi incluído. O método copy() segue a mesma explicação de quando trabalhamos com listas. Se criarmos uma variável dadosCopy e atribuirmos a ela o dicionário dados, não criaremos efetivamente uma cópia, mas sim um novo rótulo para o mesmo espaço na memória.
+
+dadosCopy = dados
+
+De modo a realmente gerarmos uma cópia na qual conseguiremos fazer alterações sem afetar o dicionário original, podemos utilizar o copy().
+
+dadosCopy = dados.copy()
+dadosCopy
+
+    {'Crossfox': 72832.16, 'DS5': 124549.07, 'Fusca': 150000, 'Jetta Variant': 88078.64, 'Passat': 106161.95}
+
+Para testarmos, eliminaremos a entrada "Fusca" de dadosCopy.
+
+del dadosCopy['Fusca']
+dadosCopy
+
+    {'Crossfox': 72832.16, 'DS5': 124549.07, 'Jetta Variant': 88078.64, 'Passat': 106161.95}
+
+Comparando-o com o dicionário dados, perceberemos que o original continou intacto.
+
+dados
+
+    {'Crossfox': 72832.16, 'DS5': 124549.07, 'Fusca': 150000, 'Jetta Variant': 88078.64, 'Passat': 106161.95}
+
+O método pop() elimina uma chave do dicionário e retorna o seu valor. Existem algumas especificações resumidas no texto deixado em nosso notebook, mas trabalharemos cada ponto com calma.
+
+    Se a chave for encontrada no dicionário, o item é removido e seu valor é retornado. Caso contrário, o valor especificado como default é retornado. Se o valor default não for fornecido e a chave não for encontrada no dicionário um erro será gerado.
+
+Começaremos nossos testes usando o dicionário dadosCopy, a partir do qual chamaremos o método pop() passando como parâmetro a entrada "Passat".
+
+dadosCopy.pop('Passat')
+
+    106161.95
+
+Repare que obtivemos como retorno o valor atribuído à chave que foi eliminada. Se visualizarmos o dicionário, perceberemos que o item foi removido com sucesso.
+
+dadosCopy
+
+    {'Crossfox': 72832.16, 'DS5': 124549.07, 'Jetta Variant': 88078.64}
+
+Se executarmos dadosCopy.pop('Passat') novamente, receberemos um erro, afinal a chave não será encontrada no dicionário.
+
+dadosCopy.pop('Passat')
+
+    KeyError Traceback (most recent call last) ipython-input-24-b12fd0f355e0 in module() ----> 1 dadosCopy.pop('Passat') KeyError: 'Passat'
+
+O método copy() pode receber um parâmetro "default" que permite uma espécie de tratamento desse erro. Ou seja, se a chave não for encontrada no dicionário, nosso retorno será o valor passado como default. Em nosso exemplo, além de "Passat", passaremos a mensagem "Chave não encontrada".
+
+dadosCopy.pop('Passat', 'Chave não encontrada')
+
+Ao executarmos, como a chave não mais existe no dicionário, receberemos justamente a mensagem que preparamos.
+
+    Chave não encontrada
+
+Já se passarmos um veículo que ainda consta no dicionário, é o seu valor que nos será devolvido.
+
+dadosCopy.pop('DS5', 'Chave não encontrada')
+
+    124549.07
+
+Como resultado, teremos um dicionário com somente duas informações.
+
+dadosCopy
+
+    {'Crossfox': 72832.16, 'Jetta Variant': 88078.64}
+
+Para finalizar, conheceremos o método clear(), que simplesmente limpa todo o dicionário. Faremos nosso teste com o dicionário dadosCopy.
+
+dadosCopy.clear()
+dadosCopy
+
+Como retorno, teremos um dicionário vazio.
+
+    {}
+
+Existem outros métodos que podem ser encontrados na documentação a respeito de dicionários em Python, e que poderão lhe auxiliar em diversas situações durante seu trabalho como cientista de dados. No próximo vídeo conversaremos sobre iteração em dicionários. 
+
+https://docs.python.org/3.6/library/stdtypes.html#typesmapping
+
+
+
+3-8 Conhecendo os métodos de dicionários
+
+Considere o dicionário abaixo:
+
+dados = {'Jetta': 88000, 'Crossfox': 72000, 'DS5': 124000}
+
+Julgue as alternativas abaixo e marque as corretas.
+
+Selecione 2 alternativas 
+
+
+Alternativa A:
+
+    O método pop() remove um item do dicionário. Quando nenhum argumento é passado, o método remove o último elemento do dicionário e retorna o elemento removido.
+
+  Alternativa errada! O método pop() de um dicionário não funciona como em uma lista. É necessário fornecer pelo menos um argumento para o método (chave). Se a chave for encontrada no dicionário, o item é removido e o seu valor é retornado.
+
+Alternativa B:
+
+    O método clear() remove todos os valores de um dicionário, mantendo somente as chaves
+
+  Alternativa errada! O método clear() remove todos os itens de um dicionário (chaves e valores) e retorna um dicionário vazio ({}).
+
+Alternativa C:
+
+    O método update() atualiza o dicionário e pode ser utilizado de duas formas:
+
+    In [1]:
+
+    dados.update({'Passat': 85000, 'Fusca': 150000})
+
+    Out [1]:
+
+    {'Jetta': 88000, 'Crossfox': 72000, 'DS5': 124000, 'Passat': 85000, 'Fusca': 150000}
+
+    In [2]:
+
+    dados.update(Passat = 95000, Fusca = 160000)
+
+    Out [2]:
+
+    {'Jetta': 88000, 'Crossfox': 72000, 'DS5': 124000, 'Passat': 95000, 'Fusca': 160000}
+
+  Alternativa correta! Note que se a chave tiver um nome não válido para variáveis do Python (por exemplo: 'Jetta Variant'), o segundo formato não pode ser utilizado.
+
+Alternativa D:
+
+    O método copy() cria uma cópia do dicionário
+
+  Alternativa correta! Funciona da mesma forma que aprendemos no curso anterior, quando falamos sobre as listas do Python.
+
+
+
+
+
+3-9 Iterando em dicionários *
+
+Transcrição
+
+Agora abordaremos a iteração em dicionários, que não é muito diferente do nosso trabalho com listas ou tuplas. Para nossos testes nesse cenário, inicializaremos novamente a variável dados como um dicionário contendo alguns pares chave-valor.
+
+dados = {'Crossfox': 72832.16, 'DS5': 124549.07,  'Fusca': 150000,  'Jetta Variant': 88078.64,  'Passat': 106161.95}
+dados
+
+    {'Crossfox': 72832.16, 'DS5': 124549.07, 'Fusca': 150000, 'Jetta Variant': 88078.64, 'Passat': 106161.95}
+
+Temos disponível o método keys(), que simplesmente retorna todas as chaves contidas naquele dicionário.
+
+dados.keys()
+
+    dict_keys(['Crossfox', 'DS5', 'Fusca', 'Jetta Variant', 'Passat'])
+
+Podemos usar essa instrução dentro de um for(), como se fosse um iterador. Nesse caso, chamaremos cada elemento encontrado de key (ou seja, cada chave) e imprimiremos dados[key], o que nos retornará o valor daquela chave.
+
+for key in dados.keys():
+  print(dados[key])
+
+    72832.16 124549.07 150000 88078.64 106161.95
+
+O método values() funciona praticamente da mesma forma, mas nos retorna os valores contidos naquele dicionário.
+
+dados.values()
+
+    dict_values([72832.16, 124549.07, 150000, 88078.64, 106161.95])
+
+Se quiséssemos, poderíamos fazer uma iteração parecida com a anterior, utilizando somente os valores. Existe ainda outro método, items(), bem próximo do que aprendemos com o zip(), iterador que funcionava com as tuplas. Esse método nos retorna tuplas contendo as chaves e seus respectivos valores.
+
+dados.items()
+
+    dict_items([('Crossfox', 72832.16), ('DS5', 124549.07), ('Fusca', 150000), ('Jetta Variant', 88078.64), ('Passat', 106161.95)])
+
+Isso abre a possibilidade de, por exemplo, iterarmos por essas tuplas.
+
+for item in dados.items():
+    print(item)
+
+    ('Crossfox', 72832.16) ('DS5', 124549.07) ('Fusca', 150000) ('Jetta Variant', 88078.64) ('Passat', 106161.95)
+
+Na aula anterior aprendemos sobre o desempacotamento de tuplas, e também podemos fazer isso com os dados de um dicionário. Na instrução for, chamaremos os elementos encontrados de key e value e os imprimiremos.
+
+for key, value in dados.items():
+    print(key, value)
+
+    Crossfox 72832.16 DS5 124549.07 Fusca 150000 Jetta Variant 88078.64 Passat 106161.95
+
+Da mesma forma que na iteração em tuplas, podemos incluir uma condicional que imprime somente os veículos cujo valor é maior que 100000.
+
+for key, value in dados.items():
+  if (value > 100000):
+    print(key)
+
+    DS5 Fusca Passat
+
+Agora que conhecemos os dicionários, você tem diversas ferramentas para desenvolver seus projetos de data science. Na próxima seção conheceremos algumas funções nativas do Python e aprenderemos a criar nossas próprias funções. 
+
+
+
+
+3-10 Iterando em dicionários de dicionários
+
+Utilize o dicionário abaixo para responder esta atividade:
+
+dados = {
+    'Crossfox': {'valor': 72000, 'ano': 2005}, 
+    'DS5': {'valor': 125000, 'ano': 2015}, 
+    'Fusca': {'valor': 150000, 'ano': 1976}, 
+    'Jetta': {'valor': 88000, 'ano': 2010}, 
+    'Passat': {'valor': 106000, 'ano': 1998}
+}
+
+Selecione a alternativa que apresenta o código que imprime somente os nomes dos veículos com ano de fabricação maior ou igual a 2000.
+
+Selecione uma alternativa
+
+
+
+Alternativa A:
+
+    for item in dados.items():
+      if(item[1]['ano'] >= 2000):
+        print(item[0])
+
+  Alternativa correta! Veja que dados.items() retorna um iterador de tuplas, onde cada tupla tem como primeiro item a chave do dicionário e como segundo o respectivo valor:
+
+    In [1]:
+      for item in dados.items():
+        print(item)
+
+    Out [1]:
+      ('Crossfox', {'valor': 72000, 'ano': 2005})
+      ('DS5', {'valor': 125000, 'ano': 2015})
+      ('Fusca', {'valor': 150000, 'ano': 1976})
+      ('Jetta', {'valor': 88000, 'ano': 2010})
+      ('Passat', {'valor': 106000, 'ano': 1998})
+
+  Para acessar a chave do dicionário, basta utilizar item[0], e para acessar o valor, basta usar item[1]. Para acessar o ano dentro do dicionário, usamos item[1]['ano'].
+
+Alternativa B:
+
+    for item in dados.values():
+      if(item['ano'] >= 2000):
+        print(item)
+
+  Alternativa errada! Observe que, com este código, não imprimimos os nomes dos veículos. O output são os dicionários com informações de valor e ano de fabricação.
+
+Alternativa C:
+
+    for item in dados.items():
+      if(item[1]['ano'] >= 2000):
+        print(dados.keys())
+
+  Alternativa errada! Quase lá. Tente substituir dados.keys() por item[0].
+
+Alternativa D:
+
+    for item in dados.values():
+      if(item['ano'] >= 2000):
+        print(dados)
+
+  Alternativa errada! O problema pede a impressão dos nomes dos veículos. Com este código, todo o dicionário dados é impresso.
+
+
+
+
+
+3-11 Consolidando o seu conhecimento
+
+
+Chegou a hora de você seguir todos os passos realizados por mim durante esta aula. Caso já tenha feito, excelente. Se ainda não, é importante que você execute o que foi visto nos vídeos para poder continuar com a próxima aula.
+
+Opinião do instrutor
+
+Continue com os seus estudos, e se houver dúvidas, não hesite em recorrer ao nosso fórum!
+
+
+
+
+
+3-12 O que aprendemos?
+
+  - Estruturas de dados, que representam um tipo de mapeamento, conhecidas como dicionário, na linguagem Python;
+  
+  - Formas de criação de dicionários em Python;
+  
+  - Operações básicas com dicionários (pertinência, acesso, atribuição, etc);
+  
+  - A utilizar os métodos mais importantes de dicionários (update(), pop(), clear(), etc);
+  
+  - Técnicas de iteração por dicionários.

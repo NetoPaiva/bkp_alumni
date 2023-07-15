@@ -1,0 +1,1080 @@
+https://cursos.alura.com.br/course/python-funcoes-pacotes-pandas/section/9321/tasks
+
+note: estudo - t5_aAlimni-3_Python_1-2
+
+
+Curso de Python para Data Science: Funções, Pacotes e Pandas
+
+Instrutor Rodrigo Fernando Dias
+
+
+Aula 5 - A biblioteca dos cientistas: Pandas | 0 / 17 | 49min
+
+  5-1 Projeto da aula anterior
+  5-2 Estruturas de dados 8 *
+  5-3 O Pandas e suas estruturas de dados
+  5-4 Criando DataFrames
+  5-5 Seleções com DataFrames *
+  5-6 Fatiamentos com DataFrames
+  5-7 Utilizando .loc e .iloc para seleções
+  5-8 Queries com DataFrames *
+  5-9 Realizando consultas em um DataFrame
+  5-10 Iterando com DataFrames *
+  5-11 Para saber mais: Formas de iteração em um DataFrame
+  5-12 Tratamento de dados *
+  5-13 Identificando e tratando dados faltantes
+  5-14 Consolidando o seu conhecimento
+  5-15 Projeto do curso
+  5-16 O que aprendemos?
+  5-17 Conclusão *
+
+
+5-1 Projeto da aula anterior
+
+Caso queira, você pode baixar aqui o projeto do curso no ponto em que paramos na aula anterior.
+
+https://caelum-online-public.s3.amazonaws.com/1480-pythondatascience/04/python-data-science-parte-2-aula-4-completa.zip
+
+
+
+
+5-2 Estruturas de dados 8 *
+
+Transcrição
+
+Chegamos à última seção do nosso treinamento, na qual, como prometido, conversaremos sobre outra biblioteca muito importante para a ciência de dados: o Pandas. No notebook do curso deixamos um pequeno texto introdutório sobre essa ferramenta:
+
+    Pandas é uma ferramenta de manipulação de dados de alto nível, construída com base no pacote Numpy. O pacote pandas possui estruturas de dados bastante interessantes para manipulação de dados e por isso é muito utilizado por cientistas de dados.
+
+Dentre essas estruturas de dados, temos por exemplo as series, arrays unidimensionais rotulados capazes de armazenar qualquer tipo de dado. Os rótulos das linhas de uma series são conhecidos como index, e temos abaixo a forma básica de criação dessa estrutura:
+
+s = pd.Series(dados, index = index)
+
+Aqui estamos chamando a biblioteca Pandas por meio de seu apelido pd seguido de Series(), para o qual passamos os dados e um index (quando necessário). Esse argumento dados pode ser um dicionário, uma lista, um array Numpy ou uma constante.
+
+Também temos o Dataframe, uma estrutura de dados tabular bidimensional com rótulos nas linha e colunas. Assim como as series, os dataframes são capazes de armazenar qualquer tipo de dado.
+
+df = pd.DataFrame(dados, index = index, columns = columns)
+
+Para a criação de um dataframe, passamos para a chamada de pd.DataFrame(), além dos nossos dados, os rótulos das linhas (index) e das colunas (columns). Nossos dados, mais uma vez, podem ser um dicionário, uma lista, um array Numpy, uma series ou mesmo outro dataframe.
+
+    Documentação da versão 0.25.2 do Pandas
+    https://pandas.pydata.org/pandas-docs/version/0.25/
+
+Antes de começarmos a trabalhar com essas estruturas, assim como fizemos com o Numpy, precisamos importar a biblioteca Pandas, o que é feito com a instrução import pandas, que pode ser sucedida de as pd, definindo um apelido a ela. Como a maior parte da comunidade utiliza esse apelido, é bastante comum encontrar esse tipo de importação.
+
+import pandas as pd
+
+A primeira forma de criarmos uma series é a partir de uma lista. Para esse teste, inicializaremos a lista carros:
+
+carros = ['Jetta Variant', 'Passat', 'Crossfox']
+carros
+
+    ['Jetta Variant', 'Passat', 'Crossfox']
+
+Como visto anteriormente, chamaremos pd.Series() passando a nossa lista como argumento.
+
+pd.Series(carros)
+
+Como resultado, teremos a nossa series, com o índice de cada linha (0, 1 e 2) e os nomes dos carros. Note que o tipo desses valores é "object", que é como o Pandas trabalha com strings.
+
+    0 Jetta Variant 1 Passat 2 Crossfox dtype: object
+
+Prosseguiremos para a criação de um dataframe, algo que faremos a partir de uma lista de dicionários. Não chegamos a abordar essa construção, mas ficou evidente no curso anterior que as listas podem conter quaisquer tipos de dados, inclusive outras listas ou dicionários.
+
+Para nosso exemplo, inicializaremos a variável dados como uma lista na qual cada item é um dicionário contendo as informações de um veículo.
+
+dados = [
+    {'Nome': 'Jetta Variant', 'Motor': 'Motor 4.0 Turbo', 'Ano': 2003, 'Quilometragem': 44410.0, 'Zero_km': False, 'Valor': 88078.64},
+    {'Nome': 'Passat', 'Motor': 'Motor Diesel', 'Ano': 1991, 'Quilometragem': 5712.0, 'Zero_km': False, 'Valor': 106161.94},
+    {'Nome': 'Crossfox', 'Motor': 'Motor Diesel V8', 'Ano': 1990, 'Quilometragem': 37123.0, 'Zero_km': False, 'Valor': 72832.16}
+]
+
+Criaremos então uma variável dataset que receberá a chamada de pd.DataFrame() passando como parâmetro nossa lista dados. Note que em DataFrame() ambas as consoantes "D" e "F" devem ser maiúsculas, do contrário receberemos um erro.
+
+dataset = pd.DataFrame(dados)
+dataset
+
+Ao exibirmos o conteúdo de dataset, receberemos:
+	Nome	Motor	Ano	Quilometragem	Zero_km	Valor
+0	Jetta Variant	Motor 4.0 Turbo	2003	44410.0	False	88078.64
+1	Passat	Motor Diesel	1991	5712.0	False	106161.94
+2	Crossfox	Motor Diesel V8	1990	37123.0	False	72832.16
+
+Esse é o nosso dataframe. Note que não passamos os argumentos index ou columns; o index foi atribuído automaticamente com o padrão numérico, e as chaves de cada valor foram atribuídas aos rótulos das colunas.
+
+Se quisermos modificar a ordem das colunas desse dataframe, basta passarmos o seu nome (dataset) seguido da abertura de dois pares de colchetes ([[]]) dentro dos quais passaremos nossos rótulos na ordem desejada.
+
+dataset[['Nome', 'Motor', 'Ano', 'Quilometragem', 'Zero_km', 'Valor']]
+
+	Nome	Motor	Ano	Quilometragem	Zero_km	Valor
+0	Jetta Variant	Motor 4.0 Turbo	2003	44410.0	False	88078.64
+1	Passat	Motor Diesel	1991	5712.0	False	106161.94
+2	Crossfox	Motor Diesel V8	1990	37123.0	False	72832.16
+
+Existem outras formas de criarmos dataframes a partir de dicionários. Para esse exemplo, inicializaremos o dicionário dados abaixo:
+
+dados = {
+    'Nome': ['Jetta Variant', 'Passat', 'Crossfox'], 
+    'Motor': ['Motor 4.0 Turbo', 'Motor Diesel', 'Motor Diesel V8'],
+    'Ano': [2003, 1991, 1990],
+    'Quilometragem': [44410.0, 5712.0, 37123.0],
+    'Zero_km': [False, False, False],
+    'Valor': [88078.64, 106161.94, 72832.16]
+}
+
+Agora estamos trabalhando com um dicionário no qual as chaves são os rótulos dos dados e os valores são uma lista com todas as informações, como nomes, motores, anos e assim por diante, todos seguindo a mesma ordem. Executando novamente pd.DataFrame(dados), criaremos nosso novo dataset.
+
+dataset = pd.DataFrame(dados)
+
+	Nome	Motor	Ano	Quilometragem	Zero_km	Valor
+0	Jetta Variant	Motor 4.0 Turbo	2003	44410.0	False	88078.64
+1	Passat	Motor Diesel	1991	5712.0	False	106161.94
+2	Crossfox	Motor Diesel V8	1990	37123.0	False	72832.16
+
+No início do curso você deve ter feito o download do projeto inicial, incluindo o arquivo db.csv, que subiremos para o notebook usando a aba "Upload". Usaremos esse arquivo para criarmos um dataframe a partir de dados externos. Na realidade, essa é a forma mais comum de criar dataframes.
+
+link início do curso:
+https://cursos.alura.com.br/course/python-funcoes-pacotes-pandas/task/66364
+
+Feito o upload, usaremos a função pd.read_csv() para lermos o arquivo. Lembre-se que devemos passar como argumento, além do nome do arquivo (db.csv), um parâmetro sep que define o separador utilizado nesse conjunto - no nosso caso, ;.
+
+    Se você abrir o arquivo db.csv em um editor de texto, poderá verificar que os dados realmente estão separados por ponto e vírgula.
+
+dataset = pd.read_csv('db.csv', sep = ';')
+dataset
+
+	Nome	Motor	Ano	Quilometragem	Zero_km	Acessórios	Valor
+0	Jetta Variant	Motor 4.0 Turbo	2003	44410.0	False	['Rodas de liga', 'Travas elétricas', 'Piloto ...	88078.64
+1	Passat	Motor Diesel	1991	5712.0	False	['Central multimídia', 'Teto panorâmico', 'Fre...	106161.94
+2	Crossfox	Motor Diesel V8	1990	37123.0	False	['Piloto automático', 'Controle de estabilidad...	72832.16
+3	DS5	Motor 2.4 Turbo	2019	NaN	True	['Travas elétricas', '4 X 4', 'Vidros elétrico...	124549.07
+4	Aston Martin DB4	Motor 2.4 Turbo	2006	25757.0	False	['Rodas de liga', '4 X 4', 'Central multimídia...	92612.10
+...	...	...	...	...	...	...	...
+253	Phantom 2013	Motor V8	2014	27505.0	False	['Controle de estabilidade', 'Piloto automátic...	51759.58
+254	Cadillac Ciel concept	Motor V8	1991	29981.0	False	['Bancos de couro', 'Painel digital', 'Sensor ...	51667.06
+255	Classe GLK	Motor 5.0 V8 Bi-Turbo	2002	52637.0	False	['Rodas de liga', 'Controle de tração', 'Câmbi...	68934.03
+256	Aston Martin DB5	Motor Diesel	1996	7685.0	False	['Ar condicionado', '4 X 4', 'Câmbio automátic...	122110.90
+257	Macan	Motor Diesel V6	1992	50188.0	False	['Central multimídia', 'Teto panorâmico', 'Vid...	90381.47
+
+Ao importarmos um arquivo com a função pd.read_csv(), também podemos passar um parâmetro index_col = 0, definindo a coluna que desejamos assumir como índice do dataframe.
+
+dataset = pd.read_csv('db.csv', sep = ';', index_col = 0)
+dataset
+
+Note que, ao invés do índice numérico, passaremos a assumir a variável Nome como índice.
+Nome	Motor	Ano	Quilometragem	Zero_km	Acessórios	Valor
+Jetta Variant	Motor 4.0 Turbo	2003	44410.0	False	['Rodas de liga', 'Travas elétricas', 'Piloto ...	88078.64
+Passat	Motor Diesel	1991	5712.0	False	['Central multimídia', 'Teto panorâmico', 'Fre...	106161.94
+Crossfox	Motor Diesel V8	1990	37123.0	False	['Piloto automático', 'Controle de estabilidad...	72832.16
+DS5	Motor 2.4 Turbo	2019	NaN	True	['Travas elétricas', '4 X 4', 'Vidros elétrico...	124549.07
+Aston Martin DB4	Motor 2.4 Turbo	2006	25757.0	False	['Rodas de liga', '4 X 4', 'Central multimídia...	92612.10
+...	...	...	...	...	...	...
+Phantom 2013	Motor V8	2014	27505.0	False	['Controle de estabilidade', 'Piloto automátic...	51759.58
+Cadillac Ciel concept	Motor V8	1991	29981.0	False	['Bancos de couro', 'Painel digital', 'Sensor ...	51667.06
+Classe GLK	Motor 5.0 V8 Bi-Turbo	2002	52637.0	False	['Rodas de liga', 'Controle de tração', 'Câmbi...	68934.03
+Aston Martin DB5	Motor Diesel	1996	7685.0	False	['Ar condicionado', '4 X 4', 'Câmbio automátic...	122110.90
+Macan	Motor Diesel V6	1992	50188.0	False	['Central multimídia', 'Teto panorâmico', 'Vid...	90381.47
+
+Podemos inclusive fazer acessos a partir desse índice, que é um rótulo no formato de texto, e aprenderemos a fazer isso nos próximos vídeos. O índice numérico continua existindo, mas está "embutido" e deixa de ser exibido.
+
+Conhecemos então algumas estruturas de dados muito importantes do Pandas, e que servem de contêiner para outras bibliotecas de data science, como Scikit-learn e Statsmodels. No próximo vídeo começaremos a fazer seleções em um dataframe.
+
+
+
+
+5-3 O Pandas e suas estruturas de dados
+
+Sobre o Pandas e suas estruturas de dados, avalie as afirmativas abaixo:
+
+  1) Pandas é uma ferramenta de manipulação de dados de alto nível, construída com base no pacote Numpy
+
+  2) Series são arrays unidimensionais rotulados, capazes de armazenar somente um tipo de dado
+
+  3) DataFrame é uma estrutura de dados tabular bidimensional com rótulos nas linhas e colunas
+
+Quais afirmativas estão corretas?
+
+Alternativa A:
+
+    As alternativas 1 e 2 estão corretas
+
+  Alternativa errada! Em nosso notebook, temos um pequeno material de estudo que pode ajudar a solução deste problema.
+
+Alternativa B:
+
+    As alternativas 1 e 3 estão corretas
+
+  Alternativa correta! Series e DataFrames podem armazenar qualquer tipo de dado.
+
+Alternativa C:
+
+    Todas as alternativas estão corretas
+
+  Alternativa errada! Avalie melhor a afirmativa 2. Utilize o nosso notebook para consulta e estudo.
+
+Alternativa D:
+
+    As alternativas 2 e 3 estão corretas
+
+  Alternativa errada! Ao contrário dos arrays Numpy, Series e DataFrames do pandas podem armazenar qualquer tipo de dados em sua estrutura. Podemos ter a seguinte situação:
+
+  In [1]:
+    dados = pd.Series(['a', 2, True])
+
+  In [2]:
+    type(dados[0])
+
+  Out [2]:
+    str
+
+  In [3]:
+    type(dados[2])
+
+  Out [3]:
+    ` bool
+
+
+
+
+5-4 Criando DataFrames
+
+Vimos no último vídeo que é possível criar DataFrames e Series a partir de várias fontes (arquivos externos, listas, dicionários, etc).
+
+Na aula que falamos sobre funções, desenvolvemos em nossos exercícios uma função que recebia um dicionário com um conjunto de informações sobre veículos, e calculava a quilometragem média anual de cada veículo. Esta função retornava o conteúdo do dicionário de input da função, incluindo as informações sobre a quilometragem média:
+
+In [1]:
+
+dados = {
+    'Crossfox': {'km': 35000, 'ano': 2005}, 
+    'DS5': {'km': 17000, 'ano': 2015}, 
+    'Fusca': {'km': 130000, 'ano': 1979}, 
+    'Jetta': {'km': 56000, 'ano': 2011}, 
+    'Passat': {'km': 62000, 'ano': 1999}
+}
+
+In [2]:
+
+def km_media(dataset, ano_atual):
+    result = {}
+    for item in dataset.items():
+        media = item[1]['km'] / (ano_atual - item[1]['ano'])
+        item[1].update({ 'km_media': media })
+        result.update({ item[0]: item[1] })
+
+    return result
+
+In [3]:
+
+km_media(dados, 2019)
+
+Out [3]:
+
+{'Crossfox': {'km': 35000, 'ano': 2005, 'km_media': 2500.0},
+ 'DS5': {'km': 17000, 'ano': 2015, 'km_media': 4250.0},
+ 'Fusca': {'km': 130000, 'ano': 1979, 'km_media': 3250.0},
+ 'Jetta': {'km': 56000, 'ano': 2011, 'km_media': 7000.0},
+ 'Passat': {'km': 62000, 'ano': 1999, 'km_media': 3100.0}}
+
+Assinale a alternativa que mostra a forma correta de se criar um DataFrame com o resultado obtido pela função acima. O DataFrame resultante deve ter a seguinte forma:
+
+Out [1]:
+	km	ano	km_media
+Crossfox	35000.0	2005.0	2500.0
+DS5	17000.0	2015.0	4250.0
+Fusca	130000.0	1979.0	3250.0
+Jetta	56000.0	2011.0	7000.0
+Passat	62000.0	1999.0	3100.0
+
+Dica: Para resolver esta questão, será necessário relembrar de um recurso que aprendemos no curso anterior, quando falamos de arrays Numpy. Este recurso também pode ser aplicado a DataFrames do pandas:
+
+    ndarray.T: Retorna o array transposto, isto é, converte linhas em colunas e vice versa.
+
+Alternativa A:
+
+    import pandas as pd
+    carros = pd.DataFrame(km_media(dados, 2019))
+
+  Alternativa errada! Perfeito, só falta utilizar a dica do enunciado para obter a resposta correta.
+
+Alternativa B:
+
+    import pandas as pd
+    carros = pd.DataFrame(km_media(dados, 2019).T)
+
+  Alternativa errada! Dicionários não possuem o atributo T. Este atributo é do DataFrame.
+
+Alternativa C:
+
+  import pandas as pd
+  carros = pd.Series(km_media(dados, 2019)).T
+
+  Alternativa errada! O que o problema pede como resultado é um DataFrame e não uma Series.
+
+Alternativa D:
+
+    import pandas as pd
+    carros = pd.DataFrame(km_media(dados, 2019)).T
+
+  Alternativa correta! A propriedade T é uma forma de acessar o método transpose() do DataFrame.
+
+    import pandas as pd
+
+    carros = pd.DataFrame(km_media(dados, 2019)).T
+
+
+
+
+
+5-5 Seleções com DataFrames *
+
+Transcrição
+
+Agora que temos um dataframe, queremos aprender a acessar informações dentro dele. Durante esse vídeo e os próximos, continuaremos a usar o dataset que importamos anteriormente, portanto é recomendado mantê-lo na memória (ou recarregá-lo caso seja necessário).
+
+Começaremos pela função head(), que mostra os cinco primeiros registros do nosso conjunto de dados.
+
+dataset.head()
+
+Nome	Motor	Ano	Quilometragem	Zero_km	Acessórios	Valor
+Jetta Variant	Motor 4.0 Turbo	2003	44410.0	False	['Rodas de liga', 'Travas elétricas', 'Piloto ...	88078.64
+Passat	Motor Diesel	1991	5712.0	False	['Central multimídia', 'Teto panorâmico', 'Fre...	106161.94
+Crossfox	Motor Diesel V8	1990	37123.0	False	['Piloto automático', 'Controle de estabilidad...	72832.16
+DS5	Motor 2.4 Turbo	2019	NaN	True	['Travas elétricas', '4 X 4', 'Vidros elétrico...	124549.07
+Aston Martin DB4	Motor 2.4 Turbo	2006	25757.0	False	['Rodas de liga', '4 X 4', 'Central multimídia...	92612.10
+
+Se quisermos selecionar somente a coluna "Valor", por exemplo, bastará passarmos o seu rótulo entre colchetes.
+
+dataset['Valor']
+
+    Nome Jetta Variant 88078.64 Passat 106161.94 Crossfox 72832.16 DS5 124549.07 Aston Martin DB4 92612.10 ...Phantom 2013 51759.58 Cadillac Ciel concept 51667.06 Classe GLK 68934.03 Aston Martin DB5 122110.90 Macan 90381.47 Name: Valor, Length: 258, dtype: float64
+
+Note que também recebemos os nomes dos veículos. Isso acontece pois dataset['Valor'] nos retorna, além da coluna desejada, os índices, e anteriormente definimos que o rótulo "Nome" deveria ser usado como índice. Também deve-se prestar atenção ao fato de que esse dado é uma series do Pandas, algo que podemos conferir com a função type().
+
+type(dataset['Valor'])
+
+    pandas.core.series.Series
+
+Ou seja, um dataframe não deixa de ser um conjunto de series. Se quisermos, também é possível selecionar uma única coluna e obter como retorno um dataframe. Para isso, ao invés de passarmos um único par de colchetes, passaremos dois.
+
+dataset[['Valor']]
+
+Nome	Valor
+Jetta Variant	88078.64
+Passat	106161.94
+Crossfox	72832.16
+DS5	124549.07
+Aston Martin DB4	92612.10
+...	...
+Phantom 2013	51759.58
+Cadillac Ciel concept	51667.06
+Classe GLK	68934.03
+Aston Martin DB5	122110.90
+Macan	90381.47
+
+A seleção de linhas mais simples, que já conhecemos das listas, tuplas e arrays Numpy, funciona basicamente da mesma forma.
+
+    Observação: A indexação tem origem no zero e nos fatiamentos (slices) a linha com índice i é incluída e a linha com índice j não é incluída no resultado. Em nosso exemplo, pegaremos as três primeiras linhas ([0:3]) do nosso dataset.
+
+dataset[0:3]
+
+Nome	Motor	Ano	Quilometragem	Zero_km	Acessórios	Valor
+Jetta Variant	Motor 4.0 Turbo	2003	44410.0	False	['Rodas de liga', 'Travas elétricas', 'Piloto ...	88078.64
+Passat	Motor Diesel	1991	5712.0	False	['Central multimídia', 'Teto panorâmico', 'Fre...	106161.94
+Crossfox	Motor Diesel V8	1990	37123.0	False	['Piloto automático', 'Controle de estabilidad...	72832.16
+
+Note que, como afirmado na observação, o primeiro índice é incluído e o último não. Existem outras formas mais elegantes de fazermos seleções, conhecidas como .loc e .iloc.
+
+O .loc seleciona um grupo de linahs e colunas segundo os rótulos ou uma matriz booleana. Comentaremos sobre esse último aspecto futuramente, quando estivermos trabalhando com queries em dataframes. Para selecionarmos um rótulo, simplesmente o passaremos entre colchetes. Nesse exemplo, selecionaremos o "Passat".
+
+dataset.loc['Passat']
+
+Como retorno teremos uma series com as informações deste veículo (ou seja, aquela linha).
+
+    Motor Motor Diesel Ano 1991 Quilometragem 5712 Zero_km False Acessórios ['Central multimídia', 'Teto panorâmico', 'Fre... Valor 106162 Name: Passat, dtype: object
+
+Se quisermos mais de uma informação, precisaremos passá-las dentro de dois pares de colchetes. Usaremos como exemplo os veículos "Passat" e "DS5".
+
+dataset.loc[['Passat', 'DS5']]
+
+Como retorno teremos um dataframe com as linhas que selecionamos a partir dos seus rótulos.
+Nome	Motor	Ano	Quilometragem	Zero_km	Acessórios	Valor
+Passat	Motor Diesel	1991	5712.0	False	['Central multimídia', 'Teto panorâmico', 'Fre...	106161.94
+DS5	Motor 2.4 Turbo	2019	NaN	True	['Travas elétricas', '4 X 4', 'Vidros elétrico...	124549.07
+
+O .loc também nos permite selecionar quais colunas desejamos exibir. Para isso, depois das informações das linhas, adicionaremos uma vírgula e um novo par de colchetes, dessa vez com as informações "Motor" e "Valor" representando as colunas a serem exibidas.
+
+dataset.loc[['Passat', 'DS5'], ['Motor', 'Valor']]
+
+Nome	Motor	Valor
+Passat	Motor Diesel	106161.94
+DS5	Motor 2.4 Turbo	124549.07
+
+Já se passarmos apenas : como primeiro parâmetro, receberemos todas as linhas do conjunto e somente as colunas selecionadas.
+
+dataset.loc[:, ['Motor', 'Valor']]
+
+Nome	Motor	Valor
+Jetta Variant	Motor 4.0 Turbo	88078.64
+Passat	Motor Diesel	106161.94
+Crossfox	Motor Diesel V8	72832.16
+DS5	Motor 2.4 Turbo	124549.07
+Aston Martin DB4	Motor 2.4 Turbo	92612.10
+...	...	...
+Phantom 2013	Motor V8	51759.58
+Cadillac Ciel concept	Motor V8	51667.06
+Classe GLK	Motor 5.0 V8 Bi-Turbo	68934.03
+Aston Martin DB5	Motor Diesel	122110.90
+Macan	Motor Diesel V6	90381.47
+
+O iloc também nos permite fazer seleções, mas se utiliza dos índices numéricos - ou seja, na posição das informações. No primeiro exemplo, passaremos como parâmetro apenas 1.
+
+dataset.iloc[1]
+
+    Motor Motor Diesel Ano 1991 Quilometragem 5712 Zero_km False Acessórios ['Central multimídia', 'Teto panorâmico', 'Fre... Valor 106162 Name: Passat, dtype: object
+
+Note que nos foram devolvidas as informações do carro de índice 1, que é o "Passat". Utilizando dois pares de colchetes ao invés de um, receberemos essas informações no formato de um dataframe.
+
+dataset.iloc[[1]]
+
+Nome	Motor	Ano	Quilometragem	Zero_km	Acessórios	Valor
+Passat	Motor Diesel	1991	5712.0	False	['Central multimídia', 'Teto panorâmico', 'Fre...	106161.94
+
+Quando queremos informações de múltiplas linhas em um dataset, utilizaremos somente um par de colchetes, dentro dos quais passaremos o índice inicial e o final (lembrando que o inicial é inclusivo e o final não).
+
+dataset.iloc[1:4]
+
+Nome	Motor	Ano	Quilometragem	Zero_km	Acessórios	Valor
+Passat	Motor Diesel	1991	5712.0	False	['Central multimídia', 'Teto panorâmico', 'Fre...	106161.94
+Crossfox	Motor Diesel V8	1990	37123.0	False	['Piloto automático', 'Controle de estabilidad...	72832.16
+DS5	Motor 2.4 Turbo	2019	NaN	True	['Travas elétricas', '4 X 4', 'Vidros elétrico...	124549.07
+
+Para obtermos colunas específicas, passaremos, após uma vírgula, um novo par de colchetes contendo os índices das colunas que desejamos acessar. Não é necessário passá-los na mesma ordem do dataset original, algo que exemplificaremos na seleção abaixo, feita com as colunas 0, 5 e 2 ("Motor", "Valor" e "Quilometragem", respectivamente).
+
+dataset.iloc[1:4, [0, 5, 2]]
+
+Com isso receberemos as informações na ordem que especificamos.
+Nome	Motor	Valor	Quilometragem
+Passat	Motor Diesel	106161.94	5712.0
+Crossfox	Motor Diesel V8	72832.16	37123.0
+DS5	Motor 2.4 Turbo	124549.07	NaN
+
+Da mesma forma, é possível selecionar linhas específicas que não estejam em sequência, bastando passarmos seus índices dentro de um par de colchetes.
+
+dataset.iloc[[1, 42, 22], [0, 5, 2]]
+
+Nome	Motor	Valor	Quilometragem
+Passat	Motor Diesel	106161.94	5712.0
+Optima	Motor 1.8 16v	86641.34	NaN
+Lamborghini Obvious	Motor Diesel V6	133529.84	98079.0
+
+Se quisermos exibir todas as linhas, usaremos os dois pontos (:).
+
+dataset.iloc[:, [0, 5, 2]]
+
+Nome	Motor	Valor	Quilometragem
+Jetta Variant	Motor 4.0 Turbo	88078.64	44410.0
+Passat	Motor Diesel	106161.94	5712.0
+Crossfox	Motor Diesel V8	72832.16	37123.0
+DS5	Motor 2.4 Turbo	124549.07	NaN
+Aston Martin DB4	Motor 2.4 Turbo	92612.10	25757.0
+...	...	...	...
+Phantom 2013	Motor V8	51759.58	27505.0
+Cadillac Ciel concept	Motor V8	51667.06	29981.0
+Classe GLK	Motor 5.0 V8 Bi-Turbo	68934.03	52637.0
+Aston Martin DB5	Motor Diesel	122110.90	7685.0
+Macan	Motor Diesel V6	90381.47	50188.0
+
+O processo se repete caso queiramos exibir todas as colunas. Com isso, aprendemos o básico sobre as seleções em dataframes do Pandas. No próximo vídeo conheceremos as queries.
+
+
+
+
+5-6 Fatiamentos com DataFrames
+
+Considere o seguinte código:
+
+import pandas as pd
+
+dados = {
+    'Nome': ['Jetta', 'Passat', 'Crossfox', 'DS5', 'Fusca'], 
+    'Motor': ['Motor 4.0 Turbo', 'Motor Diesel', 'Motor Diesel V8', 'Motor 2.0', 'Motor 1.6'],
+    'Ano': [2019, 2003, 1991, 2019, 1990],
+    'Quilometragem': [0.0, 5712.0, 37123.0, 0.0, 120000.0],
+    'Zero_km': [True, False, False, True, False],
+    'Valor': [88000.0, 106000.0, 72000.0, 89000.0, 32000.0]
+}
+
+dataset = pd.DataFrame(dados)
+
+Assinale a alternativa que contenha o código que seleciona somente as informações de Nome, Ano, Quilometragem e Valor dos carros Passat e Crossfox.
+
+Alternativa A:
+
+    dataset[['Nome', 'Ano', 'Quilometragem', 'Valor']][1:2]
+
+  Alternativa errada! A indexação em um DataFrame tem origem no zero. E nos fatiamentos ([ i : j ]), a linha com índice i é incluída e a linha com índice j não é incluída no resultado.
+
+Alternativa B:
+
+    dataset['Nome', 'Ano', 'Quilometragem', 'Valor'][1:3]
+
+  Alternativa errada! Quando precisamos selecionar mais de uma coluna de um DataFrame, devemos passar colchetes duplos, da seguinte forma:
+
+    dataset[['Nome', 'Ano', 'Quilometragem', 'Valor']]
+
+Alternativa C:
+
+    dataset[['Nome', 'Ano', 'Quilometragem', 'Valor']][1:3]
+
+  Alternativa correta! Note que a ordem que definimos as seleções é indiferente:
+
+    dataset[1:3][['Nome', 'Ano', 'Quilometragem', 'Valor']]
+
+  O código acima retorna o mesmo resultado.
+
+Alternativa D:
+
+    dataset[['Nome', 'Ano', 'Quilometragem', 'Valor']][2:4]
+
+  Alternativa errada! Lembre-se que a indexação começa no zero. O código acima seleciona as informações dos carros Crossfox e DS5.
+
+
+
+
+
+5-7 Utilizando .loc e .iloc para seleções
+
+Utilize o código abaixo para resolver a questão:
+
+import pandas as pd
+
+dados = {
+    'Motor': ['Motor 4.0 Turbo', 'Motor Diesel', 'Motor Diesel V8', 'Motor 2.0', 'Motor 1.6'],
+    'Ano': [2019, 2003, 1991, 2019, 1990],
+    'Quilometragem': [0.0, 5712.0, 37123.0, 0.0, 120000.0],
+    'Zero_km': [True, False, False, True, False],
+    'Valor': [88000.0, 106000.0, 72000.0, 89000.0, 32000.0]
+}
+
+dataset = pd.DataFrame(dados, index = ['Jetta', 'Passat', 'Crossfox', 'DS5', 'Fusca'])
+
+Note que utilizamos os nomes dos veículos como índice do DataFrame. Selecione as alternativas corretas que têm como resultado o seguinte DataFrame:
+
+Out [1]:
+	Motor	Valor
+Passat	Motor Diesel	106000.0
+DS5	Motor 2.0	89000.0
+
+Alternativa A:
+
+    dataset.iloc[[1, 3], [0, -1]]
+
+  Alternativa correta! Utilizando .iloc, as seleções são feitas pela posição das linhas e colunas, isto é, utilizando os índices numéricos do DataFrame.
+
+Alternativa B:
+
+    dataset.iloc[['Passat', 'DS5'], ['Motor', 'Valor']]
+
+  Alternativa errada! Com .iloc, as seleções são realizadas pelos índices numéricos do DataFrame, isto é, pela posição das linhas e colunas. Lembrando que a indexação tem origem no zero.
+
+Alternativa C:
+
+    dataset.loc[['Passat', 'DS5'], ['Motor', 'Valor']]
+
+  Alternativa correta! Utilizando .loc, podemos fazer seleções utilizando os rótulos das linhas e colunas de um DataFrame.
+
+Alternativa D:
+
+    dataset.loc[[1, 3], [0, -1]]
+
+  Alternativa errada! Com .loc, as seleções são feitas pelos rótulos das linhas e colunas.
+
+
+
+
+
+5-8 Queries com DataFrames *
+
+Transcrição
+
+Aquilo que chamamos de queries são, basicamente, consultas que podem ser realizadas em dataframes, de modo semelhante às seleções, mas utilizando técnicas mais sofisticadas. Continuaremos trabalhando com o dataset importado do arquivo db.csv nos vídeos anteriores.
+
+Queremos realizar uma query que nos traga todos os registros para determinado tipo de motor, por exemplo o "Motor Diesel". Antes de fazermos isso, é interessante comentar que existe outra forma de obtermos uma series simples a partir do rótulo de um dataframe, que é a sintaxe dataframe.Rotulo, como no exemplo abaixo:
+
+dataset.Motor
+
+    Nome Jetta Variant Motor 4.0 Turbo Passat Motor Diesel Crossfox Motor Diesel V8 DS5 Motor 2.4 Turbo Aston Martin DB4 Motor 2.4 Turbo ...Phantom 2013 Motor V8 Cadillac Ciel concept Motor V8 Classe GLK Motor 5.0 V8 Bi-Turbo Aston Martin DB5 Motor Diesel Macan Motor Diesel V6 Name: Motor, Length: 258, dtype: object
+
+Note que isso só funciona quando nossos rótulos não possuem espaços. Para selecionarmos todas as ocorrências de "Motor Diesel" nesse conjunto, usaremos o sinal de igualdade (==).
+
+dataset.Motor == 'Motor Diesel'
+
+Como retorno teremos uma series booleana na qual os itens que possuem o valor "Motor Diesel" receberão "True", e o restante "False".
+
+    Nome Jetta Variant False Passat True Crossfox False DS5 False Aston Martin DB4 False ...Phantom 2013 False Cadillac Ciel concept False Classe GLK False Aston Martin DB5 True Macan False Name: Motor, Length: 258, dtype: bool
+
+Essa series pode ser passada como parâmetro em uma seleção de dataframe para obtermos somente os registros aos quais o valor "True" foi atribuído. Para facilitarmos esse tipo de consulta, armazenaremos nossa series em uma variável select.
+
+select = dataset.Motor == 'Motor Diesel'
+
+Com a função, type(), podemos verificar que estamos realmente trabalhando com um objeto do tipo series.
+
+type(select)
+
+    pandas.core.series.Series
+
+Ao passarmos a nova variável como parâmetro da nossa seleção, receberemos um dataframe contendo todos os veículso que possuem "Motor Diesel".
+
+dataset[select]
+
+Nome	Motor	Ano	Quilometragem	Zero_km	Acessórios	Valor
+Passat	Motor Diesel	1991	5712.0	False	['Central multimídia', 'Teto panorâmico', 'Fre...	106161.94
+Effa Hafei Picape Baú	Motor Diesel	1991	102959.0	False	['Controle de estabilidade', 'Painel digital',...	125684.65
+Sorento	Motor Diesel	2019	NaN	True	['Sensor de chuva', 'Câmera de estacionamento'...	81399.35
+New Fiesta Hatch	Motor Diesel	2017	118895.0	False	['Sensor de estacionamento', 'Travas elétricas...	66007.16
+Kangoo Express	Motor Diesel	2007	29132.0	False	['Bancos de couro', 'Câmbio automático', 'Pilo...	146716.91
+...	...	...	...	...	...	...
+
+Vamos supor que queremos realizar uma query adicional, dessa vez verificando se esses veículos também são "Zero_km". Para isso, a partir do nosso dataset, passaremos entre parênteses dois pares de parênteses separados por um & (and, caractere conhecido como "e comercial").
+
+dataset[() & ()]
+
+É dentro desses parênteses que passaremos as condições da nossa query: primeiro dataset.Motor == 'Motor Diesel', para recebermos somente os carros com esse tipo de motor; e então dataset.Zero_km == True de modo a obtermos, dentre esses veículos, aqueles que também são "Zero_km".
+
+dataset[(dataset.Motor == 'Motor Diesel') & (dataset.Zero_km == True)]
+
+Como retorno teremos as cinco ocorrências dentro do dataset que atendem a essas condições.
+Nome	Motor	Ano	Quilometragem	Zero_km	Acessórios	Valor
+Sorento	Motor Diesel	2019	NaN	True	['Sensor de chuva', 'Câmera de estacionamento'...	81399.35
+Cielo Hatch	Motor Diesel	2019	NaN	True	['Painel digital', 'Central multimídia', 'Câme...	145197.70
+Camry	Motor Diesel	2019	NaN	True	['Travas elétricas', 'Rodas de liga', 'Sensor ...	138597.27
+Aston Martin Virage	Motor Diesel	2019	NaN	True	['Travas elétricas', 'Controle de tração', 'Câ...	97290.18
+Série 7 Sedã	Motor Diesel	2019	NaN	True	['Vidros elétricos', 'Travas elétricas', 'Roda...	67539.79
+
+A consulta (ou o "seletor") que realizamos também é, na verdade, uma series booleana que atribui os valores "True" e "False" para os elementos do nosso conjunto de acordo com as condições que estabelecemos.
+
+(dataset.Motor == 'Motor Diesel') & (dataset.Zero_km == True)
+
+    Nome Jetta Variant False Passat False Crossfox False DS5 False Aston Martin DB4 False ...Phantom 2013 False Cadillac Ciel concept False Classe GLK False Aston Martin DB5 False Macan False Length: 258, dtype: bool
+
+Existe outra forma de fazermos queries nos dataframes do Pandas, que é por meio da função query(). Com ela também podemos passar uma seleção, mas seguindo uma sintaxe um pouco diferente, na qual nossas comparações serão cercadas por aspas simples ou duplas. Note que se for necessário passar strings na seleção, elas deverão ser sinalizada pelo caractere que não foi utilizado na seleção superior - ou seja, se nossa seleção está cercada de aspas simples, a string deverá ser passada dentro de aspas duplas e vice-versa.
+
+dataset.query('Motor == "Motor Diesel" and Zero_km == True')
+
+Nosso retorno será exatamente o mesmo que recebemos anteriormente.
+Nome	Motor	Ano	Quilometragem	Zero_km	Acessórios	Valor
+Sorento	Motor Diesel	2019	NaN	True	['Sensor de chuva', 'Câmera de estacionamento'...	81399.35
+Cielo Hatch	Motor Diesel	2019	NaN	True	['Painel digital', 'Central multimídia', 'Câme...	145197.70
+Camry	Motor Diesel	2019	NaN	True	['Travas elétricas', 'Rodas de liga', 'Sensor ...	138597.27
+Aston Martin Virage	Motor Diesel	2019	NaN	True	['Travas elétricas', 'Controle de tração', 'Câ...	97290.18
+Série 7 Sedã	Motor Diesel	2019	NaN	True	['Vidros elétricos', 'Travas elétricas', 'Roda...	67539.79
+
+Além do "and" (&), o operador "or" (|, "ou") também pode nos auxiliar nas nossas seleções.
+
+dataset[(dataset.Motor == 'Motor Diesel') | (dataset.Zero_km == True)]
+
+dataset.query('Motor == "Motor Diesel" or Zero_km == True')
+
+No próximo vídeo aprenderemos sobre iterações em um dataframe. 
+
+
+
+
+5-9 Realizando consultas em um DataFrame
+
+
+Utilize o seguinte DataFrame para responder a questão:
+
+import pandas as pd
+
+dados = {
+    'Motor': ['Motor 4.0 Turbo', 'Motor Diesel', 'Motor Diesel V8', 'Motor Diesel', 'Motor 1.6'],
+    'Ano': [2019, 2003, 1991, 2019, 1990],
+    'Quilometragem': [0.0, 5712.0, 37123.0, 0.0, 120000.0],
+    'Zero_km': [True, False, False, True, False],
+    'Valor': [88000.0, 106000.0, 72000.0, 89000.0, 32000.0]
+}
+
+dataset = pd.DataFrame(dados, index = ['Jetta', 'Passat', 'Crossfox', 'DS5', 'Fusca'])
+
+Queremos retornar o DataFrame abaixo:
+
+Out [1]:
+	Motor	Ano	Quilometragem	Zero_km	Valor
+Jetta	Motor 4.0 Turbo	2019	0.0	True	88000.0
+Passat	Motor Diesel	2003	5712.0	False	106000.0
+DS5	Motor Diesel	2019	0.0	True	89000.0
+
+Dentre as alternativas, selecione as que possuem códigos que retornam o DataFrame acima.
+
+Alternativa A:
+
+    dataset.query('Motor == "Motor Diesel" or Zero_km == True')
+
+  Alternativa correta! O método query() aceita as duas formas de utilização dos operadores lógicos. No caso do operador lógico OU, temos o or e o caractere |. Para o operador lógico E, temos o and e o caractere &.
+
+Alternativa B:
+
+    dataset[(dataset.Motor == 'Motor Diesel') | (dataset.Zero_km == True)]
+
+  Alternativa correta! Na construção da matriz booleana que foi utilizada para realizar a consulta, foi usado o operador lógico OU, que no caso do código acima é representado pelo caractere |.
+
+Alternativa C:
+
+    dataset.query('Motor == "Motor Diesel" | Zero_km == True')
+
+  Alternativa correta! O método query() aceita as duas formas de utilização dos operadores lógicos. No caso do operador lógico OU, temos o or e o caractere |. Para o operador lógico E, temos o and e o caractere &.
+
+Alternativa D:
+
+    dataset[(dataset.Motor == 'Motor Diesel') or (dataset.Zero_km == True)]
+
+  Alternativa errada! Ao contrário do método query(), não é possível utilizar o operador lógico OU com a palavra or, no caso da construção acima. Neste caso, para criar uma matriz booleana, o operador correto é |.
+
+
+
+
+
+5-10 Iterando com DataFrames *
+
+Transcrição
+
+Nesse vídeo aprenderemos uma forma de fazer iterações em dataframes. A forma que aprenderemos não tem um desempenho muito bom em dataframes muito extensos, e na realidade existem formas mais sofisticadas, entretanto, como estamos em um curso introdutório, preferimos abordar um conteúdo mais básico.
+
+Continuaremos trabalhando com o dataset que importamos nos vídeos anteriores.
+
+dataset.head()
+
+Nome	Motor	Ano	Quilometragem	Zero_km	Acessórios	Valor
+Jetta Variant	Motor 4.0 Turbo	2003	44410.0	False	['Rodas de liga', 'Travas elétricas', 'Piloto ...	88078.64
+Passat	Motor Diesel	1991	5712.0	False	['Central multimídia', 'Teto panorâmico', 'Fre...	106161.94
+Crossfox	Motor Diesel V8	1990	37123.0	False	['Piloto automático', 'Controle de estabilidad...	72832.16
+DS5	Motor 2.4 Turbo	2019	NaN	True	['Travas elétricas', '4 X 4', 'Vidros elétrico...	124549.07
+Aston Martin DB4	Motor 2.4 Turbo	2006	25757.0	False	['Rodas de liga', '4 X 4', 'Central multimídia...	92612.10
+
+Uma maneira simples de iterarmos sobre esses dados é utilizando a estrutura do for que já conhecemos.
+
+for item in dataset:
+    print(item)
+
+A devolução dessa iteração consistirá nos rótulos das nossas colunas.
+
+    Motor Ano Quilometragem Zero_km Acessórios Valor
+
+Porém, isso não tem muita utilidade para nós. O Pandas nos disponibiliza uma ferramenta interessante chamada iterrows(), que nos ajuda a criar um iterador. No exemplo abaixo, criaremos uma lista a partir desse iterador.
+
+list(dataset.iterrows())
+
+    [('Jetta Variant', Motor Motor 4.0 Turbo Ano 2003 Quilometragem 44410 Zero_km False Acessórios ['Rodas de liga', 'Travas elétricas', 'Piloto ... Valor 88078.6 Name: Jetta Variant, dtype: object), ('Passat', Motor Motor Diesel Ano 1991 Quilometragem 5712 Zero_km False Acessórios ['Central multimídia', 'Teto panorâmico', 'Fre... Valor 106162 Name: Passat, dtype: object), ...
+
+O resultado disso será uma lista contendo diversas tuplas, cada uma composta pelo índice do nosso dataframe (os nomes dos veículos) e uma series com as informações da linha correspondente a esse índice. Isso nos permitirá acessar tais informações.
+
+Como nosso dataset.iterrows() é um iterador, podemos utilizá-lo em conjunto com o for para desempacotarmos tais tuplas em dados específicos, por exemplo index e row, ou seja, os índices e informações das linhas.
+
+for index, row in dataset.iterrows():
+
+No nosso primeiro treinamento, fizemos o cálculo da quilometragem média dos veículos do conjunto db.csv a partir da quilometragem total e o ano de fabricação desses veículos. Faremos isso novamente, dessa vez criando uma nova coluna no nosso dataframe para armazenar esses valores.
+
+Como não queremos receber um erro de divisão por 0, algo que pode acontecer quando nos deparamos com um carro que foi fabricado em 2019 (ano de gravação deste curso), precisaremos tratar as informações que utilizamos nesse cálculo. Para isso, incluiremos no nosso for uma condicional if que verifica se 2019 - row['Ano'] (a subtração de 2019 pelo ano de fabricação do veículo) é diferente de 0.
+
+Em caso positivo, utilizaremos o .loc para criarmos uma nova coluna Km_media em nosso dataset. A essa coluna atribuiremos o valor da quilometragem média, que conseguiremos com o cálculo row['Quilometragem'] / 2019 - row['Ano'] (a quilometragem total do veículo dividida pela subtração de 2019 pelo ano de fabricação deste veículo).
+
+Já em caso negativo, simplesmente atribuiremos 0 como valor da linha na nova coluna.
+
+for index, row in dataset.iterrows():
+  if(2019 - row['Ano'] != 0):
+    dataset.loc[index, 'Km_media'] = row['Quilometragem'] / (2019 - row['Ano'])
+  else:
+    dataset.loc[index, 'Km_media'] = 0
+
+dataset
+
+Nosso dataframe será então atualizado com as novas informações. Como o conjunto é relativamente pequeno, essa operação se dará rapidamente.
+Nome	Motor	Ano	Quilometragem	Zero_km	Acessórios	Valor	Km_media
+Jetta Variant	Motor 4.0 Turbo	2003	44410.0	False	['Rodas de liga', 'Travas elétricas', 'Piloto ...	88078.64	2775.625000
+Passat	Motor Diesel	1991	5712.0	False	['Central multimídia', 'Teto panorâmico', 'Fre...	106161.94	204.000000
+Crossfox	Motor Diesel V8	1990	37123.0	False	['Piloto automático', 'Controle de estabilidad...	72832.16	1280.103448
+DS5	Motor 2.4 Turbo	2019	NaN	True	['Travas elétricas', '4 X 4', 'Vidros elétrico...	124549.07	0.000000
+Aston Martin DB4	Motor 2.4 Turbo	2006	25757.0	False	['Rodas de liga', '4 X 4', 'Central multimídia...	92612.10	1981.307692
+
+Note que carros fabricados em 2019 figuram com 0 como valor de Km_media. Assim conseguimos obter facilmente os quilômetros rodados de cada veículo do nosso conjunto, e para isso utilizamos as iterações em dataframes. Como informamos anteriormente, existem formas mais sofisticadas de fazer isso, e que seriam úteis principalmente se estivéssemos lidando com dataframes maiores. Você pode buscar informações sobre elas em cursos mais avançados de ciência de dados e/ou Pandas.
+
+No próximo vídeo aprenderemos a fazer alguns tratamentos nos nossos dados.
+
+
+
+
+5-11 Para saber mais: Formas de iteração em um DataFrame
+
+
+Em nosso último vídeo, aprendemos uma forma de iterar em um DataFrame. Aquela não é a única forma de realizarmos esta tarefa.
+
+Assinale as alternativas que mostram formas de se iterar em um DataFrame.
+
+Dica: Como se trata de conteúdo não explorado em aula, utilize a documentação do pandas (https://pandas.pydata.org/pandas-docs/stable/) para encontrar informações sobre os novos métodos. Utilize também um notebook para testar os códigos.
+
+Alternativa A:
+
+    iterrows()
+
+  Alternativa correta! Este foi o método que vimos em nossa aula. Avalie a documentação para mais informações: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.iterrows.html.
+
+Alternativa B:
+
+    itercolumns()
+
+  Alternativa errada! O método itercolumns() não existe no pacote pandas.
+
+Alternativa C:
+
+    items()
+
+  Alternativa correta! Itera pelas colunas do DataFrame, utilizando uma tupla, onde o primeiro item é o nome da coluna e o segundo é uma Series, com todo o conteúdo da coluna. Mais informações em: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.items.html.
+
+Alternativa D:
+
+    itertuples()
+
+  Alternativa correta! Este método itera pelas linhas do DataFrame, utilizando um tipo de tupla nomeada com o conteúdo de cada linha do DataFrame. Avalie a documentação: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.itertuples.html.
+
+
+
+
+
+5-12 Tratamento de dados *
+
+Transcrição
+
+Fecharemos nosso treinamento de Pandas conversando sobre tratamento de dados, uma parte importante da ciência de dados. É necessário analisar e tratar as informações com as quais estamos trabalhando de modo a ganharmos confiabilidade nos resultados como cientistas de dados, por exemplo nos modelos de Machine Learning.
+
+Continuaremos a utilizar o dataset que importamos anteriormente. Uma das formas de verificarmos rapidamente as informações de um conjunto de dados é por meio da função info().
+
+dataset.info()
+
+<class 'pandas.core.frame.DataFrame'>
+Index: 258 entries, Jetta Variant to Macan
+Data columns (total 7 columns):
+ #   Column         Non-Null Count  Dtype  
+---  ------         --------------  -----  
+ 0   Motor          258 non-null    object 
+ 1   Ano            258 non-null    int64  
+ 2   Quilometragem  197 non-null    float64
+ 3   Zero_km        258 non-null    bool   
+ 4   Acessórios     258 non-null    object 
+ 5   Valor          258 non-null    float64
+ 6   Km_media       258 non-null    float64
+dtypes: bool(1), float64(3), int64(1), object(2)
+memory usage: 24.4+ KB
+
+Com ela obteremos diversas informações interessantes. Por exemplo, sabemos que existem 258 linhas no conjunto e quantos valores de cada variável não são nulos. Repare que a coluna "Quilometragem" só possui 197 informações não nulas, algo que precisaremos investigar - afinal, um modelo de regressão irá eliminar todos os items com esse tipo de informação, e pode ser que com um tratamento consigamos consertar isso.
+
+O Pandas nos oferece a possibilidade de selecionar informações nulas ou não: a função isna().
+
+dataset.Quilometragem.isna()
+
+Ela nos devolve uma series booleana identificando quais valores são ou não "NA" (nulos, vazios e assim por diante).
+
+    Nome Jetta Variant False Passat False Crossfox False DS5 True Aston Martin DB4 False ...Phantom 2013 False Cadillac Ciel concept False Classe GLK False Aston Martin DB5 False Macan False Name: Quilometragem, Length: 258, dtype: bool
+
+Quando os valores são NA, são identificados na series como True. Essa pode ser uma ferramenta interessante para verificarmos como estão se comportando os nossos dados, por exemplo criando um seletor.
+
+dataset[dataset.Quilometragem.isna()]
+
+Nome	Motor	Ano	Quilometragem	Zero_km	Acessórios	Valor	Km_media
+DS5	Motor 2.4 Turbo	2019	NaN	True	['Travas elétricas', '4 X 4', 'Vidros elétrico...	124549.07	0.0
+A5	Motor 4.0 Turbo	2019	NaN	True	['Câmbio automático', 'Câmera de estacionament...	56445.20	0.0
+J5	Motor V6	2019	NaN	True	['Sensor crepuscular', 'Painel digital', 'Roda...	53183.38	0.0
+A3	Motor 1.0 8v	2019	NaN	True	['4 X 4', 'Piloto automático', 'Central multim...	88552.39	0.0
+Série 1 M	Motor V8	2019	NaN	True	['Controle de estabilidade', 'Central multimíd...	94564.40	0.0
+...	...	...	...	...	...	...	...
+Lamborghini Reventón	Motor 4.0 Turbo	2019	NaN	True	['Controle de tração', 'Ar condicionado', 'Cen...	67664.86	0.0
+Benni Mini	Motor V8	2019	NaN	True	['Sensor crepuscular', 'Câmbio automático', 'C...	126247.84	0.0
+Uno	Motor Diesel V6	2019	NaN	True	['Central multimídia', 'Sensor crepuscular', '...	128852.21	0.0
+Santa Fe	Motor 3.0 32v	2019	NaN	True	['Travas elétricas', 'Ar condicionado', '4 X 4...	129415.33	0.0
+XC60	Motor 4.0 Turbo	2019	NaN	True	['Painel digital', 'Piloto automático', 'Centr...	77675.79	0.0
+
+Assim conseguiremos observar algumas características. Repare que nesses dados o ano de todos so veículos é 2019, a quilometragem é NaN e o Zero_km é True. Pensando nisso poderíamos, por exemplo, atribuir 0 à quilometragem dos carros para podermos trabalhá-los de alguma forma no conjunto.
+
+O Pandas inclusive nos disponibiliza uma forma de preenchermos esses valores, que é a função fillna(0).
+
+dataset.fillna(0)
+
+Ao fazermos isso, teremos como retorno nosso dataset com os valores NA preenchidos como 0.
+Nome	Motor	Ano	Quilometragem	Zero_km	Acessórios	Valor	Km_media
+Jetta Variant	Motor 4.0 Turbo	2003	44410.0	False	['Rodas de liga', 'Travas elétricas', 'Piloto ...	88078.64	-1981.003962
+Passat	Motor Diesel	1991	5712.0	False	['Central multimídia', 'Teto panorâmico', 'Fre...	106161.94	-1988.170877
+Crossfox	Motor Diesel V8	1990	37123.0	False	['Piloto automático', 'Controle de estabilidad...	72832.16	-1971.613175
+DS5	Motor 2.4 Turbo	2019	0.0	True	['Travas elétricas', '4 X 4', 'Vidros elétrico...	124549.07	0.000000
+Aston Martin DB4	Motor 2.4 Turbo	2006	25757.0	False	['Rodas de liga', '4 X 4', 'Central multimídia...	92612.10	-1993.242694
+...	...	...	...	...	...	...	...
+Phantom 2013	Motor V8	2014	27505.0	False	['Controle de estabilidade', 'Piloto automátic...	51759.58	-2000.376919
+Cadillac Ciel concept	Motor V8	1991	29981.0	False	['Bancos de couro', 'Painel digital', 'Sensor ...	51667.06	-1976.150570
+Classe GLK	Motor 5.0 V8 Bi-Turbo	2002	52637.0	False	['Rodas de liga', 'Controle de tração', 'Câmbi...	68934.03	-1975.929173
+Aston Martin DB5	Motor Diesel	1996	7685.0	False	['Ar condicionado', '4 X 4', 'Câmbio automátic...	122110.90	-1992.193660
+Macan	Motor Diesel V6	1992	50188.0	False	['Central multimídia', 'Teto panorâmico', 'Vid...	90381.47	-1967.142150
+
+Entretanto, essa alteração não refletirá no nosso dataset original, já que apenas modificamos a visualização dele. Para mantermos tal alteração, será necessário passarmos mais um parâmetro para a função fillna(), o inplace, que deverá ser definido como True.
+
+    O parâmetro inplace também é utilizado em diversas outras funções do Pandas.
+
+dataset.fillna(0, inplace = True)
+
+Feito isso, apesar de não recebermos nenhum retorno, a alteração terá sido concluída. Podemos visualizá-la exibindo os cinco primeiros itens do conjunto:
+
+dataset.head()
+
+Nome	Motor	Ano	Quilometragem	Zero_km	Acessórios	Valor	Km_media
+Jetta Variant	Motor 4.0 Turbo	2003	44410.0	False	['Rodas de liga', 'Travas elétricas', 'Piloto ...	88078.64	-1981.003962
+Passat	Motor Diesel	1991	5712.0	False	['Central multimídia', 'Teto panorâmico', 'Fre...	106161.94	-1988.170877
+Crossfox	Motor Diesel V8	1990	37123.0	False	['Piloto automático', 'Controle de estabilidad...	72832.16	-1971.613175
+DS5	Motor 2.4 Turbo	2019	0.0	True	['Travas elétricas', '4 X 4', 'Vidros elétrico...	124549.07	0.000000
+Aston Martin DB4	Motor 2.4 Turbo	2006	25757.0	False	['Rodas de liga', '4 X 4', 'Central multimídia...	92612.10	-1993.242694
+
+Ou selecionando todos os veículos que possuem True como valor de "Zero_km".
+
+dataset.query('Zero_km == True')
+
+Nome	Motor	Ano	Quilometragem	Zero_km	Acessórios	Valor	Km_media
+DS5	Motor 2.4 Turbo	2019	0.0	True	['Travas elétricas', '4 X 4', 'Vidros elétrico...	124549.07	0.0
+A5	Motor 4.0 Turbo	2019	0.0	True	['Câmbio automático', 'Câmera de estacionament...	56445.20	0.0
+J5	Motor V6	2019	0.0	True	['Sensor crepuscular', 'Painel digital', 'Roda...	53183.38	0.0
+A3	Motor 1.0 8v	2019	0.0	True	['4 X 4', 'Piloto automático', 'Central multim...	88552.39	0.0
+Série 1 M	Motor V8	2019	0.0	True	['Controle de estabilidade', 'Central multimíd...	94564.40	0.0
+...	...	...	...	...	...	...	...
+Lamborghini Reventón	Motor 4.0 Turbo	2019	0.0	True	['Controle de tração', 'Ar condicionado', 'Cen...	67664.86	0.0
+Benni Mini	Motor V8	2019	0.0	True	['Sensor crepuscular', 'Câmbio automático', 'C...	126247.84	0.0
+Uno	Motor Diesel V6	2019	0.0	True	['Central multimídia', 'Sensor crepuscular', '...	128852.21	0.0
+Santa Fe	Motor 3.0 32v	2019	0.0	True	['Travas elétricas', 'Ar condicionado', '4 X 4...	129415.33	0.0
+XC60	Motor 4.0 Turbo	2019	0.0	True	['Painel digital', 'Piloto automático', 'Centr...	77675.79	0.0
+
+Agora se fizermos algum modelo, os veículos 0 km não serão eliminados da amostra, já que não estão mais com valores nulos. Antes de continuarmos, importaremos novamente o conjunto db.csv de modo a retornarmos ao seu estado original.
+
+dataset = pd.read_csv('db.csv', sep = ';')
+
+Fizemos isso para demonstrar outra ferramenta do Pandas que nos ajuda a eliminar os valores nulos de um dataframe, chamada dropna(). Chamaremos essa função a partir do nosso dataset e passaremos como parâmetro subset, que recebe a variável na qual queremos queremos buscar os valores nulos que serão eliminados.
+
+dataset.dropna(subset = ['Quilometragem'])
+
+É necessário prestar atenção, pois todos os registros que contêm esse valor serão eliminados completamente (ou seja, toda a linha será removida). Da mesma forma que na função fillna(), podemos usar o parâmetro inplace = True para que a alteração seja permanente.
+
+dataset.dropna(subset = ['Quilometragem'], inplace = True)
+
+	Nome	Motor	Ano	Quilometragem	Zero_km	Acessórios	Valor
+0	Jetta Variant	Motor 4.0 Turbo	2003	44410.0	False	['Rodas de liga', 'Travas elétricas', 'Piloto ...	88078.64
+1	Passat	Motor Diesel	1991	5712.0	False	['Central multimídia', 'Teto panorâmico', 'Fre...	106161.94
+2	Crossfox	Motor Diesel V8	1990	37123.0	False	['Piloto automático', 'Controle de estabilidad...	72832.16
+4	Aston Martin DB4	Motor 2.4 Turbo	2006	25757.0	False	['Rodas de liga', '4 X 4', 'Central multimídia...	92612.10
+5	Palio Weekend	Motor 1.8 16v	2012	10728.0	False	['Sensor de estacionamento', 'Teto panorâmico'...	97497.73
+...	...	...	...	...	...	...	...
+253	Phantom 2013	Motor V8	2014	27505.0	False	['Controle de estabilidade', 'Piloto automátic...	51759.58
+254	Cadillac Ciel concept	Motor V8	1991	29981.0	False	['Bancos de couro', 'Painel digital', 'Sensor ...	51667.06
+255	Classe GLK	Motor 5.0 V8 Bi-Turbo	2002	52637.0	False	['Rodas de liga', 'Controle de tração', 'Câmbi...	68934.03
+256	Aston Martin DB5	Motor Diesel	1996	7685.0	False	['Ar condicionado', '4 X 4', 'Câmbio automátic...	122110.90
+257	Macan	Motor Diesel V6	1992	50188.0	False	['Central multimídia', 'Teto panorâmico', 'Vid...	90381.47
+
+Feito isso, nosso conjunto passará a ter somente 197 registros, diferente dos 258 anteriores. Aprendemos então duas abordagens diferentes para lidarmos com dados problemáticos nos nossos conjuntos: preencher os registros com alguma informação que faça mais sentido ou seja útil, ou simplesmente eliminá-los.
+
+Assim encerramos nossa introdução ao Pandas. Agora você tem diversas ferramentas para seus projetos de ciência de dados, e pode continuar os seus estudos em cursos mais avançados de Pandas, Python, modelagens, dentre outros assuntos. No próximo vídeo faremos uma recapitulação do conteúdo abordado nesse treinamento.
+
+
+
+
+5-13 Identificando e tratando dados faltantes
+
+
+No último vídeo, conhecemos algumas ferramentas que o pacote pandas disponibiliza para identificação e tratamento de informações faltantes em um DataFrame.
+
+Sobre isso, avalie as afirmativas abaixo:
+
+1) isna() - Detecta valores faltantes. Retorna um DataFrame ou uma Series booleana, identificando se o registro é um NA
+
+2) fillna() - Preenche os registros identificados com NA, utilizando um método específico
+
+3) dropna() - Remove linhas com valores identificados como NA
+
+Quais afirmativas estão corretas?
+
+Alternativa A:
+
+    Todas as afirmativas estão corretas
+
+  Alternativa correta! Lembre-se que o tipo de tratamento que aplicamos em nosso dado deve sempre considerar os objetivos de nosso estudo.
+
+Alternativa B:
+
+    Somente as afirmativas 1 e 2 estão corretas
+
+  Alternativa errada! O método dropna() remove os valores identificados como missing.
+
+Alternativa C:
+
+    Somente as afirmativas 1 e 3 estão corretas
+
+  Alternativa errada! O método fillna() utiliza um conjunto de métodos para preenchimento de valores faltantes.
+
+Alternativa D:
+
+    Somente as afirmativas 2 e 3 estão corretas
+
+  Alternativa errada! O método isna() é utilizado na identificação de valores missing em Series e DataFrames.
+
+
+
+
+
+5-14 Consolidando o seu conhecimento
+
+Chegou a hora de você seguir todos os passos realizados por mim durante esta aula. Caso já tenha feito, excelente. Se ainda não, é importante que você execute o que foi visto nos vídeos para poder continuar com os próximos cursos que tenham este como pré-requisito.
+
+
+Opinião do instrutor
+
+Continue com os seus estudos, e se houver dúvidas, não hesite em recorrer ao nosso fórum!
+
+
+
+
+
+5-15 Projeto do curso
+
+Caso queira, você pode baixar aqui o projeto completo implementado neste curso.
+
+https://caelum-online-public.s3.amazonaws.com/1480-pythondatascience/05/python-data-science-parte-2-aula-5-completa.zip
+
+
+
+5-16 O que aprendemos?
+
+  - Series e DataFrame, as estruturas de dados básicas da biblioteca pandas;
+  
+  - O método de criação de Series e DataFrames;
+  
+  - A criar DataFrames a partir de dados externos;
+  
+  - Como fazer seleções e fatiamentos em um DataFrame;
+  
+  - Os métodos de seleção .loc e .iloc;
+  
+  - A fazer consultas em um DataFrame com o método .query() e com matrizes booleanas;
+  
+  - A forma básica de iteração por um DataFrame;
+  
+  - O básico sobre tratamento de dados faltantes em um DataFrame (isna(), fillna() e dropna()).
+
+
+
+
+5-17 Conclusão *
+
+Transcrição
+
+Chegamos ao fim de mais um treinamento de Introdução ao Python para Data Science aqui na Alura! Nesse vídeo iremos recapitular o que estudamos ao longo do curso. Começamos revisitando a instalação do Python e exibindo alguns dados do nosso dataframe para entendermos com o que iríamos trabalhar ao longo das aulas, além de conhecermos rapidamente o Pandas e algumas de suas configurações.
+
+De volta ao Python básico, aprendemos o que são tuplas (sequências imutáveis), comparamos a sua utilização com as listas, que estudamos no curso anterior e testamos algumas técnicas de seleção e iteração, como a função nativa zip(). Em seguida, conhecemos os dicionários, um tipo de mapeamento também muito importante em data science. Aqui aprendemos a realizar operações em dicionários, como atualização e eliminação de itens e alguns métodos que facilitam o nosso trabalho.
+
+Na aula de funções, passamos por algumas funções nativas do Python e entendemos como acessar a sua documentação (ou "ajuda") de modo a aplicá-las corretamente em nosso código. Também aprendemos a criar nossas próprias funções, sejam elas com ou sem parâmetros ou retorno. Dessa forma, obtivemos um conhecimento básico de Python bastante útil para os estudos em ciência de dados.
+
+No último capítulo fizemos um curso básico de Pandas, conhecendo suas estruturas de dadas (series e dataframe), aprendendo a fazer seleções, consultas e iterações nesses dados e também a tratar os dados do nosso conjunto.
+
+Esperamos que o curso tenha sido bastante útil para sua carreira! Bons estudos e até a próxima!

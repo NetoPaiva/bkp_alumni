@@ -1,0 +1,367 @@
+https://cursos.alura.com.br/course/python-intro
+
+note: devweb - Alumni-3_Python_1-1 (3-1-1)
+
+
+Curso de Python para Data Science
+
+Instrutor Guilherme Lima
+  Linkedin
+  https://www.linkedin.com/in/guilherme-lima-458925178/
+
+Este curso ganhou nova versão
+https://cursos.alura.com.br/course/python-data-science-primeiros-passos
+
+
+Aula 1 - Função e linguagem de alto nível | 0 / 10 | 21min
+
+  1-1 Introdução *
+  1-2 Saudações
+  1-3 Variáveis *
+  1-4 Minha primeira função *
+  1-5 Linguagem de alto nível *
+  1-6 Faça como eu fiz na aula
+  1-7 Função nome completo
+  1-8 Alto nível vs Baixo nível
+  1-9 Para saber mais: História
+  1-10 O que aprendemos?
+
+
+1-1 Introdução *
+
+
+Transcrição
+
+Olá, sou Guilherme Lima e serei seu instrutor no curso de lógica de programação com Python. Aprenderemos os fundamentos da linguagem: como trabalhamos com variáveis, listas, tipos, métodos, conversões e mais. Seguiremos sempre boas práticas de programação e principais convenções da linguagem.
+
+Criaremos nossos primeiros códigos e aprenderemos conteúdos fundamentais para trabalhar com data science. Este curso não possui pré requisitos, afinal trata-se de uma introdução.
+
+Este curso é direcionado para pessoas que nunca fizeram nenhuma linha de código em Python e querem aprender a linguagem com foco em data science.
+
+Vamos começar?
+
+
+
+
+
+1-2 Saudações
+
+
+Olá!
+
+É muito bom receber você neste curso de Lógica com Python.
+
+Espero que seja uma experiência de aprendizado incrível e que possamos vencer todos os desafios juntos. Neste curso, vamos dar nossos primeiros passos na linguagem Python, aprendendo seus fundamentos e principais convenções.
+Preparando Ambiente
+
+Para realizar este curso, não é necessário realizar o download de nenhum programa ou software. Vamos utilizar uma ferramenta da Google chamada Colaboratory ou Colab.
+
+https://colab.research.google.com/notebooks/welcome.ipynb#scrollTo=FQ_Hx_9tn7uF
+
+
+Para utilizar esta ferramenta é necessário que você tenha uma conta da Google, pois todo código ficará armazenado no Google Drive.
+
+Caso não tenha uma conta, clique neste link para realizar seu cadastro.
+https://accounts.google.com/signup/v2/webcreateaccount
+
+Caso já tenha uma conta, faça o login de sua conta neste link:
+https://accounts.google.com/ServiceLogin/signinchooser
+
+Para saber mais sobre o Colab, criamos um artigo na Alura explicando com detalhes como a ferramenta funciona.
+https://www.alura.com.br/artigos/google-colab-o-que-e-e-como-usar
+
+  Em caso de dúvida durante o curso, conte sempre com o fórum da Alura! Caso não tenha nenhuma dúvida, que tal ajudar alguém no fórum compartilhando conhecimento e experiências?
+
+Sabendo disso, vamos começar?
+
+:)
+
+
+
+
+
+1-3 Variáveis *
+
+Transcrição
+
+Para começarmos a criar nosso código, utilizaremos a ferramenta Google Colab. Logo em sua página inicial, teremos uma breve apresentação do programa, e como é simples de utilizá-lo. Não é necessário realizar qualquer tipo de download ou configuração, além do compartilhamento facilitado.
+
+No painel de ferramentas na parte superior direita da tela, clicaremos sobre "File > New notebook". É importante frisar que devemos estar logados em nossa conta do Google, pois tudo que criarmos será salvo em uma pasta do Google Drive.
+
+O notebook aberto terá a seguinte interface:
+
+notebook
+
+Primeiramente nomearemos o arquivo, e notaremos que já existe uma extensão .ipynb que permite a execução do código em Python. Nomearemos nosso arquivo como Lógica de programação.ipynb Podemos criar múltiplos notebooks, caso seja do nosso interesse, mas por hora focaremos apenas em um.
+
+Teremos cabeçalho com ferramentas e uma área de digitação de código e até textos. Podemos escrever em nossa linha de código o texto:
+
+Lógica de programação com Python
+
+Para que esse texto se torne visível acionamos o atalho "Shift + Enter". Conseguimos, inclusive, fazer mais edições como colocar a mensagem em negrito, mudar a posição da linha, ou mesmo criar sub-células que serão englobadas ao clicarmos no ícone de destaque.
+
+englobadas
+
+Como podemos executar um código Python? Nas células poderemos fazer operações matemáticas ao pressionarmos "Shift + Enter":
+
+1+1
+
+Será devolvido para nós o valor 2. Mas se simplesmente escrevermos Guilhermeou qualquer outro nome nas células e acionarmos o "Shift + Enter" teremos uma mensagem de erro, afinal esta não é uma operação válida na linguagem.
+
+Precisamos indicar que o que estamos escrevendo é de fato uma palavra, uma informação textual. Para isso envolveremos o nome "Guilherme" entre aspas:
+
+"Guilherme"
+
+Podemos utilizar tanto aspas duplas " ou aspas simples '. Por convenção da comunidade do Python é comumente utilizada a aspas simples para escrever textos.
+
+Sabemos que nosso nome é tal por repetição, nossos pais e amigos nos chamam pelo nome desde pequenos e então passamos a aprender e reter essa informação. Como podemos fazer com o que o programa aprenda algum dado específico? A resposta é: variáveis.
+
+Se escrevermos em uma célula:
+
+nome = 'Guilherme'
+
+E posteriormente escrevermos em outra célula:
+
+nome
+
+Teremos como retorno "Guilherme". Conseguimos armazenar na memória do computador uma informação. Podemos inclusive adiconar uma idade:
+
+idade = 28
+
+Como estamos lidando com números, não é necessário o uso das aspas. E se escrevermos novamente idade em uma célula, teremos o retorno 28.
+
+Em suma, conseguimos guardar dados importantes para nós na memória do computador.
+
+
+
+
+1-4 Minha primeira função *
+
+Transcrição
+
+O que faremos é exibir uma mensagem usando uma das variáveis criadas, tanto nome quanto idade. Existe uma função em Python que nos possibilita a exibição de conteúdos na tela, a print(), sendo que os parênteses receberão as informações a serem exibidas, por exemplo:
+
+print('O nome é Guilherme e sua idade é 28 anos') 
+
+Ao executarmos essa função por meio de "Shift + Enter" , teremos a mensagem exibida integralmente na tela. Mas e se quisermos exibir o conteúdo armazenado na variável, e não apenas "Guilherme"?
+
+Para isso, acrescentaremos um "f" e deixar as funções entre chaves.
+
+print(f'O nome é {nome} e sua idade é {idade} anos')
+
+Podemos modicar o valor das variáveis de acordo com nosso interesse, então o valor de idade pode se tornar 29, por exemplo.
+
+Existe uma maneira de criarmos nossas próprias funções. Adicionaremos um novo texto de título que chamaremos "Criando minha primeira função".
+
+Queremos criar uma função chamada "saudacao", perceba que não utilizamos qualquer tipo de acentuação, afinal para trechos de código não usamos caracteres especiais. O código utilizado para criarmos funções é o def.
+
+def saudacao():
+
+Ao iniciarmos a escrita da função, logo após os dois pontos, será criado um espaço na célula para organizar a orientação da escrita. Essa orientação é muito importante pois ela ditará o funcionamento do nosso código.
+
+Nossa função se dará da seguinte maneira, a partir do input "qual é o seu nome" deveremos retornar com o valor da variável nome, que configuramos anteriormente.
+
+def saudacao():
+  nome = input('Qual o seu nome?')
+  print(f'olá {nome}')
+
+A função foi criada, agora poderá ser executada:
+
+saudacao()
+
+Teremos como retorno :
+
+Qual o seu nome?
+
+E então teremos um espaço para digitar "Guilherme". Como resposta teremos:
+
+Olá Guilherme
+
+Poderemos escrever ou "Luis", "Maria" e teríamos uma resposta correspondente a estes nomes. Desta forma criamos nossas próprias funções conforme surgem as necessidades do nosso dia a dia.
+
+
+
+
+1-5 Linguagem de alto nível *
+
+Transcrição
+
+Nos aprofundaremos mais em nossos conhecimentos sobre a linguagem Python. Ao fazermos uma busca simples no Google sobre este assunto, descobriremos que Python é uma linguagem de programação de alto nível, mas o que isso dignifica?
+
+O primeiro exemplo que iremos nos atentar será uma linguagem chamada Assembly. Observe:
+
+section.text align=0
+
+global _start
+
+mensagem db 'Hello world', 0x0a
+
+len equ $ - mensagem
+
+_start:
+    mov eax, 4 ;SYS_write
+    mov ebx, 1 ;Número do file descriptor (1=stdout)
+    mov ecx, mensagem ;Ponteiro para a string.
+    mov edx, len ; tamanho da mensagem
+    int 0x80
+
+    mov eax,1
+    int 0x80
+
+Esse código é para exibir a mensagem Hello Word. Em Python escrevemos:
+
+print("Hello World")
+
+As linguagens de alto nível são mais parecidas com as linguagens humanas. Perceba que o código de Assembly não é tão simples de se compreender em um primeiro momento, diferentemente do Python que é bem mais simples. As linguagens de baixo nível são mais semelhantes às estruturas da máquina. Mas qual são as vantagens e desvantagens no uso dessas diferentes linguagens e seus níveis?
+
+A linguagem de alto nível é mais fácil de aprender, afinal é mais intuitiva para o desenvolvedor humano, além de ter sua compreensão facilitada. Contudo, a linguagem de baixo nível gera melhor aproveitamento e desempenho da máquina, afinal o conteúdo não precisará ser interpretado pelo computador.
+
+
+
+
+1-6 Faça como eu fiz na aula
+
+
+Variáveis e função print()
+
+Nesta aula, aprendemos que é possível armazenar informações na memória do computador através de variáveis. Vimos também que o Python traz algumas funções embutidas ou built-in. Além disso, é possível criar nossas próprias funções.
+
+https://docs.python.org/pt-br/3/library/functions.html
+
+
+    Sabendo disso, com base no conteúdo visto em video, crie uma função chamada saudacao que quando executada, armazena o conteúdo digitado pelo usuário através da função input em uma variável chamada nome. Depois, utilize a função print para exibir uma mensagem de saudação concatenando o nome digitado.
+    https://pt.wikipedia.org/wiki/Concatena%C3%A7%C3%A3o
+
+
+Opinião do instrutor
+
+Em computação, uma função é uma sequência de instruções ou linhas de código, que realizam uma determinada ação. Para definirmos uma função no Python utilizamos o comando `def`, seguido do nome da função, abrindo e fechamos parênteses e os dois pontos: ``` def saudacao(): ``` Vamos atribuir na variável nome, o valor digitado pelo usuário ou usuária: ``` def saudacao(): nome = input('Qual é o seu nome? ') ``` Para finalizar, vamos exibir a mensagem de saudação: ``` def saudacao(): nome = input('Qual é o seu nome? ') print(f'Olá, {nome}') ``` Tudo que precisamos fazer agora, é executar nossa função: ``` saudacao() ``` ## Em casos de dúvidas... Podemos te ajudar pelo nosso fórum. Caso não encontre uma solução nas perguntas feitas por alunos e alunas deste curso, para comunicar erros e tirar dúvidas de forma eficaz, clique neste link e saiba como utilizar o fórum da Alura da melhor forma . ## Não tem dúvidas? > Que tal ajudar alguém no fórum? Compartilhe conhecimento e torne nossa comunidade ainda melhor. **: )** 
+
+https://cursos.alura.com.br/comunicando-erros-e-tirando-duvidas-em-foruns-c19
+
+
+
+1-7 Função nome completo
+
+No Python existem funções embutidas chamadas de funções built-in, como por exemplo, a função print() que usamos.
+
+Além disso, é possível criar funções para realizar uma determinada tarefa, como ilustra o código abaixo:
+
+def nome_completo():
+ primeiro_nome = input('Qual seu primeiro nome? ')
+ sobrenome = input('Qual seu sobrenome? ')
+ nome_inteiro = primeiro_nome + ' ' + sobrenome
+ print(nome_inteiro)
+
+nome_completo()
+
+Ao executar o código acima, podemos afirmar que:
+
+Assinale as 2 alternativas corretas
+
+A variável nome_inteiro será a concatenação das variáveis primeiro_nome e sobrenome, com um espaço entre elas.
+  Certo! No Python, ao utilizar o operador soma entre palavras, concatenamos (ou juntamos) seu conteúdo.
+
+Duas caixas de textos serão exibidas perguntando o nome e o sobrenome.
+  Certo! O valor do nome será armazenado na variável primeiro_nome e o valor do sobrenome na variável sobrenome.
+
+A função nome_completo não será executada.
+  Alternativa errada: A função nome_completo será executada por conta da ultima linha do código: nome_completo().
+
+Caso o conteúdo das variáveis primeiro_nome e sobrenome sejam 123 e 456 respectivamente, um erro será exibido na tela, já que o valor esperado é uma palavra e não um número.
+  Alternativa errada: Quase… Todo valor que digitamos através da função input será representado como uma palavra. Sendo assim, nenhum erro será exibido e o resultado da função com esses valores será: 123 456.
+
+
+
+
+
+1-8 Alto nível vs Baixo nível
+
+Conforme vimos em aula, a descrição do Python no Wikipedia é:
+https://pt.wikipedia.org/wiki/Python
+
+    Python é uma linguagem de programação de alto nível...
+
+Sabendo disso, analise as afirmações sobre linguagens de alto e baixo nível e marque as verdadeiras.
+
+Assinale 3 alternativas corretas
+
+A linguagem de baixo nível está mais próxima da linguagem de máquina.
+  Certo! Conforme vimos em aula, comparando o exemplo do Assembly e do Python, a linguagem de baixo nível não é próxima ou parecida com a linguagem humana.
+
+Linguagem de programação de alto nível como Python, possui um nível de abstração relativamente elevado, longe do código de máquina e mais próximo à linguagem humana.
+  Certo! As linguagens de alto nível são mais parecidas ou semelhantes com as linguagens humanas..
+
+A principal vantagem das linguagens de programação de alto nível é o melhor aproveitamento e desempenho da máquina.
+  Alternativa errada: A principal vantagem de linguagens de alto nível, é a associação e semelhança com as linguagens humanas, tornando-as mais compreensivas e mais fáceis de aprender, quando comparada às de baixo nível.
+
+A principal vantagem das linguagens de programação de baixo nível é o melhor aproveitamento e desempenho da máquina.
+  Certo! Como o código de baixo nível é escrito na linguagem de máquina, existe um ganho significativo no desempenho da máquina.
+
+
+
+
+1-9 Para saber mais: História
+
+
+História do Python
+
+Python é uma linguagem de programação interpretada, orientada a objetos, de alto nível e com semântica dinâmica.
+
+A simplicidade do Python reduz a manutenção de um programa. Python suporta módulos e pacotes (conteúdo que veremos ao longo do curso), que encoraja a programação modularizada e reuso de códigos.
+
+É uma das linguagens que mais tem crescido devido sua compatibilidade (roda na maioria dos sistemas operacionais) e capacidade de auxiliar outras linguagens. Programas como Dropbox, Reddit e Instagram são escritos em Python.
+
+Python também é a linguagem mais popular para análise de dados e conquistou a comunidade científica.
+
+
+Breve história da linguagem
+
+Python foi criada em 1990 por Guido Van Rossum no Centro de Matemática Stichting na Holanda como uma sucessora da linguagem ABC. Guido é lembrado como o principal autor de Python mas outros programadores ajudaram com muitas contribuições.
+
+Guido Van Rossum
+https://pt.wikipedia.org/wiki/Guido_van_Rossum
+
+linguagem ABC
+https://pt.wikipedia.org/wiki/ABC_%28linguagem_de_programa%C3%A7%C3%A3o%29
+
+A linguagem ABC foi desenhada para uso de não programadores, mas logo de início mostrou certas limitações e restrições. A maior reclamação dos primeiros alunos não programadores dessa linguagem era a presença de regras arbitrárias que as linguagens de programação haviam estabelecido tradicionalmente - muita coisa de baixo nível ainda era feita e não agradou o público.
+
+Guido então se lançou na tarefa de criar uma linguagem de script simples que possuísse algumas das melhores propriedades da ABC. Listas Python, dicionários, declarações básicas e uso obrigatório de indentação - conceitos que aprenderemos neste curso - diferenciam Python da linguagem ABC.
+
+Você provavelmente já ouviu ou leu em algum lugar que Python é uma linguagem interpretada ou uma linguagem de script. Em certo sentido, também é verdade que Python é tanto uma linguagem interpretada quanto uma linguagem compilada. Um compilador traduz linguagem Python em linguagem de máquina - código Python é traduzido em um código intermediário que deve ser executado por uma máquina virtual conhecida como PVM (Python Virtual Machine).
+
+O interpretador faz esta 'tradução' em tempo real para código de máquina, ou seja, em tempo de execução. Já o compilador traduz o programa inteiro em código de máquina de uma só vez e então o executa, criando um arquivo que pode ser rodado (executável). O compilador gera um relatório de erros (casos eles existam) e o interpretador interrompe a tradução quando encontra um primeiro erro.
+Mais informações sobre Python?
+
+Para mais informações, acesse a documentação oficial do Python neste link ou a apostila de Python da Caelum neste link.
+
+Documentação oficial
+https://docs.python.org/pt-br/3/
+
+Apostila Python
+https://www.caelum.com.br/apostila-python-orientacao-objetos/o-que-e-python/#breve-histria
+
+
+
+
+1-10 O que aprendemos?
+
+
+Nesta aula:
+
+  Aprendemos o que são variáveis;
+  
+
+  Criamos nossa primeira função;
+
+  Entendemos a diferença entre linguagens de alto e baixo nível.
+
+Na próxima aula
+
+    Vamos aprender o que são parâmetros de uma função, as condicionais if e else e conversão de tipos!
+
+
+Link sobre variáveis no Wikipedia:
+https://pt.wikipedia.org/wiki/Vari%C3%A1vel_%28programa%C3%A7%C3%A3o%29
+

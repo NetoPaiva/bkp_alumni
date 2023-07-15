@@ -1,0 +1,392 @@
+https://cursos.alura.com.br/course/python-intro
+
+note: devweb - Alumni-3_Python_1-1 (3-1-1)
+
+
+Curso de Python para Data Science
+
+Instrutor Guilherme Lima
+  Linkedin
+  https://www.linkedin.com/in/guilherme-lima-458925178/
+
+
+Aula 3 - Lista, repetições e tipo booleano | 0 / 9 | 19min
+
+  3-1 Código da aula anterior
+  3-2 Criando uma lista *
+  3-3 Laços e loops *
+  3-4 Tipo booleano *
+  3-5 Faça como eu fiz na aula
+  3-6 Slogan da Alura
+  3-7 Qual valor de a?
+  3-8 Para saber mais: Float
+  3-9 O que aprendemos?
+
+
+3-1 Código da aula anterior
+
+
+Projeto da aula anterior
+
+Aqui você pode baixar o zip da aula 02 ou acessar os arquivos no Github. Tenha certeza de que tudo está certo antes de continuar.
+
+: )
+
+https://github.com/guilhermeonrails/logica_programacao_python_DS/archive/aula_2.zip
+
+https://github.com/guilhermeonrails/logica_programacao_python_DS/blob/aula_2/L%C3%B3gica_de_programa%C3%A7%C3%A3o_Aula_2.ipynb
+
+
+
+
+
+3-2 Criando uma lista *
+
+Transcrição
+
+Aprenderemos outras maneiras de armazenar valores por meio da linguagem Python. Existe uma forma de armazenarmos uma série de elementos de uma única vez, isto é, utilizar listas.
+
+Ao escrevermos:
+
+idade = 22
+
+Sabemos que estamos lidando com um número inteiro, mas há maneiras de confirmar qual o tipo de um conteúdo ao escrevermos:
+
+type(idade)
+
+Será retornado para nós int, como esperávamos. O mesmo acontece se escrevermos strings, como:
+
+nome = "Guilherme"
+
+Como retorno teremos de type(nome) teremos como retorno str.
+
+Podemos guardar uma lista de elementos, como por exemplo diferentes idades diferentes, e para isso inseriremos os valores entre colchetes:
+
+idades = [18, 22, 15, 50 ]
+
+Esse é um elemento do tipo list, como poderemos verificar por meio de type(list). Mas como poderemos coletar elementos específicos, como o segundo ou terceiro número?
+
+Poderemos escrever:
+
+idades[2]
+
+Estranhamente, teremos como retorno o valor 15, que está na terceira posição na lista, por que isso ocorreu? Sempre criamos uma lista, nosso primeiro elemento é 0, ainda que não esteja claramente visível, observe:
+
+idade = [18, 22, 15, 50]
+         0 , 1,  2,  3
+
+Se quisermos coletar idades específicas,com por exemplo do índice 0 ao 2, isto é, os valores 18,22 e 15, poderemos escrever:
+
+idades[0:2]
+
+Como resultado teremos os valores 18 e 22, não é isso que esperávamos. Para exibirmos os valores que desejamos, devemos escrever:
+
+idades[0:3]
+
+Isso ocorre porque o último número da lista é excluído na leitura, então precisamos adicionar um índice para coletar os três valores. Se quisermos coletar os números 22,15 e 50 escreveremos:
+
+idades[1:]
+
+Assim serão coletadas todas as idades com excessão da primeira. Se quisermos coletar apenas o último número, escreveremos:
+
+idades[-1]
+
+Isso se deve segundo a lógica:
+
+idades = [18, 22, 15, 50]
+          0   -3   -2   -1
+
+Se escrevermos idades[-2], por exemplo, teremos como resultado o valor 15. Existem algumas formas diferentes de coletar elementos de uma lista, como pudemos demonstrar. Todas as vezes que trabalhamos com programação e criamos um código, devemos sempre pensar em algo legível e compreensível, então ainda que seja funcional, não é melhor utilizarmos o valor "2" ao invés de "-2" pra coletarmos o valor "15"? Será muito mais fácil para um outro programador entender.
+
+
+
+
+3-3 Laços e loops *
+
+Transcrição
+
+O que faremos nesta aula é juntar os conhecimentos que já temos. Em idades temos uma lista de valores armazenados no computador, e nosso objetivo é criar uma função para verificar se são idades válidas para a habilitação de um veículo.
+
+Utilizaremos a função verifica_se_pode_dirigir(). Criaremos uma nova sessão de texto em nosso código que se chamará "Laços e Loops", assim mantemos o notebookorganizado.
+
+Faremos pequenas alterações nas mensagens da função, para que ela se torne personalizada para cada idade.
+
+def verifica_se_pode_dirigir(idade):
+  if idade >= 18:
+    print(f'{idade} anos de idade, TEM permissão para dirigir')
+  else:
+    print(f'{idade} anos de idade, NÃO TEM permissão para dirigir')
+
+Temos nossa lista de idades, mas queremos que para cada idade inserida na lista idadechamaremos a função que verifica se o valor é maior ou igual a 18.
+
+Pra isso, utilizaremos algo como "para cada idade..." sendo este "para" o for em linguagem Python que foi criado com base no inglês.
+
+def verifica_se_pode_dirigir(idade):
+  if idade >= 18:
+    print(f'{idade} anos de idade, TEM permissão para dirigir')
+  else:
+    print(f'{idade} anos de idade, NÃO TEM permissão para dirigir')
+
+for idade in idades: 
+  verifica_se_pode_dirigir(idade)
+
+Ao executarmos nossa função teremos o seguinte resultado:
+
+18 anos de idade, TEM permissão para dirigir
+22 anos de idade, TEM permissão para dirigir
+15 anos de idade, NÃO TEM permissão para dirigir
+50 anos de idade, TEM permissão para dirigir
+
+Nossa lista funcionou, e conseguimos verificar cada idade. Notemos que o for que utilizamos está fora do escopo da função, mas como poderíamos incluí-lo?
+
+Nossa função ficaria:
+
+def verifica_se_pode_dirigir(idades):
+  for idade in idades:
+    if idade >= 18:
+      print(f'{idade} anos de idade, TEM permissão para dirigir')
+    else:
+      print(f'{idade} anos de idade, NÃO TEM permissão para dirigir')
+
+Com o for dentro da função, passamos uma lista como parâmetro e para cada idade será executada a verificação. Ao executarmos o código, teremos o texto que acompanha os valores de idade após a verificação.
+
+
+
+
+3-4 Tipo booleano *
+
+Transcrição
+
+Nesta aula aprenderemos um novo tipo. Além da string, inteiros e listas também temos o tipo booleano.
+
+Criaremos uma nova sessão em nosso notebook com o título "Booleano", e então começaremos a estudar. Quando afirmamos que idade é maior ou menor que 18:
+
+idade = 18
+idade >= 18
+
+Receberemos como resposta para essa pergunta um true, isto é, "verdadeiro". Quer dizer que o que afirmamos é de fato real, o valor de idade é maior ou igual a 18.
+
+Caso a façamos uma afirmação falsa, receberemos um False como resposta,como é o caso:
+
+idade = 15
+idade >= 18
+
+Nossa tarefa será verificar em uma lista de idades quais estão aptas para ter habilitação e armazenar esses dados em uma nova lista que chamaremos de permissoes, que inicialmente estará vazia:
+
+permissoes = []
+idades = [20, 14, 40]  
+
+Queremos realizar uma verificação, em seguida adicionar os valores true na lista permissoes, e para isso utilizaremos o appends(). Caso a idade não atenda os requisitos para o estado True. Ela irá armazenar os valores comoFalse.
+
+def verifica_se_pode_dirigir(idades, permissoes):
+    for idade in idades:
+      if idade >= 18:
+          permissoes.append(True)
+      else:
+          permissoes.append(False)
+
+Como resultado teremos:
+
+[True, False, True]
+
+Iremos refinar um pouco mais: se houver permissão para dirigir, queremos exibir uma mensagem afirmativa, e uma negativa. Para cada permissao em permissoes faremos uma verificação e comparação. Para realizar o procedimento comparativo, utilizamos ==.
+
+for permissao in permissoes:
+  if permissao == True:
+    print('Tem permissão para dirigir')
+  else:
+    print('Não tem permissão para dirigir')
+
+Receberemos como resposta:
+
+Tem permissão para dirigir
+Não tem permissão para dirigir
+Tem permissão para dirigir
+
+Já avançamos em nosso estudo com tipos booleanos, a criar fore realizar verificações comparativas, além de atribuir valores dentro de uma lista por meio do append().
+
+
+
+
+3-5 Faça como eu fiz na aula
+
+
+Listas e loops
+
+Um conjunto de parâmetros consiste em uma lista com nenhum ou mais elementos. Porém é possível uma lista com um único parâmetro.
+
+    Sabendo disso, crie uma lista chamada idades para armazenar várias idades. Em seguida, passe essa lista como parâmetro para uma função chamada verifica_se_pode_dirigir e para cada idade dentro da lista, verifique se a idade é maior ou igual a 18 anos. Se for, exiba a idade e a mensagem Tem permissão. Caso contrário, exiba a mensagem Não tem permissão.
+
+
+Opinião do instrutor
+
+Vamos criar a lista com as idades:
+
+idades = [18, 22, 15, 50]
+
+Agora vamos criar a função que irá receber a lista idades como parâmetro:
+
+def verifica_se_pode_dirigir(idades):
+
+Para percorrer cada idade da lista idades, vamos incluir o código for:
+
+def verifica_se_pode_dirigir(idades):
+  for idade in idades:
+
+Vamos verificar se a idade tem permissão:
+
+def verifica_se_pode_dirigir(idades):
+  for idade in idades:
+    if idade >= 18:
+      print(f'{idade} anos, Tem permissão')
+    else:
+      print(f'{idade} anos, Não tem permissão')
+
+Vamos executar a função passando a lista como parâmetro:
+
+verifica_se_pode_dirigir(idades)
+
+O resultado será:
+
+    18 anos, Tem permissão
+    22 anos, Tem permissão
+    15 anos, Não tem permissão
+    50 anos, Tem permissão
+
+Em casos de dúvidas...
+
+Podemos te ajudar pelo nosso fórum.
+
+Caso não encontre uma solução nas perguntas feitas por alunos e alunas deste curso, para comunicar erros e tirar dúvidas de forma eficaz, clique neste link e saiba como utilizar o fórum da Alura da melhor forma .
+Não tem dúvidas?
+
+    Que tal ajudar alguém no fórum? Compartilhe conhecimento e torne nossa comunidade ainda melhor.
+
+: )
+
+
+
+
+3-6 Slogan da Alura
+
+A plataforma da Alura possui diversos cursos de tecnologia e negócios. Podemos afirmar que a plataforma possui:
+
+Cursos de Tecnologia e Negócios Digitais
+
+Sabendo disso observe o código abaixo com todas as palavras em uma lista fora de ordem:
+
+  frase_alura = [' Digitais', 'e ', 'Negócios ', 'de ', 'Tecnologia ', 'Cursos ']
+
+Sabendo disso, analise as alternativas abaixo e marque aquela que exibe o slogan de forma correta:
+
+frase_alura[-1] + frase_alura[-3] + frase_alura[-2] + frase_alura[-5] + frase_alura[-6] + frase_alura[-4]
+  Errada: Esse slogan ainda não está na ordem certa: 'Cursos de Tecnologia e DigitaisNegócios '.
+
+frase_alura[-1] + frase_alura[4] + frase_alura[5] + frase_alura[2] + frase_alura[3] + frase_alura[1]
+  Errada: Esse slogan ficou um pouco estranho: 'Cursos Tecnologia Cursos Negócios de e '.
+
+frase_alura[-1] + frase_alura[3] + frase_alura[-2] + frase_alura[1] + frase_alura[2] + frase_alura[0]
+  Certo! Dessa forma o slogan será exibido da forma correta.
+
+frase_alura[5] + frase_alura[3] + frase_alura[4] + frase_alura[1] + frase_alura[2] + frase_alura[1]
+  Quase… Com esse código o slogan ficou assim: 'Cursos de Tecnologia e Negócios e '.
+
+
+
+3-7 Qual valor de a?
+
+A condicional if é uma estrutura condicional que executa um trecho de código, caso a afirmação seja verdadeira. Se for falsa, executa as afirmações dentro de else.
+
+Sabendo disso, observe o seguinte código:
+
+a=2
+
+if a < 2:
+ a = a + 1
+else:
+ a = a + 2
+if a < 4:
+ a = a - 4
+else:
+ a = a + 6
+
+a
+
+Analisando o código acima, podemos afirmar que:
+
+O valor da variável a será -1.
+  Errada: Na primeira condição if é verificado se o conteúdo da variável a é menor que 2. O valor armazenado nesta variável é 2. Em outras palavras, 2 é menor que 2? A resposta é não. 2 é igual a 2.
+
+O valor da variável a será 2.
+ Errada: Na primeira condição if é verificado se o conteúdo da variável a < 2. O valor armazenado nesta variável é 2. Em outras palavras, 2 é menor que 2? A resposta é não. 2 é igual a 2. Sendo assim o valor final não pode 2.
+
+O valor da variável a será 0.
+  Errada: No segundo if, o valor da variável a é 4 e a verificação é: 4 é menor que 4? A resposta é não. 4 é igual a 4. Sendo assim o valor final da variável não pode ser 0.
+
+O valor da variável a será 10.
+  Certo! Na primeira condição, 2 não é maior que 2 e a condição else será executada somando 2 a variável, resultando em 4. Em seguida, a condição if verifica se 4 é menor que 4, o que não é verdade. 4 é igual a 4. Sendo assim a condição else será executada somando 6 na variável, resultando no valor 10.
+
+
+
+
+
+3-8 Para saber mais: Float
+
+Variáveis, float e nomes das variáveis
+
+Podemos pedir para o Python lembrar de um valor que queiramos utilizar. O Python vai guardar este valor em uma variável.
+
+Variável é um nome que faz referência a um valor. É como uma etiqueta que colocamos naquele valor e quando precisarmos usar, chamamos pelo nome que foi dado na etiqueta.
+
+Um comando de atribuição (o sinal de igualdade =) cria uma nova variável e atribui um valor a ela, conforme vimos em aula.
+Float
+
+Além dos tipos vistos em aula, existe um tipo para armazenar um valor decimal, conforme ilustra o exemplo abaixo:
+
+pi = 3.14
+type(pi)
+
+Ao executar esses códigos, observe que a saída será:
+
+float
+https://docs.python.org/pt-br/3/library/functions.html?highlight=float#float
+
+Observe que no lugar de separar o valor com virgula( 3,14 ) usamos um ponto( 3.14 ).
+Nome das variáveis
+
+Programadores escolhem nomes para variáveis que sejam semânticos. Esses nomes podem ser bem longos, podem conter letras e números.
+
+É uma convenção entre os programadores Python começar a variável com letras minúsculas e utilizar o underscore ( _ ) para separar palavras como: meu_nome, numero_de_cadastro, telefone_residencial. Esse padrão é chamado de snake case.
+
+https://en.wikipedia.org/wiki/Snake_case
+
+
+Mais informações?
+
+Para mais informações, acesse a apostila de Python da Caelum neste link.
+
+https://www.caelum.com.br/apostila-python-orientacao-objetos/declarando-e-usando-variaveis/#para-saber-mais-nomes-de-variveis
+
+
+
+
+3-9 O que aprendemos?
+
+Nesta aula:
+
+  Criamos nossa primeira lista no Python;
+  https://www.alura.com.br/artigos/listas-no-python
+
+  Aprendemos a utilizar a estrutura de repetição for;
+
+  Descobrimos o tipo booleano.
+
+Na próxima aula
+
+  Vamos aprender um recurso importante das listas e o que são imports de módulos e pacotes!
+
+
+
+
+
+

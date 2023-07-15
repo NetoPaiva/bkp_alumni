@@ -1,0 +1,630 @@
+https://cursos.alura.com.br/course/python-funcoes-pacotes-pandas/section/9320/tasks
+
+note: estudo - t5_aAlimni-3_Python_1-2
+
+
+Curso de Python para Data Science: Funções, Pacotes e Pandas
+
+Instrutor Rodrigo Fernando Dias
+
+
+Aula 4 - Organização do código: Funções e pacotes | 0 / 10 | 21min
+
+  4-1 Projeto da aula anterior
+  4-2 Built-in Functions *
+  4-3 Fixando o conhecimento
+  4-4 Definindo funções sem e com parâmetros *
+  4-5 Quilometragem média de um veículo
+  4-6 Definindo funções que retornam valores *
+  4-7 Melhorando a nossa função
+  4-8 Elaborando um pouco mais a nossa função
+  4-9 Consolidando o seu conhecimento
+  4-10 O que aprendemos?
+
+
+4-1 Projeto da aula anterior
+
+Caso queira, você pode baixar aqui o projeto do curso no ponto em que paramos na aula anterior.
+
+https://caelum-online-public.s3.amazonaws.com/1480-pythondatascience/03/python-data-science-parte-2-aula-3-completa.zip
+
+
+
+
+4-2 Built-in Functions *
+
+Transcrição
+
+Nessa seção do treinamento conversaremos sobre funções. As funções são unidades de código reutilizáveis que realizam tarefas específicas. Elas podem receber inputs, que são as entradas (também chamadas de parâmetros), e podem retornar resultados.
+
+Começaremos explorando as funções nativas do Python (built-in functions), ou seja, funções integradas da linguagem que estão sempre acessíveis, sem a necessidade de criação ou importação. Nós, inclusive, utilizamos várias delas neste treinamento e no anterior, como type(), print(), zip(), len() e assim por diante.
+
+O objetivo aqui não é esgotarmos todas as funções nativas da linguagem, afinal muitas delas não têm utilidade prática para nosso trabalho como cientistas de dados. A ideia é, dependendo das necessidades, procurarmos por funções que nos ajudem a resolver determinados problemas. Se não existirem, poderemos criar as nossas próprias funções, algo que será tema dos próximos vídeos.
+
+Caso queira, você pode consultar a documentação do Python a respeito de funções para se aprofundar nesse tema.
+
+Para começarmos os testes, inicializaremos novamente um dicionário dados contendo alguns pares chave-valor.
+
+dados = {'Jetta Variant': 88078.64, 'Passat': 106161.94, 'Crossfox': 72832.16}
+dados
+
+    {'Crossfox': 72832.16, 'Jetta Variant': 88078.64, 'Passat': 106161.94}
+
+Queremos obter a somatória dos valores dos veículos desse conjunto, algo que pode ser obtido de algumas formas mais complexas e de outras mais simples. Começaremos pelas mais complexas: criaremos uma lista vazia valores e iniciaremos um iterador for chamando cada item encontrado em dados.values() de valor e adicionando tais valores na lista por meio da função append(), que já conhecemos no curso anterior.
+
+valores = []
+
+for valor in dados.values():
+  valores.append(valor)
+valores
+
+Desse modo obteremos todos os valores dentro de uma única lista, o que nos permitirá somá-los.
+
+    [88078.64, 106161.94, 72832.16]
+
+Uma forma um pouco enxuta de obtermos a somatória é criando uma variável soma que se iniciará com 0, iterando pelos valores com dados.values() e, ao invés de adicioná-los a uma lista, somá-los diretamente à variável criada anteriormente com soma += valor.
+
+soma = 0
+for valor in dados.values():
+  soma += valor
+soma
+
+    267072.74
+
+Dentre as built-in functions do Python, existe uma que pode tornar nosso código ainda mais simples: sum(), que é justamente "soma" em inglês. Na documentação da função sum() verificaremos que a função pode receber dois parâmetros: um iterador iterable e um start. Este último aparece entre colchetes, o que significa duas coisas: que o parâmetro possui um valor padrão e que ele é dispensável - ou seja, que não é necessário fornecê-lo à função para que ela nos retorne um valor.
+
+Antes de utilizarmos essa função, repare na devolução da chamada list(dados.values()):
+
+list(dados.values())
+
+    [88078.64, 106161.94, 72832.16]
+
+Aqui conseguimos obter uma lista com todos os valores do nosso dicionário, da mesma maneira que anteriormente, mas utilizando um código bem mais simples e sucinto. A soma (sum()) operará da mesma forma, bastando passarmos como parâmetro o nosso dados.values()
+
+sum(dados.values())
+
+    267072.74
+
+Nosso resultado é a soma de todos os valores do dicionário dados, executada de maneira bastante resumida. O parâmetro start dessa função significa que podemos iniciar a soma já com algum valor. Isso pode ser feito simplesmente passando o valor desejado após uma vírgula.
+
+sum(dados.values(), 1000000)
+
+Assim, a nossa soma será adicionada ao valor inicial - nesse caso, um milhão.
+
+    1267072.7399999998
+
+Quando precisamos entender determinadas funcionalidades, é interessante consultarmos a documentação. O Python possui também uma função nativa help() para qual podemos passar, como parâmetro, a função sobre a qual queremos mais informações - por exemplo, print.
+
+help(print)
+
+Isso nos devolverá a "ajuda" da função, que é uma espécie de documentação resumida.
+
+    Help on built-in function print in module builtins: print(...) print(value, ..., sep=' ', end='\n', file=sys.stdout, flush=False)
+
+Prints the values to a stream, or to sys.stdout by default.
+Optional keyword arguments:
+file:  a file-like object (stream); defaults to the current sys.stdout.
+sep:   string inserted between values, default a space.
+end:   string appended after the last value, default a newline.
+flush: whether to forcibly flush the stream.
+
+Outra forma de acessarmos esse conteúdo no Colab é passarmos, depois do nome da função, uma interrogação.
+
+print?
+
+Isso abrirá uma aba do próprio Colab com as informações da função.
+
+    Docstring: print(value, ..., sep=' ', end='\n', file=sys.stdout, flush=False) Prints the values to a stream, or to sys.stdout by default. Optional keyword arguments: file: a file-like object (stream); defaults to the current sys.stdout. sep: string inserted between values, default a space. end: string appended after the last value, default a newline. flush: whether to forcibly flush the stream. Type: builtin_function_or_method
+
+Sempre que precisar de uma funcionalidade, primeiramente analise a documentação do Python, pois é possível que ela já exista. Caso contrário, você poderá criará suas próprias funções, algo que aprenderemos nos próximos vídeos. 
+
+Links:
+
+Documentação Python Funções
+https://docs.python.org/3.6/library/functions.html
+https://docs.python.org/pt-br/3.6/library/functions.html
+
+Documentação função sum()
+https://docs.python.org/3.6/library/functions.html#sum
+https://docs.python.org/pt-br/3.6/library/functions.html#sum
+
+
+
+
+4-3 Fixando o conhecimento
+
+
+Em nossos dois treinamentos de Python para Data Science, conhecemos algumas funções e tipos integrados da linguagem. As built-in functions estão sempre disponíveis, isto é, não precisam ser importadas quando forem utilizadas. Podemos encontrar uma listagem delas no seguinte endereço: https://docs.python.org/3.6/library/functions.html.
+
+Dentre as alternativas abaixo, selecione as que possuem uma built-in function e sua respectiva definição correta?
+
+Alternativa A:
+
+    type() - Retorna o tipo de um objeto
+
+  Alternativa correta! Usamos esta built-in function diversas vezes em nosso treinamento. Com ela, conseguimos identificar com que tipos de dados estamos trabalhando.
+
+Alternativa B:
+
+    dict() - Cria um dicionário
+
+  Alternativa correta! Em nossas últimas aulas, utilizamos a função dict() para criar dicionários.
+
+Alternativa C:
+
+    tupla() - Cria uma tupla
+
+  Alternativa errada! A função correta é tuple() e não tupla().
+
+Alternativa D:
+
+    zip() - Retorna um iterador de tuplas
+
+  Alternativa correta! A função zip() é bastante útil quando precisamos iterar em mais de uma sequência ao mesmo tempo. É também bastante utilizada em conjunto com a função dict(), para criar dicionários.
+
+
+
+
+
+4-4 Definindo funções sem e com parâmetros *
+
+Transcrição
+
+Já conhecemos as built-in functions, mas e se quisermos resolver um problema específico para o qual não disponibilizamos de uma função pronta? Nesse caso, precisaremos criar nossas próprias funções - principalmente se for necessário utilizá-las em vários pontos do nosso código, afinal, funções são trechos de código reutilizáveis que permitem resolver problemas específicos.
+
+Começaremos nossos estudos criando funções básicas, que não recebem parâmetros, e no futuro trabalharemos com funções mais complexas que recebem inputs e retornam valores. Vamos supor, por exemplo, que não exista uma função para calcular média, algo que faremos diversas vezes em nosso código.
+
+Utilizaremos a palavra chave def seguida do nome da função e da abertura e fechamento de parênteses (que ficarão vazios, já que a função não receberá parâmetros) e, por fim, dois pontos. Na linha seguinte, precedidas por uma indentação, teremos as instruções que a função executará.
+
+def <nome>():
+    <instruções>
+
+Seguindo esse padrão, criaremos nossa função media().
+
+def media():
+
+Como queremos manter o código simples, iremos simplesmente calcular uma média. Nas instruções, criaremos uma variável valor para qual atribuiremos o cálculo (1 + 2 + 3) / 3 - ou seja, a soma de três valores e a sua divisão pelo número de valores. Por fim, imprimiremos o resultado guardado em valor.
+
+Para testarmos, executaremos a nova função com media().
+
+def media():
+    valor = (1 + 2 + 3) / 3
+    print(valor)
+
+media()
+
+Como retorno, obteremos o valor dessa operação.
+
+    2.0
+
+Essa é a forma mais básica de uma função que calcula a média, e também a menos útil, afinal provavelmente precisaremos calcular as médias de valores específicos que irão variar em cada situação. Justamente para isso existem as funções com parâmetros. O esqueleto básico de uma função com parâmetros se mantém praticamente o mesmo, com a diferença sendo a inclusão desses parâmetros dentro dos parênteses.
+
+def <nome>(<param_1>, <param_2>, ..., <param_n>):
+    <instruções>
+
+Definiremos então uma nova função media(). Entre os parênteses, definiremos a necessidade de três parâmetros, number_1, number_2 e number_3. Calcularemos o valor, que será a soma dos três parâmetros recebidos e a subsequente divisão por três.
+
+def media(number_1, number_2, number_3):
+  valor = (number_1 + number_2 +number_3) / 3
+  print(valor)
+
+Ao executarmos, a função será salva na memória e poderá ser utilizada em qualquer ponto do nosso notebook. Agora poderemos chamar a função media() passando três valores quaisquer - nesse caso, 1, 2 e 3.
+
+media(1,2,3)
+
+    2.0
+
+A diferença é que agora podemos passar qualquer outro valor, como 23, 45 e 67.
+
+media(23, 45, 67)
+
+    45
+
+Outro ponto interessante é que, ao invés de passarmos esses valores sequencias, podemos utilizar uma lista. Criaremos outra função media(), que dessa vez recebe como parâmetro uma lista. Nas instruções, faremos o cálculo da média com o auxílio das built-in functions do Python: usaremos a função sum() para somarmos os itens da lista e dividiremos o resultado por len(lista), ou seja, a quantidade de valores que foram somados. Por fim, imprimiremos o valor.
+
+def media(lista):
+  valor = sum(lista) / len(lista)
+  print(valor)
+
+Com isso, não teremos mais a limitação de calcularmos sempre a média de três valores. Nesse exemplo, passaremos uma lista com 9 valores:
+
+media ([1, 2, 3, 4, 5, 6, 7, 8, 9])
+
+    5.0
+
+Uma coisa importante é que nossa função está imprimindo um valor, mas no momento não é possível atribuirmos tal valor a uma variável, afinal ele não é retornado. Por exemplo, se atribuirmos a chamada de media() a uma variável resultado, teremos a impressão do nosso valor normalmente.
+
+resultado = media ([1, 2, 3, 4, 5, 6, 7, 8, 9])
+
+    5.0
+
+Entretanto, se tentarmos exibir o conteúdo de resultado, nada acontecerá.
+
+resultado
+
+Ao verificarmos o tipo de resultado, receberemos um "NoneType".
+
+type(resultado)
+
+    NoneType
+
+Ou seja, a variável na verdade não tem valor nenhum. No próximo vídeo aprenderemos a criar funções que retornam valores que possam ser atribuídos a uma variável e reutilizados posteriormente no código. 
+
+
+
+
+
+4-5 Quilometragem média de um veículo
+
+
+Uma tarefa importante em um trabalho de cientista de dados é o tratamento do dataset que vamos utilizar. Essa tarefa é dividida em várias etapas e uma delas é a sumarização dos dados, onde obtemos estatísticas descritivas para ajudar nas tomadas de decisão.
+
+Algumas sumarizações precisam de um conjunto de elaborações, que devem ser desenvolvidas pelo próprio pesquisador. Neste ponto, as funções são bastante úteis no trabalho do cientista de dados. Com elas, podemos definir um conjunto de tarefas específicas, que recebem entradas e retornam resultados, e reutilizar esta codificação em outras partes de nosso projeto.
+
+Um exemplo disso em nosso projeto é o cálculo da quilometragem média que um veículo rodou por ano. Não existe uma função pronta para o cálculo desta estatística em Python, e por isso precisamos escrever uma função que obtenha este valor.
+
+Considere o conjunto de informações abaixo para responder o problema:
+
+dados = {
+    'Crossfox': {'km': 35000, 'ano': 2005}, 
+    'DS5': {'km': 17000, 'ano': 2015}, 
+    'Fusca': {'km': 130000, 'ano': 1979}, 
+    'Jetta': {'km': 56000, 'ano': 2011}, 
+    'Passat': {'km': 62000, 'ano': 1999}
+}
+
+A estrutura a seguir é a definição de uma função que obtém e imprime a quilometragem média anual de cada veículo em um dicionário com a estrutura do dicionário dados acima:
+
+In [1]:
+
+def km_media(dataset, ano_atual):
+    for item in _______________:
+        result = _____________ / (ano_atual - ____________)
+        print(result)
+
+In [2]:
+
+km_media(dados, 2019)
+
+Out [2]:
+
+2500.0
+4250.0
+3250.0
+7000.0
+3100.0
+
+Assinale a alternativa que completa corretamente as lacunas da nossa função.
+
+Selecione uma alternativa
+
+
+Alternativa A:
+
+    def km_media(dataset, ano_atual):
+        for item in dataset:
+            result = item[1]['km'] / (ano_atual - item[1]['ano'])
+            print(result)
+
+  Alternativa errada! Como o argumento dataset se trata de um dicionário, precisamos utilizar um iterador correto quando realizamos o laço for. Neste caso, seria dataset.items().
+
+Alternativa B:
+
+    def km_media(dataset, ano_atual):
+        for item in dados.items():
+            result = item[1]['km'] / (ano_atual - item[1]['ano'])
+            print(result)
+
+  Alternativa errada! Em algumas situações, isso pode até parecer estar correto, inclusive pode retornar valores corretos, dependendo de como o seu código estiver sendo escrito, mas não é possível reutilizar este código. Observe que na construção da função definimos dois argumentos (dataset e ano_atual). As instruções da função devem utilizar estes argumentos e não o nome de uma variável que foi definida em outra parte do nosso código (dados). O correto seria:
+
+    def km_media(dataset, ano_atual):
+        for item in dataset.items():
+            <instruções>
+
+Alternativa C:
+
+    def km_media(dataset, ano_atual):
+        for item in dataset.items():
+            result = item['km'] / (ano_atual - item['ano'])
+            print(result)
+
+  Alternativa errada! Na linha em que calculamos a quilometragem média, é preciso identificar qual item da tupla queremos utilizar. Em nosso caso, queremos o segundo item que contém o dicionário com as informações sobre os veículos.
+
+Alternativa D:
+
+    def km_media(dataset, ano_atual):
+        for item in dataset.items():
+            result = item[1]['km'] / (ano_atual - item[1]['ano'])
+            print(result)
+
+  Alternativa correta! Ainda precisamos melhorar um pouco essa função. Faremos isso nas próximas atividades.
+
+
+
+
+4-6 Definindo funções que retornam valores *
+
+Transcrição
+
+Nesse vídeo solucionaremos o problema que identificamos no vídeo anterior: construímos uma função que não retorna valores e, por isso, não conseguimos atribuir o seu resultado a uma variável para utilizá-lo no código posteriormente. O formato padrão de uma função que retorna um valor não é muito diferente daquele que já estamos acostumados.
+
+def <nome>(<param_1>, <param_2>, ..., <param_n>):
+    <instruções>
+    return <resultado>
+
+A diferença básica é que, após as instruções, temos a palavra-chave return seguida do valor que gostaríamos de retornar (aqui chamado de "resultado"). É possível retornar um ou mais valores, e começaremos com uma função que retorna um único valor. A última função que criamos no vídeo anterior calculava a média dos valores de uma lista e o imprimia na tela.
+
+def media(lista):
+  valor = sum(lista) / len(lista)
+  print(valor)
+
+Essa é uma função bastante simplificada, apenas para entendermos a estrutura e o funcionamento desse recurso. No dia-a-dia, é interessante manter uma atenção mais aprimorada, testando se os dados estão fazendo sentido e coisas do tipo.
+
+Mantendo a estrutura dessa função, ao invés de imprimirmos o valor, vamos retorná-lo com a palavra-chave return.
+
+def media(lista):
+  valor = sum(lista) / len(lista)
+  return valor
+
+O resultado final será o mesmo, calculando a média de todos os valores contidos na lista passada por parâmetro.
+
+media([1, 2, 3, 4, 5, 6, 7, 8])
+
+    4.5
+
+A diferença é que agora podemos atribuir a chamada de media() a uma variável, que chamaremos de resultado. Se exibirmos o seu conteúdo, receberemos exatamente a informação devolvida pela função.
+
+resultado = media([1, 2, 3, 4, 5, 6, 7, 8])
+resultado
+
+    4.5
+
+Como dito anteriormente, uma função pode retornar mais de um valor. Em nosso exemplo continuaremos mantendo a mesma estrutura da função media(), mas, ao invés de retornarmos somente o valor, devolveremos também o número de elementos utilizados para esse cálculo - ou seja, o tamanho da lista (len(lista)), ambos contidos em uma tupla.
+
+def media(lista):
+  valor = sum(lista) / len(lista)
+  return (valor, len(lista))
+
+Para testarmos, executaremos o mesmo cálculo de média que fizemos acima.
+
+resultado = media([1, 2, 3, 4, 5, 6, 7, 8])
+resultado
+
+Dessa vez nosso retorno será uma tupla contendo dois valores.
+
+    (4.5, 8)
+
+Se aumentarmos o número de elementos para 9, os valores (média e tamanho da lista) serão alterados.
+
+resultado = media([1, 2, 3, 4, 5, 6, 7, 8, 9])
+resultado
+
+    (5.0, 9)
+
+Nesse curso aprendemos o conceito de desempacotamento de tuplas, o que nos permitia atribuir valores diferentes de uma tupla a variáveis diferentes. Isso também é possível com o retorno de funções. Ou seja, podemos criar, na mesma chamada, as variáveis resultado e n, esta última representando o tamanho da lista.
+
+resultado, n = media([1, 2, 3, 4, 5, 6, 7, 8, 9])
+resultado
+
+    5.0
+
+n
+
+    9
+
+Com isso encerramos nosso conteúdo sobre funções. Ao longo desse curso básico de Python você adquiriu bagagem o suficiente para iniciar e desenvolver seus trabalhos em data science. Na próxima seção do treinamento, faremos uma pequena introdução à biblioteca Pandas, também muito importante na ciência de dados.
+
+
+
+
+4-7 Melhorando a nossa função
+
+No problema anterior, definimos uma função para obter a quilometragem média anual de cada veículo em um dataset. Precisamos melhorar um pouco a nossa função e obter valores que possam ser reutilizados em outras partes do nosso projeto.
+
+Aprendemos em nosso último vídeo como criar funções que retornam valores, e é isso que precisamos para resolver este problema. A estrutura a seguir é a definição de uma função que calcula as quilometragens médias anuais de cada veículo e retorna um dicionário com os nomes dos veículos como chaves e as quilometragens médias como valores:
+
+In [1]:
+
+dados = {
+    'Crossfox': {'km': 35000, 'ano': 2005}, 
+    'DS5': {'km': 17000, 'ano': 2015}, 
+    'Fusca': {'km': 130000, 'ano': 1979}, 
+    'Jetta': {'km': 56000, 'ano': 2011}, 
+    'Passat': {'km': 62000, 'ano': 1999}
+}
+
+In [2]:
+
+def km_media(dataset, ano_atual):
+    result = {}
+    for item in dataset.items():
+        media = item[1]['km'] / (ano_atual - item[1]['ano'])
+        _________________________________        
+    ________________
+
+In [3]:
+
+km_media(dados, 2019)
+
+Out [3]:
+
+{'Crossfox': 2500.0,
+ 'DS5': 4250.0,
+ 'Fusca': 3250.0,
+ 'Jetta': 7000.0,
+ 'Passat': 3100.0}
+
+Assinale a alternativa que completa corretamente as lacunas da nossa função.
+
+
+Selecione uma alternativa
+
+
+Alternativa A:
+
+    def km_media(dataset, ano_atual):
+        result = {}
+        for item in dataset.items():
+            media = item[1]['km'] / (ano_atual - item[1]['ano'])
+            result.update({ item[0]: media })
+        print(result)
+
+  Alternativa errada! A função acima está correta, mas não atende ao pedido do enunciado. Precisamos de uma função que retorne um valor que possa ser reutilizado em nosso código. A função acima apenas imprime um resultado.
+
+Alternativa B:
+
+    def km_media(dataset, ano_atual):
+        result = {}
+        for item in dataset.items():
+            media = item[1]['km'] / (ano_atual - item[1]['ano'])
+            result = { item[0]: media }
+        return result
+
+  Alternativa errada! Este código retorna apenas a última iteração do dicionário de entrada ({'Passat': 3100.0}). Tente utilizar o método update() para atualizar o dicionário result.
+
+Alternativa C:
+
+    def km_media(dataset, ano_atual):
+        result = {}
+        for item in dataset.items():
+            media = item[1]['km'] / (ano_atual - item[1]['ano'])
+            result.update({ item[0]: media })
+        return result
+
+  Alternativa correta! Agora temos uma função um pouco mais elaborada.
+
+Alternativa D:
+
+    def km_media(dataset, ano_atual):
+        result = {}
+        for item in dataset.items():
+            media = item[1]['km'] / (ano_atual - item[1]['ano'])
+            result.append({ item[0]: media })
+        return result
+
+  Alternativa errada! O método append() é um método de listas do Python. Para atualizar dicionários, utilizamos o método update().
+
+
+
+
+
+
+4-8 Elaborando um pouco mais a nossa função
+
+A nossa função km_media() já retorna valores que podem ser trabalhados em outras partes do nosso projeto. Uma elaboração extra, que também pode ser interessante, principalmente para a criação de DataFrames (próximas aulas), é a atualização do próprio input da função. Podemos fazer com que a nossa função retorne as informações do dicionário dados, incluindo as informações de quilometragem média anual.
+
+A estrutura a seguir é a definição de uma função que calcula as quilometragens médias anuais de cada veículo, atualiza o dicionário de entrada e retorna este dicionário:
+
+In [1]:
+
+dados = {
+    'Crossfox': {'km': 35000, 'ano': 2005}, 
+    'DS5': {'km': 17000, 'ano': 2015}, 
+    'Fusca': {'km': 130000, 'ano': 1979}, 
+    'Jetta': {'km': 56000, 'ano': 2011}, 
+    'Passat': {'km': 62000, 'ano': 1999}
+}
+
+In [2]:
+
+def km_media(dataset, ano_atual):
+    result = {}
+    for item in dataset.items():
+        media = item[1]['km'] / (ano_atual - item[1]['ano'])
+        ____________________________________
+        ___________________________________
+
+    return result
+
+In [3]:
+
+km_media(dados, 2019)
+
+Out [3]:
+
+{'Crossfox': {'km': 35000, 'ano': 2005, 'km_media': 2500.0},
+ 'DS5': {'km': 17000, 'ano': 2015, 'km_media': 4250.0},
+ 'Fusca': {'km': 130000, 'ano': 1979, 'km_media': 3250.0},
+ 'Jetta': {'km': 56000, 'ano': 2011, 'km_media': 7000.0},
+ 'Passat': {'km': 62000, 'ano': 1999, 'km_media': 3100.0}}
+
+Assinale a alternativa que completa corretamente as lacunas da nossa função.
+
+Alternativa A:
+
+    def km_media(dataset, ano_atual):
+        result = {}
+        for item in dataset.items():
+            media = item[1]['km'] / (ano_atual - item[1]['ano'])
+            item[1].update({ 'km_media': media })
+            result.update({ item[0]: item[1] })
+        return result
+
+  Alternativa correta! Agora temos uma função mais completa. Com o resultado desta função, podemos criar DataFrames, como veremos nas próximas aulas e atividades.
+
+Alternativa B:
+
+    def km_media(dataset, ano_atual):
+        result = {}
+        for item in dataset.items():
+            media = item[1]['km'] / (ano_atual - item[1]['ano'])
+            item[1].update({ 'km_media': media })
+            result.update( item[1] )
+        return result
+
+  Alternativa errada! Rode este código em um notebook e observe o retorno desta função. Sempre utilize um notebook para ir testando os códigos das atividades.
+
+Alternativa C:
+
+    def km_media(dataset, ano_atual):
+        result = {}
+        for item in dataset.items():
+            media = item[1]['km'] / (ano_atual - item[1]['ano'])
+            item.update({ 'km_media': media })
+            result.update({ item[0]: item })
+        return result
+
+  Alternativa errada! Note que precisamos atualizar o dicionário que contém as informações sobre os veículos. O comando item.update(...) não faz isso. O correto seria item[1].update(...).
+
+  Utilize um notebook para ir executando o código em partes, para entender melhor o funcionamento.
+
+Alternativa D:
+
+    def km_media(dataset, ano_atual):
+        result = {}
+        for item in dataset.items():
+            media = item[1]['km'] / (ano_atual - item[1]['ano'])
+            result.update({ 'km_media': media })
+            result.update({ item[0]: result })
+        return result
+
+  Alternativa errada! Observe que o código acima atualiza o dicionário result duas vezes de maneiras diferentes. Note que primeiro precisamos atualizar o dicionário que contém as informações sobre os veículos e depois atualizar o dicionário result.
+
+
+
+
+
+
+4-9 Consolidando o seu conhecimento
+
+
+Chegou a hora de você seguir todos os passos realizados por mim durante esta aula. Caso já tenha feito, excelente. Se ainda não, é importante que você execute o que foi visto nos vídeos para poder continuar com a próxima aula.
+
+
+Opinião do instrutor
+
+Continue com os seus estudos, e se houver dúvidas, não hesite em recorrer ao nosso fórum!
+
+
+
+
+
+4-10 O que aprendemos?
+
+  - A utilizar built-in functions no Python;
+  
+  - A consultar a documentação do Python;
+  
+  - Como definir funções com e sem o uso de argumentos;
+  
+  - Como definir funções que retornam valores.

@@ -1,0 +1,335 @@
+https://cursos.alura.com.br/course/python-intro
+
+note: devweb - Alumni-3_Python_1-1 (3-1-1)
+
+
+Curso de Python para Data Science
+
+Instrutor Guilherme Lima
+  Linkedin
+  https://www.linkedin.com/in/guilherme-lima-458925178/
+
+
+Aula 2 - Parâmetros, condicionais e conversão de tipos | 0 / 9 | 12min
+
+  2-1 Código da aula anterior
+  2-2 Função com parâmetro *
+  2-3 Condicionais *
+  2-4 Conversão de tipos *
+  2-5 Faça como eu fiz na aula
+  2-6 Indo até a padaria
+  2-7 Habilitação e TypeError
+  2-8 Para saber mais: Operadores
+  2-9 O que aprendemos?
+
+
+2-1 Código da aula anterior
+
+Projeto da aula anterior
+
+Aqui você pode baixar o zip da aula 01 ou acessar os arquivos no Github. Tenha certeza de que tudo está certo antes de continuar.
+
+https://github.com/guilhermeonrails/logica_programacao_python_DS/archive/aula_1.zip
+
+https://github.com/guilhermeonrails/logica_programacao_python_DS/blob/aula_1/L%C3%B3gica_de_programa%C3%A7%C3%A3o_Aula_1.ipynb
+
+
+: )
+
+
+
+
+
+2-2 Função com parâmetro *
+
+Transcrição
+
+Criamos uma função em que coletamos um nome, e imprimimos esse valor e concretizamos uma saudação com base no conteúdo digitado. Porém, o nome que criamos está na função saudacao()
+
+def saudacao():
+  nome = input('Qual é o seu nome? ')
+    print(f'Olá {nome}')
+
+Nossa tarefa nesta aula será criar uma função cujo valor do nome não esteja em seu interior. Criaremos o nome Luiza.
+
+nome = 'Luiza'
+
+E agora trabalharemos em nossa função, que chamaremos de saudacao_com_parametros(). Dentro dos () conseguimos incluir valores a serem utilizados para o funcionamento desta função.
+
+def saudacao_com_parametros(nome_da_pessoa):
+  print(f'Olá {nome_da_pessoa}')
+
+A função foi criada, agora toda a vez que a evocarmos ela espera como parâmetro a variável nome_da_pessoa.
+
+Parâmetros são argumentos localizados fora do escopo da função, mas que podem ser utilizados por ela.
+
+
+
+
+2-3 Condicionais *
+
+Transcrição
+
+Compreendemos o que são funções, parâmetros e variáveis, aprenderemos o conceito de condicionais. Criaremos uma mensagem de texto para deixar nosso notebook organizado, com o título "Condicional".
+
+Nossa proposta é armazenar a idade de alguém no computador.
+
+idade = 20
+
+Faremos uma função que verifica o usuário tem a idade correta para dirigir um carro ou não. Ou seja, se a idade for maior ou igual a 18 anos, o usuário pode ter habilitação e dirigir veículos, caso o contrário a permissão é negada.
+
+A nova função será chamada de verifca_se_pode_dirigir(), que receberá idade como parâmetro. Então precisaremos verificar se a idade é maior ou menor que 18. Caso esta condição seja respeitada, imprimiremos a mensagem Tem permissão para dirigir.
+
+idade = 20
+
+def verica_se_pode_dirigir(idade):
+  se idade >= 18:
+   print('Tem permissão para dirigir')
+
+A função foi criada, mas quando tentamos executá-la receberemos uma mensagem de erro. O que ocorreu é que o termo se não foi compreendido pelo programa. A linguagem Python foi estruturada em inglês, portanto ao invés de se, utilizaremos if. Além disso, mudaremos o valor de idade para 15 e verificaremos o comportamento da nossa função.
+
+idade = 15
+
+def verica_se_pode_dirigir(idade):
+  if idade >= 18:
+   print('Tem permissão para dirigir')
+
+Ao executarmos o código, nada acontece. Não ditamos qualquer tipo de comportamento para a função caso a idade em questão seja menor que 18. Então precisaremos elaborar esse comportamento, e neste caso a palavra chave será else, para indicar como proceder.
+
+idade = 15
+
+def verica_se_pode_dirigir(idade):
+  if idade >= 18:
+   print('Tem permissão para dirigir')
+  else:
+    print('Não tem permissão para dirigir')
+
+A função está executável e agora mensagens diferentes serão exibidas de acordo com a idade fornecida.
+
+
+
+
+2-4 Conversão de tipos *
+
+Transcrição
+
+Ainda no contexto de condicionais, queremos receber o valor de idade dentro de uma função, ou seja, sem a exigência de parâmetros. Atualmente nossa função está na seguinte maneira:
+
+idade = 10
+
+
+def verifica_se_pode_dirigir(idade):
+    if idade >= 18:
+        print('Tem permissão para dirigir')
+    else:
+        print('Não tem permissão para dirigir')
+
+verifica_se_pode_dirigir(idade)
+
+Nossa nova função será verifica_se_pode_dirigir_sem_parametro(). Primeiramente devemos coletar a idade. Então coletaremos a resposta do usuário. Se a idade for maior ou igual a 18 anos será impressa a mensagem.
+
+def verifica_se_pode_dirigir_sem_parametro():
+    idade = input('Qual sua idade')
+    if idade >= 18:
+        print('Tem permissão para dirigir')
+    else:
+        print('Não tem permissão para dirigir')
+
+
+verifica_se_pode_dirigir_sem_parametro()
+
+Ao executarmos nossa função, será requerida a idade do usuário em um campo, e então inseriremos o valor 10. Notaremos um erro: que ">=" não é suportado entre instâncias de 'str' e 'int', mas que isso quer dizer?
+
+'str' ser refere a string, ou seja, informação textual, quanto 'int' se refere a um número inteiro. Isso quer dizer que o input de idade está sendo lindo como um texto, não como um número. Precisaremos corrigir esse problema para a função operar da maneira que esperamos.
+
+Realizaremos uma conversão para que idade seja do tipo inteiro, e para isso escreveremos nosso código da seguinte maneira:
+
+def verifica_se_pode_dirigir_sem_parametro():
+    idade = input('Qual sua idade')
+    idade = int(idade)
+    if idade >= 18:
+        print('Tem permissão para dirigir')
+    else:
+        print('Não tem permissão para dirigir')
+
+
+verifica_se_pode_dirigir_sem_parametro()
+
+Dessa maneira será coletada a string e então a conversão para o tipo inteiro será realizada. Agora ao executarmos nossa função e inserirmos o número de idade no input, receberemos a mensagem correspondente a idade.
+
+Por isso é importante sabermos se estamos trabalhando com números inteiros ou palavras, pois existem operações que não irão funcionar corretamente caso não realizemos as conversões adequadas.
+
+Dessa maneira, temos duas funções com formatos diferentes: uma que utiliza parâmetro e outra não.
+
+
+
+
+2-5 Faça como eu fiz na aula
+
+
+Parâmetros de uma função
+
+Funções em Python são blocos de código que executarão algum tipo de tarefa ou manipulação de dados, podendo ou não receber: dados de entrada (parâmetros).
+
+    Sabendo disso, crie uma função chamada verifica_se_pode_dirigir que recebe um parâmetro chamado idade e inclua uma condicional if para analisar se a idade é maior ou igual que 18 anos. Caso seja, exiba uma mensagem na tela dizendo que Tem permissão para dirigir. Senão(else), exiba a mensagem Não tem permissão para dirigir. Depois de executar, crie a mesma função sem parâmetros, que armazena a idade digitada pelo usuário ou usuária. Como todo valor digitado através do teclado é uma string, não esqueça de converter a idade com o código int(idade).
+
+
+Opinião do instrutor
+
+Vamos criar a função que recebe a idade como parâmetro:
+
+def verifica_se_pode_dirigir(idade):
+  if idade >= 18:
+    print('Tem permissão para dirigir')
+  else:
+    print('Não tem permissão para dirigir')
+
+Criando a variável idade atribuindo o valor 10 e chamando a função:
+
+idade = 10
+verifica_se_pode_dirigir(idade)
+
+Certo. Vamos criar esta mesma função, porém sem parâmetros desta vez. Não vamos esquecer de converter o valor digitado para int, como ilustra o código abaixo:
+
+def verifica_se_pode_dirigir_sem_parametros():
+  idade = input('Qual sua idade? ')
+  idade = int(idade)
+  if idade >= 18:
+    print('Tem permissão para dirigir')
+  else:
+    print('Não tem permissão para dirigir')
+
+verifica_se_pode_dirigir_sem_parametros()
+
+Em casos de dúvidas...
+
+Podemos te ajudar pelo nosso fórum.
+
+Caso não encontre uma solução nas perguntas feitas por alunos e alunas deste curso, para comunicar erros e tirar dúvidas de forma eficaz, clique neste link e saiba como utilizar o fórum da Alura da melhor forma .
+
+https://cursos.alura.com.br/comunicando-erros-e-tirando-duvidas-em-foruns-c19
+
+
+Não tem dúvidas?
+
+    Que tal ajudar alguém no fórum? Compartilhe conhecimento e torne nossa comunidade ainda melhor.
+
+: )
+
+
+
+
+2-6 Indo até a padaria
+
+Uma pessoa vai até a padaria todos os dias. A distância de sua casa até o estabelecimento é de 100 metros e todo percurso é feito em 20 segundos.
+
+Para calcular a velocidade média e descobrir a razão do espaço pelo tempo, podemos dividir o espaço percorrido pelo tempo.
+
+Sabendo disso, a pessoa deseja criar uma função chamada velocidade, que recebe 2 parâmetros chamados espaco e tempo, realizar o cálculo e exibir uma saída semelhante ao exemplo abaixo:
+
+Velocidade: 5 m/s
+
+Qual das alternativas abaixo descreve esta função?
+
+def velocidade():
+  v = espaco / tempo
+  print(f'Velocidade: {v} m/s')
+
+velocidade(100, 20)
+
+Alternativa errada:
+  Ao executar este código, um erro será exibido informando que 2 parâmetros foram passados, mas a função não espera nenhum, já que não existe nenhum conteúdo entre os parênteses.
+
+def velocidade(espaco, tempo):
+  v = espaco / tempo
+  print(f'Velocidade: {v} m/s')
+
+velocidade(100, 20)
+
+Alternativa correta:
+  Certo! O nome da função foi definido como esperado e a função recebe 2 argumentos. Além disso, a saída da função é expressa conforme a expectativa da pessoa.
+
+def calcula_velocidade(espaco, tempo):
+  v = espaco / tempo
+  print(v)
+
+velocidade(100, 20)
+
+Alternativa errada:
+  O nome desta função não é o mesmo definido previamente pela pessoa. Além disso, a saída não é como esperada, já que mostra apenas o valor e não como ilustra o exemplo acima.
+
+
+
+
+
+2-7 Habilitação e TypeError
+
+Uma pessoa criou a seguinte função para descobrir quantos anos faltam para tirar habilitação, caso não tenha a idade permitida. Caso tenha, uma mensagem informa que pode tirar habilitação:
+
+def habilitacao():
+ idade = input('Qual sua idade? ')
+ if idade >= 18:
+   print('Pode tirar habilitação')
+ else:
+   tempo = 18 - idade
+   print(f'Calma... espere {tempo} ano(s) para tirar habilitação')
+
+habilitacao()
+
+Porém, ao executar a função recebe a seguinte mensagem de erro:
+
+TypeError: '>=' not supported between instances of 'str' and 'int'
+
+Sabendo disso, analise as afirmações abaixo e marque as duas que podem ajudar esta pessoa:
+
+Para solucionar o problema, antes de realizar a comparação, é necessário converter o tipo str da idade para int.
+  Certo! Essa conversão pode ser feita através do código: idade = int(idade).
+
+Para solucionar o problema, a pessoa pode incluir o seguinte código: idade >= '18'.
+  Quase… Ao converter o 18 para uma str, caso a pessoa tenha 18 anos ou mais, nenhum erro será exibido.
+  Porém, quando a pessoa tiver uma idade menor que 18 anos, uma mensagem de erro será exibida informando que não é possível realizar operações de subtração entre instâncias do tipo str e int.
+
+O erro acontece pois o conteúdo da variável idade é do tipo str.
+  Certo! Observe no erro que a expressão matemática >= não é compatível com instâncias do tipo str e int.
+
+
+
+
+
+2-8 Para saber mais: Operadores
+
+
+Operadores do Python
+
+Criamos um código que verifica se a idade é maior ou igual a 18. Este operador não é aritmético, e é conhecido por operador de comparação. O Python possui mais operadores deste tipo:
+Operador	Descrição
+a == b	a igual a b
+a != b	a diferente de b
+a < b	a menor do que b
+a > b	a maior do que b
+a <= b	a menor ou igual a b
+a >= b	a maior ou igual a b
+Mais informações?
+
+Para mais informações, acesse a apostila de Python da Caelum neste link.
+
+https://www.caelum.com.br/apostila-python-orientacao-objetos/declarando-e-usando-variaveis/#entrada-do-usurio
+
+
+
+
+2-9 O que aprendemos?
+
+Nesta aula:
+
+  Criamos uma função que recebe um parâmetro;
+
+  Aprendemos a usar as condicionais if e else;
+
+  Convertemos a string (str) digitando através do teclado em um valor inteiro (int).
+
+
+Na próxima aula
+
+  Vamos aprender como armazenar mais de um valor na mesma variável, como criar estruturas de repetição e o que é um tipo booleano!
+

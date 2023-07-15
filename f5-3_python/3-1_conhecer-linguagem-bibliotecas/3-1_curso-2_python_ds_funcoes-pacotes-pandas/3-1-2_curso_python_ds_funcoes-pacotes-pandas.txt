@@ -1,0 +1,109 @@
+https://cursos.alura.com.br/course/python-funcoes-pacotes-pandas
+
+note: estudo - t5_aAlimni-3_Python_1-2
+
+Data Science | Cursos de Data Science
+
+Curso de Python para Data Science: Funções, Pacotes e Pandas
+
+nova versão do curso:
+https://cursos.alura.com.br/course/python-data-science-funcoes-estruturas-dados-excecoes
+
+
+Instrutor Rodrigo Fernando Dias
+
+  Linkedin
+  https://www.linkedin.com/in/rodrigo-fernando-dias-118181120/
+
+  Rodrigo é estatístico e especialista em Big Data com forte interesse em geoprocessamento, desenvolvimento web, web scraping, machine learning e Data Science. É instrutor e tech lead da escola de dados da Alura.
+
+
+Fórum do curso:
+https://cursos.alura.com.br/forum/curso-python-funcoes-pacotes-pandas/todos/0
+
+
+Faça esse curso de Data Science e:
+
+  - Saiba como funcionam tuplas e listas
+  - Conheça a biblioteca dos cientistas de dados: Pandas
+  - Encapsule código em funções
+  - Use pacotes para organizar o código
+  - Trabalhe com Built-in Functions do Python
+
+
+
+Aulas
+
+1 - Apresentação do curso | 0 / 8 | 14min
+
+  1-1 Introdução
+  1-2 Projeto inicial do treinamento
+  1-3 Instalação e ambiente de desenvolvimento
+  1-4 A linguagem Python
+  1-5 Trabalhando com dados
+  1-6 Primeiro contato com o Pandas
+  1-7 Consolidando o seu conhecimento
+  1-8 O que aprendemos?
+
+
+2 - Listas estáticas: Tuplas | 0 / 10 | 18min
+
+  2-1 Projeto da aula anterior
+  2-2 Conhecendo as tuplas
+  2-3 Formas de se criar uma tupla
+  2-4 Seleções em tuplas
+  2-5 Selecionando itens em tuplas
+  2-6 Iterando em tuplas
+  2-7 Laços for com tuplas
+  2-8 A função zip()
+  2-9 Consolidando o seu conhecimento
+  2-10 O que aprendemos?
+
+3 - Mapeando dados: Dicionários | 0 / 12 | 23min
+
+  3-1 Projeto da aula anterior
+  3-2 Criando dicionários
+  3-3 Lista e mapeamentos
+  3-4 Forma simples de criação de dicionários
+  3-5 Operações com dicionários
+  3-6 Operações básicas com dicionários
+  3-7 Métodos de dicionários
+  3-8 Conhecendo os métodos de dicionários
+  3-9 Iterando em dicionários
+  3-10 Iterando em dicionários de dicionários
+  3-11 Consolidando o seu conhecimento
+  3-12 O que aprendemos?
+
+4 - Organização do código: Funções e pacotes | 0 / 10 | 21min
+
+  4-1 Projeto da aula anterior
+  4-2 Built-in Functions
+  4-3 Fixando o conhecimento
+  4-4 Definindo funções sem e com parâmetros
+  4-5 Quilometragem média de um veículo
+  4-6 Definindo funções que retornam valores
+  4-7 Melhorando a nossa função
+  4-8 Elaborando um pouco mais a nossa função
+  4-9 Consolidando o seu conhecimento
+  4-10 O que aprendemos?
+
+5 - A biblioteca dos cientistas: Pandas | 0 / 17 | 49min
+
+  5-1 Projeto da aula anterior
+  5-2 Estruturas de dados
+  5-3 O Pandas e suas estruturas de dados
+  5-4 Criando DataFrames
+  5-5 Seleções com DataFrames
+  5-6 Fatiamentos com DataFrames
+  5-7 Utilizando .loc e .iloc para seleções
+  5-8 Queries com DataFrames
+  5-9 Realizando consultas em um DataFrame
+  5-10 Iterando com DataFrames
+  5-11 Para saber mais: Formas de iteração em um DataFrame
+  5-12 Tratamento de dados
+  5-13 Identificando e tratando dados faltantes
+  5-14 Consolidando o seu conhecimento
+  5-15 Projeto do curso
+  5-16 O que aprendemos?
+  5-17 Conclusão
+
